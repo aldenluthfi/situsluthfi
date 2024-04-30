@@ -1,0 +1,34 @@
+{% load static %}
+{% load static tailwind_tags %}
+{% load django_htmx %}
+
+<!DOCTYPE html>
+<html lang="en" class="no-scrollbar notranslate" translate="no">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <title>{{ title }}</title>
+  {% tailwind_css %}
+  <link rel="icon" href="{% static 'img/solo.png' %}">
+</head>
+
+<body class="flex flex-col select-none bg-background duration-200">
+  <div
+    class="cursor hidden desktop:inline-block fixed -trasnlate-x-1/2 -translate-y-1/2 z-50 w-10 h-10 bg-transparent pointer-events-none border-solid border-accent rounded-full border-2">
+  </div>
+  <main class="">
+    {% include header %}
+    {% include content %}
+    {% include footer %}
+  </main>
+  <script src="{% static 'js/cursor.js' %}"></script>
+  <script src="{% static 'js/theme.js' %}"></script>
+  <script src="{% static 'js/shadows.js' %}"></script>
+  <script src="{% static 'js/scroll.js' %}"></script>
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+  {% django_htmx_script %}
+</body>
+
+</html>

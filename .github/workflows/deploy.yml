@@ -1,0 +1,21 @@
+name: deployment
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        name: Deploy website
+        runs-on: ubuntu-latest
+        if: contains(github.event.head_commit.message, 'Build')
+        steps:
+            - name: Install ssh keys
+              run: |
+                install -m 600 -D /dev/null ~/.ssh/id_rsa
+                echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                ssh-keyscan -H aldenluth.fi > ~/.ssh/known_hosts
+            - name: Connect and deploy
+              run: ssh root@aldenluth.fi "cd situsluthfi/src && git pull --ff-only && docker-compose up -d --build && docker system prune -a -f"
+            - name: Cleanup
+              run: rm -rf ~/.ssh
