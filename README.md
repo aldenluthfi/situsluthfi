@@ -1,2 +1,2 @@
-# SitusLuthfi
+# 🌏 SitusLuthfi
 My personal website
