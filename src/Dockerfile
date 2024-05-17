@@ -1,4 +1,4 @@
-FROM python:3.11-bullseye
+FROM python:3.12.3-bullseye
 
 RUN apt-get update
 RUN apt-get install -y build-essential curl
