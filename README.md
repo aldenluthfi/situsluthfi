@@ -3,4 +3,3 @@
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/aldenluthfi/situsluthfi/assets/83630284/3d79e60e-3c10-4c5f-a0b2-a89a60fb8652">
   <img>
 </picture>
-
