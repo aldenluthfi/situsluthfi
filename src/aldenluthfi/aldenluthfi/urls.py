@@ -19,8 +19,7 @@ from django.urls import include, path
 urlpatterns = [
     path('__reload__', include('django_browser_reload.urls')),
 
-    path('', include('main.urls')),
-    path('', include('articles.urls')),
+    path('', include('main.urls'))
 ]
 
 handler400 = 'errors.views.handler400'

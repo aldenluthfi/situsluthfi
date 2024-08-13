@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "django_htmx",
 
     'main',
-    'articles',
     'errors',
 ]
 
