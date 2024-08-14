@@ -16,22 +16,12 @@
     </p>
   </div>
 
-  <div class="py-40 tablet:py-40 desktop:py-64">
-    <div class="sliding scale-y-[-1] absolute -mt-44 -z-10 max-desktop:hidden">
-      {% svg 'squiggle-7'%}
-    </div>
-    <div class="scale-y-[-1] absolute -mt-28 -z-10 max-tablet:hidden desktop:hidden">
-      {% svg 'squiggle-5'%}
-    </div>
-    <div class="scale-y-[-1] absolute -mt-24 -z-10 tablet:hidden">
-      {% svg 'squiggle-3'%}
+  <div class="flex flex-col -space-y-[30%] tablet:-space-y-[20%] desktop:-space-y-[10%] py-40 tablet:py-40 desktop:py-64">
+    <div class="flex justify-center -z-10 scale-y-[-1]">
+      {% svg 'squiggle'%}
     </div>
 
-    <svg class="absolute -z-10 w-screen h-[20rem] desktop:h-[48rem] fill-accent" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%"/>
-    </svg>
-
-    <div class="flex justify-center tablet:space-x-[5%] desktop:space-x-[3%] max-tablet:px-10">
+    <div class="flex justify-center tablet:space-x-[5%] desktop:space-x-[3%] max-tablet:px-10 bg-accent">
       <img src="{% static 'img/medprop.png' %}"
         class="photo hover:scale-105 hover:shadow-2xl duration-200 hidden tablet:block tablet:w-5/12 desktop:w-2/5 rounded-2xl">
       <img src="{% static 'img/solo.png' %}"
@@ -40,14 +30,8 @@
         class="photo hover:scale-105 hover:shadow-2xl duration-200 hidden tablet:block tablet:w-5/12 desktop:w-2/5 rounded-2xl">
     </div>
 
-    <div class="absolute -mt-64 -z-10 max-desktop:hidden">
-      {% svg 'squiggle-7'%}
-    </div>
-    <div class="absolute -mt-40 -z-10 max-tablet:hidden desktop:hidden">
-      {% svg 'squiggle-5'%}
-    </div>
-    <div class="absolute -mt-28 -z-10 tablet:hidden">
-      {% svg 'squiggle-3'%}
+    <div class="flex justify-center -z-10">
+      {% svg 'squiggle'%}
     </div>
   </div>
 
