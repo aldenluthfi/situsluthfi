@@ -315,648 +315,541 @@ button {
 }
 
 .neutral {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-900);
-
-    --buttons-default: var(--neutral-200);
-    --buttons-hover: var(--neutral-300);
-    --buttons-active: var(--neutral-400);
-    --buttons-disabled: var(--neutral-100);
-
-    --buttons-text: var(--neutral-600);
-    --buttons-text-disabled: var(--neutral-300);
-
-    --accent: var(--neutral-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-900);
+  --buttons-default: var(--neutral-200);
+  --buttons-hover: var(--neutral-300);
+  --buttons-active: var(--neutral-400);
+  --buttons-disabled: var(--neutral-100);
+  --buttons-text: var(--neutral-600);
+  --buttons-text-disabled: var(--neutral-300);
+  --accent: var(--neutral-500);
+  --cursor: var(--neutral-700);
 }
 
 .neutral-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-100);
-
-    --buttons-default: var(--neutral-800);
-    --buttons-hover: var(--neutral-700);
-    --buttons-active: var(--neutral-600);
-    --buttons-disabled: var(--neutral-900);
-
-    --buttons-text: var(--neutral-500);
-    --buttons-text-disabled: var(--neutral-800);
-
-    --accent: var(--neutral-600);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-100);
+  --buttons-default: var(--neutral-800);
+  --buttons-hover: var(--neutral-700);
+  --buttons-active: var(--neutral-600);
+  --buttons-disabled: var(--neutral-900);
+  --buttons-text: var(--neutral-500);
+  --buttons-text-disabled: var(--neutral-800);
+  --accent: var(--neutral-600);
+  --cursor: var(--neutral-400);
 }
 
 .red {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--red-200);
-    --buttons-hover: var(--red-300);
-    --buttons-active: var(--red-400);
-    --buttons-disabled: var(--red-100);
-
-    --buttons-text: var(--red-600);
-    --buttons-text-disabled: var(--red-300);
-
-    --accent: var(--red-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--red-200);
+  --buttons-hover: var(--red-300);
+  --buttons-active: var(--red-400);
+  --buttons-disabled: var(--red-100);
+  --buttons-text: var(--red-600);
+  --buttons-text-disabled: var(--red-300);
+  --accent: var(--red-500);
+  --cursor: var(--red-700);
 }
 
 .red-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--red-800);
-    --buttons-hover: var(--red-700);
-    --buttons-active: var(--red-600);
-    --buttons-disabled: var(--red-950);
-
-    --buttons-text: var(--red-400);
-    --buttons-text-disabled: var(--red-800);
-
-    --accent: var(--red-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--red-800);
+  --buttons-hover: var(--red-700);
+  --buttons-active: var(--red-600);
+  --buttons-disabled: var(--red-950);
+  --buttons-text: var(--red-400);
+  --buttons-text-disabled: var(--red-800);
+  --accent: var(--red-500);
+  --cursor: var(--red-300);
 }
 
 .orange {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--orange-200);
-    --buttons-hover: var(--orange-300);
-    --buttons-active: var(--orange-400);
-    --buttons-disabled: var(--orange-100);
-
-    --buttons-text: var(--orange-600);
-    --buttons-text-disabled: var(--orange-300);
-
-    --accent: var(--orange-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--orange-200);
+  --buttons-hover: var(--orange-300);
+  --buttons-active: var(--orange-400);
+  --buttons-disabled: var(--orange-100);
+  --buttons-text: var(--orange-600);
+  --buttons-text-disabled: var(--orange-300);
+  --accent: var(--orange-500);
+  --cursor: var(--orange-700);
 }
 
 .orange-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--orange-800);
-    --buttons-hover: var(--orange-700);
-    --buttons-active: var(--orange-600);
-    --buttons-disabled: var(--orange-950);
-
-    --buttons-text: var(--orange-400);
-    --buttons-text-disabled: var(--orange-800);
-
-    --accent: var(--orange-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--orange-800);
+  --buttons-hover: var(--orange-700);
+  --buttons-active: var(--orange-600);
+  --buttons-disabled: var(--orange-950);
+  --buttons-text: var(--orange-400);
+  --buttons-text-disabled: var(--orange-800);
+  --accent: var(--orange-500);
+  --cursor: var(--orange-300);
 }
 
 .amber {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--amber-200);
-    --buttons-hover: var(--amber-300);
-    --buttons-active: var(--amber-400);
-    --buttons-disabled: var(--amber-100);
-
-    --buttons-text: var(--amber-600);
-    --buttons-text-disabled: var(--amber-400);
-
-    --accent: var(--amber-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--amber-200);
+  --buttons-hover: var(--amber-300);
+  --buttons-active: var(--amber-400);
+  --buttons-disabled: var(--amber-100);
+  --buttons-text: var(--amber-600);
+  --buttons-text-disabled: var(--amber-400);
+  --accent: var(--amber-500);
+  --cursor: var(--amber-700);
 }
 
 .amber-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--amber-800);
-    --buttons-hover: var(--amber-700);
-    --buttons-active: var(--amber-600);
-    --buttons-disabled: var(--amber-950);
-
-    --buttons-text: var(--amber-400);
-    --buttons-text-disabled: var(--amber-800);
-
-    --accent: var(--amber-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--amber-800);
+  --buttons-hover: var(--amber-700);
+  --buttons-active: var(--amber-600);
+  --buttons-disabled: var(--amber-950);
+  --buttons-text: var(--amber-400);
+  --buttons-text-disabled: var(--amber-800);
+  --accent: var(--amber-500);
+  --cursor: var(--amber-300);
 }
 
 .yellow {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--yellow-200);
-    --buttons-hover: var(--yellow-300);
-    --buttons-active: var(--yellow-400);
-    --buttons-disabled: var(--yellow-100);
-
-    --buttons-text: var(--yellow-600);
-    --buttons-text-disabled: var(--yellow-400);
-
-    --accent: var(--yellow-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--yellow-200);
+  --buttons-hover: var(--yellow-300);
+  --buttons-active: var(--yellow-400);
+  --buttons-disabled: var(--yellow-100);
+  --buttons-text: var(--yellow-600);
+  --buttons-text-disabled: var(--yellow-400);
+  --accent: var(--yellow-500);
+  --cursor: var(--yellow-700);
 }
 
 .yellow-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--yellow-800);
-    --buttons-hover: var(--yellow-700);
-    --buttons-active: var(--yellow-600);
-    --buttons-disabled: var(--yellow-950);
-
-    --buttons-text: var(--yellow-400);
-    --buttons-text-disabled: var(--yellow-800);
-
-    --accent: var(--yellow-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--yellow-800);
+  --buttons-hover: var(--yellow-700);
+  --buttons-active: var(--yellow-600);
+  --buttons-disabled: var(--yellow-950);
+  --buttons-text: var(--yellow-400);
+  --buttons-text-disabled: var(--yellow-800);
+  --accent: var(--yellow-500);
+  --cursor: var(--yellow-300);
 }
 
 .lime {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--lime-200);
-    --buttons-hover: var(--lime-300);
-    --buttons-active: var(--lime-400);
-    --buttons-disabled: var(--lime-100);
-
-    --buttons-text: var(--lime-600);
-    --buttons-text-disabled: var(--lime-400);
-
-    --accent: var(--lime-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--lime-200);
+  --buttons-hover: var(--lime-300);
+  --buttons-active: var(--lime-400);
+  --buttons-disabled: var(--lime-100);
+  --buttons-text: var(--lime-600);
+  --buttons-text-disabled: var(--lime-400);
+  --accent: var(--lime-500);
+  --cursor: var(--lime-700);
 }
 
 .lime-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--lime-900);
-    --buttons-hover: var(--lime-800);
-    --buttons-active: var(--lime-700);
-    --buttons-disabled: var(--lime-950);
-
-    --buttons-text: var(--lime-500);
-    --buttons-text-disabled: var(--lime-800);
-
-    --accent: var(--lime-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--lime-900);
+  --buttons-hover: var(--lime-800);
+  --buttons-active: var(--lime-700);
+  --buttons-disabled: var(--lime-950);
+  --buttons-text: var(--lime-500);
+  --buttons-text-disabled: var(--lime-800);
+  --accent: var(--lime-500);
+  --cursor: var(--lime-400);
 }
 
 .green {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--green-200);
-    --buttons-hover: var(--green-300);
-    --buttons-active: var(--green-400);
-    --buttons-disabled: var(--green-100);
-
-    --buttons-text: var(--green-600);
-    --buttons-text-disabled: var(--green-400);
-
-    --accent: var(--green-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--green-200);
+  --buttons-hover: var(--green-300);
+  --buttons-active: var(--green-400);
+  --buttons-disabled: var(--green-100);
+  --buttons-text: var(--green-600);
+  --buttons-text-disabled: var(--green-400);
+  --accent: var(--green-500);
+  --cursor: var(--green-700);
 }
 
 .green-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--green-900);
-    --buttons-hover: var(--green-800);
-    --buttons-active: var(--green-700);
-    --buttons-disabled: var(--green-950);
-
-    --buttons-text: var(--green-500);
-    --buttons-text-disabled: var(--green-800);
-
-    --accent: var(--green-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--green-900);
+  --buttons-hover: var(--green-800);
+  --buttons-active: var(--green-700);
+  --buttons-disabled: var(--green-950);
+  --buttons-text: var(--green-500);
+  --buttons-text-disabled: var(--green-800);
+  --accent: var(--green-500);
+  --cursor: var(--green-400);
 }
 
 .emerald {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--emerald-200);
-    --buttons-hover: var(--emerald-300);
-    --buttons-active: var(--emerald-400);
-    --buttons-disabled: var(--emerald-100);
-
-    --buttons-text: var(--emerald-600);
-    --buttons-text-disabled: var(--emerald-400);
-
-    --accent: var(--emerald-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--emerald-200);
+  --buttons-hover: var(--emerald-300);
+  --buttons-active: var(--emerald-400);
+  --buttons-disabled: var(--emerald-100);
+  --buttons-text: var(--emerald-600);
+  --buttons-text-disabled: var(--emerald-400);
+  --accent: var(--emerald-500);
+  --cursor: var(--emerald-700);
 }
 
 .emerald-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--emerald-900);
-    --buttons-hover: var(--emerald-800);
-    --buttons-active: var(--emerald-700);
-    --buttons-disabled: var(--emerald-950);
-
-    --buttons-text: var(--emerald-500);
-    --buttons-text-disabled: var(--emerald-800);
-
-    --accent: var(--emerald-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--emerald-900);
+  --buttons-hover: var(--emerald-800);
+  --buttons-active: var(--emerald-700);
+  --buttons-disabled: var(--emerald-950);
+  --buttons-text: var(--emerald-500);
+  --buttons-text-disabled: var(--emerald-800);
+  --accent: var(--emerald-500);
+  --cursor: var(--emerald-400);
 }
 
 .teal {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--teal-200);
-    --buttons-hover: var(--teal-300);
-    --buttons-active: var(--teal-400);
-    --buttons-disabled: var(--teal-100);
-
-    --buttons-text: var(--teal-600);
-    --buttons-text-disabled: var(--teal-400);
-
-    --accent: var(--teal-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--teal-200);
+  --buttons-hover: var(--teal-300);
+  --buttons-active: var(--teal-400);
+  --buttons-disabled: var(--teal-100);
+  --buttons-text: var(--teal-600);
+  --buttons-text-disabled: var(--teal-400);
+  --accent: var(--teal-500);
+  --cursor: var(--teal-700);
 }
 
 .teal-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--teal-800);
-    --buttons-hover: var(--teal-700);
-    --buttons-active: var(--teal-600);
-    --buttons-disabled: var(--teal-950);
-
-    --buttons-text: var(--teal-400);
-    --buttons-text-disabled: var(--teal-800);
-
-    --accent: var(--teal-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--teal-800);
+  --buttons-hover: var(--teal-700);
+  --buttons-active: var(--teal-600);
+  --buttons-disabled: var(--teal-950);
+  --buttons-text: var(--teal-400);
+  --buttons-text-disabled: var(--teal-800);
+  --accent: var(--teal-500);
+  --cursor: var(--teal-300);
 }
 
 .cyan {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--cyan-200);
-    --buttons-hover: var(--cyan-300);
-    --buttons-active: var(--cyan-400);
-    --buttons-disabled: var(--cyan-100);
-
-    --buttons-text: var(--cyan-600);
-    --buttons-text-disabled: var(--cyan-400);
-
-    --accent: var(--cyan-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--cyan-200);
+  --buttons-hover: var(--cyan-300);
+  --buttons-active: var(--cyan-400);
+  --buttons-disabled: var(--cyan-100);
+  --buttons-text: var(--cyan-600);
+  --buttons-text-disabled: var(--cyan-400);
+  --accent: var(--cyan-500);
+  --cursor: var(--cyan-700);
 }
 
 .cyan-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--cyan-800);
-    --buttons-hover: var(--cyan-700);
-    --buttons-active: var(--cyan-600);
-    --buttons-disabled: var(--cyan-950);
-
-    --buttons-text: var(--cyan-400);
-    --buttons-text-disabled: var(--cyan-800);
-
-    --accent: var(--cyan-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--cyan-800);
+  --buttons-hover: var(--cyan-700);
+  --buttons-active: var(--cyan-600);
+  --buttons-disabled: var(--cyan-950);
+  --buttons-text: var(--cyan-400);
+  --buttons-text-disabled: var(--cyan-800);
+  --accent: var(--cyan-500);
+  --cursor: var(--cyan-300);
 }
 
 .sky {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--sky-200);
-    --buttons-hover: var(--sky-300);
-    --buttons-active: var(--sky-400);
-    --buttons-disabled: var(--sky-100);
-
-    --buttons-text: var(--sky-600);
-    --buttons-text-disabled: var(--sky-400);
-
-    --accent: var(--sky-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--sky-200);
+  --buttons-hover: var(--sky-300);
+  --buttons-active: var(--sky-400);
+  --buttons-disabled: var(--sky-100);
+  --buttons-text: var(--sky-600);
+  --buttons-text-disabled: var(--sky-400);
+  --accent: var(--sky-500);
+  --cursor: var(--sky-700);
 }
 
 .sky-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--sky-800);
-    --buttons-hover: var(--sky-700);
-    --buttons-active: var(--sky-600);
-    --buttons-disabled: var(--sky-950);
-
-    --buttons-text: var(--sky-400);
-    --buttons-text-disabled: var(--sky-800);
-
-    --accent: var(--sky-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--sky-800);
+  --buttons-hover: var(--sky-700);
+  --buttons-active: var(--sky-600);
+  --buttons-disabled: var(--sky-950);
+  --buttons-text: var(--sky-400);
+  --buttons-text-disabled: var(--sky-800);
+  --accent: var(--sky-500);
+  --cursor: var(--sky-300);
 }
 
 .blue {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--blue-200);
-    --buttons-hover: var(--blue-300);
-    --buttons-active: var(--blue-400);
-    --buttons-disabled: var(--blue-100);
-
-    --buttons-text: var(--blue-500);
-    --buttons-text-disabled: var(--blue-400);
-
-    --accent: var(--blue-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--blue-200);
+  --buttons-hover: var(--blue-300);
+  --buttons-active: var(--blue-400);
+  --buttons-disabled: var(--blue-100);
+  --buttons-text: var(--blue-500);
+  --buttons-text-disabled: var(--blue-400);
+  --accent: var(--blue-500);
+  --cursor: var(--blue-700);
 }
 
 .blue-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--blue-800);
-    --buttons-hover: var(--blue-700);
-    --buttons-active: var(--blue-600);
-    --buttons-disabled: var(--blue-950);
-
-    --buttons-text: var(--blue-400);
-    --buttons-text-disabled: var(--blue-800);
-
-    --accent: var(--blue-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--blue-800);
+  --buttons-hover: var(--blue-700);
+  --buttons-active: var(--blue-600);
+  --buttons-disabled: var(--blue-950);
+  --buttons-text: var(--blue-400);
+  --buttons-text-disabled: var(--blue-800);
+  --accent: var(--blue-500);
+  --cursor: var(--blue-300);
 }
+
 .indigo {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--indigo-200);
-    --buttons-hover: var(--indigo-300);
-    --buttons-active: var(--indigo-400);
-    --buttons-disabled: var(--indigo-100);
-
-    --buttons-text: var(--indigo-500);
-    --buttons-text-disabled: var(--indigo-400);
-
-    --accent: var(--indigo-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--indigo-200);
+  --buttons-hover: var(--indigo-300);
+  --buttons-active: var(--indigo-400);
+  --buttons-disabled: var(--indigo-100);
+  --buttons-text: var(--indigo-500);
+  --buttons-text-disabled: var(--indigo-400);
+  --accent: var(--indigo-500);
+  --cursor: var(--indigo-700);
 }
 
 .indigo-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--indigo-800);
-    --buttons-hover: var(--indigo-700);
-    --buttons-active: var(--indigo-600);
-    --buttons-disabled: var(--indigo-950);
-
-    --buttons-text: var(--indigo-400);
-    --buttons-text-disabled: var(--indigo-800);
-
-    --accent: var(--indigo-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--indigo-800);
+  --buttons-hover: var(--indigo-700);
+  --buttons-active: var(--indigo-600);
+  --buttons-disabled: var(--indigo-950);
+  --buttons-text: var(--indigo-400);
+  --buttons-text-disabled: var(--indigo-800);
+  --accent: var(--indigo-500);
+  --cursor: var(--indigo-300);
 }
 
 .violet {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--violet-200);
-    --buttons-hover: var(--violet-300);
-    --buttons-active: var(--violet-400);
-    --buttons-disabled: var(--violet-100);
-
-    --buttons-text: var(--violet-600);
-    --buttons-text-disabled: var(--violet-400);
-
-    --accent: var(--violet-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--violet-200);
+  --buttons-hover: var(--violet-300);
+  --buttons-active: var(--violet-400);
+  --buttons-disabled: var(--violet-100);
+  --buttons-text: var(--violet-600);
+  --buttons-text-disabled: var(--violet-400);
+  --accent: var(--violet-500);
+  --cursor: var(--violet-700);
 }
 
 .violet-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--violet-800);
-    --buttons-hover: var(--violet-700);
-    --buttons-active: var(--violet-600);
-    --buttons-disabled: var(--violet-950);
-
-    --buttons-text: var(--violet-400);
-    --buttons-text-disabled: var(--violet-800);
-
-    --accent: var(--violet-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--violet-800);
+  --buttons-hover: var(--violet-700);
+  --buttons-active: var(--violet-600);
+  --buttons-disabled: var(--violet-950);
+  --buttons-text: var(--violet-400);
+  --buttons-text-disabled: var(--violet-800);
+  --accent: var(--violet-500);
+  --cursor: var(--violet-300);
 }
 
 .purple {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--purple-200);
-    --buttons-hover: var(--purple-300);
-    --buttons-active: var(--purple-400);
-    --buttons-disabled: var(--purple-100);
-
-    --buttons-text: var(--purple-600);
-    --buttons-text-disabled: var(--purple-400);
-
-    --accent: var(--purple-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--purple-200);
+  --buttons-hover: var(--purple-300);
+  --buttons-active: var(--purple-400);
+  --buttons-disabled: var(--purple-100);
+  --buttons-text: var(--purple-600);
+  --buttons-text-disabled: var(--purple-400);
+  --accent: var(--purple-500);
+  --cursor: var(--purple-700);
 }
 
 .purple-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--purple-800);
-    --buttons-hover: var(--purple-700);
-    --buttons-active: var(--purple-600);
-    --buttons-disabled: var(--purple-950);
-
-    --buttons-text: var(--purple-400);
-    --buttons-text-disabled: var(--purple-800);
-
-    --accent: var(--purple-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--purple-800);
+  --buttons-hover: var(--purple-700);
+  --buttons-active: var(--purple-600);
+  --buttons-disabled: var(--purple-950);
+  --buttons-text: var(--purple-400);
+  --buttons-text-disabled: var(--purple-800);
+  --accent: var(--purple-500);
+  --cursor: var(--purple-300);
 }
 
 .fuchsia {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--fuchsia-200);
-    --buttons-hover: var(--fuchsia-300);
-    --buttons-active: var(--fuchsia-400);
-    --buttons-disabled: var(--fuchsia-100);
-
-    --buttons-text: var(--fuchsia-600);
-    --buttons-text-disabled: var(--fuchsia-400);
-
-    --accent: var(--fuchsia-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--fuchsia-200);
+  --buttons-hover: var(--fuchsia-300);
+  --buttons-active: var(--fuchsia-400);
+  --buttons-disabled: var(--fuchsia-100);
+  --buttons-text: var(--fuchsia-600);
+  --buttons-text-disabled: var(--fuchsia-400);
+  --accent: var(--fuchsia-500);
+  --cursor: var(--fuchsia-700);
 }
 
 .fuchsia-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--fuchsia-800);
-    --buttons-hover: var(--fuchsia-700);
-    --buttons-active: var(--fuchsia-600);
-    --buttons-disabled: var(--fuchsia-950);
-
-    --buttons-text: var(--fuchsia-400);
-    --buttons-text-disabled: var(--fuchsia-800);
-
-    --accent: var(--fuchsia-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--fuchsia-800);
+  --buttons-hover: var(--fuchsia-700);
+  --buttons-active: var(--fuchsia-600);
+  --buttons-disabled: var(--fuchsia-950);
+  --buttons-text: var(--fuchsia-400);
+  --buttons-text-disabled: var(--fuchsia-800);
+  --accent: var(--fuchsia-500);
+  --cursor: var(--fuchsia-300);
 }
 
 .pink {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--pink-200);
-    --buttons-hover: var(--pink-300);
-    --buttons-active: var(--pink-400);
-    --buttons-disabled: var(--pink-100);
-
-    --buttons-text: var(--pink-600);
-    --buttons-text-disabled: var(--pink-400);
-
-    --accent: var(--pink-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--pink-200);
+  --buttons-hover: var(--pink-300);
+  --buttons-active: var(--pink-400);
+  --buttons-disabled: var(--pink-100);
+  --buttons-text: var(--pink-600);
+  --buttons-text-disabled: var(--pink-400);
+  --accent: var(--pink-500);
+  --cursor: var(--pink-700);
 }
 
 .pink-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--pink-800);
-    --buttons-hover: var(--pink-700);
-    --buttons-active: var(--pink-600);
-    --buttons-disabled: var(--pink-950);
-
-    --buttons-text: var(--pink-400);
-    --buttons-text-disabled: var(--pink-800);
-
-    --accent: var(--pink-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--pink-800);
+  --buttons-hover: var(--pink-700);
+  --buttons-active: var(--pink-600);
+  --buttons-disabled: var(--pink-950);
+  --buttons-text: var(--pink-400);
+  --buttons-text-disabled: var(--pink-800);
+  --accent: var(--pink-500);
+  --cursor: var(--pink-300);
 }
 
 .rose {
-    --background: var(--zinc-50);
-    --card-background: var(--zinc-200);
-    --neutral-accent: var(--zinc-400);
-
-    --text: var(--zinc-950);
-
-    --buttons-default: var(--rose-200);
-    --buttons-hover: var(--rose-300);
-    --buttons-active: var(--rose-400);
-    --buttons-disabled: var(--rose-100);
-
-    --buttons-text: var(--rose-600);
-    --buttons-text-disabled: var(--rose-400);
-
-    --accent: var(--rose-500);
+  --background: var(--zinc-50);
+  --card-background: var(--zinc-200);
+  --neutral-accent: var(--zinc-400);
+  --text: var(--zinc-950);
+  --buttons-default: var(--rose-200);
+  --buttons-hover: var(--rose-300);
+  --buttons-active: var(--rose-400);
+  --buttons-disabled: var(--rose-100);
+  --buttons-text: var(--rose-600);
+  --buttons-text-disabled: var(--rose-400);
+  --accent: var(--rose-500);
+  --cursor: var(--rose-700);
 }
 
 .rose-dark {
-    --background: var(--zinc-950);
-    --card-background: var(--zinc-900);
-    --neutral-accent: var(--zinc-700);
-
-    --text: var(--zinc-50);
-
-    --buttons-default: var(--rose-800);
-    --buttons-hover: var(--rose-700);
-    --buttons-active: var(--rose-600);
-    --buttons-disabled: var(--rose-950);
-
-    --buttons-text: var(--rose-400);
-    --buttons-text-disabled: var(--rose-800);
-
-    --accent: var(--rose-500);
+  --background: var(--zinc-950);
+  --card-background: var(--zinc-900);
+  --neutral-accent: var(--zinc-700);
+  --text: var(--zinc-50);
+  --buttons-default: var(--rose-800);
+  --buttons-hover: var(--rose-700);
+  --buttons-active: var(--rose-600);
+  --buttons-disabled: var(--rose-950);
+  --buttons-text: var(--rose-400);
+  --buttons-text-disabled: var(--rose-800);
+  --accent: var(--rose-500);
+  --cursor: var(--rose-300);
 }

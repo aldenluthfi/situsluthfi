@@ -117,7 +117,7 @@ function cursor() {
             function (e) {
                 let classList = cursorDot.classList
                 classList.remove('bg-transparent')
-                classList.add('bg-buttons-text-disabled')
+                classList.add('bg-cursor')
                 if (mouseDown == 1) {
                     cursorDot.animate({
                         width: `0.5rem`,
@@ -136,7 +136,7 @@ function cursor() {
             function (e) {
                 let classList = cursorDot.classList
                 classList.add('bg-transparent')
-                classList.remove('bg-buttons-text-disabled')
+                classList.remove('bg-cursor')
                 if (mouseDown == 1) {
                     cursorDot.animate({
                         width: `1.5rem`,
