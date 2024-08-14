@@ -113,7 +113,6 @@ module.exports = {
                 'buttons-active': 'rgba(var(--buttons-active) / <alpha-value>)',
                 'buttons-disabled': 'rgba(var(--buttons-disabled) / <alpha-value>)',
 
-                'cursor': 'rgba(var(--cursor) / <alpha-value>)',
                 'accent': 'rgba(var(--accent) / <alpha-value>)',
             }
         },

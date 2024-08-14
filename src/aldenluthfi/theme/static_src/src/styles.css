@@ -326,7 +326,6 @@ button {
   --buttons-text: var(--neutral-600);
   --buttons-text-disabled: var(--neutral-300);
   --accent: var(--neutral-500);
-  --cursor: var(--neutral-700);
 }
 
 .neutral-dark {
@@ -341,7 +340,6 @@ button {
   --buttons-text: var(--neutral-500);
   --buttons-text-disabled: var(--neutral-800);
   --accent: var(--neutral-600);
-  --cursor: var(--neutral-400);
 }
 
 .red {
@@ -356,7 +354,6 @@ button {
   --buttons-text: var(--red-600);
   --buttons-text-disabled: var(--red-300);
   --accent: var(--red-500);
-  --cursor: var(--red-700);
 }
 
 .red-dark {
@@ -371,7 +368,6 @@ button {
   --buttons-text: var(--red-400);
   --buttons-text-disabled: var(--red-800);
   --accent: var(--red-500);
-  --cursor: var(--red-300);
 }
 
 .orange {
@@ -386,7 +382,6 @@ button {
   --buttons-text: var(--orange-600);
   --buttons-text-disabled: var(--orange-300);
   --accent: var(--orange-500);
-  --cursor: var(--orange-700);
 }
 
 .orange-dark {
@@ -401,7 +396,6 @@ button {
   --buttons-text: var(--orange-400);
   --buttons-text-disabled: var(--orange-800);
   --accent: var(--orange-500);
-  --cursor: var(--orange-300);
 }
 
 .amber {
@@ -416,7 +410,6 @@ button {
   --buttons-text: var(--amber-600);
   --buttons-text-disabled: var(--amber-400);
   --accent: var(--amber-500);
-  --cursor: var(--amber-700);
 }
 
 .amber-dark {
@@ -431,7 +424,6 @@ button {
   --buttons-text: var(--amber-400);
   --buttons-text-disabled: var(--amber-800);
   --accent: var(--amber-500);
-  --cursor: var(--amber-300);
 }
 
 .yellow {
@@ -446,7 +438,6 @@ button {
   --buttons-text: var(--yellow-600);
   --buttons-text-disabled: var(--yellow-400);
   --accent: var(--yellow-500);
-  --cursor: var(--yellow-700);
 }
 
 .yellow-dark {
@@ -461,7 +452,6 @@ button {
   --buttons-text: var(--yellow-400);
   --buttons-text-disabled: var(--yellow-800);
   --accent: var(--yellow-500);
-  --cursor: var(--yellow-300);
 }
 
 .lime {
@@ -476,7 +466,6 @@ button {
   --buttons-text: var(--lime-600);
   --buttons-text-disabled: var(--lime-400);
   --accent: var(--lime-500);
-  --cursor: var(--lime-700);
 }
 
 .lime-dark {
@@ -491,7 +480,6 @@ button {
   --buttons-text: var(--lime-500);
   --buttons-text-disabled: var(--lime-800);
   --accent: var(--lime-500);
-  --cursor: var(--lime-400);
 }
 
 .green {
@@ -506,7 +494,6 @@ button {
   --buttons-text: var(--green-600);
   --buttons-text-disabled: var(--green-400);
   --accent: var(--green-500);
-  --cursor: var(--green-700);
 }
 
 .green-dark {
@@ -521,7 +508,6 @@ button {
   --buttons-text: var(--green-500);
   --buttons-text-disabled: var(--green-800);
   --accent: var(--green-500);
-  --cursor: var(--green-400);
 }
 
 .emerald {
@@ -536,7 +522,6 @@ button {
   --buttons-text: var(--emerald-600);
   --buttons-text-disabled: var(--emerald-400);
   --accent: var(--emerald-500);
-  --cursor: var(--emerald-700);
 }
 
 .emerald-dark {
@@ -551,7 +536,6 @@ button {
   --buttons-text: var(--emerald-500);
   --buttons-text-disabled: var(--emerald-800);
   --accent: var(--emerald-500);
-  --cursor: var(--emerald-400);
 }
 
 .teal {
@@ -566,7 +550,6 @@ button {
   --buttons-text: var(--teal-600);
   --buttons-text-disabled: var(--teal-400);
   --accent: var(--teal-500);
-  --cursor: var(--teal-700);
 }
 
 .teal-dark {
@@ -581,7 +564,6 @@ button {
   --buttons-text: var(--teal-400);
   --buttons-text-disabled: var(--teal-800);
   --accent: var(--teal-500);
-  --cursor: var(--teal-300);
 }
 
 .cyan {
@@ -596,7 +578,6 @@ button {
   --buttons-text: var(--cyan-600);
   --buttons-text-disabled: var(--cyan-400);
   --accent: var(--cyan-500);
-  --cursor: var(--cyan-700);
 }
 
 .cyan-dark {
@@ -611,7 +592,6 @@ button {
   --buttons-text: var(--cyan-400);
   --buttons-text-disabled: var(--cyan-800);
   --accent: var(--cyan-500);
-  --cursor: var(--cyan-300);
 }
 
 .sky {
@@ -626,7 +606,6 @@ button {
   --buttons-text: var(--sky-600);
   --buttons-text-disabled: var(--sky-400);
   --accent: var(--sky-500);
-  --cursor: var(--sky-700);
 }
 
 .sky-dark {
@@ -641,7 +620,6 @@ button {
   --buttons-text: var(--sky-400);
   --buttons-text-disabled: var(--sky-800);
   --accent: var(--sky-500);
-  --cursor: var(--sky-300);
 }
 
 .blue {
@@ -656,7 +634,6 @@ button {
   --buttons-text: var(--blue-500);
   --buttons-text-disabled: var(--blue-400);
   --accent: var(--blue-500);
-  --cursor: var(--blue-700);
 }
 
 .blue-dark {
@@ -671,7 +648,6 @@ button {
   --buttons-text: var(--blue-400);
   --buttons-text-disabled: var(--blue-800);
   --accent: var(--blue-500);
-  --cursor: var(--blue-300);
 }
 
 .indigo {
@@ -686,7 +662,6 @@ button {
   --buttons-text: var(--indigo-500);
   --buttons-text-disabled: var(--indigo-400);
   --accent: var(--indigo-500);
-  --cursor: var(--indigo-700);
 }
 
 .indigo-dark {
@@ -701,7 +676,6 @@ button {
   --buttons-text: var(--indigo-400);
   --buttons-text-disabled: var(--indigo-800);
   --accent: var(--indigo-500);
-  --cursor: var(--indigo-300);
 }
 
 .violet {
@@ -716,7 +690,6 @@ button {
   --buttons-text: var(--violet-600);
   --buttons-text-disabled: var(--violet-400);
   --accent: var(--violet-500);
-  --cursor: var(--violet-700);
 }
 
 .violet-dark {
@@ -731,7 +704,6 @@ button {
   --buttons-text: var(--violet-400);
   --buttons-text-disabled: var(--violet-800);
   --accent: var(--violet-500);
-  --cursor: var(--violet-300);
 }
 
 .purple {
@@ -746,7 +718,6 @@ button {
   --buttons-text: var(--purple-600);
   --buttons-text-disabled: var(--purple-400);
   --accent: var(--purple-500);
-  --cursor: var(--purple-700);
 }
 
 .purple-dark {
@@ -761,7 +732,6 @@ button {
   --buttons-text: var(--purple-400);
   --buttons-text-disabled: var(--purple-800);
   --accent: var(--purple-500);
-  --cursor: var(--purple-300);
 }
 
 .fuchsia {
@@ -776,7 +746,6 @@ button {
   --buttons-text: var(--fuchsia-600);
   --buttons-text-disabled: var(--fuchsia-400);
   --accent: var(--fuchsia-500);
-  --cursor: var(--fuchsia-700);
 }
 
 .fuchsia-dark {
@@ -791,7 +760,6 @@ button {
   --buttons-text: var(--fuchsia-400);
   --buttons-text-disabled: var(--fuchsia-800);
   --accent: var(--fuchsia-500);
-  --cursor: var(--fuchsia-300);
 }
 
 .pink {
@@ -806,7 +774,6 @@ button {
   --buttons-text: var(--pink-600);
   --buttons-text-disabled: var(--pink-400);
   --accent: var(--pink-500);
-  --cursor: var(--pink-700);
 }
 
 .pink-dark {
@@ -821,7 +788,6 @@ button {
   --buttons-text: var(--pink-400);
   --buttons-text-disabled: var(--pink-800);
   --accent: var(--pink-500);
-  --cursor: var(--pink-300);
 }
 
 .rose {
@@ -836,7 +802,6 @@ button {
   --buttons-text: var(--rose-600);
   --buttons-text-disabled: var(--rose-400);
   --accent: var(--rose-500);
-  --cursor: var(--rose-700);
 }
 
 .rose-dark {
@@ -851,5 +816,4 @@ button {
   --buttons-text: var(--rose-400);
   --buttons-text-disabled: var(--rose-800);
   --accent: var(--rose-500);
-  --cursor: var(--rose-300);
 }

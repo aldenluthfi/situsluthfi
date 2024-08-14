@@ -109,7 +109,7 @@ window.addEventListener(
 )
 
 function cursor() {
-    const clickables = document.querySelectorAll("a, button");
+    const clickables = document.querySelectorAll("a, button, .button");
 
     clickables.forEach(clickable => {
         clickable.addEventListener(
@@ -117,7 +117,7 @@ function cursor() {
             function (e) {
                 let classList = cursorDot.classList
                 classList.remove('bg-transparent')
-                classList.add('bg-cursor')
+                classList.add('bg-accent')
                 if (mouseDown == 1) {
                     cursorDot.animate({
                         width: `0.5rem`,
@@ -136,7 +136,7 @@ function cursor() {
             function (e) {
                 let classList = cursorDot.classList
                 classList.add('bg-transparent')
-                classList.remove('bg-cursor')
+                classList.remove('bg-accent')
                 if (mouseDown == 1) {
                     cursorDot.animate({
                         width: `1.5rem`,

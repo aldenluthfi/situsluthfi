@@ -2,13 +2,13 @@
 <header class="fixed flex z-10 w-screen bg-background duration-200 justify-center">
   <nav class="flex justify-between items-start h-20 w-full desktop:w-desktop">
     <div class="z-30 pl-6 w-48 my-auto">
-      <a href="{% url 'main:main' %}" class="font-heading text-2xl text-text">
+      <a href="{% url 'main:main' %}" class="tablet:pl-3 font-heading text-2xl text-text">
         aldenluth.fi
       </a>
     </div>
 
     <div class="hidden w-full tablet:flex justify-center font-body-bold text-sm text-text my-auto">
-      <ul class="w-96 tablet:grid gap-6 grid-cols-3">
+      <ul class="-ml-6 w-96 tablet:grid gap-6 grid-cols-3">
         <li>
           <a class="button flex justify-center py-2 px-3 rounded-md bg-buttons-default hover:bg-buttons-hover hover:scale-105 hover:shadow-md active:scale-100 active:shadow-sm text-buttons-text duration-200 ease-in-out"
             href="" tabindex="0">
@@ -30,7 +30,7 @@
       </ul>
     </div>
 
-    <div class="flex pr-6 w-48 my-auto justify-end space-x-3 shadow-none">
+    <div class="flex pr-6 w-48 my-auto justify-end tablet:space-x-3 shadow-none">
       <div class="relative flex flex-col justify-center items-center delay-200 duration-200 rounded-t-md">
         <a class="p-2 rounded-md bg-transparent desktop:hover:bg-card-background duration-200 desktop:hover:scale-110 desktop:active:scale-105"
           hx-get="/toggle-language/" hx-target="main">
