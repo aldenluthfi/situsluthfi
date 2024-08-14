@@ -4,7 +4,6 @@ const modeToggle = document.querySelector(".mode-toggle")
 const hue = document.querySelector(".hue-selector")
 
 var iosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && "matchMedia" in window
-var modeToggleClicked = 0
 
 let theme = localStorage.getItem("theme")
 
@@ -33,7 +32,6 @@ document.documentElement.addEventListener(
     function (e) {
         if (document.activeElement != document.querySelector(".mode-toggle") && document.activeElement != document.querySelector(".hue-selector")) {
             document.activeElement.blur()
-            modeToggleClicked = 0
         }
     }
 )
@@ -77,7 +75,7 @@ function themeSetter() {
     modeToggle.addEventListener(
         "mousedown",
         function (e) {
-            if (document.documentElement.clientWidth >= 1024 || modeToggleClicked == 1) {
+            if (document.documentElement.clientWidth >= 1024 || document.activeElement == e.target || document.activeElement.classList.contains("hue-selector")) {
                 current = document.documentElement.classList[document.documentElement.classList.length - 1]
                 if (current.includes("-dark")) {
                     hueClass = current.replace("-dark", "")
@@ -95,32 +93,6 @@ function themeSetter() {
                 document.documentElement.classList.remove(current)
                 document.documentElement.classList.add(hueClass)
                 localStorage.setItem("theme", hueClass)
-
-                if (window.scrollY > 0) {
-                    document.querySelector("header").classList.add("drop-shadow-md");
-                } else {
-                    document.querySelector("header").classList.remove("drop-shadow-md");
-                }
-            } else if (!iosDevice) {
-                modeToggleClicked = 1
-            }
-        }
-    )
-
-    modeToggle.addEventListener(
-        "mouseleave",
-        function (e) {
-            if (document.documentElement.clientWidth < 1024 && iosDevice) {
-                modeToggleClicked = 0
-            }
-        }
-    )
-
-    modeToggle.addEventListener(
-        "mouseover",
-        function (e) {
-            if (document.documentElement.clientWidth < 1024 && iosDevice) {
-                modeToggleClicked = 1
             }
         }
     )
@@ -149,7 +121,6 @@ function themeSetter() {
                 document.documentElement.classList.remove(current)
                 document.documentElement.classList.add(hueClass)
                 localStorage.setItem("theme", hueClass);
-                modeToggleClicked = 1
             }
         )
     })

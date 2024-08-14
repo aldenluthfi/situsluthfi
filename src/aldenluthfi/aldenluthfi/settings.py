@@ -149,7 +149,7 @@ STATICFILES_DIRS = [
 
 SVG_DIRS = [
     BASE_DIR / "static/icons",
-    BASE_DIR / "static/img"
+    BASE_DIR / "static/decor"
 ]
 
 # Default primary key field type

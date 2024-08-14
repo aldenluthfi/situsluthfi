@@ -28,7 +28,7 @@ function marquee() {
         slideSpeed = slideSpeed * 0.95
     }
 
-    text_x = (getTranslateX(text) - slideSpeed - 3)
+    text_x = (getTranslateX(text) - slideSpeed - 2)
 
     if (text_x < -text.getBoundingClientRect().width * 0.25) {
         text_x += text.getBoundingClientRect().width * 0.5 + 11
@@ -39,7 +39,7 @@ function marquee() {
     deltaX = mouseX - oldMouseX
     oldMouseX = mouseX
 
-    text.style.transform = `translate(${text_x}px, 0px) skewX(${Math.max(Math.min(slideSpeed + (deltaX - slideSpeed) * 0.1, 6), -8).toFixed(1)}deg)`
+    text.style.transform = `translate(${text_x}px, 0px) skewX(${Math.max(Math.min(slideSpeed + (deltaX - slideSpeed) * 0.1, 5), -7).toFixed(1)}deg)`
     window.requestAnimationFrame(marquee)
 }
 
