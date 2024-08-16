@@ -70,7 +70,7 @@ tick();
 window.addEventListener(
     "mousedown",
     function (e) {
-        if (!(e.target.tagName == "A") && !(e.target.tagName == "BUTTON")) {
+        if (!(e.target.tagName == "A") && !(e.target.tagName == "BUTTON") && !(e.target.classList.contains("button"))) {
             cursorDot.animate({
                 width: `1.5rem`,
                 height: `1.5rem`,
@@ -89,7 +89,7 @@ window.addEventListener(
 window.addEventListener(
     "mouseup",
     function (e) {
-        if (!(e.target.tagName == "A") && !(e.target.tagName == "BUTTON")) {
+        if (!(e.target.tagName == "A") && !(e.target.tagName == "BUTTON") && !(e.target.classList.contains("button"))) {
             cursorDot.style.top = `-1.25rem`
             cursorDot.style.left = `-1.25rem`
             cursorDot.animate({

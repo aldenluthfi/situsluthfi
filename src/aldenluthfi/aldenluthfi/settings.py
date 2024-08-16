@@ -32,7 +32,6 @@ DEBUG = os.environ['DEBUG'] == "True"
 ALLOWED_HOSTS = ['aldenluth.fi', 'www.aldenluth.fi', '127.0.0.1', 'django', 'localhost']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -156,3 +155,6 @@ SVG_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# USER SETTINGS
+EMAIL = "aldenluthfi@gmail.com"

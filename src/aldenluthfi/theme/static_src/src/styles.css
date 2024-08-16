@@ -477,7 +477,7 @@ button {
   --buttons-hover: var(--lime-800);
   --buttons-active: var(--lime-700);
   --buttons-disabled: var(--lime-950);
-  --buttons-text: var(--lime-500);
+  --buttons-text: var(--lime-400);
   --buttons-text-disabled: var(--lime-800);
   --accent: var(--lime-500);
 }
@@ -505,7 +505,7 @@ button {
   --buttons-hover: var(--green-800);
   --buttons-active: var(--green-700);
   --buttons-disabled: var(--green-950);
-  --buttons-text: var(--green-500);
+  --buttons-text: var(--green-400);
   --buttons-text-disabled: var(--green-800);
   --accent: var(--green-500);
 }
@@ -533,7 +533,7 @@ button {
   --buttons-hover: var(--emerald-800);
   --buttons-active: var(--emerald-700);
   --buttons-disabled: var(--emerald-950);
-  --buttons-text: var(--emerald-500);
+  --buttons-text: var(--emerald-400);
   --buttons-text-disabled: var(--emerald-800);
   --accent: var(--emerald-500);
 }
