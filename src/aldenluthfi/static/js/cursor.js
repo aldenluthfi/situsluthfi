@@ -20,7 +20,7 @@ window.addEventListener('mousemove', (e) => {
 });
 
 // Smoothing factor for cursor movement speed (0 = smoother, 1 = instant)
-const speed = 0.35;
+const speed = 0.5;
 
 // Start animation
 const tick = () => {

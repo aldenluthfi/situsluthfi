@@ -157,4 +157,4 @@ SVG_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # USER SETTINGS
-EMAIL = "aldenluthfi@gmail.com"
+EMAIL = "hi@aldenluth.fi"
