@@ -14,7 +14,8 @@ services:
       - "443:443"
     volumes:
       - static:/staticfiles
-      - /etc/letsencrypt/live/aldenluth.fi:/etc/letsencrypt/live/aldenluth.fi
+      - /etc/letsencrypt/live/aldenluth.fi/fullchain.pem:/etc/letsencrypt/live/aldenluth.fi/fullchain.pem
+      - /etc/letsencrypt/live/aldenluth.fi/privkey.pem:/etc/letsencrypt/live/aldenluth.fi/privkey.pem
     depends_on:
       - django_gunicorn
 
