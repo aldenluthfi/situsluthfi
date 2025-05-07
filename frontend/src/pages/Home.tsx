@@ -2,8 +2,58 @@ import SlidingTitle from '../components/custom/sliding-title';
 import Squiggle from '../components/custom/squiggle';
 import Footer from '@/components/custom/footer';
 import Header from '@/components/custom/header';
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from "@/components/ui/carousel";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
 import Autoscroll from "embla-carousel-auto-scroll"
+import { useState, useEffect } from 'react';
+
+const ResponsiveTooltip = ({
+  children,
+  content
+}: {
+  children: React.ReactNode,
+  content: React.ReactNode
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: number | undefined;
+    if (isOpen) {
+      timeoutId = window.setTimeout(() => {
+        setIsOpen(false);
+      }, 1500);
+    }
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isOpen]);
+
+  return (
+    <Popover open={isOpen}>
+      <PopoverTrigger
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        onMouseDown={() => setIsOpen(true)}
+        asChild
+      >
+        {children}
+      </PopoverTrigger>
+      <PopoverContent className="w-auto text-md" hideWhenDetached>
+        {content}
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 const Home: React.FC = () => {
   return (
@@ -33,6 +83,7 @@ const Home: React.FC = () => {
         <Carousel
           opts={{
             loop: true,
+            watchFocus: false,
           }}
           plugins={[
             Autoscroll({
@@ -49,15 +100,21 @@ const Home: React.FC = () => {
           <CarouselContent className="py-10">
             {
               Array(2).fill(0).flatMap(() => ([
-                { src: "../src/assets/images/solo.png", alt: "Solo" },
-                { src: "../src/assets/images/holeboys.png", alt: "Hole Boys" },
-                { src: "../src/assets/images/weirdos.png", alt: "Weirdos" },
-                { src: "../src/assets/images/medprop.png", alt: "Media and Propaganda" },
+                { src: "../src/assets/images/solo.png", alt: "Solo", tooltip: "This is me, Hi!" },
+                { src: "../src/assets/images/holeboys.png", alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
+                { src: "../src/assets/images/weirdos.png", alt: "Weirdos", tooltip: "Weirdos being weird" },
+                { src: "../src/assets/images/medprop.png", alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
               ])).map((image, index) => (
-                <CarouselItem key={index + 1} className="tablet:basis-1/2">
-                  <div className='px-10 tablet:px-5 overflow-visible'>
-                    <img src={image.src} alt={image.alt} className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300 rounded-xl w-full" />
-                  </div>
+                <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2">
+                  <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
+                    <div className='px-5 overflow-visible'>
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300 rounded-xl w-full"
+                      />
+                    </div>
+                  </ResponsiveTooltip>
                 </CarouselItem>
               ))
             }

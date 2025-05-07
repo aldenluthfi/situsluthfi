@@ -1029,6 +1029,9 @@
 
 @layer base {
     * {
+        cursor: none;
+        user-select: none;
+
         @apply border-border outline-ring/50 no-scrollbar;
     }
 

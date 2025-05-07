@@ -22,20 +22,20 @@ export function ThemeSettings() {
       className={`${isOpen ? "bg-accent" : "duration-500"} rounded-md absolute`}
     >
       <AccordionItem
-      value="settings-toggle"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+        value="settings-toggle"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
       >
-      <AccordionTrigger
-        showIndicator={false}
-        className="size-12 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
-        onClick={() => setMode(mode === "light" ? "dark" : "light")}
-      >
-        <DynamicIcon name={mode === "light" ? "sun" : "moon"} />
-      </AccordionTrigger>
-      <AccordionContent className="p-0">
-        <ThemeSelector />
-      </AccordionContent>
+        <AccordionTrigger
+          showIndicator={false}
+          className="size-12 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
+          onClick={() => setMode(mode === "light" ? "dark" : "light")}
+        >
+          <DynamicIcon name={mode === "light" ? "sun" : "moon"} />
+        </AccordionTrigger>
+        <AccordionContent className="p-0">
+          <ThemeSelector />
+        </AccordionContent>
       </AccordionItem>
     </Accordion>
   )
