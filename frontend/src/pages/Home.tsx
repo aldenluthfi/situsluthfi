@@ -1,7 +1,5 @@
 import SlidingTitle from '../components/custom/sliding-title';
 import Squiggle from '../components/custom/squiggle';
-import Footer from '@/components/custom/footer';
-import Header from '@/components/custom/header';
 import {
   Carousel,
   CarouselContent,
@@ -27,8 +25,10 @@ const ResponsiveTooltip = ({
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+
     let timeoutId: number | undefined;
-    if (isOpen) {
+    if (isOpen && isMobile) {
       timeoutId = window.setTimeout(() => {
         setIsOpen(false);
       }, 1500);
@@ -58,7 +58,6 @@ const ResponsiveTooltip = ({
 const Home: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen items-center overflow-clip">
-      <Header />
       <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
         <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
           Hello! my name is <span className="text-primary font-body-bold">Luthfi</span>, <span />
@@ -125,8 +124,6 @@ const Home: React.FC = () => {
       </div>
 
       <div className='h-screen'></div>
-
-      <Footer />
     </div>
   );
 };

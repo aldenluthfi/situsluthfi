@@ -50,16 +50,18 @@ const Footer = () => {
                         </li>
                         <li>
                             <Button variant="ghost">
-                                {isMobile
-                                    ? <DynamicIcon name="copyleft" className="w-5 h-5" />
-                                    : "License"
-                                }
+                                <Link to="/license">
+                                    {isMobile
+                                        ? <DynamicIcon name="copyleft" className="w-5 h-5" />
+                                        : "License"
+                                    }
+                                </Link>
                             </Button>
                         </li>
                     </ul>
                 </div>
 
-                <Separator className='bg-primary-200'/>
+                <Separator className='bg-primary-200' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
                     <p className="max-tablet:px-3 text-sm font-body text-foreground">

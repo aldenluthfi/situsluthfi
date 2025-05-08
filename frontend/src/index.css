@@ -5,6 +5,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@counter-style latin-lower {
+  system: alphabetic;
+  symbols: a b c d e f g h i j k l m n o p q r s t u v w x y z;
+  suffix: ")  ";
+}
+
 @utility no-scrollbar {
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
@@ -1030,7 +1036,6 @@
 @layer base {
     * {
         cursor: none;
-        user-select: none;
 
         @apply border-border outline-ring/50 no-scrollbar;
     }
