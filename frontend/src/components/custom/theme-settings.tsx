@@ -5,14 +5,26 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { ThemeSelector } from "@/components/custom/theme-selector"
 import { useTheme } from "@/components/custom/theme-provider"
-
 
 export function ThemeSettings() {
   const [isOpen, setIsOpen] = useState(false)
   const { mode, setMode } = useTheme()
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
+
+  const handleTriggerClick = useCallback(() => {
+    if (isMobile) {
+      if (!isOpen) {
+        setIsOpen(true)
+      } else {
+        setMode(mode === "light" ? "dark" : "light")
+      }
+    } else {
+      setMode(mode === "light" ? "dark" : "light")
+    }
+  }, [isMobile, isOpen, setIsOpen, setMode, mode])
 
   return (
     <Accordion
@@ -23,13 +35,14 @@ export function ThemeSettings() {
     >
       <AccordionItem
         value="settings-toggle"
-        onMouseEnter={() => setIsOpen(true)}
+        onMouseEnter={!isMobile ? () => setIsOpen(true) : undefined}
         onMouseLeave={() => setIsOpen(false)}
+        onBlur={isMobile ? () => setIsOpen(false) : undefined}
       >
         <AccordionTrigger
           showIndicator={false}
           className="size-12 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
-          onClick={() => setMode(mode === "light" ? "dark" : "light")}
+          onClick={handleTriggerClick}
         >
           <DynamicIcon name={mode === "light" ? "sun" : "moon"} />
         </AccordionTrigger>

@@ -48,7 +48,7 @@ const ResponsiveTooltip = ({
       >
         {children}
       </PopoverTrigger>
-      <PopoverContent className="w-auto text-md" hideWhenDetached>
+      <PopoverContent className="w-auto text-sm tablet:text-md" hideWhenDetached>
         {content}
       </PopoverContent>
     </Popover>
@@ -107,7 +107,7 @@ const Home: React.FC = () => {
               ])).map((image, index) => (
                 <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2">
                   <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
-                    <div className='px-5 overflow-visible'>
+                    <div className='px-3 tablet:px-5 overflow-visible'>
                       <img
                         src={image.src}
                         alt={image.alt}
