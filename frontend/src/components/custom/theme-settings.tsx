@@ -41,7 +41,7 @@ export function ThemeSettings() {
       >
         <AccordionTrigger
           showIndicator={false}
-          className="size-12 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
+          className="size-9 m-1.5 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
           onClick={handleTriggerClick}
         >
           <DynamicIcon name={mode === "light" ? "sun" : "moon"} />

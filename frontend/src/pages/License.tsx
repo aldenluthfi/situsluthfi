@@ -1,11 +1,19 @@
 import Markdown from 'react-markdown'
 
+import {
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockContent,
+  CodeBlockItem,
+  type BundledLanguage,
+} from '@/components/ui/kibo-ui/code-block';
+
 const license = `# GNU GENERAL PUBLIC LICENSE
 
-Version 3, 29 June 2007
+## Version 3, 29 June 2007
 
 Copyright (C) 2007 Free Software Foundation, Inc.
-<https://fsf.org/>
+<<https://fsf.org/>>
 
 Everyone is permitted to copy and distribute verbatim copies of this
 license document, but changing it is not allowed.
@@ -212,7 +220,7 @@ modification follow.
     You may charge any price or no price for each copy that you convey,
     and you may offer support or warranty protection for a fee.
 
-    ### 5. Conveying Modified Source Versions.
+5. Conveying Modified Source Versions.
 
     You may convey a work based on the Program, or the modifications to
     produce it from the Program, in the form of source code under the
@@ -646,7 +654,7 @@ the exclusion of warranty; and each file should have at least the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <<https://www.gnu.org/licenses/>>.
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Also add information on how to contact you by electronic and paper
 mail.
@@ -659,7 +667,7 @@ notice like this when it starts in an interactive mode:
     This is free software, and you are welcome to redistribute it
     under certain conditions; type \`show c' for details.
 
-The hypothetical commands \`show w' and \`show c' should show the
+The hypothetical commands 'show w' and 'show c' should show the
 appropriate parts of the General Public License. Of course, your
 program's commands might be different; for a GUI interface, you would
 use an "about box".
@@ -674,54 +682,84 @@ program into proprietary programs. If your program is a subroutine
 library, you may consider it more useful to permit linking proprietary
 applications with the library. If this is what you want to do, use the
 GNU Lesser General Public License instead of this License. But first,
-please read <https://www.gnu.org/licenses/why-not-lgpl.html>.`
+please read <<https://www.gnu.org/licenses/why-not-lgpl.html>>.`
 
 export default function License() {
-  return <div className='w- desktop:w-desktop mx-auto p-4 pt-28'>
-    <Markdown
-      components={
-        {
-          h1(props) {
-            const { node, ...rest } = props
-            return <h1 {...rest} className="font-body-bold text-center" />
-          },
-          h2(props) {
-            const { node, ...rest } = props
-            return <h2 {...rest} className="font-body-bold text-center" />
-          },
-          a(props) {
-            const { node, ...rest } = props
-            return <a {...rest} rel="noopener noreferrer" className="underline text-primary-800" />
-          },
-          ul(props) {
-            let { node, ...rest } = props
-            const newChildren = Array.isArray(rest.children)
-              ? rest.children.map(child => {
-                  if (typeof child === 'string') return child
-                  if (typeof child?.props?.children === 'string') {
-                    const newText = child.props.children.replace(/^[^)]+\)\s*/, '')
-                    return { ...child, props: { ...child.props, children: newText } }
-                  }
-                  return child
-                })
-              : rest.children
-            rest = { ...rest, children: newChildren }
-            return <ul {...rest} className="list-[latin-lower] pl-6" />
-          },
+    return <div className='w- desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 text-justify hyphens-auto'>
+        <Markdown
+            components={
+                {
+                    h1(props) {
+                        const { node, ...rest } = props
+                        return <h1 {...rest} className="text-lg font-body-bold text-center mb-2" />
+                    },
+                    h2(props) {
+                        const { node, ...rest } = props
+                        return <h2 {...rest} className="font-body-bold text-center mb-4" />
+                    },
+                    p(props) {
+                        const { node, ...rest } = props
+                        return <div {...rest} className="mb-2.5" />
+                    },
+                    a(props) {
+                        const { node, ...rest } = props
+                        return <a {...rest} rel="noopener noreferrer" className="underline text-primary-800" />
+                    },
+                    ul(props) {
+                        let { node, ...rest } = props
+                        const newChildren = Array.isArray(rest.children)
+                            ? rest.children.map(child => {
+                                if (typeof child === 'string') return child
+                                if (typeof child?.props?.children === 'string') {
+                                    const newText = child.props.children.replace(/^[^)]+\)\s*/, '')
+                                    return { ...child, props: { ...child.props, children: newText } }
+                                }
+                                return child
+                            })
+                            : rest.children
+                        rest = { ...rest, children: newChildren }
+                        return <ul {...rest} className="list-[latin-lower] pl-6" />
+                    },
 
-          ol(props) {
-            const { node, ...rest } = props
-            return <ol {...rest} className="list-decimal pl-6 flex space-y-4 flex-col" />
-          },
+                    ol(props) {
+                        const { node, ...rest } = props
+                        return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
+                    },
 
-          pre(props) {
-            const { node, ...rest } = props
-            return <pre {...rest} className="text-xs" />
-          }
-        }
-      }
-    >
-      {license}
-    </Markdown>
-  </div>
+                    code(props) {
+                        const { node, ...rest } = props
+                        return <CodeBlock
+                            className="my-4"
+                            value="bash"
+                            data={[{
+                                language: "bash",
+                                filename: "example",
+                                code: (() => {
+                                    if (Array.isArray(rest.children)) {
+                                        return rest.children.join('').trim();
+                                    } else if (typeof rest.children === 'string') {
+                                        return rest.children.trim();
+                                    } else {
+                                        return '';
+                                    }
+                                })()
+                            }]}
+                        >
+                            <CodeBlockBody>
+                                {(item) => (
+                                    <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
+                                        <CodeBlockContent language={item.language as BundledLanguage} syntaxHighlighting={false}>
+                                            {item.code}
+                                        </CodeBlockContent>
+                                    </CodeBlockItem>
+                                )}
+                            </CodeBlockBody>
+                        </CodeBlock>
+                    }
+                }
+            }
+        >
+            {license}
+        </Markdown>
+    </div>
 }

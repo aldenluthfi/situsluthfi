@@ -33,7 +33,7 @@ export function Header() {
                     </ul>
                 </div>
 
-                <div className="flex pr-6 pt-5 w-48 justify-end">
+                <div className="flex pr-6 pt-4 w-48 justify-end">
                     <ThemeSettings />
                 </div>
 

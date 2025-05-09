@@ -2,19 +2,50 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator"
 import { DynamicIcon } from "lucide-react/dynamic";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import type { IconName } from "lucide-react/dynamic";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { toast } from "sonner";
 import { useState } from 'react';
 
 const Footer = () => {
     const email = "placeholder";
     const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+    const [showLinks, setShowLinks] = useState(false);
 
-    const [popoverOpen, setPopoverOpen] = useState(false);
+    const links: { name: string; icon: IconName; url: string }[] = [
+        {
+            name: "Instagram",
+            icon: "instagram",
+            url: "https://instagram.com/",
+        },
+        {
+            name: "Twitter",
+            icon: "twitter",
+            url: "https://twitter.com/",
+        },
+        {
+            name: "GitHub",
+            icon: "github",
+            url: "https://github.com/",
+        },
+        {
+            name: "LinkedIn",
+            icon: "linkedin",
+            url: "https://linkedin.com/",
+        },
+    ];
 
     const copyEmail = () => {
         navigator.clipboard.writeText(email);
-        setPopoverOpen(true);
-        setTimeout(() => setPopoverOpen(false), 1000);
+        toast("Email Copied!");
+    };
+
+    const handleLinksClick = () => {
+        setShowLinks(true);
+    };
+
+    const handleLinksClose = () => {
+        setShowLinks(false);
     };
 
     return (
@@ -24,39 +55,101 @@ const Footer = () => {
                     <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
                         aldenluth.fi
                     </Link>
-                    <ul className="flex tablet:justify-end tablet:gap-3">
+                    <ul className="flex tablet:justify-end gap-2">
                         <li>
-                            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button onClick={copyEmail} variant="ghost">
-                                        {isMobile
-                                            ? <DynamicIcon name="mail" className="w-5 h-5" />
-                                            : "Email"
-                                        }
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto px-3 py-1.5 text-xs" sideOffset={isMobile ? -8 : -2}>
-                                    Email Copied!
-                                </PopoverContent>
-                            </Popover>
+                            {!isMobile ? (
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button onClick={copyEmail} variant="ghost" size={"icon"}>
+                                            <DynamicIcon name="mail" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>Email</TooltipContent>
+                                </Tooltip>
+                            ) : (
+                                <Button onClick={copyEmail} variant="ghost" size={"icon"}>
+                                    <DynamicIcon name="mail" />
+                                </Button>
+                            )}
                         </li>
-                        <li>
-                            <Button variant="ghost">
-                                {isMobile
-                                    ? <DynamicIcon name="link" className="w-5 h-5" />
-                                    : "Links"
-                                }
-                            </Button>
-                        </li>
-                        <li>
-                            <Button variant="ghost">
-                                <Link to="/license">
-                                    {isMobile
-                                        ? <DynamicIcon name="copyleft" className="w-5 h-5" />
-                                        : "License"
+                        <li className="flex max-tablet:flex-row-reverse gap-2">
+                            {(() => {
+                                if (!isMobile) {
+                                    if (showLinks) {
+                                        return (
+                                            <>
+                                                {links.map(link => (
+                                                    <Tooltip key={link.name}>
+                                                        <TooltipTrigger asChild>
+                                                            <Button asChild variant="ghost" size={"icon"}>
+                                                                <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+                                                                    <DynamicIcon name={link.icon} />
+                                                                </a>
+                                                            </Button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>{link.name}</TooltipContent>
+                                                    </Tooltip>
+                                                ))}
+                                                <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
+                                                    <DynamicIcon name="x" />
+                                                </Button>
+                                            </>
+                                        );
+                                    } else {
+                                        return (
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
+                                                        <DynamicIcon name="link" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Links</TooltipContent>
+                                            </Tooltip>
+                                        );
                                     }
-                                </Link>
-                            </Button>
+                                } else if (showLinks) {
+                                    return (
+                                        <>
+                                            {links.map(link => (
+                                                <Button asChild variant="ghost" size={"icon"} key={link.name}>
+                                                    <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+                                                        <DynamicIcon name={link.icon} />
+                                                    </a>
+                                                </Button>
+                                            ))}
+                                            <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
+                                                <DynamicIcon name="x" />
+                                            </Button>
+                                        </>
+                                    );
+                                } else {
+                                    return (
+                                        <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
+                                            <DynamicIcon name="link"/>
+                                        </Button>
+                                    );
+                                }
+                            })()}
+                        </li>
+                        <li>
+                            {!isMobile ? (
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button variant="ghost" size={"icon"}>
+                                            <Link to="/license">
+                                                <DynamicIcon name="scan-text" />
+                                            </Link>
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>License</TooltipContent>
+                                </Tooltip>
+                            ) : (
+                                <Button variant="ghost" size={"icon"}>
+                                    <Link to="/license">
+                                        <DynamicIcon name="scan-text" />
+                                    </Link>
+                                </Button>
+                            )}
                         </li>
                     </ul>
                 </div>
