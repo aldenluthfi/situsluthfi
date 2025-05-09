@@ -194,37 +194,43 @@ If you develop a new program, and you want it to be of the greatest possible use
 
 To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the “copyright” line and a pointer to where the full notice is found.
 
-    <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) <year>  <name of author>
+<one line to give the program's name and a brief idea of what it does.>
+Copyright (C) <year>  <name of author>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Also add information on how to contact you by electronic and paper mail.
 
 If the program does terminal interaction, make it output a short notice like this when it starts in an interactive mode:
 
-    <program>  Copyright (C) <year>  <name of author>
-    This program comes with ABSOLUTELY NO WARRANTY; for details type 'show w'.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions; type 'show c' for details.
-
+<program>  Copyright (C) <year>  <name of author>
+This program comes with ABSOLUTELY NO WARRANTY; for details type 'show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type 'show c' for details.
 The hypothetical commands 'show w' and 'show c' should show the appropriate parts of the General Public License. Of course, your program's commands might be different; for a GUI interface, you would use an “about box”.
 
 You should also get your employer (if you work as a programmer) or school, if any, to sign a “copyright disclaimer” for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see <https://www.gnu.org/licenses/>.
 
 The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read <https://www.gnu.org/licenses/why-not-lgpl.html>.
 `
+
+import {
+  CodeBlock,
+  CodeBlockBody,
+  CodeBlockContent,
+  CodeBlockItem,
+  type BundledLanguage,
+} from '@/components/ui/kibo-ui/code-block';
 
 function isTitle(line: string) {
   const centered = [
@@ -318,7 +324,7 @@ const License = () => {
       );
     } else {
       return (
-        <p key={`prolog-${i}`} className="text-justify mb-4">
+        <p key={`prolog-${i}`} className="mb-4">
           {renderWithLinks(line.length === 0 ? "\n" : line)}
         </p>
       );
@@ -329,6 +335,9 @@ const License = () => {
   const parsedSections = sectionTexts.map(parseSection).filter(Boolean);
 
   const epilogLines = epilog.trim().split('\n');
+  const allCodeLines: string[] = [];
+  let inCodeBlock = false;
+
   const epilogElements = epilogLines.map((line, i) => {
     if (isTitle(line)) {
       return (
@@ -337,9 +346,46 @@ const License = () => {
         </div>
       );
     } else if (isCode(line)) {
-      return (
-        <code key={`epilog-${i}-code`} className="pl-5 font-code block">{renderWithLinks(line)}</code>
+      inCodeBlock = true;
+      allCodeLines.push(line);
+      return null;
+    } else if (inCodeBlock) {
+      if (line.trim() === '') {
+        allCodeLines.push(line);
+        return null;
+      }
+
+      const codeBlock = (
+        <CodeBlock
+          className="my-4"
+          key={`code-block-${i}`}
+          value="bash"
+          data={[{
+            language: "bash",
+            filename: "example",
+            code: allCodeLines.join('\n')
+          }]}
+        >
+          <CodeBlockBody>
+            {(item) => (
+              <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
+                <CodeBlockContent language={item.language as BundledLanguage} syntaxHighlighting={false}>
+                  {item.code}
+                </CodeBlockContent>
+              </CodeBlockItem>
+            )}
+          </CodeBlockBody>
+        </CodeBlock>
       );
+      inCodeBlock = false;
+      allCodeLines.length = 0;
+
+      return [
+        codeBlock,
+        <p key={`epilog-${i}`} className="mb-2">
+          {renderWithLinks(line.length === 0 ? "\n" : line)}
+        </p>
+      ];
     } else {
       return (
         <p key={`epilog-${i}`} className="mb-2">
@@ -347,16 +393,16 @@ const License = () => {
         </p>
       );
     }
-  });
+  }).flat().filter(Boolean);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-24">
-      <div className="text-justify text-xs bg-card p-4 rounded-md overflow-x-auto">
+    <div className="max-w-4xl mx-auto py-24 max-desktop:px-10">
+      <div className="hyphens-auto text-justify overflow-x-auto">
         {prologElements}
 
-        <ol className="list-decimal pl-5" start={0}>
+        <ol className="list-decimal pl-8 desktop:pl-6.25 font-body font-light" start={0}>
           {parsedSections.map((section) => (
-            <li key={`section-${section!.number}`}>
+            <li key={`section-${section!.number}`} className="mb-4">
               <strong>{section!.title}</strong>
               {section!.paragraphs.map((para, i) => (
                 <p key={`para-${section!.number}-${i}`} className="my-2">
@@ -365,7 +411,7 @@ const License = () => {
               ))}
 
               {section!.letterItems.length > 0 && (
-                <ol type="a" className="list-[latin-lower] pl-5 my-2">
+                <ol type="a" className="list-[latin-lower] pl-6 my-2">
                   {section!.letterItems.map((item, i) => {
                     const itemText = item.replace(/^\s*[a-z]\)\s*/, "");
                     return (

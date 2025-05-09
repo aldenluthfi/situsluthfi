@@ -189,7 +189,6 @@ const lineNumberClassNames = cn(
   '[&_code]:[counter-reset:line]',
   '[&_code]:[counter-increment:line_0]',
   '[&_.line]:before:content-[counter(line)]',
-  '[&_.line]:before:inline-block',
   '[&_.line]:before:[counter-increment:line]',
   '[&_.line]:before:w-4',
   '[&_.line]:before:mr-4',
@@ -257,7 +256,8 @@ const codeBlockClassName = cn(
   '[&_code]:bg-transparent',
   '[&_.line]:px-4',
   '[&_.line]:w-full',
-  '[&_.line]:relative'
+  '[&_.line]:relative',
+  '[&_.line]:before:inline-block',
 );
 
 const highlight = (
