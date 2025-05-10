@@ -14,6 +14,7 @@ import {
 
 import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
+import { isMobile } from "@/lib/utils";
 import soloImg from "../assets/images/solo.png";
 import holeboysImg from "../assets/images/holeboys.png";
 import weirdosImg from "../assets/images/weirdos.png";
@@ -29,8 +30,6 @@ const ResponsiveTooltip = ({
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
-
     let timeoutId: number | undefined;
     if (isOpen && isMobile) {
       timeoutId = window.setTimeout(() => {

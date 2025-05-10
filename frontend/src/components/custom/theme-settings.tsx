@@ -3,11 +3,11 @@ import { useState, useCallback } from "react"
 import { ThemeSelector } from "@/components/custom/theme-selector"
 import { useTheme } from "@/components/custom/theme-provider"
 import { IconSunHigh, IconMoon } from "@tabler/icons-react"
+import { isMobile } from "@/lib/utils";
 
 export function ThemeSettings() {
   const [isOpen, setIsOpen] = useState(false)
   const { mode, setMode } = useTheme()
-  const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
 
   const handleTriggerClick = useCallback(() => {
     if (isMobile) {

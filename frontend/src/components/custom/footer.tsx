@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { useState } from 'react';
+import { isMobile } from "@/lib/utils";
 
 import {
     IconMail,
@@ -18,7 +19,6 @@ import {
 
 const Footer = () => {
     const email = import.meta.env.VITE_EMAIL;
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
     const [showLinks, setShowLinks] = useState(false);
 
     const links: { name: string; icon: string; url: string }[] = [
