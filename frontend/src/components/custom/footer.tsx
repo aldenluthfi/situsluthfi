@@ -81,7 +81,7 @@ const Footer = () => {
                                     {data.text}
                                 </div>
                                 <div className="!font-body !text-muted-foreground">
-                                    <a href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
+                                    <a className="underline" href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
                                 </div>
                             </div> : "",
                         icon: null
