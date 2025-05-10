@@ -3,7 +3,7 @@ import cors from "cors";
 import fetch from "node-fetch";
 
 const app = express();
-const port = "3000";
+const port = 3000;
 
 app.use(cors());
 
@@ -22,6 +22,6 @@ app.get("/", (_req, res) => {
   res.send("Backend is running");
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Listening on port ${port}`);
 });
