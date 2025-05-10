@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useState, useCallback } from "react"
 import { ThemeSelector } from "@/components/custom/theme-selector"
 import { useTheme } from "@/components/custom/theme-provider"
-import { IconSunHigh, IconMoon } from "@tabler/icons-react"
+import { IconSunHigh, IconMoon, IconChevronUp } from "@tabler/icons-react"
 import { isMobile } from "@/lib/utils";
 
 export function ThemeSettings() {
@@ -32,7 +32,6 @@ export function ThemeSettings() {
         value="settings-toggle"
         onMouseEnter={!isMobile ? () => setIsOpen(true) : undefined}
         onMouseLeave={() => setIsOpen(false)}
-        onBlur={isMobile ? () => setIsOpen(false) : undefined}
       >
         <AccordionTrigger
           showIndicator={false}
@@ -43,6 +42,7 @@ export function ThemeSettings() {
         </AccordionTrigger>
         <AccordionContent className="p-0">
           <ThemeSelector />
+          <IconChevronUp className={`${isMobile ? "" : "hidden"} size-6 m-3`} stroke={1.5} onClick={() => setIsOpen(false)} aria-label="Close" />
         </AccordionContent>
       </AccordionItem>
     </Accordion>

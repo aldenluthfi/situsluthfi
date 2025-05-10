@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/custom/theme-provider"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { isMobile } from "@/lib/utils";
 
 const themes = [
   "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky",
@@ -11,8 +12,8 @@ export function ThemeSelector() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <ScrollArea className="h-[283px]" showScrollbar={false}>
-      <div className="pt-1 pb-3 flex flex-col gap-3 flex-wrap items-center">
+    <ScrollArea className={isMobile ? "h-[272px]" : "h-[283px]"} showScrollbar={false}>
+      <div className={`pt-1 ${isMobile ? "" : "pb-3"} flex flex-col gap-3 flex-wrap items-center`}>
         {themes.map((t) => (
           <Button
             key={t}

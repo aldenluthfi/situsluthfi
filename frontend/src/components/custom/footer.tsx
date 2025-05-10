@@ -110,7 +110,7 @@ const Footer = () => {
                     <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
                         aldenluth.fi
                     </Link>
-                    <ul className="flex tablet:justify-end gap-3">
+                    <ul className="flex max-tablet: pl-1.5 tablet:justify-end gap-3">
                         <li>
                             {!isMobile ? (
                                 <Tooltip>
