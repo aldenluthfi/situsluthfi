@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/.git
+**/.gitignore
+**/README.md
+**/.vscode
+**/npm-debug.log
+**/coverage
+**/.env
+**/.DS_Store
+**/.idea

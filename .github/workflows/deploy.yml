@@ -16,6 +16,6 @@ jobs:
                 echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
                 ssh-keyscan -H aldenluth.fi > ~/.ssh/known_hosts
             - name: Connect and deploy
-              run: ssh aldenluthfi@aldenluth.fi "docker stop $(docker ps -aq); docker rm $(docker ps -aq); cd situsluthfi/src && git pull --rebase && docker compose up -d --build && docker system prune -a -f"
+              run: ssh aldenluthfi@aldenluth.fi "cd situsluthfi && ./deploy.sh"
             - name: Cleanup
               run: rm -rf ~/.ssh

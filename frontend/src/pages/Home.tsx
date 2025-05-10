@@ -14,6 +14,10 @@ import {
 
 import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
+import soloImg from "../assets/images/solo.png";
+import holeboysImg from "../assets/images/holeboys.png";
+import weirdosImg from "../assets/images/weirdos.png";
+import medpropImg from "../assets/images/medprop.png";
 
 const ResponsiveTooltip = ({
   children,
@@ -99,10 +103,10 @@ const Home: React.FC = () => {
           <CarouselContent className="py-10">
             {
               Array(2).fill(0).flatMap(() => ([
-                { src: "../src/assets/images/solo.png", alt: "Solo", tooltip: "This is me, Hi!" },
-                { src: "../src/assets/images/holeboys.png", alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
-                { src: "../src/assets/images/weirdos.png", alt: "Weirdos", tooltip: "Weirdos being weird" },
-                { src: "../src/assets/images/medprop.png", alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
+                { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
+                { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
+                { src: weirdosImg, alt: "Weirdos", tooltip: "Weirdos being weird" },
+                { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
               ])).map((image, index) => (
                 <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2">
                   <ResponsiveTooltip content={<p>{image.tooltip}</p>}>

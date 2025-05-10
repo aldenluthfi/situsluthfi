@@ -74,7 +74,7 @@ export function Cursor() {
       setMouseDown(prev => prev - 1);
     };
 
-    const handleClickableHover = (e: Event) => {
+    const handleClickableHover = (_e: Event) => {
       const cursor = cursorRef.current;
       if (cursor) {
         cursor.classList.remove('bg-transparent');

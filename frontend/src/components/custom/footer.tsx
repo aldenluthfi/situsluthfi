@@ -73,7 +73,7 @@ const Footer = () => {
                     success: ({ data, status }) => ({
                         message: "Email Copied!",
                         description: status === 200 ?
-                            <div className="flex flex-col space-y-2 py-2">
+                            <div className="flex flex-col space-y-2 pt-2">
                                 <div className="!text-sm !font-body !text-muted-foreground">
                                     Fun Fact #{data.index}
                                 </div>
