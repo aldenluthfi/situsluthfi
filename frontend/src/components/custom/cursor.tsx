@@ -213,7 +213,7 @@ export function Cursor() {
   return (
     <div
       ref={cursorRef}
-      className="cursor hidden desktop:inline-block fixed z-50 w-10 h-10 bg-transparent pointer-events-none border-solid border-primary rounded-full border-2"
+      className="cursor hidden desktop:inline-block fixed z-[2147483647] w-10 h-10 bg-transparent pointer-events-none border-solid border-primary rounded-full border-2"
     />
   );
 }

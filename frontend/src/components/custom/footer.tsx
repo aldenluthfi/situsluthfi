@@ -1,43 +1,98 @@
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator"
-import { DynamicIcon } from "lucide-react/dynamic";
-import type { IconName } from "lucide-react/dynamic";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { useState } from 'react';
 
+import {
+    IconMail,
+    IconBrandInstagram,
+    IconBrandX,
+    IconBrandGithub,
+    IconBrandLinkedin,
+    IconX,
+    IconLink,
+    IconLicense
+} from "@tabler/icons-react";
+
 const Footer = () => {
-    const email = "placeholder";
+    const email = import.meta.env.VITE_EMAIL;
     const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
     const [showLinks, setShowLinks] = useState(false);
 
-    const links: { name: string; icon: IconName; url: string }[] = [
+    const links: { name: string; icon: string; url: string }[] = [
         {
             name: "Instagram",
             icon: "instagram",
-            url: "https://instagram.com/",
+            url: import.meta.env.VITE_INSTAGRAM,
         },
         {
             name: "Twitter",
             icon: "twitter",
-            url: "https://twitter.com/",
+            url: import.meta.env.VITE_TWITTER,
         },
         {
             name: "GitHub",
             icon: "github",
-            url: "https://github.com/",
+            url: import.meta.env.VITE_GITHUB,
         },
         {
             name: "LinkedIn",
             icon: "linkedin",
-            url: "https://linkedin.com/",
+            url: import.meta.env.VITE_LINKEDIN,
         },
     ];
 
-    const copyEmail = () => {
+    const iconMap: Record<string, React.JSX.Element> = {
+        mail: <IconMail className="size-6" stroke={1.5} />,
+        instagram: <IconBrandInstagram className="size-6" stroke={1.5} />,
+        twitter: <IconBrandX className="size-6" stroke={1.5} />,
+        github: <IconBrandGithub className="size-6" stroke={1.5} />,
+        linkedin: <IconBrandLinkedin className="size-6" stroke={1.5} />,
+        x: <IconX className="size-6" stroke={1.5} />,
+        link: <IconLink className="size-6" stroke={1.5} />,
+        license: <IconLicense className="size-6" stroke={1.5} />,
+    };
+
+    const copyEmail = async () => {
         navigator.clipboard.writeText(email);
-        toast("Email Copied!");
+
+        toast.promise(
+            fetch("http://localhost:3000/api/facts")
+                .then(response => response.json()
+                    .then(data => ({ data, status: response.status }))
+                ),
+                {
+                    loading: <div>
+                        Email Copied!
+                        <div className="!text-sm !font-body !text-muted-foreground">
+                            Fun Fact Loading...
+                        </div>
+                    </div>,
+                    success: ({ data, status }) => ({
+                        message: "Email Copied!",
+                        description: status === 200 ?
+                            <div className="flex flex-col space-y-2 py-2">
+                                <div className="!text-sm !font-body !text-muted-foreground">
+                                    Fun Fact #{data.index}
+                                </div>
+                                <div className="!text-sm !font-body !text-muted-foreground">
+                                    {data.text}
+                                </div>
+                                <div className="!font-body !text-muted-foreground">
+                                    <a href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
+                                </div>
+                            </div> : "",
+                        icon: null
+                    }),
+                    error: () => ({
+                        message: "Email Copied!",
+                    }),
+                    icon: null,
+                    duration: 5000,
+                }
+        );
     };
 
     const handleLinksClick = () => {
@@ -55,24 +110,24 @@ const Footer = () => {
                     <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
                         aldenluth.fi
                     </Link>
-                    <ul className="flex tablet:justify-end gap-2">
+                    <ul className="flex tablet:justify-end gap-3">
                         <li>
                             {!isMobile ? (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <Button onClick={copyEmail} variant="ghost" size={"icon"}>
-                                            <DynamicIcon name="mail" />
+                                            {iconMap["mail"]}
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>Email</TooltipContent>
                                 </Tooltip>
                             ) : (
                                 <Button onClick={copyEmail} variant="ghost" size={"icon"}>
-                                    <DynamicIcon name="mail" />
+                                    {iconMap["mail"]}
                                 </Button>
                             )}
                         </li>
-                        <li className="flex max-tablet:flex-row-reverse gap-2">
+                        <li className="flex max-tablet:flex-row-reverse gap-3">
                             {(() => {
                                 if (!isMobile) {
                                     if (showLinks) {
@@ -83,7 +138,7 @@ const Footer = () => {
                                                         <TooltipTrigger asChild>
                                                             <Button asChild variant="ghost" size={"icon"}>
                                                                 <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
-                                                                    <DynamicIcon name={link.icon} />
+                                                                    {iconMap[link.icon]}
                                                                 </a>
                                                             </Button>
                                                         </TooltipTrigger>
@@ -91,7 +146,7 @@ const Footer = () => {
                                                     </Tooltip>
                                                 ))}
                                                 <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
-                                                    <DynamicIcon name="x" />
+                                                    {iconMap["x"]}
                                                 </Button>
                                             </>
                                         );
@@ -100,7 +155,7 @@ const Footer = () => {
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
-                                                        <DynamicIcon name="link" />
+                                                        {iconMap["link"]}
                                                     </Button>
                                                 </TooltipTrigger>
                                                 <TooltipContent>Links</TooltipContent>
@@ -113,19 +168,19 @@ const Footer = () => {
                                             {links.map(link => (
                                                 <Button asChild variant="ghost" size={"icon"} key={link.name}>
                                                     <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
-                                                        <DynamicIcon name={link.icon} />
+                                                        {iconMap[link.icon]}
                                                     </a>
                                                 </Button>
                                             ))}
                                             <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
-                                                <DynamicIcon name="x" />
+                                                {iconMap["x"]}
                                             </Button>
                                         </>
                                     );
                                 } else {
                                     return (
                                         <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
-                                            <DynamicIcon name="link"/>
+                                            {iconMap["link"]}
                                         </Button>
                                     );
                                 }
@@ -135,20 +190,20 @@ const Footer = () => {
                             {!isMobile ? (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button variant="ghost" size={"icon"}>
-                                            <Link to="/license">
-                                                <DynamicIcon name="scan-text" />
-                                            </Link>
-                                        </Button>
+                                        <Link to="/license">
+                                            <Button variant="ghost" size={"icon"}>
+                                                {iconMap["license"]}
+                                            </Button>
+                                        </Link>
                                     </TooltipTrigger>
                                     <TooltipContent>License</TooltipContent>
                                 </Tooltip>
                             ) : (
-                                <Button variant="ghost" size={"icon"}>
-                                    <Link to="/license">
-                                        <DynamicIcon name="scan-text" />
-                                    </Link>
-                                </Button>
+                                <Link to="/license">
+                                    <Button variant="ghost" size={"icon"}>
+                                        {iconMap["license"]}
+                                    </Button>
+                                </Link>
                             )}
                         </li>
                     </ul>

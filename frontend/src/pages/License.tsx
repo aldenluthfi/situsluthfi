@@ -691,11 +691,11 @@ export default function License() {
                 {
                     h1(props) {
                         const { node, ...rest } = props
-                        return <h1 {...rest} className="text-lg font-body-bold text-center mb-2" />
+                        return <h1 {...rest} className="text-lg font-body-bold text-center mb-2">{rest.children}</h1>
                     },
                     h2(props) {
                         const { node, ...rest } = props
-                        return <h2 {...rest} className="font-body-bold text-center mb-4" />
+                        return <h2 {...rest} className="font-body-bold text-center mb-4">{rest.children}</h2>
                     },
                     p(props) {
                         const { node, ...rest } = props
@@ -703,7 +703,7 @@ export default function License() {
                     },
                     a(props) {
                         const { node, ...rest } = props
-                        return <a {...rest} rel="noopener noreferrer" className="underline text-primary-800" />
+                        return <a {...rest} target="_blank" rel="noopener noreferrer" className="underline text-primary-800" >{rest.children}</a>
                     },
                     ul(props) {
                         let { node, ...rest } = props

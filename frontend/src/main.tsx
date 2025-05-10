@@ -28,7 +28,15 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Cursor />
-    <Toaster />
+    <Toaster
+      toastOptions={{
+        classNames: {
+          title: "!text-base !font-body-bold",
+          description: "!text-sm !font-body !text-muted-foreground",
+          toast: "!select-none !border-accent",
+        }
+      }}
+    />
     <ThemeProvider storageKey="vite-ui-theme" defaultMode="dark" defaultTheme="yellow">
       <Router>
         <Wrapper>

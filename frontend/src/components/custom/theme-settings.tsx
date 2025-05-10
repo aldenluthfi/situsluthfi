@@ -1,13 +1,8 @@
-import { DynamicIcon } from "lucide-react/dynamic"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useState, useCallback } from "react"
 import { ThemeSelector } from "@/components/custom/theme-selector"
 import { useTheme } from "@/components/custom/theme-provider"
+import { IconSunHigh, IconMoon } from "@tabler/icons-react"
 
 export function ThemeSettings() {
   const [isOpen, setIsOpen] = useState(false)
@@ -44,7 +39,7 @@ export function ThemeSettings() {
           className="size-9 m-1.5 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
           onClick={handleTriggerClick}
         >
-          <DynamicIcon name={mode === "light" ? "sun" : "moon"} />
+          {mode === "light" ? <IconSunHigh stroke={1.5} /> : <IconMoon stroke={1.5} />}
         </AccordionTrigger>
         <AccordionContent className="p-0">
           <ThemeSelector />
