@@ -9,15 +9,12 @@ COPY . .
 
 RUN npm run build
 
-FROM node:slim
+FROM nginx:alpine
 
-WORKDIR /app
+COPY --from=build /app/dist /usr/share/nginx/html
 
-RUN npm install -g serve
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /app/dist /app/dist
+EXPOSE 8080
 
-EXPOSE 80
-
-# Start the server
-CMD ["serve", "-s", "dist", "-l", "80"]
+CMD ["nginx", "-g", "daemon off;"]
