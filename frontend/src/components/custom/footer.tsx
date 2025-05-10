@@ -59,7 +59,7 @@ const Footer = () => {
         navigator.clipboard.writeText(email);
 
         toast.promise(
-            fetch("http://localhost:3000/api/facts")
+            fetch("/api/facts")
                 .then(response => response.json()
                     .then(data => ({ data, status: response.status }))
                 ),
