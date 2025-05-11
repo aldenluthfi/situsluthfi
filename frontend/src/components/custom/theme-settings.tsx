@@ -31,7 +31,7 @@ export function ThemeSettings() {
       <AccordionItem
         value="settings-toggle"
         onMouseEnter={!isMobile ? () => setIsOpen(true) : undefined}
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseLeave={!isMobile ? () => setIsOpen(false) : undefined}
       >
         <AccordionTrigger
           showIndicator={false}

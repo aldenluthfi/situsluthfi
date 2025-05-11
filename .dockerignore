@@ -6,6 +6,5 @@
 **/.vscode
 **/npm-debug.log
 **/coverage
-**/.env
 **/.DS_Store
 **/.idea

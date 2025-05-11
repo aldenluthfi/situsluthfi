@@ -75,7 +75,7 @@ const Footer = () => {
                         description: status === 200 ?
                             <div className="flex flex-col space-y-2 pt-2">
                                 <div className="!text-sm !font-body !text-muted-foreground">
-                                    Fun Fact #{data.index}
+                                    Fun Fact #{data.id}
                                 </div>
                                 <div className="!text-sm !font-body !text-muted-foreground">
                                     {data.text}
@@ -115,7 +115,7 @@ const Footer = () => {
                             {!isMobile ? (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button onClick={copyEmail} variant="ghost" size={"icon"}>
+                                        <Button onClick={copyEmail} variant="ghost" size="icon">
                                             {iconMap["mail"]}
                                         </Button>
                                     </TooltipTrigger>
@@ -136,7 +136,7 @@ const Footer = () => {
                                                 {links.map(link => (
                                                     <Tooltip key={link.name}>
                                                         <TooltipTrigger asChild>
-                                                            <Button asChild variant="ghost" size={"icon"}>
+                                                            <Button asChild variant="ghost" size="icon">
                                                                 <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
                                                                     {iconMap[link.icon]}
                                                                 </a>

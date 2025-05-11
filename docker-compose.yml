@@ -6,9 +6,18 @@ services:
     container_name: backend
     restart: unless-stopped
     environment:
-      - NODE_ENV=production
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_POOL_LIMIT=${MYSQL_POOL_LIMIT}
+      - NOTION_API_KEY=${NOTION_API_KEY}
+      - NOTION_WRITINGS_DATABASE_ID=${NOTION_WRITINGS_DATABASE_ID}
     networks:
       - app-network
+    depends_on:
+      - mysql
 
   frontend:
     build:
@@ -23,6 +32,23 @@ services:
     networks:
       - app-network
 
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql-data:

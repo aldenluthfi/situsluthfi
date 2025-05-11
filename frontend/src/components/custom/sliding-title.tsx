@@ -85,7 +85,7 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
   return (
     <h1
       ref={textRef}
-      className={`text-6xl tablet:text-8xl ultrawide:text-10xl justify-center font-heading whitespace-nowrap ${className}`}
+      className={`text-6xl self-center tablet:text-8xl ultrawide:text-10xl justify-center font-heading whitespace-nowrap ${className}`}
     >
       {marqueeText}
     </h1>

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Cursor from './components/custom/cursor.tsx'
 import Home from './pages/Home'
 import License from './pages/License'
+import Writings from './pages/Writings'
 
 import ThemeProvider from "@/components/custom/theme-provider"
 import Header from './components/custom/header'
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/license" element={<License />} />
+            <Route path="/writings" element={<Writings />} />
           </Routes>
           <Footer />
         </Wrapper>
