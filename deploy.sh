@@ -2,7 +2,11 @@
 set -e
 
 echo "📥 Pulling latest changes..."
-git pull --rebase
+if [ "$ENV" != "dev" ]; then
+    git pull --rebase
+else
+    echo "Skipping git pull in dev environment."
+fi
 
 echo "🛑 Stopping existing containers..."
 docker compose down || true

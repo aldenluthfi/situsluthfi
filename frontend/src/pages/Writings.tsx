@@ -153,7 +153,7 @@ export default function Writings() {
             >
               <CardHeader>
                 <CardTitle>
-                  <Skeleton className="h-10 max-w-full w-96" />
+                  <Skeleton className="h-10 w-full tablet:w-3/4" />
                 </CardTitle>
                 <CardDescription>
                   <Skeleton className="h-8 w-24 mt-3" />

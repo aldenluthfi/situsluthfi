@@ -86,14 +86,10 @@ export function Cursor() {
       const hoveredElement = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement;
       const isClickable = isClickableElement(hoveredElement);
 
-      if (!isClickable && mouseDownRef.current) {
-        resizeCursor('active');
-      } else if (!isClickable && !mouseDownRef.current) {
-        resizeCursor('default');
-      } else if (isClickable && mouseDownRef.current) {
-        resizeCursor('hoverActive');
+      if (isClickable) {
+        resizeCursor(mouseDownRef.current ? 'hoverActive' : 'hover');
       } else {
-        resizeCursor('hover');
+        resizeCursor(mouseDownRef.current ? 'active' : 'default');
       }
     };
 
