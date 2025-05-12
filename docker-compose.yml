@@ -5,15 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     restart: unless-stopped
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_POOL_LIMIT=${MYSQL_POOL_LIMIT}
-      - NOTION_API_KEY=${NOTION_API_KEY}
-      - NOTION_WRITINGS_DATABASE_ID=${NOTION_WRITINGS_DATABASE_ID}
+    env_file:
+      - ./backend/.env
     networks:
       - app-network
     depends_on:

@@ -706,7 +706,7 @@ export default function License() {
                         return <a {...rest} target="_blank" rel="noopener noreferrer" className="underline text-primary-800" >{rest.children}</a>
                     },
                     ul(props) {
-                        let { node, ...rest } = props
+                        const { node, ...rest } = props
                         const newChildren = Array.isArray(rest.children)
                             ? rest.children.map(child => {
                                 if (typeof child === 'string') return child
@@ -717,8 +717,7 @@ export default function License() {
                                 return child
                             })
                             : rest.children
-                        rest = { ...rest, children: newChildren }
-                        return <ul {...rest} className="list-[latin-lower] pl-6" />
+                        return <ul {...rest} className="list-[latin-lower] pl-6">{newChildren}</ul>
                     },
 
                     ol(props) {
