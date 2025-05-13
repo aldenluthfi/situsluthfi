@@ -2,13 +2,17 @@ export type WritingObject = {
   id: string;
   title: string;
   tags: string[];
-  createdAt: Date;
-  lastUpdated: Date;
+  createdAt: string;
+  lastUpdated: string;
 }
 
 export type WritingContentObject = {
   content: string;
-  lastSynced: Date;
+  title: string;
+  id: string;
+  createdAt: string;
+  lastUpdated: string;
+  lastSynced: string;
 }
 
 export type ThemeString = "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose" | "neutral";

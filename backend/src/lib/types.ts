@@ -6,7 +6,16 @@ export type FactObject = {
 export type WritingObject = {
     id: string;
     title: string;
-    description: string;
+    tags: string[];
     createdAt: string;
     lastUpdated: string;
+};
+
+export type WritingContentObject = {
+    id: string;
+    title: string;
+    content: string;
+    created_at: string;
+    last_updated: string;
+    last_synced: string;
 };

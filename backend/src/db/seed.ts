@@ -1,6 +1,7 @@
 import { RowDataPacket } from "mysql2";
 import { fetchAllWritingsFromNotion, fetchWritingFromNotionByID } from "../lib/notion";
 import pool from "./mysql";
+import { fetchAllFacts } from "../lib/facts";
 
 const syncWritingsToDB = async () => {
     const notionData = await fetchAllWritingsFromNotion();
@@ -30,28 +31,61 @@ const syncWritingsToDB = async () => {
 const syncWritingContentToDB = async (id: string) => {
     const writing = await fetchWritingFromNotionByID(id);
 
-    const [rows] = await pool.query(
-        `SELECT title FROM writings WHERE id = ?`,
-        [writing.id]
-    ) as RowDataPacket[];
-
-    const title = rows && Array.isArray(rows) && rows.length > 0 ? rows[0].title : null;
-
     await pool.query(
         `
-        INSERT INTO writing_content (id, title, content, last_synced)
-        VALUES (?, ?, ?, NOW())
+        INSERT INTO writing_content (id, content, last_synced)
+        VALUES (?, ?, NOW())
         ON DUPLICATE KEY UPDATE
         content = VALUES(content),
         last_synced = VALUES(last_synced)
         `,
-        [writing.id, title, writing.content]
+        [writing.id, writing.content.parent]
     );
 };
+
+const syncAllWritingsContentToDB = async () => {
+    const [rows] = await pool.query(
+        `SELECT id FROM writings`
+    ) as Array<RowDataPacket[]>;
+
+    console.log(`Syncing content for ${rows.length} writings...`);
+
+    for (const row of rows) {
+        try {
+            await syncWritingContentToDB(row.id);
+            console.log(`Content synced for writing: ${row.id}`);
+        } catch (error) {
+            console.error(`Error syncing content for writing ${row.id}:`, error);
+        }
+    }
+};
+
+const syncAllFactsToDB = async () => {
+
+    const allFacts = await fetchAllFacts();
+
+    console.log(`Syncing ${allFacts.length} facts...`);
+
+    for (const fact of allFacts) {
+        allFacts.indexOf(fact) === 0 ?
+        await pool.query(
+            `INSERT INTO facts (id, text, source) VALUES (1,  ?, ?)
+             ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
+            [fact.text, fact.source]
+        ) :
+        await pool.query(
+            `INSERT INTO facts (text, source) VALUES (?, ?)
+             ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
+            [fact.text, fact.source]
+        );
+    }
+}
 
 const syncDatabase = async () => {
     try {
         await syncWritingsToDB();
+        await syncAllWritingsContentToDB();
+        await syncAllFactsToDB();
         console.log("Writings synced to DB successfully.");
     } catch (error) {
         console.error("Error syncing writings to DB:", error);

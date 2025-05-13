@@ -174,11 +174,14 @@ export default function Writings() {
                 </CardHeader>
                 <CardContent>
                   <span className="text-muted-foreground text-sm">
-                    {new Date(item.createdAt).toLocaleDateString("en-GB", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {(new Date(item.createdAt).toLocaleDateString(
+                            "en-GB",
+                            {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            }
+                    ))}
                   </span>
                 </CardContent>
               </Card>

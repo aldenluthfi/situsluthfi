@@ -1,5 +1,6 @@
+import { RowDataPacket } from "mysql2";
 import pool from "../db/mysql";
-import { fetchWritingFromNotionByID } from "../lib/notion";
+import { WritingContentObject, WritingObject } from "../lib/types";
 
 export const getPaginatedWritingsFromDB = async (pageSize: number, page: number) => {
     const offset = (page - 1) * pageSize;
@@ -7,7 +8,7 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     const [rows] = await pool.query(
         "SELECT * FROM writings ORDER BY created_at DESC LIMIT ? OFFSET ?",
         [pageSize, offset]
-    );
+    ) as Array<RowDataPacket[]>;
 
     const [countRows] = await pool.query(
         "SELECT COUNT(*) as total FROM writings"
@@ -15,7 +16,13 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     const total = Array.isArray(countRows) && countRows.length > 0 ? (countRows[0] as any).total : 0;
 
     return {
-        results: rows,
+        results: rows.map((row: RowDataPacket) => ({
+            id: row.id,
+            title: row.title,
+            tags: row.tags,
+            createdAt: row.created_at,
+            lastUpdated: row.last_updated,
+        })) as WritingObject[],
         total,
         page,
         pageSize,
@@ -24,15 +31,28 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
 };
 
 export const getWritingContentById = async (id: string) => {
-    const notionWriting = await fetchWritingFromNotionByID(id);
+    const notionWriting = await pool.query(
+        `SELECT
+        wc.id, content, title, last_updated, created_at, wc.last_synced
+        FROM writing_content wc
+        JOIN writings w ON wc.id = w.id
+        WHERE wc.id = ?`,
+        [id]
+    ) as Array<RowDataPacket[]>;
 
-    if (!notionWriting) {
-        return null;
+    if (notionWriting.length === 0) {
+        throw new Error("Writing not found");
     }
 
+    const writing = (notionWriting[0][0] as WritingContentObject);
+
     return {
-        content: notionWriting.content.parent,
-        lastSynced: new Date().toISOString(),
+        id: writing.id,
+        content: writing.content,
+        title: writing.title,
+        lastUpdated: writing.last_updated,
+        createdAt: writing.created_at,
+        lastSynced: writing.last_synced,
     };
 };
 

@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS facts (
 
 CREATE TABLE IF NOT EXISTS writing_content (
     id VARCHAR(255) PRIMARY KEY,
-    title VARCHAR(1024) NOT NULL,
-    content TEXT NOT NULL,
+    content MEDIUMTEXT NOT NULL,
     last_synced DATETIME
-)
+);
