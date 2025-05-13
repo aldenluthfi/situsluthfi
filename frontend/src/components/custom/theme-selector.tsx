@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/custom/theme-provider"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import type { ThemeString } from "@/lib/types";
 import { isMobile } from "@/lib/utils";
+
 
 const themes = [
   "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky",
@@ -17,7 +19,7 @@ export function ThemeSelector() {
         {themes.map((t) => (
           <Button
             key={t}
-            onClick={() => setTheme(t as any)}
+            onClick={() => setTheme(t as ThemeString)}
             style={{ background: `var(--color-${t}-500)` }}
             aria-label={t}
             variant={theme === t ? "default" : "ghost"}

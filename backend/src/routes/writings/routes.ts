@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { fetchWritings, getPaginatedWritings } from "../../controllers/writings_controller";
+import { getPaginatedWritings, getWritingById } from "../../controllers/writings_controller";
 
 const router = Router();
 
-router.get("/fetch_all", fetchWritings);
 router.get("/get_page", getPaginatedWritings);
+router.get("/:id", getWritingById);
 
 export default router;

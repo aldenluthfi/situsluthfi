@@ -4,10 +4,11 @@ import './index.css'
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 
-import Cursor from './components/custom/cursor.tsx'
+import Cursor from './components/custom/cursor'
 import Home from './pages/Home'
 import License from './pages/License'
 import Writings from './pages/Writings'
+import Writing from './pages/Writing'
 
 import ThemeProvider from "@/components/custom/theme-provider"
 import Header from './components/custom/header'
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<Home />} />
             <Route path="/license" element={<License />} />
             <Route path="/writings" element={<Writings />} />
+            <Route path="/writings/:id" element={<Writing />} />
           </Routes>
           <Footer />
         </Wrapper>

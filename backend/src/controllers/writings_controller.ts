@@ -1,15 +1,5 @@
 import { Request, Response } from "express";
-import { fetchWritingsService, getPaginatedWritingsService } from "../services/writings_service";
-
-export const fetchWritings = async (_req: Request, res: Response) => {
-  try {
-    const result = await fetchWritingsService();
-    res.status(200).json(result);
-  } catch (error) {
-    console.error("Error fetching writings:", error);
-    res.status(500).json({ error: "Failed to retrieve database" });
-  }
-};
+import { getPaginatedWritingsService, getWritingByIdService } from "../services/writings_service";
 
 export const getPaginatedWritings = async (req: Request, res: Response) => {
   try {
@@ -20,5 +10,16 @@ export const getPaginatedWritings = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching paginated writings:", error);
     res.status(500).json({ error: "Failed to retrieve paginated writings" });
+  }
+};
+
+export const getWritingById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await getWritingByIdService(id);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching writing by ID:", error);
+    res.status(500).json({ error: "Failed to retrieve writing" });
   }
 };

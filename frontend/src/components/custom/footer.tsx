@@ -209,7 +209,7 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                <Separator className='bg-primary-200' />
+                <Separator className='bg-primary-400' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
                     <p className="max-tablet:px-3 text-sm font-body text-foreground">

@@ -1,11 +1,11 @@
 import Markdown from 'react-markdown'
 
 import {
-  CodeBlock,
-  CodeBlockBody,
-  CodeBlockContent,
-  CodeBlockItem,
-  type BundledLanguage,
+    CodeBlock,
+    CodeBlockBody,
+    CodeBlockContent,
+    CodeBlockItem,
+    type BundledLanguage,
 } from '@/components/ui/kibo-ui/code-block';
 
 const license = `# GNU GENERAL PUBLIC LICENSE
@@ -685,7 +685,7 @@ GNU Lesser General Public License instead of this License. But first,
 please read <<https://www.gnu.org/licenses/why-not-lgpl.html>>.`
 
 export default function License() {
-    return <div className='w- desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 text-justify hyphens-auto'>
+    return <div className='desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 text-justify hyphens-auto'>
         <Markdown
             components={
                 {
@@ -725,35 +725,52 @@ export default function License() {
                         return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
                     },
 
-                    code(props) {
-                        const { node, ...rest } = props
-                        return <CodeBlock
-                            className="my-4"
-                            value="bash"
-                            data={[{
-                                language: "bash",
-                                filename: "example",
-                                code: (() => {
-                                    if (Array.isArray(rest.children)) {
-                                        return rest.children.join('').trim();
-                                    } else if (typeof rest.children === 'string') {
-                                        return rest.children.trim();
-                                    } else {
-                                        return '';
-                                    }
-                                })()
-                            }]}
-                        >
-                            <CodeBlockBody>
-                                {(item) => (
-                                    <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
-                                        <CodeBlockContent language={item.language as BundledLanguage} syntaxHighlighting={false}>
-                                            {item.code}
-                                        </CodeBlockContent>
-                                    </CodeBlockItem>
-                                )}
-                            </CodeBlockBody>
-                        </CodeBlock>
+                    pre(props) {
+                        const { node, ...rest } = props;
+                        let codeString = '';
+                        let language = 'bash';
+                        if (
+                            rest.children &&
+                            typeof rest.children === 'object' &&
+                            'type' in rest.children &&
+                            rest.children.type === 'code'
+                        ) {
+                            const codeElement = rest.children as React.ReactElement<any>;
+                            if (typeof codeElement.props.children === 'string') {
+                                codeString = codeElement.props.children.trim();
+                            }
+
+                            if (typeof codeElement.props.className === 'string') {
+                                const match = codeElement.props.className.match(/language-(\w+)/);
+                                if (match) {
+                                    language = match[1];
+                                }
+                            }
+                        }
+
+                        return (
+                            <CodeBlock
+                                className="my-4"
+                                value={language}
+                                data={[
+                                    {
+                                        language,
+                                        filename: "example",
+                                        code: codeString,
+                                    },
+                                ]}
+                            >
+                                <CodeBlockBody>
+                                    {(item) => (
+                                        <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
+                                            <CodeBlockContent language={item.language as BundledLanguage} syntaxHighlighting={false}>
+                                                {item.code}
+                                            </CodeBlockContent>
+                                        </CodeBlockItem>
+                                    )}
+                                </CodeBlockBody>
+                            </CodeBlock>
+                        );
                     }
                 }
             }

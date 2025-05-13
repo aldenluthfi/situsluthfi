@@ -19,7 +19,6 @@ import {
   IconCode,
   IconYinYang,
   IconDots,
-  IconRefresh,
 } from "@tabler/icons-react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
@@ -31,7 +30,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
-import { Button } from "@/components/ui/button";
+import type { WritingObject } from "@/lib/types";
 
 const tagIconMap: Record<string, React.ElementType> = {
   Education: (props) => <IconSchool className="size-6" stroke={1.5} {...props} />,
@@ -47,10 +46,9 @@ const tagIconMap: Record<string, React.ElementType> = {
 const PAGE_SIZE = 5;
 
 export default function Writings() {
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<WritingObject[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
-  const [syncing, setSyncing] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -66,19 +64,12 @@ export default function Writings() {
         setData(resData.results ?? []);
         setTotalPages(resData.totalPages ?? 1);
         setLoading(false);
-      });
+      })
   };
 
   useEffect(() => {
     fetchPage(page);
   }, [page]);
-
-  const handleSync = async () => {
-    setSyncing(true);
-    await fetch("/api/writings/fetch_all");
-    fetchPage(page);
-    setSyncing(false);
-  };
 
   const getPaginationItems = () => {
     const items: (number | string)[] = [];
@@ -136,14 +127,6 @@ export default function Writings() {
         </p>
       </div>
       <div className="w-full max-w-3xl px-12 flex flex-col gap-6 pb-24">
-        <Button
-          onClick={handleSync}
-          disabled={syncing}
-          className="self-end"
-          size="icon"
-        >
-          <IconRefresh className={`${syncing ? "animate-spin" : ""} size-6`} stroke={1.5} />
-        </Button>
         {loading
           ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
             <Card
@@ -191,7 +174,7 @@ export default function Writings() {
                 </CardHeader>
                 <CardContent>
                   <span className="text-muted-foreground text-sm">
-                    {new Date(item.created_at).toLocaleDateString("en-GB", {
+                    {new Date(item.createdAt).toLocaleDateString("en-GB", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -217,7 +200,7 @@ export default function Writings() {
                 />
               </PaginationItem>
               {getPaginationItems().map((item, i) =>
-                item == "..." ? (
+                item === "..." ? (
                   <PaginationItem key={`ellipsis-${i + 1}`}>
                     <PaginationEllipsis />
                   </PaginationItem>

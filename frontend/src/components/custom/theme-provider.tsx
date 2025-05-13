@@ -1,23 +1,19 @@
 import { createContext, useContext, useEffect, useState, useMemo } from "react"
+import type { ThemeString, ModeString } from "@/lib/types"
 
-type Theme =
-  | "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald"
-  | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple"
-  | "fuchsia" | "pink" | "rose" | "neutral"
-type Mode = "dark" | "light" | "system"
 
 type ThemeProviderProps = {
   readonly children: React.ReactNode
-  readonly defaultTheme?: Theme
-  readonly defaultMode?: Mode
+  readonly defaultTheme?: ThemeString
+  readonly defaultMode?: ModeString
   readonly storageKey?: string
 }
 
 type ThemeProviderState = {
-  readonly theme: Theme
-  readonly mode: Mode
-  readonly setTheme: (theme: Theme) => void
-  readonly setMode: (mode: Mode) => void
+  readonly theme: ThemeString
+  readonly mode: ModeString
+  readonly setTheme: (theme: ThemeString) => void
+  readonly setMode: (mode: ModeString) => void
 }
 
 const initialState: ThemeProviderState = {
@@ -40,12 +36,12 @@ export default function ThemeProvider({
   const themeKey = `${storageKey}-color`
   const modeKey = `${storageKey}-mode`
 
-  const [theme, setThemeState] = useState<Theme>(
-    () => (localStorage.getItem(themeKey) as Theme) || defaultTheme
+  const [theme, setThemeState] = useState<ThemeString>(
+    () => (localStorage.getItem(themeKey) as ThemeString) || defaultTheme
   )
 
-  const [mode, setModeState] = useState<Mode>(
-    () => (localStorage.getItem(modeKey) as Mode) || defaultMode
+  const [mode, setModeState] = useState<ModeString>(
+    () => (localStorage.getItem(modeKey) as ModeString) || defaultMode
   )
 
 
@@ -70,8 +66,8 @@ export default function ThemeProvider({
   const value: ThemeProviderState = useMemo(() => ({
     theme,
     mode,
-    setTheme: (t: Theme) => setThemeState(t),
-    setMode: (m: Mode) => setModeState(m),
+    setTheme: (t: ThemeString) => setThemeState(t),
+    setMode: (m: ModeString) => setModeState(m),
   }), [theme, mode])
 
   return (
