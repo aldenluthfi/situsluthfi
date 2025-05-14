@@ -41,6 +41,53 @@ import {
     TableCaption,
 } from "@/components/ui/table";
 
+function ImageWithSkeleton(props: Readonly<React.ImgHTMLAttributes<HTMLImageElement>>) {
+    const [loaded, setLoaded] = useState(false);
+    return (
+        <div className="flex w-full justify-center">
+            {!loaded && (
+                <Skeleton className="inset-0 rounded-md self-center max-h-[500px] my-4 w-full h-[300px] object-contain" />
+            )}
+            <img
+                {...props}
+                onLoad={() => setLoaded(true)}
+                alt={props.alt ?? ""}
+                className="rounded-md self-center justify-self-center my-4 max-h-[500px] object-contain"
+                style={loaded ? {} : { opacity: 0 }}
+            />
+        </div>
+    );
+}
+
+function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
+    const [loaded, setLoaded] = useState(false);
+    return (
+        <div className="my-4 rounded-lg flex w-full justify-center">
+            {!loaded && (
+                <Skeleton className="inset-0 rounded-md w-full h-[300px] object-contain" />
+            )}
+            <VideoPlayer
+                className="rounded-md self-center justify-self-center"
+            >
+                <VideoPlayerContent
+                    slot="media"
+                    src={src}
+                    preload="auto"
+                    crossOrigin=""
+                    loop
+                    onLoadedData={() => setLoaded(true)}
+                    style={loaded ? {} : { opacity: 0 }}
+                />
+                <VideoPlayerControlBar>
+                    <VideoPlayerPlayButton />
+                    <VideoPlayerTimeRange />
+                    <VideoPlayerTimeDisplay showDuration />
+                </VideoPlayerControlBar>
+            </VideoPlayer>
+        </div>
+    );
+}
+
 export default function Writing() {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
@@ -208,24 +255,7 @@ export default function Writing() {
                                 const href = rest.href;
 
                                 if (href && /\.(mp4|webm|ogg)/i.test(href)) {
-                                    return (
-                                        <div className="my-4 rounded-lg">
-                                            <VideoPlayer>
-                                                <VideoPlayerContent
-                                                    slot="media"
-                                                    src={href}
-                                                    preload="auto"
-                                                    crossOrigin=""
-                                                    loop
-                                                />
-                                                <VideoPlayerControlBar>
-                                                    <VideoPlayerPlayButton />
-                                                    <VideoPlayerTimeRange />
-                                                    <VideoPlayerTimeDisplay showDuration />
-                                                </VideoPlayerControlBar>
-                                            </VideoPlayer>
-                                        </div>
-                                    );
+                                    return <VideoWithSkeleton src={href} />;
                                 }
 
                                 return (
@@ -240,10 +270,7 @@ export default function Writing() {
                                 );
                             },
                             img(props) {
-                                const { node, alt = "", ...rest } = props
-                                return <div className="flex w-full justify-center">
-                                    <img {...rest} alt={alt} className="rounded-md self-center my-4 max-h-[500px] object-contain" />
-                                </div>
+                                return <ImageWithSkeleton {...props} />;
                             },
                             strong(props) {
                                 const { node, ...rest } = props

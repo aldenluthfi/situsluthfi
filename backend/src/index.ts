@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import compression from "compression";
 import router from "./routes/routes";
 
 dotenv.config();
@@ -9,6 +10,8 @@ const app = express();
 const port = "3000";
 
 app.use(cors());
+app.use(compression());
+
 app.use("/api", router);
 
 app.get("/", (_req, res) => {
