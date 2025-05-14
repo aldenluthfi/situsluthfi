@@ -1,14 +1,17 @@
-import { syncWritingContentToDB } from "../db/seed";
-import { getPaginatedWritingsFromDB, getWritingContentById } from "../repositories/writings_repository";
+import { getPaginatedWritingsFromDB, getWritingContentByIdFromDB, syncWritingByIdFromAPI, syncWritingsFromAPI } from "../repositories/writings_repository";
 
 export const getPaginatedWritingsService = async (pageSize: number, page: number) => {
-  return getPaginatedWritingsFromDB(pageSize, page);
+    return getPaginatedWritingsFromDB(pageSize, page);
 };
 
 export const getWritingByIdService = async (id: string) => {
-  return getWritingContentById(id);
+    return getWritingContentByIdFromDB(id);
 };
 
 export const syncWritingByIdService = async (id: string) => {
-  await syncWritingContentToDB(id);
+    await syncWritingByIdFromAPI(id);
+};
+
+export const syncWritingsService = async () => {
+    await syncWritingsFromAPI();
 };

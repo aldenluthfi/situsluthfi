@@ -7,15 +7,11 @@ export type WritingObject = {
     id: string;
     title: string;
     tags: string[];
-    createdAt: string;
-    lastUpdated: string;
+    created_at: string;
+    last_updated: string;
 };
 
 export type WritingContentObject = {
     id: string;
-    title: string;
     content: string;
-    created_at: string;
-    last_updated: string;
-    last_synced: string;
 };

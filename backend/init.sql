@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS writings (
   title VARCHAR(1024) NOT NULL,
   tags JSON,
   created_at DATETIME,
-  last_updated DATETIME,
-  last_synced DATETIME
+  last_updated DATETIME
 );
 
 CREATE TABLE IF NOT EXISTS facts (
@@ -15,6 +14,5 @@ CREATE TABLE IF NOT EXISTS facts (
 
 CREATE TABLE IF NOT EXISTS writing_content (
     id VARCHAR(255) PRIMARY KEY,
-    content MEDIUMTEXT NOT NULL,
-    last_synced DATETIME
+    content MEDIUMTEXT NOT NULL
 );

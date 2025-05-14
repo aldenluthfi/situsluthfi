@@ -1,4 +1,4 @@
-import type { WritingContentObject } from "@/lib/types";
+import type { WritingContentObject, WritingObject } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -30,8 +30,6 @@ import {
     VideoPlayerTimeDisplay,
     VideoPlayerTimeRange,
 } from '@/components/ui/kibo-ui/video-player';
-import { IconRefresh } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
 import {
     Table,
     TableHeader,
@@ -45,30 +43,29 @@ import {
 
 export default function Writing() {
     const params = useParams();
-    const [data, setData] = useState<WritingContentObject>();
-    const [syncing, setSyncing] = useState(false);
+    const [data, setData] = useState<WritingContentObject | WritingObject>();
 
     const fetchWriting = () => {
         fetch(`/api/writings/${params.id}`)
             .then((res) => res.json())
-            .then((resData) => {
-                setData(resData);
-            });
+            .then((data) => {
+                setData(data);
+            })
+    };
+
+    const handleSync = async () => {
+        try {
+            await fetch(`/api/writings/sync/${params.id}`);
+            fetchWriting();
+        } catch (error) {
+            console.error("Error syncing writing on frontend:", error);
+        }
     };
 
     useEffect(() => {
         fetchWriting();
+        handleSync();
     }, [params.id]);
-
-    const handleSync = async () => {
-        setSyncing(true);
-        try {
-            await fetch(`/api/writings/sync/${params.id}`);
-            fetchWriting();
-        } finally {
-            setSyncing(false);
-        }
-    };
 
     let nextUlIsToc = false;
     let firstLevelToc = false;
@@ -80,7 +77,6 @@ export default function Writing() {
             {!data ? (
                 <div className="space-y-4 mb-8">
                     <Skeleton className="w-3/4 h-10" />
-                    <Skeleton className="w-1/4 h-10 tablet:hidden" />
                     <Skeleton className="w-1/2 h-4 mb-16" />
                     {
                         Array.from({ length: 5 }, (_, i) => {
@@ -102,9 +98,9 @@ export default function Writing() {
             ) : (
                 <>
                     <div className="flex flex-col space-y-4 mb-8">
-                        <h1 className="text-4xl font-heading">{data?.title}</h1>
+                        <h1 className="text-4xl font-heading">{(data as WritingObject)?.title}</h1>
                         <p className="text-sm text-muted-foreground">
-                            {new Date(data?.createdAt)
+                            {new Date((data as WritingObject)?.createdAt)
                                 .toLocaleDateString(
                                     "en-GB",
                                     {
@@ -383,31 +379,8 @@ export default function Writing() {
                             },
                         }}
                     >
-                        {data?.content.replace("> **Table of Contents**", "# Table of Contents")}
+                        {(data as WritingContentObject)?.content.replace("> **Table of Contents**", "# Table of Contents")}
                     </ReactMarkdown>
-                    <div className="mt-4 flex items-center text-md text-muted-foreground space-x-2">
-                        <Button
-                            onClick={handleSync}
-                            disabled={syncing}
-                            variant="ghost"
-                            className="hover:bg-accent text-foreground"
-                        >
-                            { !syncing
-                                ? `Last Synced ${new Date(data?.lastSynced).toLocaleDateString(
-                                    "en-GB",
-                                    {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }
-                                )}`
-                                : "Syncing..."}
-                            <IconRefresh
-                                className={syncing ? "animate-spin size-6" : "size-6"}
-                                stroke={1.5}
-                            />
-                        </Button>
-                    </div>
                 </>
             )}
         </div>

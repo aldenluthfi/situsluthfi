@@ -6,17 +6,18 @@ import { fetchAllFacts } from "../external/facts";
 export const syncWritingsToDB = async () => {
     const notionData = await fetchAllWritingsFromNotion();
 
+    console.log(`Syncing ${notionData.length} writings...`);
+
     for (const writing of notionData) {
         await pool.query(
             `
-            INSERT INTO writings (id, title, tags, created_at, last_updated, last_synced)
-            VALUES (?, ?, ?, ?, ?, NOW())
+            INSERT INTO writings (id, title, tags, created_at, last_updated)
+            VALUES (?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
             title = VALUES(title),
             tags = VALUES(tags),
             created_at = VALUES(created_at),
-            last_updated = VALUES(last_updated),
-            last_synced = VALUES(last_synced)`,
+            last_updated = VALUES(last_updated)`,
             [
                 writing.id,
                 writing.title,
@@ -33,14 +34,15 @@ export const syncWritingContentToDB = async (id: string) => {
 
     await pool.query(
         `
-        INSERT INTO writing_content (id, content, last_synced)
-        VALUES (?, ?, NOW())
+        INSERT INTO writing_content (id, content)
+        VALUES (?, ?)
         ON DUPLICATE KEY UPDATE
-        content = VALUES(content),
-        last_synced = VALUES(last_synced)
+        content = VALUES(content)
         `,
         [writing.id, writing.content.parent]
     );
+
+    console.log(`Content synced for writing: ${writing.id}`);
 };
 
 const syncAllWritingsContentToDB = async () => {
@@ -53,7 +55,6 @@ const syncAllWritingsContentToDB = async () => {
     for (const row of rows) {
         try {
             await syncWritingContentToDB(row.id);
-            console.log(`Content synced for writing: ${row.id}`);
         } catch (error) {
             console.error(`Error syncing content for writing ${row.id}:`, error);
         }

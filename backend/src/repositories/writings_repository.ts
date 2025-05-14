@@ -1,6 +1,7 @@
 import { RowDataPacket } from "mysql2";
 import pool from "../db/mysql";
 import { WritingContentObject, WritingObject } from "../lib/types";
+import { syncWritingContentToDB, syncWritingsToDB } from "../db/seed";
 
 export const getPaginatedWritingsFromDB = async (pageSize: number, page: number) => {
     const offset = (page - 1) * pageSize;
@@ -16,13 +17,7 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     const total = Array.isArray(countRows) && countRows.length > 0 ? (countRows[0] as any).total : 0;
 
     return {
-        results: rows.map((row: RowDataPacket) => ({
-            id: row.id,
-            title: row.title,
-            tags: row.tags,
-            createdAt: row.created_at,
-            lastUpdated: row.last_updated,
-        })) as WritingObject[],
+        results: rows,
         total,
         page,
         pageSize,
@@ -30,29 +25,33 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     };
 };
 
-export const getWritingContentById = async (id: string) => {
+export const getWritingContentByIdFromDB = async (id: string) => {
     const notionWriting = await pool.query(
         `SELECT
-        wc.id, content, title, last_updated, created_at, wc.last_synced
+        wc.id, content, tags, title, last_updated, created_at
         FROM writing_content wc
         JOIN writings w ON wc.id = w.id
         WHERE wc.id = ?`,
         [id]
     ) as Array<RowDataPacket[]>;
 
-    if (notionWriting.length === 0) {
-        throw new Error("Writing not found");
-    }
-
-    const writing = (notionWriting[0][0] as WritingContentObject);
+    const writing = (notionWriting[0][0] as WritingContentObject | WritingObject);
 
     return {
         id: writing.id,
-        content: writing.content,
-        title: writing.title,
-        lastUpdated: writing.last_updated,
-        createdAt: writing.created_at,
-        lastSynced: writing.last_synced,
+        title: (writing as WritingObject).title,
+        tags: (writing as WritingObject).tags,
+        content: (writing as WritingContentObject).content,
+        lastUpdated: (writing as WritingObject).last_updated,
+        createdAt: (writing as WritingObject).created_at,
     };
+};
+
+export const syncWritingByIdFromAPI = async (id: string) => {
+    await syncWritingContentToDB(id);
+}
+
+export const syncWritingsFromAPI = async () => {
+    await syncWritingsToDB();
 };
 
