@@ -17,7 +17,13 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     const total = Array.isArray(countRows) && countRows.length > 0 ? (countRows[0] as any).total : 0;
 
     return {
-        results: rows,
+        results: rows.map((row) => ({
+            id: row.id,
+            title: row.title,
+            tags: row.tags,
+            lastUpdated: row.last_updated,
+            createdAt: row.created_at,
+        })),
         total,
         page,
         pageSize,

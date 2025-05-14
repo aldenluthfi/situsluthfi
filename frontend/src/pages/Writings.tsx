@@ -57,7 +57,6 @@ export default function Writings() {
     );
 
     const fetchPage = (pageNum: number) => {
-        setLoading(true);
         fetch(`/api/writings/get_page?pagesize=${PAGE_SIZE}&page=${pageNum}`)
             .then((res) => res.json())
             .then((resData) => {
@@ -161,7 +160,7 @@ export default function Writings() {
                         <Link
                             key={item.id}
                             to={`/writings/${item.id}`}
-                            className={`hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 ${loading ? "!motion-none" : ""}`}
+                            className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300"
                         >
                             <Card key={item.id}>
                                 <CardHeader>

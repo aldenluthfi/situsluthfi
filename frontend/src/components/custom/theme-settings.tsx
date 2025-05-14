@@ -37,6 +37,8 @@ export function ThemeSettings() {
                     showIndicator={false}
                     className="size-9 m-1.5 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
                     onClick={handleTriggerClick}
+                    aria-label={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}
+                    title={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}
                 >
                     {mode === "light" ? <IconSunHigh stroke={1.5} /> : <IconMoon stroke={1.5} />}
                 </AccordionTrigger>

@@ -115,14 +115,26 @@ const Footer = () => {
                             {!isMobile ? (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button onClick={copyEmail} variant="ghost" size="icon">
+                                        <Button
+                                            onClick={copyEmail}
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label="Email"
+                                            title="Email"
+                                        >
                                             {iconMap["mail"]}
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>Email</TooltipContent>
                                 </Tooltip>
                             ) : (
-                                <Button onClick={copyEmail} variant="ghost" size={"icon"}>
+                                <Button
+                                    onClick={copyEmail}
+                                    variant="ghost"
+                                    size={"icon"}
+                                    aria-label="Email"
+                                    title="Email"
+                                >
                                     {iconMap["mail"]}
                                 </Button>
                             )}
@@ -136,8 +148,20 @@ const Footer = () => {
                                                 {links.map(link => (
                                                     <Tooltip key={link.name}>
                                                         <TooltipTrigger asChild>
-                                                            <Button asChild variant="ghost" size="icon">
-                                                                <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+                                                            <Button
+                                                                asChild
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                aria-label={link.name}
+                                                                title={link.name}
+                                                            >
+                                                                <a
+                                                                    href={link.url}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    aria-label={link.name}
+                                                                    title={link.name}
+                                                                >
                                                                     {iconMap[link.icon]}
                                                                 </a>
                                                             </Button>
@@ -145,7 +169,13 @@ const Footer = () => {
                                                         <TooltipContent>{link.name}</TooltipContent>
                                                     </Tooltip>
                                                 ))}
-                                                <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={handleLinksClose}
+                                                    aria-label="Close"
+                                                    title="Close"
+                                                >
                                                     {iconMap["x"]}
                                                 </Button>
                                             </>
@@ -154,7 +184,13 @@ const Footer = () => {
                                         return (
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
-                                                    <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size={"icon"}
+                                                        onClick={handleLinksClick}
+                                                        aria-label="Links"
+                                                        title="Links"
+                                                    >
                                                         {iconMap["link"]}
                                                     </Button>
                                                 </TooltipTrigger>
@@ -166,20 +202,45 @@ const Footer = () => {
                                     return (
                                         <>
                                             {links.map(link => (
-                                                <Button asChild variant="ghost" size={"icon"} key={link.name}>
-                                                    <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name}>
+                                                <Button
+                                                    asChild
+                                                    variant="ghost"
+                                                    size={"icon"}
+                                                    key={link.name}
+                                                    aria-label={link.name}
+                                                    title={link.name}
+                                                >
+                                                    <a
+                                                        href={link.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={link.name}
+                                                        title={link.name}
+                                                    >
                                                         {iconMap[link.icon]}
                                                     </a>
                                                 </Button>
                                             ))}
-                                            <Button variant="ghost" size="icon" onClick={handleLinksClose} aria-label="Close">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={handleLinksClose}
+                                                aria-label="Close"
+                                                title="Close"
+                                            >
                                                 {iconMap["x"]}
                                             </Button>
                                         </>
                                     );
                                 } else {
                                     return (
-                                        <Button variant="ghost" size={"icon"} onClick={handleLinksClick}>
+                                        <Button
+                                            variant="ghost"
+                                            size={"icon"}
+                                            onClick={handleLinksClick}
+                                            aria-label="Links"
+                                            title="Links"
+                                        >
                                             {iconMap["link"]}
                                         </Button>
                                     );
@@ -190,8 +251,8 @@ const Footer = () => {
                             {!isMobile ? (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Link to="/license">
-                                            <Button variant="ghost" size={"icon"}>
+                                        <Link to="/license" aria-label="License" title="License">
+                                            <Button variant="ghost" size={"icon"} aria-label="License" title="License">
                                                 {iconMap["license"]}
                                             </Button>
                                         </Link>
@@ -199,8 +260,8 @@ const Footer = () => {
                                     <TooltipContent>License</TooltipContent>
                                 </Tooltip>
                             ) : (
-                                <Link to="/license">
-                                    <Button variant="ghost" size={"icon"}>
+                                <Link to="/license" aria-label="License" title="License">
+                                    <Button variant="ghost" size={"icon"} aria-label="License" title="License">
                                         {iconMap["license"]}
                                     </Button>
                                 </Link>
