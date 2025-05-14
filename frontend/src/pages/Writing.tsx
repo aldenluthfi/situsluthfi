@@ -30,18 +30,45 @@ import {
     VideoPlayerTimeDisplay,
     VideoPlayerTimeRange,
 } from '@/components/ui/kibo-ui/video-player';
+import { IconRefresh } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableFooter,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableCaption,
+} from "@/components/ui/table";
 
 export default function Writing() {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject>();
+    const [syncing, setSyncing] = useState(false);
 
-    useEffect(() => {
+    const fetchWriting = () => {
         fetch(`/api/writings/${params.id}`)
             .then((res) => res.json())
             .then((resData) => {
                 setData(resData);
             });
+    };
+
+    useEffect(() => {
+        fetchWriting();
     }, [params.id]);
+
+    const handleSync = async () => {
+        setSyncing(true);
+        try {
+            await fetch(`/api/writings/sync/${params.id}`);
+            fetchWriting();
+        } finally {
+            setSyncing(false);
+        }
+    };
 
     let nextUlIsToc = false;
     let firstLevelToc = false;
@@ -53,6 +80,7 @@ export default function Writing() {
             {!data ? (
                 <div className="space-y-4 mb-8">
                     <Skeleton className="w-3/4 h-10" />
+                    <Skeleton className="w-1/4 h-10 tablet:hidden" />
                     <Skeleton className="w-1/2 h-4 mb-16" />
                     {
                         Array.from({ length: 5 }, (_, i) => {
@@ -84,12 +112,12 @@ export default function Writing() {
                                         month: "long",
                                         day: "numeric",
                                     }
-                            )}
+                                )}
                         </p>
                     </div>
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents' }]]}
-                        rehypePlugins={[rehypeKatex]}
+                        rehypePlugins={[[rehypeKatex, { output: "mathml" }]]}
                         components={{
                             h1(props) {
                                 const { node, ...rest } = props;
@@ -320,21 +348,65 @@ export default function Writing() {
                                         <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
                                     </Card>
                                 );
-                            }
+                            },
+                            table(props) {
+                                const { node, ...rest } = props;
+                                return <Table {...rest}>{props.children}</Table>;
+                            },
+                            thead(props) {
+                                const { node, ...rest } = props;
+                                return <TableHeader {...rest}>{props.children}</TableHeader>;
+                            },
+                            tbody(props) {
+                                const { node, ...rest } = props;
+                                return <TableBody {...rest}>{props.children}</TableBody>;
+                            },
+                            tfoot(props) {
+                                const { node, ...rest } = props;
+                                return <TableFooter {...rest}>{props.children}</TableFooter>;
+                            },
+                            tr(props) {
+                                const { node, ...rest } = props;
+                                return <TableRow {...rest}>{props.children}</TableRow>;
+                            },
+                            th(props) {
+                                const { node, ...rest } = props;
+                                return <TableHead {...rest}>{props.children}</TableHead>;
+                            },
+                            td(props) {
+                                const { node, ...rest } = props;
+                                return <TableCell {...rest}>{props.children}</TableCell>;
+                            },
+                            caption(props) {
+                                const { node, ...rest } = props;
+                                return <TableCaption {...rest}>{props.children}</TableCaption>;
+                            },
                         }}
                     >
                         {data?.content.replace("> **Table of Contents**", "# Table of Contents")}
                     </ReactMarkdown>
-                    <div className="mt-4 text-sm text-muted-foreground">
-                        Last Synced {new Date(data?.lastSynced)
-                            .toLocaleDateString(
-                                "en-GB",
-                                {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                }
-                            )}
+                    <div className="mt-4 flex items-center text-md text-muted-foreground space-x-2">
+                        <Button
+                            onClick={handleSync}
+                            disabled={syncing}
+                            variant="ghost"
+                            className="hover:bg-accent text-foreground"
+                        >
+                            { !syncing
+                                ? `Last Synced ${new Date(data?.lastSynced).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    }
+                                )}`
+                                : "Syncing..."}
+                            <IconRefresh
+                                className={syncing ? "animate-spin size-6" : "size-6"}
+                                stroke={1.5}
+                            />
+                        </Button>
                     </div>
                 </>
             )}

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getPaginatedWritingsService, getWritingByIdService } from "../services/writings_service";
+import { getPaginatedWritingsService, getWritingByIdService, syncWritingByIdService } from "../services/writings_service";
 
 export const getPaginatedWritings = async (req: Request, res: Response) => {
   try {
@@ -21,5 +21,16 @@ export const getWritingById = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching writing by ID:", error);
     res.status(500).json({ error: "Failed to retrieve writing" });
+  }
+};
+
+export const syncWritingById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await syncWritingByIdService(id);
+    res.status(200).json({ message: "Writing content synced successfully" });
+  } catch (error) {
+    console.error("Error syncing writing by ID:", error);
+    res.status(500).json({ error: "Failed to sync writing content" });
   }
 };

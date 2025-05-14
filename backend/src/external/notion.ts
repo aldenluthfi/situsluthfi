@@ -60,7 +60,7 @@ export const fetchAllWritingsFromNotion = async () => {
     return results;
 };
 
-export const fetchWritingFromNotionByID = async (id: string) => {
+export const fetchWritingFromNotionById = async (id: string) => {
     const page = await notionToMarkdown.pageToMarkdown(id);
     const markdownString = notionToMarkdown.toMarkdownString(page);
 

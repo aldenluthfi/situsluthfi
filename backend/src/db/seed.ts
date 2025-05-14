@@ -1,9 +1,9 @@
 import { RowDataPacket } from "mysql2";
-import { fetchAllWritingsFromNotion, fetchWritingFromNotionByID } from "../lib/notion";
+import { fetchAllWritingsFromNotion, fetchWritingFromNotionById } from "../external/notion";
 import pool from "./mysql";
-import { fetchAllFacts } from "../lib/facts";
+import { fetchAllFacts } from "../external/facts";
 
-const syncWritingsToDB = async () => {
+export const syncWritingsToDB = async () => {
     const notionData = await fetchAllWritingsFromNotion();
 
     for (const writing of notionData) {
@@ -28,8 +28,8 @@ const syncWritingsToDB = async () => {
     }
 };
 
-const syncWritingContentToDB = async (id: string) => {
-    const writing = await fetchWritingFromNotionByID(id);
+export const syncWritingContentToDB = async (id: string) => {
+    const writing = await fetchWritingFromNotionById(id);
 
     await pool.query(
         `
@@ -93,12 +93,14 @@ const syncDatabase = async () => {
 
 }
 
-syncDatabase()
-    .then(() => {
-        console.log("Database sync completed.");
-        process.exit(0);
-    })
-    .catch((error) => {
-        console.error("Error during database sync:", error);
-        process.exit(1);
-    });
+if (require.main === module) {
+    syncDatabase()
+        .then(() => {
+            console.log("Database sync completed.");
+            process.exit(0);
+        })
+        .catch((error) => {
+            console.error("Error during database sync:", error);
+            process.exit(1);
+        });
+}

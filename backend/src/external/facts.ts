@@ -1,4 +1,4 @@
-import { FactObject } from "./types";
+import { FactObject } from "../lib/types";
 
 export const fetchAllFacts = async () => {
     const multiple = 100;
