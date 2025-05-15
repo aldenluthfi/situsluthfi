@@ -26,7 +26,7 @@ export function ThemeSettings() {
             type="single"
             value={isOpen ? "settings-toggle" : ""}
             collapsible
-            className={`${isOpen ? "bg-accent" : "duration-500"} rounded-md absolute`}
+            className={`${isOpen ? "bg-accent" : "duration-500"} rounded-md absolute hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 origin-[50%_11.11%]`}
         >
             <AccordionItem
                 value="settings-toggle"
@@ -35,12 +35,12 @@ export function ThemeSettings() {
             >
                 <AccordionTrigger
                     showIndicator={false}
-                    className="size-9 m-1.5 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
+                    className="size-9 flex items-center justify-center [&[data-state=open]>svg]:rotate-0 "
                     onClick={handleTriggerClick}
                     aria-label={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}
                     title={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}
                 >
-                    {mode === "light" ? <IconSunHigh stroke={1.5} /> : <IconMoon stroke={1.5} />}
+                    {mode === "light" ? <IconSunHigh className="size-6" stroke={1.5} /> : <IconMoon className="size-6" stroke={1.5} />}
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
                     <ThemeSelector />

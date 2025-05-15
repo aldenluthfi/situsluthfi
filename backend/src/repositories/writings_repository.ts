@@ -55,7 +55,7 @@ export const getWritingContentByIdFromDB = async (id: string) => {
 
 export const syncWritingByIdFromAPI = async (id: string) => {
     await syncWritingContentToDB(id);
-}
+};
 
 export const syncWritingsFromAPI = async () => {
     await syncWritingsToDB();

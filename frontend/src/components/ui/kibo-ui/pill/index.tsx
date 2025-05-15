@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ChevronDownIcon, ChevronUpIcon, MinusIcon } from 'lucide-react';
+import { IconChevronDown, IconChevronUp, IconMinus } from '@tabler/icons-react';
 import type { ComponentProps, ReactNode } from 'react';
 
 export type PillProps = ComponentProps<typeof Badge> & {
@@ -113,17 +113,17 @@ export type PillDeltaProps = {
 export const PillDelta = ({ className, delta }: PillDeltaProps) => {
   if (!delta) {
     return (
-      <MinusIcon className={cn('size-3 text-muted-foreground', className)} />
+      <IconMinus className={cn('size-3 text-muted-foreground', className)} />
     );
   }
 
   if (delta > 0) {
     return (
-      <ChevronUpIcon className={cn('size-3 text-emerald-500', className)} />
+      <IconChevronUp className={cn('size-3 text-emerald-500', className)} />
     );
   }
 
-  return <ChevronDownIcon className={cn('size-3 text-rose-500', className)} />;
+  return <IconChevronDown className={cn('size-3 text-rose-500', className)} />;
 };
 
 export type PillIconProps = {

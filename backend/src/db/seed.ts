@@ -91,18 +91,18 @@ const syncAllFactsToDB = async () => {
 
     for (const fact of allFacts) {
         allFacts.indexOf(fact) === 0 ?
-        await pool.query(
-            `INSERT INTO facts (id, text, source) VALUES (1,  ?, ?)
+            await pool.query(
+                `INSERT INTO facts (id, text, source) VALUES (1,  ?, ?)
              ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
-            [fact.text, fact.source]
-        ) :
-        await pool.query(
-            `INSERT INTO facts (text, source) VALUES (?, ?)
+                [fact.text, fact.source]
+            ) :
+            await pool.query(
+                `INSERT INTO facts (text, source) VALUES (?, ?)
              ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
-            [fact.text, fact.source]
-        );
+                [fact.text, fact.source]
+            );
     }
-}
+};
 
 const syncDatabase = async () => {
     try {
@@ -114,7 +114,7 @@ const syncDatabase = async () => {
         console.error("Error syncing writings to DB:", error);
     }
 
-}
+};
 
 if (require.main === module) {
     syncDatabase()

@@ -1,5 +1,5 @@
 import SlidingTitle from "@/components/custom/sliding-title";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     Card,
@@ -56,6 +56,8 @@ export default function Writings() {
         Number(searchParams.get("page")) || 1
     );
 
+    const syncAbortController = useRef<AbortController | null>(null);
+
     const fetchPage = (pageNum: number) => {
         fetch(`/api/writings/get_page?pagesize=${PAGE_SIZE}&page=${pageNum}`)
             .then((res) => res.json())
@@ -67,11 +69,20 @@ export default function Writings() {
     };
 
     const handleSync = async () => {
+        if (syncAbortController.current) {
+            syncAbortController.current.abort("page changed");
+        }
+
+        const controller = new AbortController();
+        syncAbortController.current = controller;
+
         try {
-            await fetch(`/api/writings/sync/`);
+            await fetch(`/api/writings/sync/`, { signal: controller.signal });
             fetchPage(page);
-        } catch (error) {
-            console.error("Error syncing writing:", error);
+        } catch (error: any) {
+            if (error.name !== "AbortError") {
+                console.error("Error syncing writing:", error);
+            }
         }
     };
 
@@ -107,6 +118,10 @@ export default function Writings() {
     };
 
     const setPageParam = (newPage: number) => {
+        if (syncAbortController.current) {
+            syncAbortController.current.abort();
+        }
+
         if (newPage === 1) {
             searchParams.delete("page");
             setSearchParams(searchParams, { replace: true });
@@ -120,7 +135,7 @@ export default function Writings() {
 
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
-            <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
+            <div className="flex flex-col w-full justify-center items-center space-y-6 mt-32 ultrawide:mt-48 mb-16">
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     Here are some of my <span className="text-primary font-body-bold">writings</span>,
                     <br className="ultrawide:hidden" />
@@ -136,6 +151,59 @@ export default function Writings() {
                 </p>
             </div>
             <div className="w-full max-w-3xl px-12 flex flex-col gap-6 pb-24">
+                <div className="flex justify-center">
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious
+                                    href="#"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        if (page > 1) setPageParam(page - 1);
+                                    }}
+                                    isActive={false}
+                                    aria-disabled={page === 1}
+                                    tabIndex={page === 1 ? -1 : 0}
+                                />
+                            </PaginationItem>
+                            {getPaginationItems().map((item, i) =>
+                                item === "..." ? (
+                                    <PaginationItem key={`ellipsis-${i + 1}`}>
+                                        <PaginationEllipsis />
+                                    </PaginationItem>
+                                ) : (
+                                    <PaginationItem key={i + 1}>
+                                        <PaginationLink
+                                            href="#"
+                                            isActive={item === page}
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                if (item !== page) setPageParam(Number(item));
+                                            }}
+                                            className="text-foreground no-underline hover:no-underline"
+                                            aria-current={item === page ? "page" : undefined}
+                                            tabIndex={item === page ? -1 : 0}
+                                        >
+                                            {item}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                )
+                            )}
+                            <PaginationItem>
+                                <PaginationNext
+                                    href="#"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        if (page < totalPages) setPageParam(page + 1);
+                                    }}
+                                    isActive={false}
+                                    aria-disabled={page === totalPages}
+                                    tabIndex={page === totalPages ? -1 : 0}
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
                 {loading
                     ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <Card
@@ -200,7 +268,7 @@ export default function Writings() {
                             </Card>
                         </Link>
                     ))}
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center">
                     <Pagination>
                         <PaginationContent>
                             <PaginationItem>

@@ -43,7 +43,7 @@ export const fetchAllWritingsFromNotion = async () => {
             const createdAt = (
                 page.properties["Dibuat Pada"] as
                 CreatedTimePropertyItemObjectResponse
-            ).created_time
+            ).created_time;
             const lastUpdated = (
                 page.properties["Suntingan Terakhir"] as
                 LastEditedTimePropertyItemObjectResponse
@@ -67,5 +67,5 @@ export const fetchWritingFromNotionById = async (id: string) => {
     return {
         id: id,
         content: markdownString,
-    }
+    };
 };

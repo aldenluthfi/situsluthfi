@@ -14,8 +14,8 @@ export function ThemeSelector() {
     const { theme, setTheme } = useTheme();
 
     return (
-        <ScrollArea className={isMobile ? "h-[272px]" : "h-[283px]"} showScrollbar={false}>
-            <div className={`pt-1 ${isMobile ? "" : "pb-3"} flex flex-col gap-3 flex-wrap items-center`}>
+        <ScrollArea className={isMobile ? "h-[249px]" : "h-[260px]"} showScrollbar={false}>
+            <div className={`pt-1 ${isMobile ? "" : "pb-2"} flex flex-col gap-2 flex-wrap items-center`}>
                 {themes.map((t) => (
                     <Button
                         key={t}
@@ -23,7 +23,7 @@ export function ThemeSelector() {
                         style={{ background: `var(--color-${t}-500)` }}
                         aria-label={t}
                         variant={theme === t ? "default" : "ghost"}
-                        className="rounded-full size-7"
+                        className="rounded-full size-6"
                         size="icon"
                     />
                 ))}

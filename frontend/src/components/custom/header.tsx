@@ -1,8 +1,24 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeSettings } from "@/components/custom/theme-settings";
+import {
+    CommandDialog,
+    CommandInput,
+    CommandList,
+    CommandEmpty,
+    CommandItem,
+    CommandGroup,
+} from "@/components/ui/command";
+import {
+    IconSearch,
+    IconFolder,
+    IconBook,
+    IconPhoto
+} from "@tabler/icons-react";
+import * as React from "react";
 
 export function Header() {
+    const [open, setOpen] = React.useState(false);
 
     return (
         <header className="fixed flex z-10 w-screen bg-background justify-center">
@@ -32,12 +48,40 @@ export function Header() {
                         </li>
                     </ul>
                 </div>
-
-                <div className="flex pr-6 pt-4 w-48 justify-end">
-                    <ThemeSettings />
+                <div className="flex items-center justify-end w-48 my-auto gap-2 pr-16">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setOpen(true)}
+                        className="hover:bg-accent text-foreground"
+                    >
+                        <IconSearch className="size-6" stroke={1.5} />
+                    </Button>
+                    <div className="relative flex -top-4.5">
+                        <ThemeSettings />
+                    </div>
                 </div>
-
             </nav>
+            <CommandDialog open={open} onOpenChange={setOpen}>
+                <CommandInput placeholder="Search..." />
+                <CommandList className="pb-1">
+                    <CommandGroup heading="Suggestions">
+                        <CommandItem data-slot="button" onSelect={() => { setOpen(false); window.location.href = "/projects"; }}>
+                            <IconFolder className="size-4 mr-2" stroke={1.5} />
+                            Projects
+                        </CommandItem>
+                        <CommandItem data-slot="button" onSelect={() => { setOpen(false); window.location.href = "/writings"; }}>
+                            <IconBook className="size-4 mr-2" stroke={1.5} />
+                            Writings
+                        </CommandItem>
+                        <CommandItem data-slot="button" onSelect={() => { setOpen(false); window.location.href = "/gallery"; }}>
+                            <IconPhoto className="size-4 mr-2" stroke={1.5} />
+                            Gallery
+                        </CommandItem>
+                    </CommandGroup>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                </CommandList>
+            </CommandDialog>
         </header>
     );
 }
