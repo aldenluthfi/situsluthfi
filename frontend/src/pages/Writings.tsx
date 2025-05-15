@@ -83,7 +83,7 @@ export default function Writings() {
     const getPaginationItems = () => {
         const items: (number | string)[] = [];
 
-        if (totalPages <= 5) {
+        if (totalPages <= 7) {
             for (let i = 1; i <= totalPages; i++) {
                 items.push(i);
             }
