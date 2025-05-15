@@ -128,7 +128,7 @@ export default function Writing() {
     let isHeader = false;
 
     return (
-        <div className='desktop:w-desktop mx-auto px-12 tablet:px-24 py-28'>
+        <div className='desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen'>
 
             {!data ? (
                 <div className="space-y-4 mb-8">
@@ -311,7 +311,7 @@ export default function Writing() {
                                     );
                                 }
 
-                                return <ul {...rest} className="list-disc pl-6">{props.children}</ul>
+                                return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
                             },
                             ol(props) {
                                 const { node, ...rest } = props
