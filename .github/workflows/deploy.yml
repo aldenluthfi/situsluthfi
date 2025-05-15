@@ -10,11 +10,12 @@ jobs:
         runs-on: ubuntu-latest
         if: contains(github.event.head_commit.message, 'build')
         steps:
-            - name: Install ssh keys
-              run: |
-                install -m 600 -D /dev/null ~/.ssh/id_rsa
-                echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-                ssh-keyscan -H ssh.aldenluth.fi > ~/.ssh/known_hosts
+            - name: Set up SSH
+              uses: webfactory/ssh-agent@v0.8.0
+              with:
+                ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+            - name: Add host to known_hosts
+              run: ssh-keyscan -H ssh.aldenluth.fi >> ~/.ssh/known_hosts
             - name: Connect and deploy
               run: ssh aldenluthfi@ssh.aldenluth.fi "cd situsluthfi && ./deploy.sh"
             - name: Cleanup
