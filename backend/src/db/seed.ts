@@ -8,6 +8,13 @@ export const syncWritingsToDB = async () => {
 
     console.log(`Syncing ${notionData.length} writings...`);
 
+    const [dbRows] = await pool.query(
+        `SELECT id FROM writings`
+    ) as Array<RowDataPacket[]>;
+
+    const dbIds = dbRows.map(row => row.id);
+    const notionIds = notionData.map(writing => writing.id);
+
     for (const writing of notionData) {
         await pool.query(
             `
@@ -26,6 +33,21 @@ export const syncWritingsToDB = async () => {
                 new Date(writing.lastUpdated),
             ]
         );
+    }
+
+    const idsToDelete = dbIds.filter(id => !notionIds.includes(id));
+    if (idsToDelete.length > 0) {
+        await pool.query(
+            `DELETE FROM writings WHERE id IN (${idsToDelete.map(() => '?').join(',')})`,
+            idsToDelete
+        );
+
+        await pool.query(
+            `DELETE FROM writing_content WHERE id IN (${idsToDelete.map(() => '?').join(',')})`,
+            idsToDelete
+        );
+
+        console.log(`Deleted ${idsToDelete.length} writings not present in Notion.`);
     }
 };
 

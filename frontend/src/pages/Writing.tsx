@@ -92,12 +92,21 @@ export default function Writing() {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
 
-    const fetchWriting = () => {
-        fetch(`/api/writings/${params.id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data);
-            })
+    const fetchWriting = async () => {
+        try {
+            const res = await fetch(`/api/writings/${params.id}`);
+
+            if (!res.ok) {
+                setData(undefined);
+                return;
+            }
+
+            const data = await res.json();
+            setData(data);
+        } catch (error) {
+            console.error("Error fetching writing:", error);
+            setData(undefined);
+        }
     };
 
     const handleSync = async () => {
