@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/get_page", getPaginatedWritings);
 router.get("/sync", syncWritings);
-router.get("/sync/:id", syncWritingById);
-router.get("/:id", getWritingById);
+router.get("/sync/:idOrSlug", syncWritingById);
+router.get("/:idOrSlug", getWritingById);
 
 export default router;

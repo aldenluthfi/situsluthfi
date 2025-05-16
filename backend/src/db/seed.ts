@@ -2,6 +2,7 @@ import { RowDataPacket } from "mysql2";
 import { fetchAllWritingsFromNotion, fetchWritingFromNotionById } from "../external/notion";
 import pool from "./mysql";
 import { fetchAllFacts } from "../external/facts";
+import slugify from "slugify";
 
 export const syncWritingsToDB = async () => {
     const notionData = await fetchAllWritingsFromNotion();
@@ -18,8 +19,8 @@ export const syncWritingsToDB = async () => {
     for (const writing of notionData) {
         await pool.query(
             `
-            INSERT INTO writings (id, title, tags, created_at, last_updated)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO writings (id, title, slug, tags, created_at, last_updated)
+            VALUES (?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
             title = VALUES(title),
             tags = VALUES(tags),
@@ -28,6 +29,7 @@ export const syncWritingsToDB = async () => {
             [
                 writing.id,
                 writing.title,
+                slugify(writing.title, { lower: true }),
                 JSON.stringify(writing.tags),
                 new Date(writing.createdAt),
                 new Date(writing.lastUpdated),
@@ -51,8 +53,14 @@ export const syncWritingsToDB = async () => {
     }
 };
 
-export const syncWritingContentToDB = async (id: string) => {
-    const writing = await fetchWritingFromNotionById(id);
+export const syncWritingContentToDB = async (idOrSlug: string) => {
+
+    const [rows] = await pool.query(
+        `SELECT id FROM writings WHERE id = ? OR slug = ?`,
+        [idOrSlug, idOrSlug]
+    ) as Array<RowDataPacket[]>;
+
+    const writing = await fetchWritingFromNotionById(rows[0].id);
 
     await pool.query(
         `

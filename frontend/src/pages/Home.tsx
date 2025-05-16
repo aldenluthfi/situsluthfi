@@ -19,6 +19,7 @@ import soloImg from "../assets/images/solo.png";
 import holeboysImg from "../assets/images/holeboys.png";
 import weirdosImg from "../assets/images/weirdos.png";
 import medpropImg from "../assets/images/medprop.png";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ResponsiveTooltip = ({
     children,
@@ -55,6 +56,24 @@ const ResponsiveTooltip = ({
                 {content}
             </PopoverContent>
         </Popover>
+    );
+};
+
+const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
+    const [loaded, setLoaded] = useState(false);
+    return (
+        <div className="relative w-full">
+            {!loaded && (
+                <Skeleton className="absolute inset-0 w-full h-full rounded-xl" />
+            )}
+            <img
+                src={src}
+                alt={alt}
+                className={`rounded-xl w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
+                onLoad={() => setLoaded(true)}
+                draggable={false}
+            />
+        </div>
     );
 };
 
@@ -110,10 +129,9 @@ const Home: React.FC = () => {
                                 <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2">
                                     <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
                                         <div className='px-3 tablet:px-5 overflow-visible'>
-                                            <img
+                                            <ImageWithSkeleton
                                                 src={image.src}
                                                 alt={image.alt}
-                                                className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300 rounded-xl w-full"
                                             />
                                         </div>
                                     </ResponsiveTooltip>

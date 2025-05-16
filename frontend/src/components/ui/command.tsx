@@ -2,7 +2,7 @@ import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
 import { IconSearch } from "@tabler/icons-react"
 
-import { cn } from "@/lib/utils"
+import { cn, isMobile } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
@@ -138,10 +138,10 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "data-[selected=true]:bg-primary-200 data-[selected=true]:text-primary-700",
-        "data-[selected=true]:[&_svg]:!text-primary-700 data-[selected=true]:[&_svg]:!stroke-primary-700",
-        "data-[selected=true]:outline-none",
-        "relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        !isMobile ? "data-[selected=true]:bg-primary-200 data-[selected=true]:text-primary-700" : "",
+        !isMobile ? "data-[selected=true]:[&_svg]:!text-primary-700 data-[selected=true]:[&_svg]:!stroke-primary-700" : "",
+        !isMobile ? "data-[selected=true]:outline-none" : "",
+        "relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

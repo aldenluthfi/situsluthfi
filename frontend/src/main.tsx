@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import License from './pages/License'
 import Writings from './pages/Writings'
 import Writing from './pages/Writing'
+import PageUnderConstruction from './components/custom/PageUnderConstruction'
 
 import ThemeProvider from "@/components/custom/theme-provider"
 import Header from './components/custom/header'
@@ -48,6 +49,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/license" element={<License />} />
             <Route path="/writings" element={<Writings />} />
             <Route path="/writings/:id" element={<Writing />} />
+            <Route path="/gallery" element={<PageUnderConstruction />} />
+            <Route path="/projects" element={<PageUnderConstruction />} />
           </Routes>
           <Footer />
         </Wrapper>

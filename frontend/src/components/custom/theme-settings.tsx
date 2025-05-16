@@ -26,7 +26,7 @@ export function ThemeSettings() {
             type="single"
             value={isOpen ? "settings-toggle" : ""}
             collapsible
-            className={`${isOpen ? "bg-accent" : "duration-500"} rounded-md absolute hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 origin-[50%_11.11%]`}
+            className={`${isOpen ? "bg-accent" : "duration-500"} rounded-md absolute hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 origin-[50%_5%]`}
         >
             <AccordionItem
                 value="settings-toggle"
@@ -44,7 +44,7 @@ export function ThemeSettings() {
                 </AccordionTrigger>
                 <AccordionContent className="p-0">
                     <ThemeSelector />
-                    <IconChevronUp className={`${isMobile ? "" : "hidden"} size-6 m-3`} stroke={1.5} onClick={() => setIsOpen(false)} aria-label="Close" />
+                    <IconChevronUp className={`${isMobile ? "" : "hidden"} mx-auto my-1.5 size-6`} stroke={1.5} onClick={() => setIsOpen(false)} aria-label="Close" />
                 </AccordionContent>
             </AccordionItem>
         </Accordion>

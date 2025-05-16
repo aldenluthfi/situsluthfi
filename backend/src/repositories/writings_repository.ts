@@ -20,6 +20,7 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
         results: rows.map((row) => ({
             id: row.id,
             title: row.title,
+            slug: row.slug,
             tags: row.tags,
             lastUpdated: row.last_updated,
             createdAt: row.created_at,
@@ -31,14 +32,14 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     };
 };
 
-export const getWritingContentByIdFromDB = async (id: string) => {
+export const getWritingContentByIdFromDB = async (idOrSlug: string) => {
     const notionWriting = await pool.query(
         `SELECT
-        wc.id, content, tags, title, last_updated, created_at
+        wc.id, content, tags, title, slug, last_updated, created_at
         FROM writing_content wc
         JOIN writings w ON wc.id = w.id
-        WHERE wc.id = ?`,
-        [id]
+        WHERE wc.id = ? OR w.slug = ?`,
+        [idOrSlug, idOrSlug]
     ) as Array<RowDataPacket[]>;
 
     const writing = (notionWriting[0][0] as WritingContentObject | WritingObject);
@@ -46,6 +47,7 @@ export const getWritingContentByIdFromDB = async (id: string) => {
     return {
         id: writing.id,
         title: (writing as WritingObject).title,
+        slug: (writing as WritingObject).slug,
         tags: (writing as WritingObject).tags,
         content: (writing as WritingContentObject).content,
         lastUpdated: (writing as WritingObject).last_updated,
@@ -53,8 +55,8 @@ export const getWritingContentByIdFromDB = async (id: string) => {
     };
 };
 
-export const syncWritingByIdFromAPI = async (id: string) => {
-    await syncWritingContentToDB(id);
+export const syncWritingByIdFromAPI = async (idOrSlug: string) => {
+    await syncWritingContentToDB(idOrSlug);
 };
 
 export const syncWritingsFromAPI = async () => {

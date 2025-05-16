@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS writings (
   id VARCHAR(255) PRIMARY KEY,
   title VARCHAR(1024) NOT NULL,
+  slug VARCHAR(1024) NOT NULL,
   tags JSON,
   created_at DATETIME,
   last_updated DATETIME

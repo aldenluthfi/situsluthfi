@@ -1,6 +1,7 @@
 export type WritingObject = {
     id: string;
     title: string;
+    slug: string;
     tags: string[];
     createdAt: string;
     lastUpdated: string;
