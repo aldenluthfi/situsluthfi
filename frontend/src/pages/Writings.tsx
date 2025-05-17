@@ -45,7 +45,11 @@ const tagIconMap: Record<string, React.ElementType> = {
 
 const PAGE_SIZE = 5;
 
-export default function Writings() {
+const Writings: React.FC = () => {
+    useEffect(() => {
+        document.title = "aldenluth.fi | Writings";
+    }, []);
+
     const [data, setData] = useState<WritingObject[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
@@ -325,3 +329,5 @@ export default function Writings() {
         </div>
     );
 }
+
+export default Writings;

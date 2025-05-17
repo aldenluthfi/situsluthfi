@@ -7,6 +7,7 @@ import {
     CodeBlockItem,
     type BundledLanguage,
 } from '@/components/ui/kibo-ui/code-block';
+import { useEffect } from 'react';
 
 const license = `# GNU GENERAL PUBLIC LICENSE
 
@@ -684,7 +685,11 @@ applications with the library. If this is what you want to do, use the
 GNU Lesser General Public License instead of this License. But first,
 please read <<https://www.gnu.org/licenses/why-not-lgpl.html>>.`
 
-export default function License() {
+const License: React.FC =  () => {
+    useEffect(() => {
+        document.title = "aldenluth.fi | Writings";
+    }, []);
+
     return <div className='desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 text-justify hyphens-auto'>
         <Markdown
             components={
@@ -779,3 +784,5 @@ export default function License() {
         </Markdown>
     </div>
 }
+
+export default License;

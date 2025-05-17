@@ -88,7 +88,7 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
     );
 }
 
-export default function Writing() {
+const Writing: React.FC = () => {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
 
@@ -103,6 +103,7 @@ export default function Writing() {
 
             const data = await res.json();
             setData(data);
+            document.title = `aldenluth.fi | ${data.title}`;
         } catch (error) {
             console.error("Error fetching writing:", error);
             setData(undefined);
@@ -422,3 +423,5 @@ export default function Writing() {
         </div>
     );
 }
+
+export default Writing;
