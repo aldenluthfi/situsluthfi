@@ -15,10 +15,10 @@ import {
 import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
 import { isMobile } from "@/lib/utils";
-import soloImg from "../assets/images/solo.png";
-import holeboysImg from "../assets/images/holeboys.png";
-import weirdosImg from "../assets/images/weirdos.png";
-import medpropImg from "../assets/images/medprop.png";
+import soloImg from "../assets/images/solo.webp";
+import holeboysImg from "../assets/images/holeboys.webp";
+import weirdosImg from "../assets/images/weirdos.webp";
+import medpropImg from "../assets/images/medprop.webp";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ResponsiveTooltip = ({
@@ -69,7 +69,7 @@ const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string
             <img
                 src={src}
                 alt={alt}
-                className={`rounded-xl w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
+                className={`hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300 rounded-xl w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
                 onLoad={() => setLoaded(true)}
                 draggable={false}
             />
