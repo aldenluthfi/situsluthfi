@@ -54,6 +54,8 @@ export function Header() {
                         size="icon"
                         onClick={() => setOpen(true)}
                         className="hover:bg-accent text-foreground"
+                        aria-label="Search"
+                        title="Search"
                     >
                         <IconSearch className="size-6" stroke={1.5} />
                     </Button>
