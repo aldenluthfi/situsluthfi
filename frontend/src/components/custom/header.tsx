@@ -30,7 +30,7 @@ export function Header() {
                 </div>
 
                 <div className="hidden w-full tablet:flex justify-center font-body-bold text-sm my-auto">
-                    <ul className="-ml-6 -mr-16 tablet:grid gap-6 grid-cols-3">
+                    <ul className="-ml-6 -mr-14 tablet:grid gap-6 grid-cols-3">
                         <li>
                             <Button variant="default" size="default" asChild>
                                 <Link to="/projects">Projects</Link>
