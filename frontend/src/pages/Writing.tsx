@@ -44,17 +44,22 @@ import {
 function ImageWithSkeleton(props: Readonly<React.ImgHTMLAttributes<HTMLImageElement>>) {
     const [loaded, setLoaded] = useState(false);
     return (
-        <div className="flex w-full justify-center">
-            {!loaded && (
-                <Skeleton className="inset-0 rounded-md self-center max-h-[500px] my-4 w-full h-[300px] object-contain" />
+        <div className="flex flex-col w-full items-center">
+            <div className="flex w-full justify-center">
+                {!loaded && (
+                    <Skeleton className="inset-0 rounded-md self-center max-h-[500px] my-4 w-full h-[300px] object-contain" />
+                )}
+                <img
+                    {...props}
+                    onLoad={() => setLoaded(true)}
+                    alt={props.alt ?? ""}
+                    className="rounded-md self-center justify-self-center my-4 max-h-[500px] object-contain"
+                    style={loaded ? {} : { opacity: 0 }}
+                />
+            </div>
+            {props.alt && !/\.(png|jpe?g)$/i.test(props.alt) && (
+                <span className="text-xs text-muted-foreground mt-2 text-center">{props.alt}</span>
             )}
-            <img
-                {...props}
-                onLoad={() => setLoaded(true)}
-                alt={props.alt ?? ""}
-                className="rounded-md self-center justify-self-center my-4 max-h-[500px] object-contain"
-                style={loaded ? {} : { opacity: 0 }}
-            />
         </div>
     );
 }
