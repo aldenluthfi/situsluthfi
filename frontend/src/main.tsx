@@ -48,7 +48,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<Home />} />
             <Route path="/license" element={<License />} />
             <Route path="/writings" element={<Writings />} />
-            <Route path="/writings/:id" element={<Writing />} />
+            <Route path="/writings/:slug" element={<Writing />} />
             <Route path="/gallery" element={<PageUnderConstruction />} />
             <Route path="/projects" element={<PageUnderConstruction />} />
           </Routes>

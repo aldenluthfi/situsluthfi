@@ -53,14 +53,18 @@ export const syncWritingsToDB = async () => {
     }
 };
 
-export const syncWritingContentToDB = async (idOrSlug: string) => {
+export const syncWritingContentToDB = async (slug: string) => {
 
-    const [rows] = await pool.query(
-        `SELECT id FROM writings WHERE id = ? OR slug = ?`,
-        [idOrSlug, idOrSlug]
+    const [[row]] = await pool.query(
+        `SELECT id FROM writings WHERE slug = ?`,
+        [slug]
     ) as Array<RowDataPacket[]>;
 
-    const writing = await fetchWritingFromNotionById(rows[0].id);
+    if (!row) {
+        throw new Error(`Writing with slug "${slug}" not found.`);
+    }
+
+    const writing = await fetchWritingFromNotionById(row.id);
 
     await pool.query(
         `
@@ -77,16 +81,16 @@ export const syncWritingContentToDB = async (idOrSlug: string) => {
 
 const syncAllWritingsContentToDB = async () => {
     const [rows] = await pool.query(
-        `SELECT id FROM writings`
+        `SELECT slug FROM writings`
     ) as Array<RowDataPacket[]>;
 
     console.log(`Syncing content for ${rows.length} writings...`);
 
     for (const row of rows) {
         try {
-            await syncWritingContentToDB(row.id);
+            await syncWritingContentToDB(row.slug);
         } catch (error) {
-            console.error(`Error syncing content for writing ${row.id}:`, error);
+            console.error(`Error syncing content for writing ${row.slug}:`, error);
         }
     }
 };

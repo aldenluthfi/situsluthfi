@@ -15,4 +15,4 @@ RUN chmod +x /init-db.sh && npm run build
 
 EXPOSE 3000
 
-CMD ["/bin/sh", "-c", "/init-db.sh && npm start"]
+CMD ["/bin/sh", "-c", "/init-db.sh && node dist/db/seed.js && npm start"]

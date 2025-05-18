@@ -15,8 +15,8 @@ export const getPaginatedWritings = async (req: Request, res: Response) => {
 
 export const getWritingById = async (req: Request, res: Response) => {
     try {
-        const idOrSlug = req.params.idOrSlug;
-        const result = await getWritingByIdService(idOrSlug);
+        const slug = req.params.slug;
+        const result = await getWritingByIdService(slug);
         res.status(200).json(result);
     } catch (error) {
         console.error("Error fetching writing by ID:", error);
@@ -26,8 +26,8 @@ export const getWritingById = async (req: Request, res: Response) => {
 
 export const syncWritingById = async (req: Request, res: Response) => {
     try {
-        const idOrSlug = req.params.idOrSlug;
-        await syncWritingByIdService(idOrSlug);
+        const slug = req.params.slug;
+        await syncWritingByIdService(slug);
         res.status(200).json({ message: "Writing content synced successfully" });
     } catch (error) {
         console.error("Error syncing writing by ID:", error);

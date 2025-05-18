@@ -99,7 +99,7 @@ const Writing: React.FC = () => {
 
     const fetchWriting = async () => {
         try {
-            const res = await fetch(`/api/writings/${params.id}`);
+            const res = await fetch(`/api/writings/${params.slug}`);
 
             if (!res.ok) {
                 setData(undefined);
@@ -117,7 +117,7 @@ const Writing: React.FC = () => {
 
     const handleSync = async () => {
         try {
-            await fetch(`/api/writings/sync/${params.id}`);
+            await fetch(`/api/writings/sync/${params.slug}`);
             fetchWriting();
         } catch (error) {
             console.error("Error syncing writing on frontend:", error);
@@ -127,7 +127,7 @@ const Writing: React.FC = () => {
     useEffect(() => {
         fetchWriting();
         handleSync();
-    }, [params.id]);
+    }, [params.slug]);
 
     let nextUlIsToc = false;
     let firstLevelToc = false;

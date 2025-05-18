@@ -4,12 +4,12 @@ export const getPaginatedWritingsService = async (pageSize: number, page: number
     return getPaginatedWritingsFromDB(pageSize, page);
 };
 
-export const getWritingByIdService = async (idOrSlug: string) => {
-    return getWritingContentByIdFromDB(idOrSlug);
+export const getWritingByIdService = async (slug: string) => {
+    return getWritingContentByIdFromDB(slug);
 };
 
-export const syncWritingByIdService = async (idOrSlug: string) => {
-    await syncWritingByIdFromAPI(idOrSlug);
+export const syncWritingByIdService = async (slug: string) => {
+    await syncWritingByIdFromAPI(slug);
 };
 
 export const syncWritingsService = async () => {

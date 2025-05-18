@@ -15,6 +15,7 @@ import {
     IconBook,
     IconPhoto
 } from "@tabler/icons-react";
+import { ScrollProgress } from '@/components/animate-ui/components/scroll-progress';
 import * as React from "react";
 
 export function Header() {
@@ -22,7 +23,7 @@ export function Header() {
 
     return (
         <header className="fixed flex z-10 w-screen bg-background justify-center">
-            <nav className="flex justify-between items-start h-20 w-full desktop:w-desktop">
+            <nav className="flex justify-between items-start h-20 pt-1 w-full desktop:w-desktop">
                 <div className="z-30 pl-6 w-48 my-auto">
                     <Link to="/" className="tablet:pl-3 font-heading text-2xl">
                         aldenluth.fi
@@ -93,6 +94,7 @@ export function Header() {
                     <CommandEmpty>No results found.</CommandEmpty>
                 </CommandList>
             </CommandDialog>
+            <ScrollProgress className="bg-primary h-1"/>
         </header>
     );
 }
