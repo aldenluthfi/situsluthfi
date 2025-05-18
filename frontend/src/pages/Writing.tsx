@@ -206,7 +206,7 @@ const Writing: React.FC = () => {
 
                                 isHeader = true;
 
-                                return <h1 {...rest} id={id} className="w-full break-words break-all text-2xl font-heading my-2">{rest.children}</h1>;
+                                return <h1 {...rest} id={id} className="text-2xl font-heading my-2">{rest.children}</h1>;
                             },
                             h2(props) {
                                 const { node, ...rest } = props;
@@ -230,7 +230,7 @@ const Writing: React.FC = () => {
                                     .toLowerCase()
                                     .replace(/\s+/g, '-')
                                     .replace(/[^\w-]+/g, '');
-                                return <h2 {...rest} id={id} className="w-full break-words break-all text-xl font-heading my-4">{rest.children}</h2>;
+                                return <h2 {...rest} id={id} className="text-xl font-heading my-4">{rest.children}</h2>;
                             },
                             h3(props) {
                                 const { node, ...rest } = props;
@@ -254,7 +254,7 @@ const Writing: React.FC = () => {
                                     .toLowerCase()
                                     .replace(/\s+/g, '-')
                                     .replace(/[^\w-]+/g, '');
-                                return <h3 {...rest} id={id} className="w-full break-words break-all text-lg font-heading my-4">{rest.children}</h3>;
+                                return <h3 {...rest} id={id} className="text-lg font-heading my-4">{rest.children}</h3>;
                             },
                             p(props) {
                                 const { node, ...rest } = props
@@ -263,7 +263,7 @@ const Writing: React.FC = () => {
                                     isHeader = false;
                                 }
 
-                                return <div {...rest} className="w-full break-words break-all mb-2.5" />
+                                return <div {...rest} className="mb-2.5" />
                             },
                             a(props) {
                                 const { node, ...rest } = props
@@ -289,13 +289,13 @@ const Writing: React.FC = () => {
                             },
                             strong(props) {
                                 const { node, ...rest } = props
-                                return <strong {...rest} className="w-full break-words break-all font-body-bold">{rest.children}</strong>
+                                return <strong {...rest} className="font-body-bold">{rest.children}</strong>
                             },
                             ul(props) {
                                 const { node, ...rest } = props
 
                                 if (rest.className?.includes("contains-task-list")) {
-                                    return <ul {...rest} className="w-full break-words break-all">{props.children}</ul>
+                                    return <ul {...rest} className="">{props.children}</ul>
                                 }
 
                                 if (nextUlIsToc && !firstLevelToc) {
@@ -307,21 +307,21 @@ const Writing: React.FC = () => {
                                             </CardHeader>
 
                                             <CardContent className="flex flex-col space-y-2">
-                                                <ul {...rest} className="w-full break-words break-all list-none">{props.children}</ul>
+                                                <ul {...rest} className="list-none">{props.children}</ul>
                                             </CardContent>
                                         </Card>
                                     );
                                 } else if (nextUlIsToc && firstLevelToc) {
                                     return (
-                                        <ul {...rest} className="w-full break-words break-all pl-6 list-none">{props.children}</ul>
+                                        <ul {...rest} className="pl-6 list-none">{props.children}</ul>
                                     );
                                 }
 
-                                return <ul {...rest} className="w-full break-words break-all list-disc pl-6 mb-4">{props.children}</ul>
+                                return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
                             },
                             ol(props) {
                                 const { node, ...rest } = props
-                                return <ol {...rest} className="w-full break-words break-all list-decimal pl-6 flex space-y-2 flex-col" />
+                                return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
                             },
                             hr() {
                                 return <Separator className='w-full mb-4 bg-foreground' />
@@ -383,41 +383,41 @@ const Writing: React.FC = () => {
                                 const { node, ...rest } = props
                                 return (
                                     <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50">
-                                        <blockquote className="w-full break-words break-all -mb-4" {...rest}>{props.children}</blockquote>
+                                        <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
                                     </Card>
                                 );
                             },
                             table(props) {
                                 const { node, ...rest } = props;
-                                return <Table {...rest} className="w-full break-words break-all">{props.children}</Table>;
+                                return <Table {...rest} >{props.children}</Table>;
                             },
                             thead(props) {
                                 const { node, ...rest } = props;
-                                return <TableHeader {...rest} className="w-full break-words break-all">{props.children}</TableHeader>;
+                                return <TableHeader {...rest} >{props.children}</TableHeader>;
                             },
                             tbody(props) {
                                 const { node, ...rest } = props;
-                                return <TableBody {...rest} className="w-full break-words break-all">{props.children}</TableBody>;
+                                return <TableBody {...rest} >{props.children}</TableBody>;
                             },
                             tfoot(props) {
                                 const { node, ...rest } = props;
-                                return <TableFooter {...rest} className="w-full break-words break-all">{props.children}</TableFooter>;
+                                return <TableFooter {...rest} >{props.children}</TableFooter>;
                             },
                             tr(props) {
                                 const { node, ...rest } = props;
-                                return <TableRow {...rest} className="w-full break-words break-all">{props.children}</TableRow>;
+                                return <TableRow {...rest} >{props.children}</TableRow>;
                             },
                             th(props) {
                                 const { node, ...rest } = props;
-                                return <TableHead {...rest} className="w-full break-words break-all">{props.children}</TableHead>;
+                                return <TableHead {...rest} >{props.children}</TableHead>;
                             },
                             td(props) {
                                 const { node, ...rest } = props;
-                                return <TableCell {...rest} className="w-full break-words break-all">{props.children}</TableCell>;
+                                return <TableCell {...rest} >{props.children}</TableCell>;
                             },
                             caption(props) {
                                 const { node, ...rest } = props;
-                                return <TableCaption {...rest} className="w-full break-words break-all">{props.children}</TableCaption>;
+                                return <TableCaption {...rest} >{props.children}</TableCaption>;
                             },
                         }}
                     >
