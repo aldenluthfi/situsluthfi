@@ -21,15 +21,16 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkToc from 'remark-toc';
-
 import {
-    VideoPlayer,
-    VideoPlayerContent,
-    VideoPlayerControlBar,
-    VideoPlayerPlayButton,
-    VideoPlayerTimeDisplay,
-    VideoPlayerTimeRange,
-} from '@/components/ui/kibo-ui/video-player';
+    MediaPlayer,
+    MediaPlayerVideo,
+    MediaPlayerControls,
+    MediaPlayerPlay,
+    MediaPlayerTime,
+    MediaPlayerSeek,
+    MediaPlayerVolume,
+    MediaPlayerFullscreen,
+} from "@/components/ui/media-player";
 import {
     Table,
     TableHeader,
@@ -71,11 +72,10 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
             {!loaded && (
                 <Skeleton className="inset-0 rounded-md w-full h-[300px] object-contain" />
             )}
-            <VideoPlayer
-                className="rounded-md self-center justify-self-center"
+            <MediaPlayer
+                className="rounded-md self-center justify-self-center w-full max-w-3xl"
             >
-                <VideoPlayerContent
-                    slot="media"
+                <MediaPlayerVideo
                     src={src}
                     preload="auto"
                     crossOrigin=""
@@ -83,12 +83,14 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
                     onLoadedData={() => setLoaded(true)}
                     style={loaded ? {} : { opacity: 0 }}
                 />
-                <VideoPlayerControlBar>
-                    <VideoPlayerPlayButton />
-                    <VideoPlayerTimeRange />
-                    <VideoPlayerTimeDisplay showDuration />
-                </VideoPlayerControlBar>
-            </VideoPlayer>
+                <MediaPlayerControls>
+                    <MediaPlayerPlay />
+                    <MediaPlayerSeek />
+                    <MediaPlayerTime />
+                    <MediaPlayerVolume expandable/>
+                    <MediaPlayerFullscreen />
+                </MediaPlayerControls>
+            </MediaPlayer>
         </div>
     );
 }
