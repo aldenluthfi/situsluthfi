@@ -1,4 +1,4 @@
-import SlidingTitle from './sliding-title';
+import SlidingTitle from '../components/custom/sliding-title';
 
 const PageUnderConstruction: React.FC = () => {
     return (

@@ -149,9 +149,9 @@ const Writings: React.FC = () => {
                     text="Education · Technology · Philosophy · Arts and Culture · Politics · Mathematics"
                 />
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
-                    and other random stuff,
+                    and other random stuff
                     <br className="ultrawide:hidden" />
-                    my <span className="text-primary font-body-bold">opinions</span> are often wrong
+                    My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>
             <div className="w-full max-w-3xl px-12 flex flex-col gap-6 pb-24">
@@ -219,8 +219,9 @@ const Writings: React.FC = () => {
                                 <CardTitle>
                                     <Skeleton className="h-10 w-full tablet:w-3/4" />
                                 </CardTitle>
-                                <CardDescription>
-                                    <Skeleton className="h-8 w-24 mt-3" />
+                                <CardDescription className="flex gap-2">
+                                    <Skeleton className="h-8 w-24 mt-4" />
+                                    <Skeleton className="h-8 w-24 mt-4" />
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -239,7 +240,7 @@ const Writings: React.FC = () => {
                                     <CardTitle className="font-heading text-3xl">
                                         {item.title}
                                     </CardTitle>
-                                    <CardDescription>
+                                    <CardDescription className="mt-2">
                                         {item.tags && item.tags.length > 0
                                             ? (
                                                 <div className="flex flex-wrap gap-2">
