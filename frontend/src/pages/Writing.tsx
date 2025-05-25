@@ -1,5 +1,5 @@
 import type { WritingContentObject, WritingObject } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
@@ -87,7 +87,7 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
                     <MediaPlayerPlay />
                     <MediaPlayerSeek />
                     <MediaPlayerTime />
-                    <MediaPlayerVolume expandable/>
+                    <MediaPlayerVolume expandable />
                     <MediaPlayerFullscreen />
                 </MediaPlayerControls>
             </MediaPlayer>
@@ -98,6 +98,19 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
 const Writing: React.FC = () => {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
+    const [toc, setToc] = useState<React.ReactNode>(null);
+    const [showFloatingToc, setShowFloatingToc] = useState(false);
+    const tocInlineRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!tocInlineRef.current) return;
+            const rect = tocInlineRef.current.getBoundingClientRect();
+            setShowFloatingToc(rect.bottom < 24);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [toc]);
 
     const fetchWriting = async () => {
         try {
@@ -132,302 +145,319 @@ const Writing: React.FC = () => {
     }, [params.slug]);
 
     let nextUlIsToc = false;
-    let firstLevelToc = false;
+    let nestedToc = false;
     let isHeader = false;
 
     return (
-        <div className='w-screen desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>
-
-            {!data ? (
-                <div className="space-y-4 mb-8">
-                    <Skeleton className="w-3/4 h-10" />
-                    <Skeleton className="w-1/2 h-4 mb-16" />
-                    {
-                        Array.from({ length: 5 }, (_, i) => {
-                            const widths = [
-                                "w-full", "w-11/12", "w-10/12", "w-full", "w-11/12", "w-10/12"
-                            ];
-
-                            const shuffled = [...widths].sort(() => Math.random() - 0.5);
-                            return (
-                                <div className="space-y-4 mb-8" key={i}>
-                                    {shuffled.map((w, j) => (
-                                        <Skeleton key={j + 1} className={`${w} h-6`} />
-                                    ))}
-                                </div>
-                            );
-                        })
-                    }
+        <>
+            {toc && showFloatingToc && (
+                <div
+                    className="hidden desktop:flex fixed h-full items-center"
+                >
+                    <Card className="border-primary-600 bg-primary-200/50 py-4 h-min">
+                        <CardHeader className="-mb-6">
+                            <strong className="font-body-bold">Table of Contents</strong>
+                        </CardHeader>
+                        <CardContent className="flex flex-col space-y-2">
+                            <ul className="list-none">{toc}</ul>
+                        </CardContent>
+                    </Card>
                 </div>
-            ) : (
-                <>
-                    <div className="flex flex-col space-y-4 mb-8">
-                        <h1 className="text-4xl font-heading">{(data as WritingObject)?.title}</h1>
-                        <p className="text-sm text-muted-foreground">
-                            {new Date((data as WritingObject)?.createdAt)
-                                .toLocaleDateString(
-                                    "en-GB",
-                                    {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    }
-                                )}
-                        </p>
-                    </div>
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents' }]]}
-                        rehypePlugins={[[rehypeKatex, { output: "mathml" }]]}
-                        components={{
-                            h1(props) {
-                                const { node, ...rest } = props;
-                                let text = '';
-                                if (typeof rest.children === 'string') {
-                                    text = rest.children;
-                                } else if (Array.isArray(rest.children)) {
-                                    text = rest.children
-                                        .map((child) => {
-                                            if (typeof child === 'string') {
-                                                return child;
-                                            }
-                                            return child.props.children;
-                                        })
-                                        .join('');
-                                }
-                                const id = text
-                                    .toLowerCase()
-                                    .replace(/\s+/g, '-')
-                                    .replace(/[^\w-]+/g, '');
+            )}
+            <div className='w-screen desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>
+                {!data ? (
+                    <div className="space-y-4 mb-8">
+                        <Skeleton className="w-3/4 h-10" />
+                        <Skeleton className="w-1/2 h-4 mb-16" />
+                        {
+                            Array.from({ length: 5 }, (_, i) => {
+                                const widths = [
+                                    "w-full", "w-11/12", "w-10/12", "w-full", "w-11/12", "w-10/12"
+                                ];
 
-                                if (id === "table-of-contents") {
-                                    nextUlIsToc = true;
-                                    return null;
-                                } else if (nextUlIsToc) {
-                                    nextUlIsToc = false;
-                                }
-
-                                isHeader = true;
-
-                                return <h1 {...rest} id={id} className="text-2xl font-heading my-2">{rest.children}</h1>;
-                            },
-                            h2(props) {
-                                const { node, ...rest } = props;
-                                let text = '';
-                                if (typeof rest.children === 'string') {
-                                    text = rest.children;
-                                } else if (Array.isArray(rest.children)) {
-                                    text = rest.children
-                                        .map((child) => {
-                                            if (typeof child === 'string') {
-                                                return child;
-                                            }
-                                            return child.props.children;
-                                        })
-                                        .join('');
-                                }
-
-                                isHeader = true;
-
-                                const id = text
-                                    .toLowerCase()
-                                    .replace(/\s+/g, '-')
-                                    .replace(/[^\w-]+/g, '');
-                                return <h2 {...rest} id={id} className="text-xl font-heading my-4">{rest.children}</h2>;
-                            },
-                            h3(props) {
-                                const { node, ...rest } = props;
-                                let text = '';
-                                if (typeof rest.children === 'string') {
-                                    text = rest.children;
-                                } else if (Array.isArray(rest.children)) {
-                                    text = rest.children
-                                        .map((child) => {
-                                            if (typeof child === 'string') {
-                                                return child;
-                                            }
-                                            return child.props.children;
-                                        })
-                                        .join('');
-                                }
-
-                                isHeader = true;
-
-                                const id = text
-                                    .toLowerCase()
-                                    .replace(/\s+/g, '-')
-                                    .replace(/[^\w-]+/g, '');
-                                return <h3 {...rest} id={id} className="text-lg font-heading my-4">{rest.children}</h3>;
-                            },
-                            p(props) {
-                                const { node, ...rest } = props
-
-                                if (isHeader) {
-                                    isHeader = false;
-                                }
-
-                                return <div {...rest} className="mb-2.5" />
-                            },
-                            a(props) {
-                                const { node, ...rest } = props
-                                const href = rest.href;
-
-                                if (href && /\.(mp4|webm|ogg)/i.test(href)) {
-                                    return <VideoWithSkeleton src={href} />;
-                                }
-
+                                const shuffled = [...widths].sort(() => Math.random() - 0.5);
                                 return (
-                                    <a
-                                        {...rest}
-                                        {...(!href?.startsWith("#") ? { target: "_blank" } : {})}
-                                        rel="noopener noreferrer"
-                                        className="w-full break-words break-all underline text-primary-800"
-                                    >
-                                        {rest.children}
-                                    </a>
+                                    <div className="space-y-4 mb-8" key={i}>
+                                        {shuffled.map((w, j) => (
+                                            <Skeleton key={j + 1} className={`${w} h-6`} />
+                                        ))}
+                                    </div>
                                 );
-                            },
-                            img(props) {
-                                return <ImageWithSkeleton {...props} />;
-                            },
-                            strong(props) {
-                                const { node, ...rest } = props
-                                return <strong {...rest} className="font-body-bold">{rest.children}</strong>
-                            },
-                            ul(props) {
-                                const { node, ...rest } = props
+                            })
+                        }
+                    </div>
+                ) : (
+                    <>
+                        <div className="flex flex-col space-y-4 mb-8">
+                            <h1 className="text-4xl font-heading">{(data as WritingObject)?.title}</h1>
+                            <p className="text-sm text-muted-foreground">
+                                {new Date((data as WritingObject)?.createdAt)
+                                    .toLocaleDateString(
+                                        "en-GB",
+                                        {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        }
+                                    )}
+                            </p>
+                        </div>
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents' }]]}
+                            rehypePlugins={[[rehypeKatex, { output: "mathml" }]]}
+                            components={{
+                                h1(props) {
+                                    const { node, ...rest } = props;
+                                    let text = '';
+                                    if (typeof rest.children === 'string') {
+                                        text = rest.children;
+                                    } else if (Array.isArray(rest.children)) {
+                                        text = rest.children
+                                            .map((child) => {
+                                                if (typeof child === 'string') {
+                                                    return child;
+                                                }
+                                                return child.props.children;
+                                            })
+                                            .join('');
+                                    }
+                                    const id = text
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '-')
+                                        .replace(/[^\w-]+/g, '');
 
-                                if (rest.className?.includes("contains-task-list")) {
-                                    return <ul {...rest} className="">{props.children}</ul>
-                                }
-
-                                if (nextUlIsToc && !firstLevelToc) {
-                                    firstLevelToc = true;
-                                    return (
-                                        <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50">
-                                            <CardHeader className="-mb-6">
-                                                <strong className="font-body-bold">Table of Contents</strong>
-                                            </CardHeader>
-
-                                            <CardContent className="flex flex-col space-y-2">
-                                                <ul {...rest} className="list-none">{props.children}</ul>
-                                            </CardContent>
-                                        </Card>
-                                    );
-                                } else if (nextUlIsToc && firstLevelToc) {
-                                    return (
-                                        <ul {...rest} className="pl-6 list-none">{props.children}</ul>
-                                    );
-                                }
-
-                                return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
-                            },
-                            ol(props) {
-                                const { node, ...rest } = props
-                                return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
-                            },
-                            hr() {
-                                return <Separator className='w-full mb-4 bg-foreground' />
-                            },
-                            code(props) {
-                                const { node, ...rest } = props;
-                                if (isHeader) {
-                                    isHeader = false;
-                                    return <code {...rest} className="text-primary" />;
-                                }
-                                return <code {...rest} className="text-sm text-primary" />;
-                            },
-                            pre(props) {
-                                const { node, ...rest } = props;
-                                let codeString = '';
-                                let language = 'bash';
-                                if (
-                                    rest.children
-                                ) {
-                                    const codeElement = rest.children as React.ReactElement<any>;
-                                    if (typeof codeElement.props.children === 'string') {
-                                        codeString = codeElement.props.children.trim();
+                                    if (id === "table-of-contents") {
+                                        nextUlIsToc = true;
+                                        return null;
+                                    } else if (nextUlIsToc) {
+                                        nextUlIsToc = false;
                                     }
 
-                                    if (typeof codeElement.props.className === 'string') {
-                                        const match = codeElement.props.className.match(/language-(\w+)/);
-                                        if (match) {
-                                            language = match[1];
+                                    isHeader = true;
+
+                                    return <h1 {...rest} id={id} className="text-2xl font-heading my-2">{rest.children}</h1>;
+                                },
+                                h2(props) {
+                                    const { node, ...rest } = props;
+                                    let text = '';
+                                    if (typeof rest.children === 'string') {
+                                        text = rest.children;
+                                    } else if (Array.isArray(rest.children)) {
+                                        text = rest.children
+                                            .map((child) => {
+                                                if (typeof child === 'string') {
+                                                    return child;
+                                                }
+                                                return child.props.children;
+                                            })
+                                            .join('');
+                                    }
+
+                                    isHeader = true;
+
+                                    const id = text
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '-')
+                                        .replace(/[^\w-]+/g, '');
+                                    return <h2 {...rest} id={id} className="text-xl font-heading my-4">{rest.children}</h2>;
+                                },
+                                h3(props) {
+                                    const { node, ...rest } = props;
+                                    let text = '';
+                                    if (typeof rest.children === 'string') {
+                                        text = rest.children;
+                                    } else if (Array.isArray(rest.children)) {
+                                        text = rest.children
+                                            .map((child) => {
+                                                if (typeof child === 'string') {
+                                                    return child;
+                                                }
+                                                return child.props.children;
+                                            })
+                                            .join('');
+                                    }
+
+                                    isHeader = true;
+
+                                    const id = text
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '-')
+                                        .replace(/[^\w-]+/g, '');
+                                    return <h3 {...rest} id={id} className="text-lg font-heading my-4">{rest.children}</h3>;
+                                },
+                                p(props) {
+                                    const { node, ...rest } = props
+
+                                    if (isHeader) {
+                                        isHeader = false;
+                                    }
+
+                                    return <div {...rest} className="mb-2.5" />
+                                },
+                                a(props) {
+                                    const { node, ...rest } = props
+                                    const href = rest.href;
+
+                                    if (href && /\.(mp4|webm|ogg)/i.test(href)) {
+                                        return <VideoWithSkeleton src={href} />;
+                                    }
+
+                                    return (
+                                        <a
+                                            {...rest}
+                                            {...(!href?.startsWith("#") ? { target: "_blank" } : {})}
+                                            rel="noopener noreferrer"
+                                            className="w-full break-words break-all underline text-primary-800"
+                                        >
+                                            {rest.children}
+                                        </a>
+                                    );
+                                },
+                                img(props) {
+                                    return <ImageWithSkeleton {...props} />;
+                                },
+                                strong(props) {
+                                    const { node, ...rest } = props
+                                    return <strong {...rest} className="font-body-bold">{rest.children}</strong>
+                                },
+                                ul(props) {
+                                    const { node, ...rest } = props
+
+                                    if (rest.className?.includes("contains-task-list")) {
+                                        return <ul {...rest} className="">{props.children}</ul>
+                                    }
+
+                                    if (nextUlIsToc && !nestedToc) {
+                                        nestedToc = true;
+                                        if (!toc) setToc(props.children);
+                                        return (
+                                            <div ref={tocInlineRef}>
+                                                <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50" id="table-of-contents">
+                                                    <CardHeader className="-mb-6">
+                                                        <strong className="font-body-bold">Table of Contents</strong>
+                                                    </CardHeader>
+                                                    <CardContent className="flex flex-col space-y-2">
+                                                        <ul {...rest} className="list-none">{props.children}</ul>
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
+                                        );
+                                    } else if (nextUlIsToc && nestedToc) {
+                                        return (
+                                            <ul {...rest} className="pl-6 list-none">{props.children}</ul>
+                                        );
+                                    }
+
+                                    return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
+                                },
+                                ol(props) {
+                                    const { node, ...rest } = props
+                                    return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
+                                },
+                                hr() {
+                                    return <Separator className='w-full mb-4 bg-foreground' />
+                                },
+                                code(props) {
+                                    const { node, ...rest } = props;
+                                    if (isHeader) {
+                                        isHeader = false;
+                                        return <code {...rest} className="text-primary" />;
+                                    }
+                                    return <code {...rest} className="text-sm text-primary" />;
+                                },
+                                pre(props) {
+                                    const { node, ...rest } = props;
+                                    let codeString = '';
+                                    let language = 'bash';
+                                    if (
+                                        rest.children
+                                    ) {
+                                        const codeElement = rest.children as React.ReactElement<any>;
+                                        if (typeof codeElement.props.children === 'string') {
+                                            codeString = codeElement.props.children.trim();
+                                        }
+
+                                        if (typeof codeElement.props.className === 'string') {
+                                            const match = codeElement.props.className.match(/language-(\w+)/);
+                                            if (match) {
+                                                language = match[1];
+                                            }
                                         }
                                     }
-                                }
-                                const result = (
-                                    <CodeBlock
-                                        className="my-4 bg-card border-border"
-                                        value={language}
-                                        data={[
-                                            {
-                                                language,
-                                                filename: "example",
-                                                code: codeString,
-                                            },
-                                        ]}
-                                    >
-                                        <CodeBlockBody>
-                                            {(item) => (
-                                                <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
-                                                    <CodeBlockContent language={item.language as BundledLanguage}>
-                                                        {item.code}
-                                                    </CodeBlockContent>
-                                                </CodeBlockItem>
-                                            )}
-                                        </CodeBlockBody>
-                                    </CodeBlock>
-                                );
+                                    const result = (
+                                        <CodeBlock
+                                            className="my-4 bg-card border-border"
+                                            value={language}
+                                            data={[
+                                                {
+                                                    language,
+                                                    filename: "example",
+                                                    code: codeString,
+                                                },
+                                            ]}
+                                        >
+                                            <CodeBlockBody>
+                                                {(item) => (
+                                                    <CodeBlockItem value={item.language} key={item.language} lineNumbers={false}>
+                                                        <CodeBlockContent language={item.language as BundledLanguage}>
+                                                            {item.code}
+                                                        </CodeBlockContent>
+                                                    </CodeBlockItem>
+                                                )}
+                                            </CodeBlockBody>
+                                        </CodeBlock>
+                                    );
 
-                                return result
-                            },
-                            blockquote(props) {
-                                const { node, ...rest } = props
-                                return (
-                                    <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50">
-                                        <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
-                                    </Card>
-                                );
-                            },
-                            table(props) {
-                                const { node, ...rest } = props;
-                                return <Table {...rest} >{props.children}</Table>;
-                            },
-                            thead(props) {
-                                const { node, ...rest } = props;
-                                return <TableHeader {...rest} >{props.children}</TableHeader>;
-                            },
-                            tbody(props) {
-                                const { node, ...rest } = props;
-                                return <TableBody {...rest} >{props.children}</TableBody>;
-                            },
-                            tfoot(props) {
-                                const { node, ...rest } = props;
-                                return <TableFooter {...rest} >{props.children}</TableFooter>;
-                            },
-                            tr(props) {
-                                const { node, ...rest } = props;
-                                return <TableRow {...rest} >{props.children}</TableRow>;
-                            },
-                            th(props) {
-                                const { node, ...rest } = props;
-                                return <TableHead {...rest} >{props.children}</TableHead>;
-                            },
-                            td(props) {
-                                const { node, ...rest } = props;
-                                return <TableCell {...rest} >{props.children}</TableCell>;
-                            },
-                            caption(props) {
-                                const { node, ...rest } = props;
-                                return <TableCaption {...rest} >{props.children}</TableCaption>;
-                            },
-                        }}
-                    >
-                        {(data as WritingContentObject)?.content.replace("> **Table of Contents**", "# Table of Contents")}
-                    </ReactMarkdown>
-                </>
-            )}
-        </div>
+                                    return result
+                                },
+                                blockquote(props) {
+                                    const { node, ...rest } = props
+                                    return (
+                                        <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50">
+                                            <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
+                                        </Card>
+                                    );
+                                },
+                                table(props) {
+                                    const { node, ...rest } = props;
+                                    return <Table {...rest} >{props.children}</Table>;
+                                },
+                                thead(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableHeader {...rest} >{props.children}</TableHeader>;
+                                },
+                                tbody(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableBody {...rest} >{props.children}</TableBody>;
+                                },
+                                tfoot(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableFooter {...rest} >{props.children}</TableFooter>;
+                                },
+                                tr(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableRow {...rest} >{props.children}</TableRow>;
+                                },
+                                th(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableHead {...rest} >{props.children}</TableHead>;
+                                },
+                                td(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableCell {...rest} >{props.children}</TableCell>;
+                                },
+                                caption(props) {
+                                    const { node, ...rest } = props;
+                                    return <TableCaption {...rest} >{props.children}</TableCaption>;
+                                },
+                            }}
+                        >
+                            {(data as WritingContentObject)?.content.replace("> **Table of Contents**", "# Table of Contents")}
+                        </ReactMarkdown>
+                    </>
+                )}
+            </div>
+        </>
     );
 }
 
