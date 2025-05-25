@@ -35,7 +35,7 @@ export function ThemeSettings() {
             >
                 <AccordionTrigger
                     showIndicator={false}
-                    className="size-9 flex items-center justify-center [&[data-state=open]>svg]:rotate-0 "
+                    className="size-9 flex items-center justify-center [&[data-state=open]>svg]:rotate-0"
                     onClick={handleTriggerClick}
                     aria-label={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}
                     title={mode === "light" ? "Switch to dark mode" : "Switch to light mode"}

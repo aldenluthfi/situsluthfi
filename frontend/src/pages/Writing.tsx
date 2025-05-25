@@ -21,6 +21,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkToc from 'remark-toc';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/animate-ui/radix/accordion"
 import {
     MediaPlayer,
     MediaPlayerVideo,
@@ -41,6 +42,8 @@ import {
     TableCell,
     TableCaption,
 } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { IconChevronRight } from "@tabler/icons-react";
 
 function ImageWithSkeleton(props: Readonly<React.ImgHTMLAttributes<HTMLImageElement>>) {
     const [loaded, setLoaded] = useState(false);
@@ -106,7 +109,8 @@ const Writing: React.FC = () => {
         const handleScroll = () => {
             if (!tocInlineRef.current) return;
             const rect = tocInlineRef.current.getBoundingClientRect();
-            setShowFloatingToc(rect.bottom < 24);
+            const shouldShow = rect.bottom < 80;
+            setShowFloatingToc(shouldShow);
         };
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
@@ -151,17 +155,53 @@ const Writing: React.FC = () => {
     return (
         <>
             {toc && showFloatingToc && (
-                <div
-                    className="hidden desktop:flex fixed h-full items-center"
-                >
-                    <Card className="border-primary-600 bg-primary-200/50 py-4 h-min">
-                        <CardHeader className="-mb-6">
-                            <strong className="font-body-bold">Table of Contents</strong>
-                        </CardHeader>
-                        <CardContent className="flex flex-col space-y-2">
-                            <ul className="list-none">{toc}</ul>
-                        </CardContent>
-                    </Card>
+                <div className="fixed right-0 flex items-center h-full">
+                    <div className="relative right-0 z-50">
+                        <Accordion
+                            type="single"
+                            collapsible
+                            className="flex flex-col items-center w-auto"
+                        >
+                            <AccordionItem value="settings-toggle">
+                                <div className="flex flex-row items-stretch bg-background rounded-md">
+                                    <AccordionTrigger
+                                        chevron={false}
+                                        aria-label="table of contents"
+                                        title="table of contents"
+                                        className="h-full min-h-[4rem] w-12 flex items-center justify-center rounded-l-md border border-primary-600 bg-primary-200/80 hover:bg-primary-200 rounded-r-none border-r-0"
+                                    >
+                                        <IconChevronRight className="size-6" stroke={1.5} />
+                                    </AccordionTrigger>
+                                    <AccordionContent horizontal>
+                                        <Card
+                                            className="border-primary-600 bg-primary-200/50 py-4 h-min max-h-[80vh] rounded-none border-x-0"
+                                        >
+                                            <CardHeader className="-mb-6">
+                                                <strong className="font-body-bold">Table of Contents</strong>
+                                            </CardHeader>
+                                            <CardContent className="flex flex-col space-y-2 h-full">
+                                                <ScrollArea
+                                                    className="max-h-[60vh] w-full pr-2 h-[60vh] floating-toc-ul"
+                                                    showScrollbar={false}
+                                                >
+                                                    <ul className="!pl-0 list-none">{toc}</ul>
+                                                </ScrollArea>
+                                            </CardContent>
+                                        </Card>
+                                        <style>
+                                            {`
+                                            .floating-toc-ul ul {
+                                                padding-left: 1.5rem !important;
+                                                list-style-type: none !important;
+                                                margin-bottom: 0 !important;
+                                            }
+                                            `}
+                                        </style>
+                                    </AccordionContent>
+                                </div>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
                 </div>
             )}
             <div className='w-screen desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>

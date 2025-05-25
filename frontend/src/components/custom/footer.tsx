@@ -104,7 +104,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="bottom-0 flex w-full justify-center bg-primary-200">
+        <footer className="bottom-0 z-100 flex w-full justify-center bg-primary-200">
             <nav className="flex justify-between flex-col w-full desktop:w-desktop p-6">
                 <div className="flex max-tablet:flex-col max-tablet:space-y-4 tablet:justify-between tablet:items-end pb-6">
                     <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
