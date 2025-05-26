@@ -170,26 +170,26 @@ const Writing: React.FC = () => {
                             collapsible
                             className="flex flex-col items-center w-auto"
                         >
-                            <AccordionItem value="settings-toggle">
+                            <AccordionItem value="settings-toggle" className="border-none">
                                 <div className="flex flex-row items-stretch pointer-events-auto">
                                     <AccordionTrigger
                                         chevron={false}
                                         aria-label="table of contents"
                                         title="table of contents"
-                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-md border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
+                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-md text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
                                     <AccordionContent horizontal className="bg-background">
                                         <Card
-                                            className="border-primary-600 bg-primary-200/50 h-min rounded-none border-x-0 pointer-events-auto"
+                                            className="border-primary-600 bg-primary-200/50 h-min mr-4 rounded-l-none border-l-0 pointer-events-auto"
                                         >
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
                                             </CardHeader>
                                             <CardContent className="flex flex-col h-full">
                                                 <ScrollArea
-                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72 desktop:w-96"
+                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72"
                                                     showScrollbar={false}
                                                 >
                                                     <ul className="!pl-0 list-none">{toc}</ul>

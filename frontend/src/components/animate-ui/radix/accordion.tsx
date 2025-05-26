@@ -223,7 +223,7 @@ function AccordionContent({
           >
             <div
               ref={contentRef}
-              className={cn('text-sm !p-0 !m-0', className)}
+              className={cn('text-sm -pb-5', className)}
             >
               {children}
             </div>
