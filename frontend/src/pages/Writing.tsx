@@ -98,6 +98,8 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
     );
 }
 
+const HEADER_OFFSET = 80;
+
 const Writing: React.FC = () => {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
@@ -147,6 +149,31 @@ const Writing: React.FC = () => {
         fetchWriting();
         handleSync();
     }, [params.slug]);
+
+    useEffect(() => {
+        function handleAnchorClick(e: MouseEvent) {
+            const target = e.target as HTMLElement;
+            if (target.tagName === "A") {
+                const anchor = target as HTMLAnchorElement;
+                if (anchor.hash && anchor.hash.startsWith("#")) {
+                    const id = decodeURIComponent(anchor.hash.slice(1));
+                    const el = document.getElementById(id);
+                    if (el) {
+                        e.preventDefault();
+                        const rect = el.getBoundingClientRect();
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        window.scrollTo({
+                            top: rect.top + scrollTop - HEADER_OFFSET,
+                            behavior: "smooth"
+                        });
+                        history.replaceState(null, "", anchor.hash);
+                    }
+                }
+            }
+        }
+        document.addEventListener("click", handleAnchorClick);
+        return () => document.removeEventListener("click", handleAnchorClick);
+    }, []);
 
     let nextUlIsToc = false;
     let nestedToc = false;
