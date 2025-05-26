@@ -180,9 +180,9 @@ const Writing: React.FC = () => {
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
-                                    <AccordionContent horizontal className="bg-background -mr-4 rounded-r-md">
+                                    <AccordionContent horizontal className="bg-background mr-4 rounded-r-md">
                                         <Card
-                                            className="border-primary-600 bg-primary-200/50 h-min mr-4 rounded-l-none border-l-0 pointer-events-auto"
+                                            className="border-primary-600 bg-primary-200/50 h-min rounded-l-none border-l-0 pointer-events-auto"
                                         >
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
