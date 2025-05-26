@@ -155,7 +155,7 @@ const Writing: React.FC = () => {
     return (
         <>
             {toc && showFloatingToc && (
-                <div className="fixed right-0 flex items-center h-full">
+                <div className="fixed right-0 flex items-center h-full pointer-events-none">
                     <div className="relative right-0 z-50">
                         <Accordion
                             type="single"
@@ -163,28 +163,28 @@ const Writing: React.FC = () => {
                             className="flex flex-col items-center w-auto"
                         >
                             <AccordionItem value="settings-toggle">
-                                <div className="flex flex-row items-stretch bg-background rounded-md">
+                                <div className="flex flex-row items-stretch pointer-events-auto">
                                     <AccordionTrigger
                                         chevron={false}
                                         aria-label="table of contents"
                                         title="table of contents"
-                                        className="h-full min-h-[4rem] w-12 flex items-center justify-center rounded-l-md border border-primary-600 bg-primary-200/80 hover:bg-primary-200 rounded-r-none border-r-0"
+                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-md border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
                                     <AccordionContent horizontal>
                                         <Card
-                                            className="border-primary-600 bg-primary-200/50 py-4 h-min max-h-[80vh] rounded-none border-x-0"
+                                            className="border-primary-600 bg-primary-200/50 h-min rounded-none border-x-0 pointer-events-auto"
                                         >
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
                                             </CardHeader>
                                             <CardContent className="flex flex-col space-y-2 h-full">
                                                 <ScrollArea
-                                                    className="max-h-[60vh] w-full pr-2 h-[60vh] floating-toc-ul"
+                                                    className="w-full h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto"
                                                     showScrollbar={false}
                                                 >
-                                                    <ul className="!pl-0 list-none">{toc}</ul>
+                                                    <ul className="!pl-0 list-none whitespace-nowrap">{toc}</ul>
                                                 </ScrollArea>
                                             </CardContent>
                                         </Card>
@@ -194,6 +194,7 @@ const Writing: React.FC = () => {
                                                 padding-left: 1.5rem !important;
                                                 list-style-type: none !important;
                                                 margin-bottom: 0 !important;
+                                                white-space: nowrap !important;
                                             }
                                             `}
                                         </style>

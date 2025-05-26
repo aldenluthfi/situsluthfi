@@ -105,7 +105,7 @@ function AccordionTrigger({
         ref={triggerRef}
         data-slot="accordion-trigger"
         className={cn(
-          'flex flex-1 text-start items-center justify-between py-4 font-medium hover:underline',
+          'flex flex-1 text-start items-center justify-between font-medium hover:underline',
           className,
         )}
         {...props}
@@ -143,6 +143,48 @@ function AccordionContent({
 }: AccordionContentProps) {
   const { isOpen } = useAccordionItem();
 
+  const [stage, setStage] = React.useState(0);
+  const [measured, setMeasured] = React.useState({ width: 0, height: 0 });
+  const contentRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setStage(1);
+    } else {
+      setStage(0);
+    }
+  }, [isOpen, horizontal]);
+
+  // Only measure after content is visible (stage 1)
+  React.useEffect(() => {
+    if (stage === 1 && contentRef.current) {
+      setMeasured({
+        width: contentRef.current.scrollWidth,
+        height: contentRef.current.scrollHeight,
+      });
+    }
+  }, [stage, children, horizontal]);
+
+  React.useEffect(() => {
+    if (stage === 1) {
+      const timeout = setTimeout(() => setStage(2), 180);
+      return () => clearTimeout(timeout);
+    }
+  }, [stage]);
+
+  let animate;
+  if (horizontal) {
+    animate =
+      stage === 1
+        ? { height: measured.height || 'auto', width: 0, opacity: 1, '--mask-stop': '50%' }
+        : { height: measured.height || 'auto', width: 'auto', opacity: 1, '--mask-stop': '100%' };
+  } else {
+    animate =
+      stage === 1
+        ? { width: measured.width || 'auto', height: 0, opacity: 1, '--mask-stop': '50%' }
+        : { width: 'auto', height: measured.height || 'auto', opacity: 1, '--mask-stop': '100%' };
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -152,18 +194,14 @@ function AccordionContent({
             data-slot="accordion-content"
             initial={
               horizontal
-                ? { width: 0, opacity: 0, '--mask-stop': '0%' }
-                : { height: 0, opacity: 0, '--mask-stop': '0%' }
+                ? { height: 0, width: 0, opacity: 0, '--mask-stop': '0%' }
+                : { width: 0, height: 0, opacity: 0, '--mask-stop': '0%' }
             }
-            animate={
-              horizontal
-                ? { width: 'auto', opacity: 1, '--mask-stop': '100%' }
-                : { height: 'auto', opacity: 1, '--mask-stop': '100%' }
-            }
+            animate={animate}
             exit={
               horizontal
-                ? { width: 0, opacity: 0, '--mask-stop': '0%' }
-                : { height: 0, opacity: 0, '--mask-stop': '0%' }
+                ? { height: 0, width: 0, opacity: 0, '--mask-stop': '0%' }
+                : { width: 0, height: 0, opacity: 0, '--mask-stop': '0%' }
             }
             transition={transition}
             style={
@@ -184,7 +222,9 @@ function AccordionContent({
             className={`overflow-hidden ${horizontal ? "h-full" : ""}`}
             {...props}
           >
-            <div className={cn('text-sm', className)}>{children}</div>
+            <div ref={contentRef} className={cn('text-sm', className)}>
+              {children}
+            </div>
           </motion.div>
         </AccordionPrimitive.Content>
       )}
