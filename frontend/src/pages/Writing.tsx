@@ -172,14 +172,14 @@ const Writing: React.FC = () => {
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
-                                    <AccordionContent horizontal>
+                                    <AccordionContent horizontal className="bg-background">
                                         <Card
                                             className="border-primary-600 bg-primary-200/50 h-min rounded-none border-x-0 pointer-events-auto"
                                         >
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
                                             </CardHeader>
-                                            <CardContent className="flex flex-col space-y-2 h-full">
+                                            <CardContent className="flex flex-col h-full">
                                                 <ScrollArea
                                                     className="w-full h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto"
                                                     showScrollbar={false}

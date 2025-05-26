@@ -155,12 +155,11 @@ function AccordionContent({
     }
   }, [isOpen, horizontal]);
 
-  // Only measure after content is visible (stage 1)
   React.useEffect(() => {
     if (stage === 1 && contentRef.current) {
       setMeasured({
         width: contentRef.current.scrollWidth,
-        height: contentRef.current.scrollHeight,
+        height: contentRef.current.scrollHeight - 20,
       });
     }
   }, [stage, children, horizontal]);
@@ -219,10 +218,13 @@ function AccordionContent({
                       'linear-gradient(black var(--mask-stop), transparent var(--mask-stop))',
                   }
             }
-            className={`overflow-hidden ${horizontal ? "h-full" : ""}`}
+            className={`overflow-hidden ${horizontal ? "h-min" : ""}`}
             {...props}
           >
-            <div ref={contentRef} className={cn('text-sm', className)}>
+            <div
+              ref={contentRef}
+              className={cn('text-sm !p-0 !m-0', className)}
+            >
               {children}
             </div>
           </motion.div>
