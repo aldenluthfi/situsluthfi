@@ -687,7 +687,7 @@ please read <<https://www.gnu.org/licenses/why-not-lgpl.html>>.`
 
 const License: React.FC =  () => {
     useEffect(() => {
-        document.title = "aldenluth.fi | Writings";
+        document.title = "aldenluth.fi | License";
     }, []);
 
     return <div className='desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 text-justify hyphens-auto'>
