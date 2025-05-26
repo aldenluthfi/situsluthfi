@@ -179,12 +179,12 @@ const Writing: React.FC = () => {
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
                                             </CardHeader>
-                                            <CardContent className="flex flex-col h-full">
+                                            <CardContent className="flex flex-col h-full min-w-0 overflow-x-hidden text-ellipsis whitespace-nowrap">
                                                 <ScrollArea
-                                                    className="w-full h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto"
+                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72 desktop:w-96 overflow-x-hidden text-ellipsis whitespace-nowrap"
                                                     showScrollbar={false}
                                                 >
-                                                    <ul className="!pl-0 list-none whitespace-nowrap">{toc}</ul>
+                                                    <ul className="!pl-0 list-none whitespace-nowrap text-ellipsis overflow-hidden">{toc}</ul>
                                                 </ScrollArea>
                                             </CardContent>
                                         </Card>
@@ -195,6 +195,14 @@ const Writing: React.FC = () => {
                                                 list-style-type: none !important;
                                                 margin-bottom: 0 !important;
                                                 white-space: nowrap !important;
+                                                text-overflow: ellipsis !important;
+                                                overflow: hidden !important;
+                                            }
+                                            .floating-toc-ul ul li a {
+                                                text-overflow: ellipsis !important;
+                                                overflow: hidden !important;
+                                                white-space: nowrap !important;
+                                                width: calc(100%) !important;
                                             }
                                             `}
                                         </style>
