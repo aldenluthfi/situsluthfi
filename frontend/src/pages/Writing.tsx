@@ -154,9 +154,17 @@ const Writing: React.FC = () => {
 
     return (
         <>
-            {toc && showFloatingToc && (
-                <div className="fixed right-0 flex items-center h-full pointer-events-none">
-                    <div className="relative right-0 z-50">
+            {toc && (
+                <div
+                    className={`fixed right-0 flex items-center h-full z-50 transition-transform duration-300 ease-in-out`}
+                    style={{
+                        transform: showFloatingToc
+                            ? "translateX(0)"
+                            : "translateX(120%)",
+                        pointerEvents: showFloatingToc ? "auto" : "none",
+                    }}
+                >
+                    <div className="relative right-0">
                         <Accordion
                             type="single"
                             collapsible
@@ -179,12 +187,12 @@ const Writing: React.FC = () => {
                                             <CardHeader className="-mb-6">
                                                 <strong className="font-body-bold">Table of Contents</strong>
                                             </CardHeader>
-                                            <CardContent className="flex flex-col h-full min-w-0 overflow-x-hidden text-ellipsis whitespace-nowrap">
+                                            <CardContent className="flex flex-col h-full">
                                                 <ScrollArea
-                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72 desktop:w-96 overflow-x-hidden text-ellipsis whitespace-nowrap"
+                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72 desktop:w-96"
                                                     showScrollbar={false}
                                                 >
-                                                    <ul className="!pl-0 list-none whitespace-nowrap text-ellipsis overflow-hidden">{toc}</ul>
+                                                    <ul className="!pl-0 list-none">{toc}</ul>
                                                 </ScrollArea>
                                             </CardContent>
                                         </Card>
@@ -194,15 +202,6 @@ const Writing: React.FC = () => {
                                                 padding-left: 1.5rem !important;
                                                 list-style-type: none !important;
                                                 margin-bottom: 0 !important;
-                                                white-space: nowrap !important;
-                                                text-overflow: ellipsis !important;
-                                                overflow: hidden !important;
-                                            }
-                                            .floating-toc-ul ul li a {
-                                                text-overflow: ellipsis !important;
-                                                overflow: hidden !important;
-                                                white-space: nowrap !important;
-                                                width: calc(100%) !important;
                                             }
                                             `}
                                         </style>
@@ -356,7 +355,7 @@ const Writing: React.FC = () => {
                                             {...rest}
                                             {...(!href?.startsWith("#") ? { target: "_blank" } : {})}
                                             rel="noopener noreferrer"
-                                            className="w-full break-words break-all underline text-primary-800"
+                                            className={`w-full break-words ${href?.startsWith("#") ? "" : "break-all"} underline text-primary-800`}
                                         >
                                             {rest.children}
                                         </a>
