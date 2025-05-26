@@ -176,11 +176,11 @@ const Writing: React.FC = () => {
                                         chevron={false}
                                         aria-label="table of contents"
                                         title="table of contents"
-                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-lg text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
+                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-xl text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
-                                    <AccordionContent horizontal className="bg-background mr-4 rounded-r-lg">
+                                    <AccordionContent horizontal className="bg-background mr-4 rounded-r-xl">
                                         <Card
                                             className="border-primary-600 bg-primary-200/50 h-min rounded-l-none border-l-0 pointer-events-auto"
                                         >
