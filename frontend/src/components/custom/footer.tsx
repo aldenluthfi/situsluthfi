@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/animate-ui/components/tooltip";
 import { toast } from "sonner";
 import { useState } from 'react';
 import { isMobile } from "@/lib/utils";
@@ -63,35 +63,35 @@ const Footer = () => {
                 .then(response => response.json()
                     .then(data => ({ data, status: response.status }))
                 ),
-                {
-                    loading: <div>
-                        Email Copied!
-                        <div className="!text-sm !font-body !text-muted-foreground">
-                            Fun Fact Loading...
-                        </div>
-                    </div>,
-                    success: ({ data, status }) => ({
-                        message: "Email Copied!",
-                        description: status === 200 ?
-                            <div className="flex flex-col space-y-2 pt-2">
-                                <div className="!text-sm !font-body !text-muted-foreground">
-                                    Fun Fact #{data.id}
-                                </div>
-                                <div className="!text-sm !font-body !text-muted-foreground">
-                                    {data.text}
-                                </div>
-                                <div className="!font-body !text-muted-foreground">
-                                    <a className="underline" href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
-                                </div>
-                            </div> : "",
-                        icon: null
-                    }),
-                    error: () => ({
-                        message: "Email Copied!",
-                    }),
-                    icon: null,
-                    duration: 5000,
-                }
+            {
+                loading: <div>
+                    Email Copied!
+                    <div className="!text-sm !font-body !text-muted-foreground">
+                        Fun Fact Loading...
+                    </div>
+                </div>,
+                success: ({ data, status }) => ({
+                    message: "Email Copied!",
+                    description: status === 200 ?
+                        <div className="flex flex-col space-y-2 pt-2">
+                            <div className="!text-sm !font-body !text-muted-foreground">
+                                Fun Fact #{data.id}
+                            </div>
+                            <div className="!text-sm !font-body !text-muted-foreground">
+                                {data.text}
+                            </div>
+                            <div className="!font-body !text-muted-foreground">
+                                <a className="underline" href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
+                            </div>
+                        </div> : "",
+                    icon: null
+                }),
+                error: () => ({
+                    message: "Email Copied!",
+                }),
+                icon: null,
+                duration: 5000,
+            }
         );
     };
 
@@ -107,67 +107,120 @@ const Footer = () => {
         <footer className="bottom-0 z-100 flex w-full justify-center bg-primary-200">
             <nav className="flex justify-between flex-col w-full desktop:w-desktop p-6">
                 <div className="flex max-tablet:flex-col max-tablet:space-y-4 tablet:justify-between tablet:items-end pb-6">
-                    <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
-                        aldenluth.fi
-                    </Link>
-                    <ul className="flex max-tablet: pl-1.5 tablet:justify-end gap-3">
-                        <li>
-                            {!isMobile ? (
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={copyEmail}
-                                            variant="ghost"
-                                            size="icon"
-                                            aria-label="Email"
-                                            title="Email"
-                                        >
-                                            {iconMap["mail"]}
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>Email</TooltipContent>
-                                </Tooltip>
-                            ) : (
-                                <Button
-                                    onClick={copyEmail}
-                                    variant="ghost"
-                                    size={"icon"}
-                                    aria-label="Email"
-                                    title="Email"
-                                >
-                                    {iconMap["mail"]}
-                                </Button>
-                            )}
-                        </li>
-                        <li className="flex max-tablet:flex-row-reverse gap-3">
-                            {(() => {
-                                if (!isMobile) {
-                                    if (showLinks) {
-                                        return (
-                                            <>
-                                                {links.map(link => (
-                                                    <Tooltip key={link.name}>
-                                                        <TooltipTrigger asChild>
-                                                            <Button
-                                                                asChild
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                aria-label={link.name}
-                                                                title={link.name}
-                                                            >
-                                                                <a
-                                                                    href={link.url}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
+                    <TooltipProvider openDelay={0} closeDelay={0}>
+                        <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
+                            aldenluth.fi
+                        </Link>
+                        <ul className="flex max-tablet: pl-1.5 tablet:justify-end gap-3">
+                            <li>
+                                {!isMobile ? (
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Button
+                                                onClick={copyEmail}
+                                                variant="ghost"
+                                                size="icon"
+                                                aria-label="Email"
+                                                title="Email"
+                                            >
+                                                {iconMap["mail"]}
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>Email</TooltipContent>
+                                    </Tooltip>
+                                ) : (
+                                    <Button
+                                        onClick={copyEmail}
+                                        variant="ghost"
+                                        size={"icon"}
+                                        aria-label="Email"
+                                        title="Email"
+                                    >
+                                        {iconMap["mail"]}
+                                    </Button>
+                                )}
+                            </li>
+                            <li className="flex max-tablet:flex-row-reverse gap-3">
+                                {(() => {
+                                    if (!isMobile) {
+                                        if (showLinks) {
+                                            return (
+                                                <>
+                                                    {links.map(link => (
+                                                        <Tooltip key={link.name}>
+                                                            <TooltipTrigger>
+                                                                <Button
+                                                                    asChild
+                                                                    variant="ghost"
+                                                                    size="icon"
                                                                     aria-label={link.name}
                                                                     title={link.name}
                                                                 >
-                                                                    {iconMap[link.icon]}
-                                                                </a>
-                                                            </Button>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>{link.name}</TooltipContent>
-                                                    </Tooltip>
+                                                                    <a
+                                                                        href={link.url}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        aria-label={link.name}
+                                                                        title={link.name}
+                                                                    >
+                                                                        {iconMap[link.icon]}
+                                                                    </a>
+                                                                </Button>
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>{link.name}</TooltipContent>
+                                                        </Tooltip>
+                                                    ))}
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={handleLinksClose}
+                                                        aria-label="Close"
+                                                        title="Close"
+                                                    >
+                                                        {iconMap["x"]}
+                                                    </Button>
+                                                </>
+                                            );
+                                        } else {
+                                            return (
+                                                <Tooltip>
+                                                    <TooltipTrigger>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size={"icon"}
+                                                            onClick={handleLinksClick}
+                                                            aria-label="Links"
+                                                            title="Links"
+                                                        >
+                                                            {iconMap["link"]}
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>Links</TooltipContent>
+                                                </Tooltip>
+                                            );
+                                        }
+                                    } else if (showLinks) {
+                                        return (
+                                            <>
+                                                {links.map(link => (
+                                                    <Button
+                                                        asChild
+                                                        variant="ghost"
+                                                        size={"icon"}
+                                                        key={link.name}
+                                                        aria-label={link.name}
+                                                        title={link.name}
+                                                    >
+                                                        <a
+                                                            href={link.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label={link.name}
+                                                            title={link.name}
+                                                        >
+                                                            {iconMap[link.icon]}
+                                                        </a>
+                                                    </Button>
                                                 ))}
                                                 <Button
                                                     variant="ghost"
@@ -182,99 +235,53 @@ const Footer = () => {
                                         );
                                     } else {
                                         return (
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size={"icon"}
-                                                        onClick={handleLinksClick}
-                                                        aria-label="Links"
-                                                        title="Links"
-                                                    >
-                                                        {iconMap["link"]}
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>Links</TooltipContent>
-                                            </Tooltip>
+                                            <Button
+                                                variant="ghost"
+                                                size={"icon"}
+                                                onClick={handleLinksClick}
+                                                aria-label="Links"
+                                                title="Links"
+                                            >
+                                                {iconMap["link"]}
+                                            </Button>
                                         );
                                     }
-                                } else if (showLinks) {
-                                    return (
-                                        <>
-                                            {links.map(link => (
-                                                <Button
-                                                    asChild
-                                                    variant="ghost"
-                                                    size={"icon"}
-                                                    key={link.name}
-                                                    aria-label={link.name}
-                                                    title={link.name}
-                                                >
-                                                    <a
-                                                        href={link.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label={link.name}
-                                                        title={link.name}
-                                                    >
-                                                        {iconMap[link.icon]}
-                                                    </a>
-                                                </Button>
-                                            ))}
+                                })()}
+                            </li>
+                            <li>
+                                {!isMobile ? (
+                                    <Tooltip>
+                                        <TooltipTrigger>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                onClick={handleLinksClose}
-                                                aria-label="Close"
-                                                title="Close"
+                                                aria-label="License"
+                                                title="License"
                                             >
-                                                {iconMap["x"]}
+                                                <Link to="/license" aria-label="License" title="License">
+                                                    {iconMap["license"]}
+                                                </Link>
                                             </Button>
-                                        </>
-                                    );
-                                } else {
-                                    return (
-                                        <Button
-                                            variant="ghost"
-                                            size={"icon"}
-                                            onClick={handleLinksClick}
-                                            aria-label="Links"
-                                            title="Links"
-                                        >
-                                            {iconMap["link"]}
+                                        </TooltipTrigger>
+                                        <TooltipContent>License</TooltipContent>
+                                    </Tooltip>
+                                ) : (
+                                    <Link to="/license" aria-label="License" title="License">
+                                        <Button variant="ghost" size={"icon"} aria-label="License" title="License">
+                                            {iconMap["license"]}
                                         </Button>
-                                    );
-                                }
-                            })()}
-                        </li>
-                        <li>
-                            {!isMobile ? (
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Link to="/license" aria-label="License" title="License">
-                                            <Button variant="ghost" size={"icon"} aria-label="License" title="License">
-                                                {iconMap["license"]}
-                                            </Button>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent>License</TooltipContent>
-                                </Tooltip>
-                            ) : (
-                                <Link to="/license" aria-label="License" title="License">
-                                    <Button variant="ghost" size={"icon"} aria-label="License" title="License">
-                                        {iconMap["license"]}
-                                    </Button>
-                                </Link>
-                            )}
-                        </li>
-                    </ul>
+                                    </Link>
+                                )}
+                            </li>
+                        </ul>
+                    </TooltipProvider>
                 </div>
 
                 <Separator className='bg-primary-400' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
                     <p className="max-tablet:px-3 text-sm font-body text-foreground">
-                        <span className="inline-block scale-x-[-1]">&copy;</span> 2025 Alden Luthfi. All rights reversed.
+                        <span className="inline-block scale-x-[-1]">&copy;</span> 2023-2025 Alden Luthfi. All rights reversed.
                     </p>
                 </div>
             </nav>

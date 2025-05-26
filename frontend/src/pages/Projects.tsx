@@ -10,7 +10,7 @@ const Projects: React.FC = () => {
                 Here you can find a growing collection of
             </p>
             <SlidingTitle text="Algorithms · Frameworks · Languages · Experiments · Tech Stacks" />
-            <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mt-6">
+            <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                 I explored in my journey as a developer
                 <br className="ultrawide:hidden" />
                 <span className="text-primary font-body-bold">stay tuned</span> for updates!
