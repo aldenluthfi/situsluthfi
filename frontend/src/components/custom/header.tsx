@@ -4,6 +4,9 @@ import { ThemeSettings } from "@/components/custom/theme-settings";
 import {
     Dialog,
     DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -149,6 +152,10 @@ export function Header() {
                 </div>
             </nav>
             <Dialog open={open} onOpenChange={setOpen}>
+                <DialogHeader className="sr-only">
+                    <DialogTitle>Command Panel</DialogTitle>
+                    <DialogDescription>Search Anything</DialogDescription>
+                </DialogHeader>
                 <DialogContent className="overflow-hidden p-0 max-w-lg">
                     <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 overflow-hidden rounded-md">
                         <div className="flex h-12 items-center gap-2 border-b px-3">
@@ -183,8 +190,8 @@ export function Header() {
                                             <div
                                                 key={item.id}
                                                 className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
-                                                        ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                                        : ''
+                                                    ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                                    : ''
                                                     }`}
                                                 onClick={() => {
                                                     setOpen(false);
@@ -207,8 +214,8 @@ export function Header() {
                             <div className="text-foreground overflow-hidden p-1">
                                 <div
                                     className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
-                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                            : ''
+                                        ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                        : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/projects"; }}
                                     data-slot="button"
@@ -218,8 +225,8 @@ export function Header() {
                                 </div>
                                 <div
                                     className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length + 1
-                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                            : ''
+                                        ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                        : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/writings"; }}
                                     data-slot="button"
@@ -229,8 +236,8 @@ export function Header() {
                                 </div>
                                 <div
                                     className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length + 2
-                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                            : ''
+                                        ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                        : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/gallery"; }}
                                     data-slot="button"

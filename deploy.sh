@@ -18,6 +18,9 @@ docker volume prune -af
 echo "🏗️ Building and starting containers..."
 docker compose up -d --build
 
+echo "🌱 Seeding Data"
+docker exec backend node dist/db/seed.js
+
 echo "🧹 Cleaning up unused Docker resources again..."
 docker system prune -af
 docker volume prune -af
