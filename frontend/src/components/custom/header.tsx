@@ -197,9 +197,10 @@ export function Header() {
                                             </div>
                                         ))}
                                     </div>
-                                    <Separator className="my-2 bg-border" />
                                 </>
                             )}
+
+                            <Separator className="my-2 bg-border" />
 
                             <div className="text-foreground overflow-hidden p-1">
                                 <div
