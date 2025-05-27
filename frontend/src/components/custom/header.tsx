@@ -167,7 +167,7 @@ export function Header() {
                             {searchLoading && (
                                 <div className="py-6 text-center text-sm">Searching...</div>
                             )}
-                            {searchError && (
+                            {searchError && !searchLoading && (
                                 <div className="text-foreground overflow-hidden p-1">
                                     <div className="relative flex cursor-default items-center font-body-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
                                         {searchError}
@@ -175,22 +175,22 @@ export function Header() {
                                 </div>
                             )}
 
-                            {searchResults.length > 0 && (
+                            {!searchLoading && !searchError && searchResults.length > 0 && (
                                 <>
                                     <div className="text-foreground overflow-hidden p-1">
                                         <div className="px-2 pb-2 text-xs text-muted-foreground">Search Results</div>
                                         {searchResults.map((item, index) => (
                                             <div
                                                 key={item.id}
-                                                className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                                    selectedIndex === index
+                                                className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
                                                         ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                         : ''
-                                                }`}
+                                                    }`}
                                                 onClick={() => {
                                                     setOpen(false);
                                                     window.location.href = `/writings/${item.slug}`;
                                                 }}
+                                                data-role="button"
                                             >
                                                 <IconPencil className="size-4" stroke={1.5} />
                                                 {item.title}
@@ -203,34 +203,34 @@ export function Header() {
 
                             <div className="text-foreground overflow-hidden p-1">
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === searchResults.length
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
-                                    }`}
+                                        }`}
                                     onClick={() => { setOpen(false); window.location.href = "/projects"; }}
+                                    data-role="button"
                                 >
                                     <IconFolder className="size-4" stroke={1.5} />
                                     Projects
                                 </div>
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === searchResults.length + 1
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length + 1
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
-                                    }`}
+                                        }`}
                                     onClick={() => { setOpen(false); window.location.href = "/writings"; }}
+                                    data-role="button"
                                 >
                                     <IconBook className="size-4" stroke={1.5} />
                                     Writings
                                 </div>
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === searchResults.length + 2
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length + 2
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
-                                    }`}
+                                        }`}
                                     onClick={() => { setOpen(false); window.location.href = "/gallery"; }}
+                                    data-role="button"
                                 >
                                     <IconPhoto className="size-4" stroke={1.5} />
                                     Gallery
