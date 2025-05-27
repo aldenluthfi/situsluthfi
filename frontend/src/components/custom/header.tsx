@@ -10,7 +10,8 @@ import {
     IconSearch,
     IconFolder,
     IconBook,
-    IconPhoto
+    IconPhoto,
+    IconPencil
 } from "@tabler/icons-react";
 import { ScrollProgress } from '@/components/animate-ui/components/scroll-progress';
 import { useCallback, useRef, useState, useEffect } from "react";
@@ -73,28 +74,28 @@ export function Header() {
     }, [search, searchResults]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        const items = search
-            ? searchResults
-            : [{ type: 'nav', path: '/projects' }, { type: 'nav', path: '/writings' }, { type: 'nav', path: '/gallery' }];
+        const totalItems = searchResults.length + 3;
 
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelectedIndex(prev => (prev + 1) % items.length);
+            setSelectedIndex(prev => (prev + 1) % totalItems);
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
-            setSelectedIndex(prev => prev === 0 ? items.length - 1 : prev - 1);
+            setSelectedIndex(prev => prev === 0 ? totalItems - 1 : prev - 1);
         } else if (e.key === 'Enter') {
             e.preventDefault();
-            if (search && searchResults.length > 0) {
+            if (selectedIndex < searchResults.length) {
                 const selectedItem = searchResults[selectedIndex];
                 if (selectedItem) {
                     setOpen(false);
                     window.location.href = `/writings/${selectedItem.slug}`;
                 }
             } else {
+
                 const navItems = ['/projects', '/writings', '/gallery'];
+                const navIndex = selectedIndex - searchResults.length;
                 setOpen(false);
-                window.location.href = navItems[selectedIndex];
+                window.location.href = navItems[navIndex];
             }
         }
     };
@@ -148,11 +149,11 @@ export function Header() {
                 </div>
             </nav>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="overflow-hidden p-0 max-w-lg">
+                <DialogContent className="overflow-hidden py-0 px-1 max-w-lg">
                     <div className="bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md">
 
                         <div className="flex h-12 items-center gap-2 border-b px-3">
-                            <IconSearch className="size-5" stroke={1.5} />
+                            <IconSearch className="size-4" stroke={1.5} />
                             <input
                                 className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
                                 placeholder="Search..."
@@ -169,19 +170,20 @@ export function Header() {
                             )}
                             {searchError && (
                                 <div className="text-foreground overflow-hidden p-1">
-                                    <div className="relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
+                                    <div className="relative flex cursor-default items-center font-body-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
                                         {searchError}
                                     </div>
                                 </div>
                             )}
-                            {!searchLoading && !searchError && searchResults.length > 0 && (
+
+                            {searchResults.length > 0 && (
                                 <>
                                     <div className="text-foreground overflow-hidden p-1">
-                                        <div className="px-2 py-1.5 text-xs text-muted-foreground">Search Results</div>
+                                        <div className="px-2 pb-2 text-xs text-muted-foreground">Search Results</div>
                                         {searchResults.map((item, index) => (
                                             <div
                                                 key={item.id}
-                                                className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                                className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
                                                     selectedIndex === index
                                                         ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                         : ''
@@ -191,7 +193,7 @@ export function Header() {
                                                     window.location.href = `/writings/${item.slug}`;
                                                 }}
                                             >
-                                                <IconBook className="size-6" stroke={1.5} />
+                                                <IconPencil className="size-4" stroke={1.5} />
                                                 {item.title}
                                             </div>
                                         ))}
@@ -199,39 +201,39 @@ export function Header() {
                                     <Separator className="my-2 bg-border" />
                                 </>
                             )}
-                            
+
                             <div className="text-foreground overflow-hidden p-1">
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === (searchResults.length > 0 ? searchResults.length : 0)
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === searchResults.length
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
                                     }`}
                                     onClick={() => { setOpen(false); window.location.href = "/projects"; }}
                                 >
-                                    <IconFolder className="size-6" stroke={1.5} />
+                                    <IconFolder className="size-4" stroke={1.5} />
                                     Projects
                                 </div>
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === (searchResults.length > 0 ? searchResults.length + 1 : 1)
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === searchResults.length + 1
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
                                     }`}
                                     onClick={() => { setOpen(false); window.location.href = "/writings"; }}
                                 >
-                                    <IconBook className="size-6" stroke={1.5} />
+                                    <IconBook className="size-4" stroke={1.5} />
                                     Writings
                                 </div>
                                 <div
-                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                        selectedIndex === (searchResults.length > 0 ? searchResults.length + 2 : 2)
+                                    className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === searchResults.length + 2
                                             ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                             : ''
                                     }`}
                                     onClick={() => { setOpen(false); window.location.href = "/gallery"; }}
                                 >
-                                    <IconPhoto className="size-6" stroke={1.5} />
+                                    <IconPhoto className="size-4" stroke={1.5} />
                                     Gallery
                                 </div>
                             </div>

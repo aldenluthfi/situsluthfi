@@ -17,4 +17,8 @@ export type WritingContentObject = {
     content: string;
 };
 
-export type WritingContentIndexObject = WritingObject & WritingContentObject;
+type IndexObject = {
+    type: string;
+}
+
+export type WritingContentIndexObject = WritingObject & WritingContentObject & IndexObject;

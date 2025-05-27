@@ -114,16 +114,15 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
         throw new Error(`Writing with slug "${slug}" not found.`);
     }
 
-    console.log(`tags: ${writingRow.tags}`);
-
     await indexWritingContentToES({
         id: writingRow.id,
         content: writingRow.content,
         title: writingRow.title,
         slug: writingRow.slug,
-        tags: JSON.parse(writingRow.tags),
+        tags: writingRow.tags,
         last_updated: writingRow.last_updated,
         created_at: writingRow.created_at,
+        type: "writing",
     });
 
     console.log(`Content indexed to ES for writing: ${writingRow.id}`);
