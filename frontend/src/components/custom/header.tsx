@@ -200,7 +200,9 @@ export function Header() {
                                 </>
                             )}
 
-                            <Separator className="my-2 bg-border" />
+                            {(searchResults.length > 0 || searchLoading || searchError) && (
+                                <Separator className="my-2 bg-border" />
+                            )}
 
                             <div className="text-foreground overflow-hidden p-1">
                                 <div
