@@ -149,9 +149,8 @@ export function Header() {
                 </div>
             </nav>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="overflow-hidden py-0 px-1 max-w-lg">
-                    <div className="bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md">
-
+                <DialogContent className="overflow-hidden p-0 max-w-lg">
+                    <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 overflow-hidden rounded-md">
                         <div className="flex h-12 items-center gap-2 border-b px-3">
                             <IconSearch className="size-4" stroke={1.5} />
                             <input
