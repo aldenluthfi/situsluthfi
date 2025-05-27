@@ -2,13 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeSettings } from "@/components/custom/theme-settings";
 import {
-    CommandDialog,
-    CommandInput,
-    CommandList,
-    CommandEmpty,
-    CommandItem,
-    CommandGroup
-} from "@/components/ui/command";
+    Dialog,
+    DialogContent,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import {
     IconSearch,
     IconFolder,
@@ -20,11 +17,11 @@ import { useCallback, useRef, useState, useEffect } from "react";
 
 export function Header() {
     const [open, setOpen] = useState(false);
-
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchError, setSearchError] = useState<string | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -65,7 +62,45 @@ export function Header() {
             setSearchResults([]);
             setSearchLoading(false);
             setSearchError(null);
+            setSelectedIndex(0);
+        } else {
+            setSelectedIndex(0);
         }
+    }, [open]);
+
+    useEffect(() => {
+        setSelectedIndex(0);
+    }, [search, searchResults]);
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        const items = search
+            ? searchResults
+            : [{ type: 'nav', path: '/projects' }, { type: 'nav', path: '/writings' }, { type: 'nav', path: '/gallery' }];
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setSelectedIndex(prev => (prev + 1) % items.length);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setSelectedIndex(prev => prev === 0 ? items.length - 1 : prev - 1);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (search && searchResults.length > 0) {
+                const selectedItem = searchResults[selectedIndex];
+                if (selectedItem) {
+                    setOpen(false);
+                    window.location.href = `/writings/${selectedItem.slug}`;
+                }
+            } else {
+                const navItems = ['/projects', '/writings', '/gallery'];
+                setOpen(false);
+                window.location.href = navItems[selectedIndex];
+            }
+        }
+    };
+
+    useEffect(() => {
+        setSelectedIndex(0);
     }, [open]);
 
     return (
@@ -112,76 +147,99 @@ export function Header() {
                     </div>
                 </div>
             </nav>
-            <CommandDialog open={open} onOpenChange={setOpen}>
-                <CommandInput
-                    placeholder="Search..."
-                    value={search}
-                    onValueChange={handleSearch}
-                />
-                <CommandList className="py-1">
-                    {search ? (
-                        <>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="overflow-hidden p-0 max-w-lg">
+                    <div className="bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md">
+
+                        <div className="flex h-12 items-center gap-2 border-b px-3">
+                            <IconSearch className="size-5" stroke={1.5} />
+                            <input
+                                className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                placeholder="Search..."
+                                value={search}
+                                onChange={(e) => handleSearch(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                autoFocus
+                            />
+                        </div>
+
+                        <div className="max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto py-1">
                             {searchLoading && (
-                                <CommandGroup>
-                                    <CommandItem disabled>Searching...</CommandItem>
-                                </CommandGroup>
+                                <div className="py-6 text-center text-sm">Searching...</div>
                             )}
                             {searchError && (
-                                <CommandGroup>
-                                    <CommandItem disabled>{searchError}</CommandItem>
-                                </CommandGroup>
+                                <div className="text-foreground overflow-hidden p-1">
+                                    <div className="relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
+                                        {searchError}
+                                    </div>
+                                </div>
                             )}
-                            {searchResults.length > 0 && (
-                                <CommandGroup heading="Arbitrary Results">
-                                    {searchResults.map((item) => (
-                                        <CommandItem
-                                            key={item.id}
-                                            data-slot="button"
-                                            onSelect={() => {
-                                                setOpen(false);
-                                                window.location.href = `/writings/${item.slug}`;
-                                            }}
-                                        >
-                                            <IconBook className="size-4 mr-2" stroke={1.5} />
-                                            {item.title}
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
+                            {!searchLoading && !searchError && searchResults.length > 0 && (
+                                <>
+                                    <div className="text-foreground overflow-hidden p-1">
+                                        <div className="px-2 py-1.5 text-xs text-muted-foreground">Search Results</div>
+                                        {searchResults.map((item, index) => (
+                                            <div
+                                                key={item.id}
+                                                className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                                    selectedIndex === index
+                                                        ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                                        : ''
+                                                }`}
+                                                onClick={() => {
+                                                    setOpen(false);
+                                                    window.location.href = `/writings/${item.slug}`;
+                                                }}
+                                            >
+                                                <IconBook className="size-6" stroke={1.5} />
+                                                {item.title}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Separator className="my-2 bg-border" />
+                                </>
                             )}
-                            {searchResults.length === 0 && (
-                                <CommandEmpty>No results found.</CommandEmpty>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <CommandGroup>
-                                <CommandItem
-                                    data-slot="button"
-                                    onSelect={() => { setOpen(false); window.location.href = "/projects"; }}
+                            
+                            <div className="text-foreground overflow-hidden p-1">
+                                <div
+                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === (searchResults.length > 0 ? searchResults.length : 0)
+                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                            : ''
+                                    }`}
+                                    onClick={() => { setOpen(false); window.location.href = "/projects"; }}
                                 >
-                                    <IconFolder className="size-4 mr-2" stroke={1.5} />
+                                    <IconFolder className="size-6" stroke={1.5} />
                                     Projects
-                                </CommandItem>
-                                <CommandItem
-                                    data-slot="button"
-                                    onSelect={() => { setOpen(false); window.location.href = "/writings"; }}
+                                </div>
+                                <div
+                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === (searchResults.length > 0 ? searchResults.length + 1 : 1)
+                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                            : ''
+                                    }`}
+                                    onClick={() => { setOpen(false); window.location.href = "/writings"; }}
                                 >
-                                    <IconBook className="size-4 mr-2" stroke={1.5} />
+                                    <IconBook className="size-6" stroke={1.5} />
                                     Writings
-                                </CommandItem>
-                                <CommandItem
-                                    data-slot="button"
-                                    onSelect={() => { setOpen(false); window.location.href = "/gallery"; }}
+                                </div>
+                                <div
+                                    className={`relative flex cursor-default items-center font-body-bold gap-2 rounded-sm px-2 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
+                                        selectedIndex === (searchResults.length > 0 ? searchResults.length + 2 : 2)
+                                            ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                            : ''
+                                    }`}
+                                    onClick={() => { setOpen(false); window.location.href = "/gallery"; }}
                                 >
-                                    <IconPhoto className="size-4 mr-2 " stroke={1.5} />
+                                    <IconPhoto className="size-6" stroke={1.5} />
                                     Gallery
-                                </CommandItem>
-                            </CommandGroup>
-                        </>
-                    )}
-                </CommandList>
-            </CommandDialog>
-            <ScrollProgress className="bg-primary h-1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+            <ScrollProgress className="bg-primary h-1" />
         </header>
     );
 }

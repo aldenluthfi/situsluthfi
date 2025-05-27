@@ -27,6 +27,19 @@ function Command({
   )
 }
 
+function CommandLoading({
+  className,
+  ...props
+}: React.ComponentProps<typeof CommandPrimitive.Loading>) {
+  return (
+    <CommandPrimitive.Loading
+      data-slot="command-loading"
+      className="py-6 text-center text-sm"
+      {...props}
+    />
+  )
+}
+
 function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
@@ -60,7 +73,7 @@ function CommandInput({
       data-slot="command-input-wrapper"
       className="flex h-9 items-center gap-2 border-b px-3"
     >
-      <IconSearch className="size-6" stroke={1.5}/>
+      <IconSearch className="size-6" stroke={1.5} />
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
@@ -175,4 +188,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  CommandLoading,
 }

@@ -114,6 +114,8 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
         throw new Error(`Writing with slug "${slug}" not found.`);
     }
 
+    console.log(`tags: ${writingRow.tags}`);
+
     await indexWritingContentToES({
         id: writingRow.id,
         content: writingRow.content,
