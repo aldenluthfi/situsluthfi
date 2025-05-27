@@ -190,7 +190,7 @@ export function Header() {
                                                     setOpen(false);
                                                     window.location.href = `/writings/${item.slug}`;
                                                 }}
-                                                data-role="button"
+                                                data-slot="button"
                                             >
                                                 <IconPencil className="size-4" stroke={1.5} />
                                                 {item.title}
@@ -208,7 +208,7 @@ export function Header() {
                                             : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/projects"; }}
-                                    data-role="button"
+                                    data-slot="button"
                                 >
                                     <IconFolder className="size-4" stroke={1.5} />
                                     Projects
@@ -219,7 +219,7 @@ export function Header() {
                                             : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/writings"; }}
-                                    data-role="button"
+                                    data-slot="button"
                                 >
                                     <IconBook className="size-4" stroke={1.5} />
                                     Writings
@@ -230,7 +230,7 @@ export function Header() {
                                             : ''
                                         }`}
                                     onClick={() => { setOpen(false); window.location.href = "/gallery"; }}
-                                    data-role="button"
+                                    data-slot="button"
                                 >
                                     <IconPhoto className="size-4" stroke={1.5} />
                                     Gallery
