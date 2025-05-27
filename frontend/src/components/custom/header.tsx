@@ -157,7 +157,7 @@ export function Header() {
                     <DialogDescription>Search Anything</DialogDescription>
                 </DialogHeader>
                 <DialogContent className="overflow-hidden p-0 max-w-lg">
-                    <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 overflow-hidden rounded-md">
+                    <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 pb-1 overflow-hidden rounded-md">
                         <div className="flex h-12 items-center gap-2 border-b px-3">
                             <IconSearch className="size-4" stroke={1.5} />
                             <input
@@ -208,7 +208,7 @@ export function Header() {
                             )}
 
                             {(searchResults.length > 0 || searchLoading || searchError) && (
-                                <Separator className="my-2 bg-border" />
+                                <Separator className="my-1 bg-border" />
                             )}
 
                             <div className="text-foreground overflow-hidden p-1">
