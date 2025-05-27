@@ -12,8 +12,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
     viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
+      algorithm: 'brotliCompress',
+      ext: '.br',
       deleteOriginFile: true,
     }),
   ],

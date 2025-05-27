@@ -203,7 +203,7 @@ const Writing: React.FC = () => {
                                         chevron={false}
                                         aria-label="table of contents"
                                         title="table of contents"
-                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-xl text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
+                                        className="relative py-4 z-60 h-full flex items-center justify-center data-[state=closed]:rounded-l-md data-[state=open]:rounded-l-xl text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>

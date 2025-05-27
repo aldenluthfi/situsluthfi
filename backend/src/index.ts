@@ -10,7 +10,13 @@ const app = express();
 const port = "3000";
 
 app.use(cors());
-app.use(compression({ level: 9 }));
+app.use(compression({ 
+    level: 9,
+    brotli: {
+        enabled: true,
+        zlib: {}
+    }
+}));
 
 app.use("/api", router);
 
