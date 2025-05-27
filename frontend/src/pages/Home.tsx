@@ -80,6 +80,27 @@ const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string
 const Home: React.FC = () => {
     useEffect(() => {
         document.title = "aldenluth.fi | Home";
+
+        const images = [soloImg, holeboysImg, weirdosImg, medpropImg];
+        const preloadLinks: HTMLLinkElement[] = [];
+
+        images.forEach(src => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = src;
+            document.head.appendChild(link);
+            preloadLinks.push(link);
+        });
+
+
+        return () => {
+            preloadLinks.forEach(link => {
+                if (document.head.contains(link)) {
+                    document.head.removeChild(link);
+                }
+            });
+        };
     }, []);
 
     return (

@@ -16,10 +16,57 @@ import {
     IconPhoto
 } from "@tabler/icons-react";
 import { ScrollProgress } from '@/components/animate-ui/components/scroll-progress';
-import * as React from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 
 export function Header() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+
+    const [search, setSearch] = useState("");
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchError, setSearchError] = useState<string | null>(null);
+
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    const handleSearch = useCallback((value: string) => {
+        setSearch(value);
+        setSearchLoading(true);
+        setSearchError(null);
+
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+        if (!value) {
+            setSearchResults([]);
+            setSearchLoading(false);
+            return;
+        }
+
+        searchTimeout.current = setTimeout(async () => {
+            try {
+                const res = await fetch(`/api/writings/search?q=${encodeURIComponent(value)}&pagesize=3&page=1`);
+
+                if (!res.ok) throw new Error("Failed to fetch");
+
+                const data = await res.json();
+
+                setSearchResults(data.results || []);
+                setSearchLoading(false);
+                setSearchError(null);
+            } catch (err) {
+                setSearchError("Failed to search");
+                setSearchLoading(false);
+            }
+        }, 200);
+    }, []);
+
+    useEffect(() => {
+        if (!open) {
+            setSearch("");
+            setSearchResults([]);
+            setSearchLoading(false);
+            setSearchError(null);
+        }
+    }, [open]);
 
     return (
         <header className="fixed top-0 flex z-10 w-screen bg-background justify-center">
@@ -66,32 +113,72 @@ export function Header() {
                 </div>
             </nav>
             <CommandDialog open={open} onOpenChange={setOpen}>
-                <CommandInput placeholder="Search..." />
+                <CommandInput
+                    placeholder="Search..."
+                    value={search}
+                    onValueChange={handleSearch}
+                />
                 <CommandList className="py-1">
-                    <CommandGroup>
-                        <CommandItem
-                            data-slot="button"
-                            onSelect={() => { setOpen(false); window.location.href = "/projects"; }}
-                        >
-                            <IconFolder className="size-4 mr-2" stroke={1.5} />
-                            Projects
-                        </CommandItem>
-                        <CommandItem
-                            data-slot="button"
-                            onSelect={() => { setOpen(false); window.location.href = "/writings"; }}
-                        >
-                            <IconBook className="size-4 mr-2" stroke={1.5} />
-                            Writings
-                        </CommandItem>
-                        <CommandItem
-                            data-slot="button"
-                            onSelect={() => { setOpen(false); window.location.href = "/gallery"; }}
-                        >
-                            <IconPhoto className="size-4 mr-2 " stroke={1.5} />
-                            Gallery
-                        </CommandItem>
-                    </CommandGroup>
-                    <CommandEmpty>No results found.</CommandEmpty>
+                    {search ? (
+                        <>
+                            {searchLoading && (
+                                <CommandGroup>
+                                    <CommandItem disabled>Searching...</CommandItem>
+                                </CommandGroup>
+                            )}
+                            {searchError && (
+                                <CommandGroup>
+                                    <CommandItem disabled>{searchError}</CommandItem>
+                                </CommandGroup>
+                            )}
+                            {searchResults.length > 0 && (
+                                <CommandGroup heading="Arbitrary Results">
+                                    {searchResults.map((item) => (
+                                        <CommandItem
+                                            key={item.id}
+                                            data-slot="button"
+                                            onSelect={() => {
+                                                setOpen(false);
+                                                window.location.href = `/writings/${item.slug}`;
+                                            }}
+                                        >
+                                            <IconBook className="size-4 mr-2" stroke={1.5} />
+                                            {item.title}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            )}
+                            {searchResults.length === 0 && (
+                                <CommandEmpty>No results found.</CommandEmpty>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            <CommandGroup>
+                                <CommandItem
+                                    data-slot="button"
+                                    onSelect={() => { setOpen(false); window.location.href = "/projects"; }}
+                                >
+                                    <IconFolder className="size-4 mr-2" stroke={1.5} />
+                                    Projects
+                                </CommandItem>
+                                <CommandItem
+                                    data-slot="button"
+                                    onSelect={() => { setOpen(false); window.location.href = "/writings"; }}
+                                >
+                                    <IconBook className="size-4 mr-2" stroke={1.5} />
+                                    Writings
+                                </CommandItem>
+                                <CommandItem
+                                    data-slot="button"
+                                    onSelect={() => { setOpen(false); window.location.href = "/gallery"; }}
+                                >
+                                    <IconPhoto className="size-4 mr-2 " stroke={1.5} />
+                                    Gallery
+                                </CommandItem>
+                            </CommandGroup>
+                        </>
+                    )}
                 </CommandList>
             </CommandDialog>
             <ScrollProgress className="bg-primary h-1"/>

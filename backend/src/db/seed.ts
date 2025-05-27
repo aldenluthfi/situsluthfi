@@ -1,8 +1,10 @@
 import { RowDataPacket } from "mysql2";
-import { fetchAllWritingsFromNotion, fetchWritingFromNotionById } from "../external/notion";
-import pool from "./mysql";
+import { fetchAllWritingsFromNotion, fetchWritingContentFromNotionById } from "../external/notion";
 import { fetchAllFacts } from "../external/facts";
+import { indexWritingContentToES, deleteWritingContentFromES } from "../external/elasticsearch";
+
 import slugify from "slugify";
+import pool from "./mysql";
 
 export const syncWritingsToDB = async () => {
     const notionData = await fetchAllWritingsFromNotion();
@@ -49,6 +51,10 @@ export const syncWritingsToDB = async () => {
             idsToDelete
         );
 
+        for (const id of idsToDelete) {
+            await deleteWritingContentFromES(id);
+        }
+
         console.log(`Deleted ${idsToDelete.length} writings not present in Notion.`);
     }
 };
@@ -64,7 +70,7 @@ export const syncWritingContentToDB = async (slug: string) => {
         throw new Error(`Writing with slug "${slug}" not found.`);
     }
 
-    const writing = await fetchWritingFromNotionById(row.id);
+    const writing = await fetchWritingContentFromNotionById(row.id);
 
     await pool.query(
         `
@@ -91,6 +97,48 @@ const syncAllWritingsContentToDB = async () => {
             await syncWritingContentToDB(row.slug);
         } catch (error) {
             console.error(`Error syncing content for writing ${row.slug}:`, error);
+        }
+    }
+};
+
+export const indexWritingContentToESBySlug = async (slug: string) => {
+    const [[writingRow]] = await pool.query(
+        `SELECT w.id, w.title, w.slug, w.tags, w.created_at, w.last_updated, wc.content
+         FROM writings w
+         LEFT JOIN writing_content wc ON w.id = wc.id
+         WHERE w.slug = ?`,
+        [slug]
+    ) as Array<RowDataPacket[]>;
+
+    if (!writingRow) {
+        throw new Error(`Writing with slug "${slug}" not found.`);
+    }
+
+    await indexWritingContentToES({
+        id: writingRow.id,
+        content: writingRow.content,
+        title: writingRow.title,
+        slug: writingRow.slug,
+        tags: JSON.parse(writingRow.tags),
+        last_updated: writingRow.last_updated,
+        created_at: writingRow.created_at,
+    });
+
+    console.log(`Content indexed to ES for writing: ${writingRow.id}`);
+};
+
+export const indexAllWritingContentsToES = async () => {
+    const [rows] = await pool.query(
+        `SELECT slug FROM writings`
+    ) as Array<RowDataPacket[]>;
+
+    console.log(`Indexing content for ${rows.length} writings to Elasticsearch...`);
+
+    for (const row of rows) {
+        try {
+            await indexWritingContentToESBySlug(row.slug);
+        } catch (error) {
+            console.error(`Error indexing content for writing ${row.slug}:`, error);
         }
     }
 };
@@ -122,6 +170,8 @@ const syncDatabase = async () => {
         await syncAllWritingsContentToDB();
         await syncAllFactsToDB();
         console.log("Writings synced to DB successfully.");
+        await indexAllWritingContentsToES();
+        console.log("All writings indexed to Elasticsearch successfully.");
     } catch (error) {
         console.error("Error syncing writings to DB:", error);
     }

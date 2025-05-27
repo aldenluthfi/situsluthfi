@@ -107,6 +107,66 @@ const Writing: React.FC = () => {
     const [showFloatingToc, setShowFloatingToc] = useState(false);
     const tocInlineRef = useRef<HTMLDivElement | null>(null);
 
+
+    useEffect(() => {
+        if (!data || !('content' in data)) return;
+
+        const content = (data as WritingContentObject).content;
+        const imageRegex = /!\[.*?\]\((.*?)\)/g;
+        const linkRegex = /\[.*?\]\((.*?\.(?:png|jpe?g|gif|webp|svg))/gi;
+        const preloadLinks: HTMLLinkElement[] = [];
+        const preconnectLinks: HTMLLinkElement[] = [];
+        const addedDomains = new Set<string>();
+
+        const imageUrls = new Set<string>();
+        let match;
+
+        while ((match = imageRegex.exec(content)) !== null) {
+            imageUrls.add(match[1]);
+        }
+
+        while ((match = linkRegex.exec(content)) !== null) {
+            imageUrls.add(match[1]);
+        }
+
+        imageUrls.forEach(src => {
+            try {
+                const url = new URL(src, window.location.origin);
+
+                if (url.origin !== window.location.origin && !addedDomains.has(url.origin)) {
+                    const preconnectLink = document.createElement('link');
+                    preconnectLink.rel = 'preconnect';
+                    preconnectLink.href = url.origin;
+                    document.head.appendChild(preconnectLink);
+                    preconnectLinks.push(preconnectLink);
+                    addedDomains.add(url.origin);
+                }
+
+                const preloadLink = document.createElement('link');
+                preloadLink.rel = 'preload';
+                preloadLink.as = 'image';
+                preloadLink.href = src;
+                document.head.appendChild(preloadLink);
+                preloadLinks.push(preloadLink);
+            } catch {
+                const preloadLink = document.createElement('link');
+                preloadLink.rel = 'preload';
+                preloadLink.as = 'image';
+                preloadLink.href = src;
+                document.head.appendChild(preloadLink);
+                preloadLinks.push(preloadLink);
+            }
+        });
+
+        return () => {
+            [...preloadLinks, ...preconnectLinks].forEach(link => {
+                if (document.head.contains(link)) {
+                    document.head.removeChild(link);
+                }
+            });
+        };
+    }, [data]);
+
     useEffect(() => {
         const handleScroll = () => {
             if (!tocInlineRef.current) return;

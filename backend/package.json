@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@elastic/elasticsearch": "^9.0.2",
     "@notionhq/client": "^2.3.0",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.18",
+    "@types/elasticsearch": "^5.0.43",
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.17",
     "@types/node-fetch": "^2.6.12",

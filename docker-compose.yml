@@ -11,6 +11,9 @@ services:
       - app-network
     depends_on:
       - mysql
+      - elasticsearch
+    ports:
+      - "3000:3000"
 
   frontend:
     build:
@@ -39,9 +42,24 @@ services:
     networks:
       - app-network
 
+  elasticsearch:
+    image: elasticsearch:9.0.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    networks:
+      - app-network
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
   mysql-data:
+  esdata:

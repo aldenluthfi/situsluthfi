@@ -16,3 +16,5 @@ export type WritingContentObject = {
     id: string;
     content: string;
 };
+
+export type WritingContentIndexObject = WritingObject & WritingContentObject;

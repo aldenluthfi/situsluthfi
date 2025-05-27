@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getPaginatedWritingsService, getWritingByIdService, syncWritingByIdService, syncWritingsService } from "../services/writings_service";
+import { getPaginatedWritingsService, getWritingByIdService, syncWritingByIdService, syncWritingsService, searchWritingContentsService } from "../services/writings_service";
 
 export const getPaginatedWritings = async (req: Request, res: Response) => {
     try {
@@ -42,5 +42,21 @@ export const syncWritings = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("Error syncing all writings:", error);
         res.status(500).json({ error: "Failed to sync all writings" });
+    }
+};
+
+export const searchWritingContents = async (req: Request, res: Response) => {
+    try {
+        const query = req.query.q as string;
+        const pageSize = parseInt(req.query.pagesize as string, 10) || 10;
+        const page = parseInt(req.query.page as string, 10) || 1;
+        if (!query) {
+            res.status(400).json({ error: "Missing search query" });
+        }
+        const result = await searchWritingContentsService(query, page, pageSize);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Error searching writing contents:", error);
+        res.status(500).json({ error: "Failed to search writing contents" });
     }
 };
