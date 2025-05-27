@@ -146,7 +146,7 @@ const Writings: React.FC = () => {
                     I usually write about
                 </p>
                 <SlidingTitle
-                    text="Education · Technology · Philosophy · Arts and Culture · Politics · Mathematics"
+                    text="Education · Computer Science · Philosophy · Arts and Culture · Politics · Mathematics"
                 />
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     and other random stuff

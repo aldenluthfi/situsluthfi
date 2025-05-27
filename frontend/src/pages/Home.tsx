@@ -109,17 +109,16 @@ const Home: React.FC = () => {
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     Hello! my name is <span className="text-primary font-body-bold">Luthfi</span>, <span />
                     <br className="ultrawide:hidden" />
-                    but you can call me <span className="text-primary font-body-bold">Upi</span>,
-                    I'm a
+                    but most people call me <span className="text-primary font-body-bold">Upi</span>, I'm a
                 </p>
                 <SlidingTitle
-                    text="Humanitarian Activist · College Student · Teaching Assistant · Graphic Designer"
+                    text="Humanitarian Activist · Creative Overthinker · Teaching Assistant · Snobby Cinephile · Graphic Designer"
                 />
                 <p
                     className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
-                    This site is made <span className="text-primary font-body-bold">as is</span> without <span />
+                    and a <span className="text-primary font-body-bold">computer science</span> student
                     <br className="ultrawide:hidden" />
-                    warranty of any kind.
+                    at Universitas Indonesia
                 </p>
             </div>
 

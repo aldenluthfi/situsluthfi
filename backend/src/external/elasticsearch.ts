@@ -33,10 +33,27 @@ export const searchWritingContentsFromES = async (query: string, page: number = 
                 fields: ["content", "title", "tags"],
                 fuzziness: "AUTO"
             }
+        },
+        highlight: {
+            fields: {
+                content: {
+                    fragment_size: 50,
+                    number_of_fragments: 2,
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                title: {
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                }
+            }
         }
     });
     return {
-        results: result.hits.hits.map(hit => hit._source),
+        results: result.hits.hits.map(hit => ({
+            ...(hit._source ?? {}),
+            highlight: hit.highlight
+        })),
         total: result.hits.total,
         page,
         pageSize,
