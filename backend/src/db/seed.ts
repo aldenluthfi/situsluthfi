@@ -47,7 +47,7 @@ export const syncWritingsToDB = async () => {
         );
 
         await pool.query(
-            `DELETE FROM writing_content WHERE id IN (${idsToDelete.map(() => "?").join(",")})`,
+            `DELETE FROM writing_content WHERE id IN (${idsToDelete.map(() => "?").join(',')})`,
             idsToDelete
         );
 
