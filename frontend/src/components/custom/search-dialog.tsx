@@ -80,7 +80,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
                 const data = await res.json();
 
-                setSearchResults(data.results || []);
+                setSearchResults(data.results ?? []);
                 setHasMore(data.totalPages > 1);
                 setSearchLoading(false);
                 setSearchError(null);
