@@ -6,6 +6,7 @@ import {
     DialogDescription
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { isMobile } from "@/lib/utils";
 import {
     IconSearch,
     IconFolder,
@@ -83,9 +84,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 setHasMore(data.totalPages > 1);
                 setSearchLoading(false);
                 setSearchError(null);
-            } catch (err: any) {
-                if (err.name !== "AbortError") {
-                    setSearchError("Failed to search");
+            } catch (error: any) {
+                if (error.name !== "AbortError" && error !== "new search input") {
+                    setSearchError(`Failed to search, ${error}`);
                     setSearchLoading(false);
                 }
             }
@@ -116,8 +117,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             setCurrentPage(nextPage);
             setHasMore(nextPage < data.totalPages);
             setLoadingMore(false);
-        } catch (err: any) {
-            if (err.name !== "AbortError") {
+        } catch (error: any) {
+            if (error.name !== "AbortError") {
                 setLoadingMore(false);
             }
         }
@@ -215,7 +216,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 <DialogTitle>Command Panel</DialogTitle>
                 <DialogDescription>Search Anything</DialogDescription>
             </DialogHeader>
-            <DialogContent className="overflow-hidden p-0 max-w-lg">
+            <DialogContent className="overflow-hidden p-0 max-w-lg mx-auto w-11/12 desktop:w-full">
                 <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 overflow-hidden rounded-md">
                     <style>{`
                         .search-highlight mark {
@@ -284,9 +285,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                         }}
                                                     />
                                                 </div>
-                                                {index + 1 <= 9 && (
+                                                {index + 1 <= 9 && !isMobile && (
                                                     <kbd
-                                                        className={`ml-auto rounded-sm py-1 px-2 flex gap-1.5 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
+                                                        className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
                                                     >
                                                         <div className="!text-sm">⌘</div> {index + 1}
                                                     </kbd>
@@ -345,9 +346,13 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         >
                                             <Icon className="size-6" stroke={1.5} />
                                             {item.name}
-                                            <kbd className={`ml-auto rounded-sm flex items-center gap-1.5 py-1 px-2 text-xs whitespace-nowrap ${selectedIndex === actualIndex ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}>
-                                                <div className="!text-sm">⌘</div> {item.shortcut}
-                                            </kbd>
+                                            {
+                                                 !isMobile && (
+                                                    <kbd className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === actualIndex ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}>
+                                                        <div className="!text-sm">⌘</div> {item.shortcut}
+                                                    </kbd>
+                                                 )
+                                            }
                                         </div>
                                     );
                                 })}

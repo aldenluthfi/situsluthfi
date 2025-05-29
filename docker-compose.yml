@@ -12,8 +12,6 @@ services:
     depends_on:
       - mysql
       - elasticsearch
-    ports:
-      - "3000:3000"
 
   frontend:
     build:
@@ -54,7 +52,7 @@ services:
     networks:
       - app-network
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - es-data:/usr/share/elasticsearch/data
 
 networks:
   app-network:
@@ -62,4 +60,4 @@ networks:
 
 volumes:
   mysql-data:
-  esdata:
+  es-data:

@@ -84,7 +84,7 @@ const Writings: React.FC = () => {
             await fetch(`/api/writings/sync/`, { signal: controller.signal });
             fetchPage(page);
         } catch (error: any) {
-            if (error.name !== "AbortError") {
+            if (error.name !== "AbortError" && error !== "page changed") {
                 console.error("Error syncing writing:", error);
             }
         }
