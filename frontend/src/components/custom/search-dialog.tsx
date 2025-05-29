@@ -85,7 +85,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 setSearchLoading(false);
                 setSearchError(null);
             } catch (error: any) {
-                if (error.name !== "AbortError" && error !== "new search input") {
+                if (error.name !== 'AbortError' && error !== "new search input") {
                     setSearchError(`Failed to search, ${error}`);
                     setSearchLoading(false);
                 }
