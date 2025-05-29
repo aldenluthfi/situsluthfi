@@ -12,7 +12,7 @@ export const syncWritingsToDB = async () => {
     console.log(`Syncing ${notionData.length} writings...`);
 
     const [dbRows] = await pool.query(
-        `SELECT id FROM writings`
+        "SELECT id FROM writings"
     ) as Array<RowDataPacket[]>;
 
     const dbIds = dbRows.map(row => row.id);
@@ -42,12 +42,12 @@ export const syncWritingsToDB = async () => {
     const idsToDelete = dbIds.filter(id => !notionIds.includes(id));
     if (idsToDelete.length > 0) {
         await pool.query(
-            `DELETE FROM writings WHERE id IN (${idsToDelete.map(() => '?').join(',')})`,
+            `DELETE FROM writings WHERE id IN (${idsToDelete.map(() => "?").join(",")})`,
             idsToDelete
         );
 
         await pool.query(
-            `DELETE FROM writing_content WHERE id IN (${idsToDelete.map(() => '?').join(',')})`,
+            `DELETE FROM writing_content WHERE id IN (${idsToDelete.map(() => "?").join(",")})`,
             idsToDelete
         );
 
@@ -62,7 +62,7 @@ export const syncWritingsToDB = async () => {
 export const syncWritingContentToDB = async (slug: string) => {
 
     const [[row]] = await pool.query(
-        `SELECT id FROM writings WHERE slug = ?`,
+        "SELECT id FROM writings WHERE slug = ?",
         [slug]
     ) as Array<RowDataPacket[]>;
 
@@ -87,7 +87,7 @@ export const syncWritingContentToDB = async (slug: string) => {
 
 const syncAllWritingsContentToDB = async () => {
     const [rows] = await pool.query(
-        `SELECT slug FROM writings`
+        "SELECT slug FROM writings"
     ) as Array<RowDataPacket[]>;
 
     console.log(`Syncing content for ${rows.length} writings...`);
@@ -130,7 +130,7 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
 
 export const indexAllWritingContentsToES = async () => {
     const [rows] = await pool.query(
-        `SELECT slug FROM writings`
+        "SELECT slug FROM writings"
     ) as Array<RowDataPacket[]>;
 
     console.log(`Indexing content for ${rows.length} writings to Elasticsearch...`);

@@ -695,23 +695,23 @@ const License: React.FC =  () => {
             components={
                 {
                     h1(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         return <h1 {...rest} className="text-lg font-body-bold text-center mb-2">{rest.children}</h1>
                     },
                     h2(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         return <h2 {...rest} className="font-body-bold text-center mb-4">{rest.children}</h2>
                     },
                     p(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         return <div {...rest} className="mb-2.5" />
                     },
                     a(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         return <a {...rest} target="_blank" rel="noopener noreferrer" className="underline text-primary-800" >{rest.children}</a>
                     },
                     ul(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         const newChildren = Array.isArray(rest.children)
                             ? rest.children.map(child => {
                                 if (typeof child === 'string') return child
@@ -726,12 +726,12 @@ const License: React.FC =  () => {
                     },
 
                     ol(props) {
-                        const { node, ...rest } = props
+                        const { ...rest } = props
                         return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
                     },
 
                     pre(props) {
-                        const { node, ...rest } = props;
+                        const { ...rest } = props;
                         let codeString = '';
                         let language = 'bash';
                         if (
@@ -740,7 +740,7 @@ const License: React.FC =  () => {
                             'type' in rest.children &&
                             rest.children.type === 'code'
                         ) {
-                            const codeElement = rest.children as React.ReactElement<any>;
+                            const codeElement = rest.children as React.ReactElement<{ children: string; className?: string }>;
                             if (typeof codeElement.props.children === 'string') {
                                 codeString = codeElement.props.children.trim();
                             }

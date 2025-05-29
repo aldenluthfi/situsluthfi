@@ -72,25 +72,25 @@ const Writings: React.FC = () => {
             })
     };
 
-    const handleSync = async () => {
-        if (syncAbortController.current) {
-            syncAbortController.current.abort("page changed");
-        }
-
-        const controller = new AbortController();
-        syncAbortController.current = controller;
-
-        try {
-            await fetch(`/api/writings/sync/`, { signal: controller.signal });
-            fetchPage(page);
-        } catch (error: any) {
-            if (error.name !== "AbortError" && error !== "page changed") {
-                console.error("Error syncing writing:", error);
-            }
-        }
-    };
-
     useEffect(() => {
+        const handleSync = async () => {
+            if (syncAbortController.current) {
+                syncAbortController.current.abort("page changed");
+            }
+
+            const controller = new AbortController();
+            syncAbortController.current = controller;
+
+            try {
+                await fetch(`/api/writings/sync/`, { signal: controller.signal });
+                fetchPage(page);
+            } catch (error: unknown) {
+                if ((error instanceof Error && error.name !== "AbortError") || (typeof error === "string" && error !== "page changed")) {
+                    console.error("Error syncing writing:", error);
+                }
+            }
+        };
+
         fetchPage(page);
         handleSync();
     }, [page]);

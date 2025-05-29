@@ -1,5 +1,5 @@
 import type { WritingContentObject, WritingObject } from "@/lib/types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
@@ -178,7 +178,7 @@ const Writing: React.FC = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [toc]);
 
-    const fetchWriting = async () => {
+    const fetchWriting = useCallback(async () => {
         try {
             const res = await fetch(`/api/writings/${params.slug}`);
 
@@ -194,28 +194,28 @@ const Writing: React.FC = () => {
             console.error("Error fetching writing:", error);
             setData(undefined);
         }
-    };
+    }, [params.slug]);
 
-    const handleSync = async () => {
+    const handleSync = useCallback(async () => {
         try {
             await fetch(`/api/writings/sync/${params.slug}`);
             fetchWriting();
         } catch (error) {
             console.error("Error syncing writing on frontend:", error);
         }
-    };
+    }, [params.slug, fetchWriting]);
 
     useEffect(() => {
         fetchWriting();
         handleSync();
-    }, [params.slug]);
+    }, [fetchWriting, handleSync]);
 
     useEffect(() => {
         function handleAnchorClick(e: MouseEvent) {
             const target = e.target as HTMLElement;
             if (target.tagName === "A") {
                 const anchor = target as HTMLAnchorElement;
-                if (anchor.hash && anchor.hash.startsWith("#")) {
+                if (anchor?.hash?.startsWith("#")) {
                     const id = decodeURIComponent(anchor.hash.slice(1));
                     const el = document.getElementById(id);
                     if (el) {
@@ -342,7 +342,7 @@ const Writing: React.FC = () => {
                             rehypePlugins={[[rehypeKatex, { output: "mathml" }]]}
                             components={{
                                 h1(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     let text = '';
                                     if (typeof rest.children === 'string') {
                                         text = rest.children;
@@ -373,7 +373,7 @@ const Writing: React.FC = () => {
                                     return <h1 {...rest} id={id} className="text-2xl font-heading my-2">{rest.children}</h1>;
                                 },
                                 h2(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     let text = '';
                                     if (typeof rest.children === 'string') {
                                         text = rest.children;
@@ -397,7 +397,7 @@ const Writing: React.FC = () => {
                                     return <h2 {...rest} id={id} className="text-xl font-heading my-4">{rest.children}</h2>;
                                 },
                                 h3(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     let text = '';
                                     if (typeof rest.children === 'string') {
                                         text = rest.children;
@@ -421,7 +421,7 @@ const Writing: React.FC = () => {
                                     return <h3 {...rest} id={id} className="text-lg font-heading my-4">{rest.children}</h3>;
                                 },
                                 p(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
 
                                     if (isHeader) {
                                         isHeader = false;
@@ -430,7 +430,7 @@ const Writing: React.FC = () => {
                                     return <div {...rest} className="mb-2.5" />
                                 },
                                 a(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
                                     const href = rest.href;
 
                                     if (href && /\.(mp4|webm|ogg)/i.test(href)) {
@@ -452,11 +452,11 @@ const Writing: React.FC = () => {
                                     return <ImageWithSkeleton {...props} />;
                                 },
                                 strong(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
                                     return <strong {...rest} className="font-body-bold">{rest.children}</strong>
                                 },
                                 ul(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
 
                                     if (rest.className?.includes("contains-task-list")) {
                                         return <ul {...rest} className="">{props.children}</ul>
@@ -486,14 +486,14 @@ const Writing: React.FC = () => {
                                     return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
                                 },
                                 ol(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
                                     return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
                                 },
                                 hr() {
                                     return <Separator className='w-full mb-4 bg-foreground' />
                                 },
                                 code(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     if (isHeader) {
                                         isHeader = false;
                                         return <code {...rest} className="text-primary" />;
@@ -501,13 +501,13 @@ const Writing: React.FC = () => {
                                     return <code {...rest} className="text-sm text-primary" />;
                                 },
                                 pre(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     let codeString = '';
                                     let language = 'bash';
                                     if (
                                         rest.children
                                     ) {
-                                        const codeElement = rest.children as React.ReactElement<any>;
+                                        const codeElement = rest.children as React.ReactElement<React.ComponentProps<'code'>>;
                                         if (typeof codeElement.props.children === 'string') {
                                             codeString = codeElement.props.children.trim();
                                         }
@@ -546,7 +546,7 @@ const Writing: React.FC = () => {
                                     return result
                                 },
                                 blockquote(props) {
-                                    const { node, ...rest } = props
+                                    const { ...rest } = props
                                     return (
                                         <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50">
                                             <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
@@ -554,35 +554,35 @@ const Writing: React.FC = () => {
                                     );
                                 },
                                 table(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <Table {...rest} >{props.children}</Table>;
                                 },
                                 thead(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableHeader {...rest} >{props.children}</TableHeader>;
                                 },
                                 tbody(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableBody {...rest} >{props.children}</TableBody>;
                                 },
                                 tfoot(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableFooter {...rest} >{props.children}</TableFooter>;
                                 },
                                 tr(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableRow {...rest} >{props.children}</TableRow>;
                                 },
                                 th(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableHead {...rest} >{props.children}</TableHead>;
                                 },
                                 td(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableCell {...rest} >{props.children}</TableCell>;
                                 },
                                 caption(props) {
-                                    const { node, ...rest } = props;
+                                    const { ...rest } = props;
                                     return <TableCaption {...rest} >{props.children}</TableCaption>;
                                 },
                             }}

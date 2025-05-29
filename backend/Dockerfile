@@ -11,7 +11,7 @@ COPY . .
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY init-db.sh /init-db.sh
-RUN chmod +x /init-db.sh && npm run build
+RUN chmod +x /init-db.sh && npm run lint && npm run build
 
 EXPOSE 3000
 

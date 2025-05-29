@@ -15,7 +15,7 @@ export const getPaginatedWritingsFromDB = async (pageSize: number, page: number)
     const [countRows] = await pool.query(
         "SELECT COUNT(*) as total FROM writings"
     );
-    const total = Array.isArray(countRows) && countRows.length > 0 ? (countRows[0] as any).total : 0;
+    const total = Array.isArray(countRows) && countRows.length > 0 ? (countRows[0] as RowDataPacket).total : 0;
 
     return {
         results: rows.map((row) => ({

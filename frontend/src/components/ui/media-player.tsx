@@ -1717,7 +1717,7 @@ const MediaPlayerPlaybackSpeed = React.forwardRef<
           {...playbackSpeedProps}
           ref={forwardedRef}
           className={cn(
-            "h-8 w-16 justify-center border-none aria-expanded:bg-accent aria-[expanded=true]:bg-accent/50 dark:bg-transparent dark:aria-[expanded=true]:bg-accent/50 dark:hover:bg-accent/50 [&[data-size]]:h-8 [&_svg]:hidden",
+            "h-8 w-16 justify-center border-none aria-[expanded=true]:bg-accent/50 dark:bg-transparent dark:aria-[expanded=true]:bg-accent/50 dark:hover:bg-accent/50 [&[data-size]]:h-8 [&_svg]:hidden",
             className,
           )}
         >
