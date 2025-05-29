@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { CopyButton } from '@/components/animate-ui/buttons/copy';
 import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/animate-ui/components/tooltip";
@@ -117,13 +116,15 @@ const Footer = () => {
                                 {!isMobile ? (
                                     <Tooltip>
                                         <TooltipTrigger>
-                                            <CopyButton
+                                            <Button
                                                 onClick={copyEmail}
                                                 variant="ghost"
+                                                size="icon"
                                                 aria-label="Email"
                                                 title="Email"
-                                                copyIcon={IconMail}
-                                            />
+                                            >
+                                                {iconMap["mail"]}
+                                            </Button>
                                         </TooltipTrigger>
                                         <TooltipContent>Email</TooltipContent>
                                     </Tooltip>

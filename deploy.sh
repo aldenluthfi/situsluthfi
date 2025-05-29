@@ -18,6 +18,12 @@ docker volume prune -af
 echo "🏗️ Building and starting containers..."
 docker compose up -d --build
 
+echo "⏳ Waiting for database to be ready..."
+until docker exec backend nc -z db 3306; do
+  echo "Waiting for database connection..."
+  sleep 2
+done
+
 echo "🌱 Seeding Data"
 docker exec backend node dist/db/seed.js
 
