@@ -22,3 +22,48 @@ type IndexObject = {
 }
 
 export type WritingContentIndexObject = WritingObject & WritingContentObject & IndexObject;
+
+export type GitHubRepository = {
+    id: number;
+    name: string;
+    full_name: string;
+    description: string | null;
+    html_url: string;
+    clone_url: string;
+    ssh_url: string;
+    languages_url: string;
+    language: string | null;
+    languages: Record<string, number>;
+    stargazers_count: number;
+    forks_count: number;
+    created_at: string;
+    updated_at: string;
+    pushed_at: string;
+    private: boolean;
+    fork: boolean;
+    archived: boolean;
+    disabled: boolean;
+    topics: string[];
+    default_branch: string;
+    size: number;
+    open_issues_count: number;
+    homepage: string | null;
+    license: {
+        key: string;
+        name: string;
+        url: string | null;
+    } | null;
+};
+
+export type RepositoryIndexObject = {
+    id: number;
+    name: string;
+    description: string | null;
+    languages: Record<string, number>;
+    stargazers_count: number;
+    forks_count: number;
+    topics: string[];
+    created_at: string;
+    updated_at: string;
+    type: string;
+};

@@ -17,3 +17,15 @@ CREATE TABLE IF NOT EXISTS writing_content (
     id VARCHAR(255) PRIMARY KEY,
     content MEDIUMTEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS repositories (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    languages JSON,
+    stargazers_count INT DEFAULT 0,
+    forks_count INT DEFAULT 0,
+    topics JSON,
+    created_at DATETIME,
+    updated_at DATETIME
+);

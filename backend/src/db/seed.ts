@@ -1,7 +1,8 @@
 import { RowDataPacket } from "mysql2";
 import { fetchAllWritingsFromNotion, fetchWritingContentFromNotionById } from "../external/notion";
 import { fetchAllFacts } from "../external/facts";
-import { indexWritingContentToES, deleteWritingContentFromES } from "../external/elasticsearch";
+import { fetchAllRepositories } from "../external/github";
+import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES } from "../external/elasticsearch";
 
 import slugify from "slugify";
 import pool from "./mysql";
@@ -165,16 +166,99 @@ const syncAllFactsToDB = async () => {
     }
 };
 
+export const syncRepositoriesToDB = async () => {
+    const repositories = await fetchAllRepositories();
+
+    console.log(`Syncing ${repositories.length} repositories...`);
+
+    const [dbRows] = await pool.query(
+        "SELECT id FROM repositories"
+    ) as Array<RowDataPacket[]>;
+
+    const dbIds = dbRows.map(row => row.id.toString());
+    const repoIds = repositories.map(repo => repo.id.toString());
+
+    for (const repo of repositories) {
+        await pool.query(
+            `
+            INSERT INTO repositories (id, name, description, languages, stargazers_count, forks_count, topics, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            name = VALUES(name),
+            description = VALUES(description),
+            languages = VALUES(languages),
+            stargazers_count = VALUES(stargazers_count),
+            forks_count = VALUES(forks_count),
+            topics = VALUES(topics),
+            updated_at = VALUES(updated_at)`,
+            [
+                repo.id,
+                repo.name,
+                repo.description,
+                JSON.stringify(repo.languages),
+                repo.stargazers_count,
+                repo.forks_count,
+                JSON.stringify(repo.topics),
+                new Date(repo.created_at),
+                new Date(repo.updated_at),
+            ]
+        );
+    }
+
+    const idsToDelete = dbIds.filter(id => !repoIds.includes(id));
+    if (idsToDelete.length > 0) {
+        await pool.query(
+            `DELETE FROM repositories WHERE id IN (${idsToDelete.map(() => "?").join(",")})`,
+            idsToDelete
+        );
+
+        for (const id of idsToDelete) {
+            await deleteRepositoryFromES(id);
+        }
+
+        console.log(`Deleted ${idsToDelete.length} repositories not present in GitHub.`);
+    }
+};
+
+export const indexAllRepositoriesToES = async () => {
+    const [rows] = await pool.query(
+        "SELECT * FROM repositories"
+    ) as Array<RowDataPacket[]>;
+
+    console.log(`Indexing ${rows.length} repositories to Elasticsearch...`);
+
+    for (const row of rows) {
+        try {
+            await indexRepositoryToES({
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                languages: JSON.parse(row.languages || '{}'),
+                stargazers_count: row.stargazers_count,
+                forks_count: row.forks_count,
+                topics: JSON.parse(row.topics || '[]'),
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+                type: "repository",
+            });
+        } catch (error) {
+            console.error(`Error indexing repository ${row.name}:`, error);
+        }
+    }
+};
+
 const syncDatabase = async () => {
     try {
         await syncWritingsToDB();
         await syncAllWritingsContentToDB();
         await syncAllFactsToDB();
-        console.log("Writings synced to DB successfully.");
+        await syncRepositoriesToDB();
+        console.log("Data synced to DB successfully.");
         await indexAllWritingContentsToES();
-        console.log("All writings indexed to Elasticsearch successfully.");
+        await indexAllRepositoriesToES();
+        console.log("All data indexed to Elasticsearch successfully.");
     } catch (error) {
-        console.error("Error syncing writings to DB:", error);
+        console.error("Error syncing data to DB:", error);
     }
 
 };
