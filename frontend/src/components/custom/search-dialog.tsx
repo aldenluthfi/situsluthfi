@@ -17,8 +17,8 @@ import {
 import { useCallback, useRef, useState, useEffect } from "react";
 
 interface SearchDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
+    readonly open: boolean;
+    readonly onOpenChange: (open: boolean) => void;
 }
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
@@ -45,7 +45,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const filteredNavigationItems = search
         ? navigationItems.filter(item =>
             item.name.toLowerCase().includes(search.toLowerCase())
-          )
+        )
         : navigationItems;
 
     const handleSearch = useCallback((value: string) => {
@@ -125,7 +125,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     }, [search, currentPage, loadingMore, searchResults]);
 
     useEffect(() => {
-        if (!open) {
+        const handleDialogClose = () => {
             setSearch("");
             setSearchResults([]);
             setSearchLoading(false);
@@ -138,8 +138,16 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             if (searchAbortController.current) {
                 searchAbortController.current.abort("dialog closed");
             }
-        } else {
+        };
+
+        const handleDialogOpen = () => {
             setSelectedIndex(0);
+        };
+
+        if (!open) {
+            handleDialogClose();
+        } else {
+            handleDialogOpen();
         }
     }, [open]);
 
@@ -156,11 +164,27 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         }
     }, [selectedIndex]);
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    useEffect(() => {
+        const handleGlobalKeyDown = (e: KeyboardEvent) => {
+            if (open) return;
+
+            if (e.metaKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o')) {
+                e.preventDefault();
+                const navItem = navigationItems.find(item => item.shortcut.toLowerCase() === e.key.toLowerCase());
+                if (navItem) {
+                    window.location.href = navItem.href;
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleGlobalKeyDown);
+        return () => document.removeEventListener('keydown', handleGlobalKeyDown);
+    }, [open]);
+
+    const handleShortcutKey = (e: React.KeyboardEvent) => {
         if (e.metaKey && e.key >= '1' && e.key <= '9') {
             e.preventDefault();
             const shortcutIndex = parseInt(e.key) - 1;
-
             if (shortcutIndex < searchResults.length) {
                 const selectedItem = searchResults[shortcutIndex];
                 if (selectedItem) {
@@ -168,46 +192,75 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     window.location.href = `/writings/${selectedItem.slug}`;
                 }
             }
-            return;
+            return true;
         }
 
-        if (e.metaKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o')) {
+        if (
+            e.metaKey &&
+            ['u', 'i', 'o'].includes(e.key.toLowerCase())
+        ) {
             e.preventDefault();
-            const navItem = navigationItems.find(item => item.shortcut.toLowerCase() === e.key.toLowerCase());
+            const navItem = navigationItems.find(
+                item => item.shortcut.toLowerCase() === e.key.toLowerCase()
+            );
             if (navItem) {
                 onOpenChange(false);
                 window.location.href = navItem.href;
             }
-            return;
+            return true;
         }
+        return false;
+    };
 
-        const seeMoreItems = hasMore ? 1 : 0;
-        const totalItems = searchResults.length + seeMoreItems + filteredNavigationItems.length;
-
+    const handleArrowNavigation = (
+        e: React.KeyboardEvent,
+        totalItems: number
+    ) => {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             setSelectedIndex(prev => (prev + 1) % totalItems);
-        } else if (e.key === 'ArrowUp') {
+            return true;
+        }
+        if (e.key === 'ArrowUp') {
             e.preventDefault();
-            setSelectedIndex(prev => prev === 0 ? totalItems - 1 : prev - 1);
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (selectedIndex < searchResults.length) {
-                const selectedItem = searchResults[selectedIndex];
-                if (selectedItem) {
-                    onOpenChange(false);
-                    window.location.href = `/writings/${selectedItem.slug}`;
-                }
-            } else if (hasMore && selectedIndex === searchResults.length) {
-                loadMoreResults();
-            } else {
-                const navIndex = selectedIndex - searchResults.length - seeMoreItems;
-                if (navIndex < filteredNavigationItems.length) {
-                    onOpenChange(false);
-                    window.location.href = filteredNavigationItems[navIndex].href;
-                }
+            setSelectedIndex(prev => (prev === 0 ? totalItems - 1 : prev - 1));
+            return true;
+        }
+        return false;
+    };
+
+    const handleEnterKey = (
+        e: React.KeyboardEvent,
+        seeMoreItems: number
+    ) => {
+        if (e.key !== 'Enter') return false;
+        e.preventDefault();
+        if (selectedIndex < searchResults.length) {
+            const selectedItem = searchResults[selectedIndex];
+            if (selectedItem) {
+                onOpenChange(false);
+                window.location.href = `/writings/${selectedItem.slug}`;
+            }
+        } else if (hasMore && selectedIndex === searchResults.length) {
+            loadMoreResults();
+        } else {
+            const navIndex = selectedIndex - searchResults.length - seeMoreItems;
+            if (navIndex < filteredNavigationItems.length) {
+                onOpenChange(false);
+                window.location.href = filteredNavigationItems[navIndex].href;
             }
         }
+        return true;
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        const seeMoreItems = hasMore ? 1 : 0;
+        const totalItems =
+            searchResults.length + seeMoreItems + filteredNavigationItems.length;
+
+        if (handleShortcutKey(e)) return;
+        if (handleArrowNavigation(e, totalItems)) return;
+        handleEnterKey(e, seeMoreItems);
     };
 
     return (
@@ -258,68 +311,64 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         )}
 
                         {!searchLoading && !searchError && searchResults.length > 0 && (
-                            <>
-                                <div className="text-foreground overflow-hidden p-1">
-                                    {searchResults.map((item, index) => (
-                                        <div
-                                            key={item.id}
-                                            ref={selectedIndex === index ? selectedItemRef : null}
-                                            className={`relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                                selectedIndex === index
-                                                    ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                                    : ''
+                            <div className="text-foreground overflow-hidden p-1">
+                                {searchResults.map((item, index) => (
+                                    <div
+                                        key={item.id}
+                                        ref={selectedIndex === index ? selectedItemRef : null}
+                                        className={`relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
+                                                ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                                : ''
                                             }`}
-                                            onClick={() => {
-                                                onOpenChange(false);
-                                                window.location.href = `/writings/${item.slug}`;
-                                            }}
-                                            data-slot="button"
-                                        >
-                                            <div className="flex items-center justify-between font-body-bold gap-4">
-                                                <div className="flex items-center gap-4">
-                                                    <IconPencil className="size-6 shrink-0" stroke={1.5} />
-                                                    <span
-                                                        className="search-highlight"
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: item.highlight?.title?.[0] || item.title
-                                                        }}
-                                                    />
-                                                </div>
-                                                {index + 1 <= 9 && !isMobile && (
-                                                    <kbd
-                                                        className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
-                                                    >
-                                                        <div className="!text-sm">⌘</div> {index + 1}
-                                                    </kbd>
-                                                )}
+                                        onClick={() => {
+                                            onOpenChange(false);
+                                            window.location.href = `/writings/${item.slug}`;
+                                        }}
+                                        data-slot="button"
+                                    >
+                                        <div className="flex items-center justify-between font-body-bold gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <IconPencil className="size-6 shrink-0" stroke={1.5} />
+                                                <span
+                                                    className="search-highlight"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: item.highlight?.title?.[0] || item.title
+                                                    }}
+                                                />
                                             </div>
-                                            {item.highlight?.content && (
-                                                <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
-                                                    <span
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: item.highlight.content.join('...')
-                                                        }}
-                                                    />
-                                                </div>
+                                            {index + 1 <= 9 && !isMobile && (
+                                                <kbd
+                                                    className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
+                                                >
+                                                    <div className="!text-sm">⌘</div> {index + 1}
+                                                </kbd>
                                             )}
                                         </div>
-                                    ))}
-                                    {hasMore && (
-                                        <div
-                                            ref={selectedIndex === searchResults.length ? selectedItemRef : null}
-                                            className={`relative flex cursor-default items-center font-body gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                                selectedIndex === searchResults.length
-                                                    ? 'bg-primary-200 text-primary-700'
-                                                    : 'text-muted-foreground'
+                                        {item.highlight?.content && (
+                                            <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
+                                                <span
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: item.highlight.content.join('...')
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                {hasMore && (
+                                    <div
+                                        ref={selectedIndex === searchResults.length ? selectedItemRef : null}
+                                        className={`relative flex cursor-default items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
+                                                ? 'bg-primary-200 text-primary-700'
+                                                : 'text-muted-foreground'
                                             }`}
-                                            onClick={loadMoreResults}
-                                            data-slot="button"
-                                        >
-                                            {loadingMore ? "Loading..." : "See more..."}
-                                        </div>
-                                    )}
-                                </div>
-                            </>
+                                        onClick={loadMoreResults}
+                                        data-slot="button"
+                                    >
+                                        {loadingMore ? "Loading..." : "See more..."}
+                                    </div>
+                                )}
+                            </div>
                         )}
 
                         {(searchResults.length > 0 || searchLoading || searchError) && filteredNavigationItems.length > 0 && (
@@ -336,22 +385,21 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={item.name}
                                             ref={selectedIndex === actualIndex ? selectedItemRef : null}
-                                            className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${
-                                                selectedIndex === actualIndex
+                                            className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
-                                            }`}
+                                                }`}
                                             onClick={() => { onOpenChange(false); window.location.href = item.href; }}
                                             data-slot="button"
                                         >
                                             <Icon className="size-6" stroke={1.5} />
                                             {item.name}
                                             {
-                                                 !isMobile && (
+                                                !isMobile && (
                                                     <kbd className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === actualIndex ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}>
                                                         <div className="!text-sm">⌘</div> {item.shortcut}
                                                     </kbd>
-                                                 )
+                                                )
                                             }
                                         </div>
                                     );
