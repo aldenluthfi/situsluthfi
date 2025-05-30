@@ -16,7 +16,7 @@ export const searchUniversal = async (req: Request, res: Response) => {
         res.status(200).json(results);
     } catch (error) {
         console.error("Error in universal search:", error);
-        if (error instanceof Error && error.message === 'Search query is required') {
+        if (error instanceof Error && error.message === "Search query is required") {
             res.status(400).json({ error: error.message });
         } else {
             res.status(500).json({ error: "Failed to perform search" });
@@ -39,7 +39,7 @@ export const searchWritings = async (req: Request, res: Response) => {
         res.status(200).json(results);
     } catch (error) {
         console.error("Error in writings search:", error);
-        if (error instanceof Error && error.message === 'Search query is required') {
+        if (error instanceof Error && error.message === "Search query is required") {
             res.status(400).json({ error: error.message });
         } else {
             res.status(500).json({ error: "Failed to search writings" });
@@ -62,7 +62,7 @@ export const searchRepositories = async (req: Request, res: Response) => {
         res.status(200).json(results);
     } catch (error) {
         console.error("Error in repositories search:", error);
-        if (error instanceof Error && error.message === 'Search query is required') {
+        if (error instanceof Error && error.message === "Search query is required") {
             res.status(400).json({ error: error.message });
         } else {
             res.status(500).json({ error: "Failed to search repositories" });

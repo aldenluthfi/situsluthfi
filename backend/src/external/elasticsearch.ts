@@ -198,13 +198,13 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
     const writingsResults = writingsResult.hits.hits.map(hit => ({
         ...(hit._source ?? {}),
         highlight: hit.highlight,
-        _type: 'writing'
+        _type: "writing"
     }));
 
     const repositoriesResults = repositoriesResult.hits.hits.map(hit => ({
         ...(hit._source ?? {}),
         highlight: hit.highlight,
-        _type: 'repository'
+        _type: "repository"
     }));
 
     const combinedResults = [...writingsResults, ...repositoriesResults];
