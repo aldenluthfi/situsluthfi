@@ -2,13 +2,17 @@ import { Client } from "@elastic/elasticsearch";
 import { WritingContentIndexObject } from "../lib/types";
 
 const client = new Client({
-    node: process.env.ELASTICSEARCH_URL || "http://elasticsearch:9200"
+    node: process.env.ELASTICSEARCH_URL
 });
-const INDEX = process.env.ELASTICSEARCH_INDEX || "writings";
+const WRITINGS_INDEX = process.env.ELASTICSEARCH_WRITINGS_INDEX;
+
+if (!WRITINGS_INDEX) {
+    throw new Error("ELASTICSEARCH_WRITINGS_INDEX is not set");
+}
 
 export const indexWritingContentToES = async (writing: WritingContentIndexObject) => {
     await client.index({
-        index: INDEX,
+        index: WRITINGS_INDEX,
         id: writing.id,
         document: writing,
     });
@@ -16,7 +20,7 @@ export const indexWritingContentToES = async (writing: WritingContentIndexObject
 
 export const deleteWritingContentFromES = async (id: string) => {
     await client.delete({
-        index: INDEX,
+        index: WRITINGS_INDEX,
         id,
     }, { ignore: [404] });
 };
@@ -24,7 +28,6 @@ export const deleteWritingContentFromES = async (id: string) => {
 export const searchWritingContentsFromES = async (query: string, page: number = 1, pageSize: number = 10) => {
     const from = (page - 1) * pageSize;
     const result = await client.search({
-        index: INDEX,
         from,
         size: pageSize,
         query: {

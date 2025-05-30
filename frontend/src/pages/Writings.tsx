@@ -155,59 +155,61 @@ const Writings: React.FC = () => {
                 </p>
             </div>
             <div className="w-full max-w-3xl px-12 flex flex-col gap-6 pb-24">
-                <div className="flex justify-center">
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        if (page > 1) setPageParam(page - 1);
-                                    }}
-                                    isActive={false}
-                                    aria-disabled={page === 1}
-                                    tabIndex={page === 1 ? -1 : 0}
-                                />
-                            </PaginationItem>
-                            {getPaginationItems().map((item, i) =>
-                                item === "..." ? (
-                                    <PaginationItem key={`ellipsis-${i + 1}`}>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                ) : (
-                                    <PaginationItem key={i + 1}>
-                                        <PaginationLink
-                                            href="#"
-                                            isActive={item === page}
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                if (item !== page) setPageParam(Number(item));
-                                            }}
-                                            className="text-foreground no-underline hover:no-underline"
-                                            aria-current={item === page ? "page" : undefined}
-                                            tabIndex={item === page ? -1 : 0}
-                                        >
-                                            {item}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                )
-                            )}
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        if (page < totalPages) setPageParam(page + 1);
-                                    }}
-                                    isActive={false}
-                                    aria-disabled={page === totalPages}
-                                    tabIndex={page === totalPages ? -1 : 0}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
-                </div>
+                {!loading && (
+                    <div className="flex justify-center">
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        href="#"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            if (page > 1) setPageParam(page - 1);
+                                        }}
+                                        isActive={false}
+                                        aria-disabled={page === 1}
+                                        tabIndex={page === 1 ? -1 : 0}
+                                    />
+                                </PaginationItem>
+                                {getPaginationItems().map((item, i) =>
+                                    item === "..." ? (
+                                        <PaginationItem key={`ellipsis-${i + 1}`}>
+                                            <PaginationEllipsis />
+                                        </PaginationItem>
+                                    ) : (
+                                        <PaginationItem key={i + 1}>
+                                            <PaginationLink
+                                                href="#"
+                                                isActive={item === page}
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    if (item !== page) setPageParam(Number(item));
+                                                }}
+                                                className="text-foreground no-underline hover:no-underline"
+                                                aria-current={item === page ? "page" : undefined}
+                                                tabIndex={item === page ? -1 : 0}
+                                            >
+                                                {item}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    )
+                                )}
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href="#"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            if (page < totalPages) setPageParam(page + 1);
+                                        }}
+                                        isActive={false}
+                                        aria-disabled={page === totalPages}
+                                        tabIndex={page === totalPages ? -1 : 0}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </div>
+                )}
                 {loading
                     ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <Card
@@ -273,59 +275,61 @@ const Writings: React.FC = () => {
                             </Card>
                         </Link>
                     ))}
-                <div className="flex justify-center">
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        if (page > 1) setPageParam(page - 1);
-                                    }}
-                                    isActive={false}
-                                    aria-disabled={page === 1}
-                                    tabIndex={page === 1 ? -1 : 0}
-                                />
-                            </PaginationItem>
-                            {getPaginationItems().map((item, i) =>
-                                item === "..." ? (
-                                    <PaginationItem key={`ellipsis-${i + 1}`}>
-                                        <PaginationEllipsis />
-                                    </PaginationItem>
-                                ) : (
-                                    <PaginationItem key={i + 1}>
-                                        <PaginationLink
-                                            href="#"
-                                            isActive={item === page}
-                                            onClick={e => {
-                                                e.preventDefault();
-                                                if (item !== page) setPageParam(Number(item));
-                                            }}
-                                            className="text-foreground no-underline hover:no-underline"
-                                            aria-current={item === page ? "page" : undefined}
-                                            tabIndex={item === page ? -1 : 0}
-                                        >
-                                            {item}
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                )
-                            )}
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        if (page < totalPages) setPageParam(page + 1);
-                                    }}
-                                    isActive={false}
-                                    aria-disabled={page === totalPages}
-                                    tabIndex={page === totalPages ? -1 : 0}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
-                </div>
+                {!loading && (
+                    <div className="flex justify-center">
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        href="#"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            if (page > 1) setPageParam(page - 1);
+                                        }}
+                                        isActive={false}
+                                        aria-disabled={page === 1}
+                                        tabIndex={page === 1 ? -1 : 0}
+                                    />
+                                </PaginationItem>
+                                {getPaginationItems().map((item, i) =>
+                                    item === "..." ? (
+                                        <PaginationItem key={`ellipsis-${i + 1}`}>
+                                            <PaginationEllipsis />
+                                        </PaginationItem>
+                                    ) : (
+                                        <PaginationItem key={i + 1}>
+                                            <PaginationLink
+                                                href="#"
+                                                isActive={item === page}
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    if (item !== page) setPageParam(Number(item));
+                                                }}
+                                                className="text-foreground no-underline hover:no-underline"
+                                                aria-current={item === page ? "page" : undefined}
+                                                tabIndex={item === page ? -1 : 0}
+                                            >
+                                                {item}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    )
+                                )}
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href="#"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            if (page < totalPages) setPageParam(page + 1);
+                                        }}
+                                        isActive={false}
+                                        aria-disabled={page === totalPages}
+                                        tabIndex={page === totalPages ? -1 : 0}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </div>
+                )}
             </div>
         </div>
     );
