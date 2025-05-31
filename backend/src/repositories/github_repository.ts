@@ -7,10 +7,10 @@ export const fetchUserRepositories = async (): Promise<GitHubRepository[]> => {
     return fetchAllRepositories();
 };
 
-export const fetchRepositoryById = async (id: number): Promise<RepositoryObject | null> => {
+export const fetchRepositoryByName = async (name: string): Promise<RepositoryObject | null> => {
     const [[row]] = await pool.query(
-        "SELECT * FROM repositories WHERE id = ?",
-        [id]
+        "SELECT * FROM repositories WHERE name = ?",
+        [name]
     ) as Array<RowDataPacket[]>;
 
     if (!row) {

@@ -1,9 +1,9 @@
-import { fetchUserRepositories, fetchRepositoryById } from "../repositories/github_repository";
+import { fetchUserRepositories, fetchRepositoryByName } from "../repositories/github_repository";
 
 export const fetchUserRepositoriesService = async () => {
     return fetchUserRepositories();
 };
 
-export const fetchRepositoryByIdService = async (id: number) => {
-    return fetchRepositoryById(id);
+export const fetchRepositoryByNameService = async (name: string) => {
+    return fetchRepositoryByName(name);
 };

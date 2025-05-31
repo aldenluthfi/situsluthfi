@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchUserRepositoriesService, fetchRepositoryByIdService } from "../services/github_service";
+import { fetchUserRepositoriesService, fetchRepositoryByNameService } from "../services/github_service";
 
 export const getUserRepositories = async (req: Request, res: Response) => {
     try {
@@ -14,10 +14,10 @@ export const getUserRepositories = async (req: Request, res: Response) => {
     }
 };
 
-export const getRepositoryById = async (req: Request, res: Response) => {
+export const getRepositoryByName = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const repository = await fetchRepositoryByIdService(parseInt(id));
+        const { name } = req.params;
+        const repository = await fetchRepositoryByNameService(name);
         
         if (!repository) {
             res.status(404).json({ error: "Repository not found" });
