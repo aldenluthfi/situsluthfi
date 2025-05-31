@@ -19,6 +19,7 @@ echo "🏗️ Building and starting containers..."
 docker compose up -d --build
 
 echo "🌱 Seeding Data"
+sleep 10
 docker exec backend node dist/db/seed.js
 
 echo "🧹 Cleaning up unused Docker resources again..."

@@ -55,7 +55,7 @@ export type GitHubRepository = {
     } | null;
 };
 
-export type RepositoryIndexObject = {
+export type RepositoryObject = {
     id: number;
     name: string;
     description: string | null;
@@ -65,5 +65,6 @@ export type RepositoryIndexObject = {
     topics: string[];
     created_at: string;
     updated_at: string;
-    type: string;
 };
+
+export type RepositoryIndexObject = RepositoryObject & IndexObject;
