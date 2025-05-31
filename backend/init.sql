@@ -29,5 +29,6 @@ CREATE TABLE IF NOT EXISTS repositories (
     created_at DATETIME,
     updated_at DATETIME,
     license JSON,
-    html_url VARCHAR(255)
+    html_url VARCHAR(255),
+    readme LONGTEXT
 );

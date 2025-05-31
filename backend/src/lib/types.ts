@@ -53,6 +53,7 @@ export type GitHubRepository = {
         name: string;
         url: string | null;
     } | null;
+    readme: string;
 };
 
 export type RepositoryObject = {
@@ -71,6 +72,7 @@ export type RepositoryObject = {
         url: string | null;
     } | null;
     html_url: string;
+    readme: string;
 };
 
 export type RepositoryIndexObject = RepositoryObject & IndexObject;

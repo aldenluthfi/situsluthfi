@@ -100,7 +100,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
         query: {
             multi_match: {
                 query,
-                fields: ["name^2", "description", "topics"],
+                fields: ["name^2", "description", "topics", "readme"],
                 fuzziness: "AUTO"
             }
         },
@@ -111,6 +111,12 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
                     post_tags: ["</mark>"]
                 },
                 description: {
+                    fragment_size: 100,
+                    number_of_fragments: 1,
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                readme: {
                     fragment_size: 100,
                     number_of_fragments: 1,
                     pre_tags: ["<mark>"],
@@ -140,81 +146,61 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
 export const searchUniversalFromES = async (query: string, page: number = 1, pageSize: number = 10) => {
     const from = (page - 1) * pageSize;
 
-    const [writingsResult, repositoriesResult] = await Promise.all([
-        client.search({
-            index: WRITINGS_INDEX,
-            from,
-            size: Math.ceil(pageSize / 2),
-            query: {
-                multi_match: {
-                    query,
-                    fields: ["content", "title", "tags"],
-                    fuzziness: "AUTO"
-                }
-            },
-            highlight: {
-                fields: {
-                    content: {
-                        fragment_size: 50,
-                        number_of_fragments: 2,
-                        pre_tags: ["<mark>"],
-                        post_tags: ["</mark>"]
-                    },
-                    title: {
-                        pre_tags: ["<mark>"],
-                        post_tags: ["</mark>"]
-                    }
+    const result = await client.search({
+        index: [WRITINGS_INDEX, REPOSITORIES_INDEX],
+        from,
+        size: pageSize,
+        query: {
+            multi_match: {
+                query,
+                fields: ["content", "title^2", "tags", "name^2", "description", "topics", "readme"],
+                fuzziness: "AUTO"
+            }
+        },
+        highlight: {
+            fields: {
+                content: {
+                    fragment_size: 50,
+                    number_of_fragments: 2,
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                title: {
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                name: {
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                description: {
+                    fragment_size: 100,
+                    number_of_fragments: 1,
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
+                },
+                readme: {
+                    fragment_size: 100,
+                    number_of_fragments: 1,
+                    pre_tags: ["<mark>"],
+                    post_tags: ["</mark>"]
                 }
             }
-        }),
-        client.search({
-            index: REPOSITORIES_INDEX,
-            from,
-            size: Math.floor(pageSize / 2),
-            query: {
-                multi_match: {
-                    query,
-                    fields: ["name^2", "description", "topics"],
-                    fuzziness: "AUTO"
-                }
-            },
-            highlight: {
-                fields: {
-                    name: {
-                        pre_tags: ["<mark>"],
-                        post_tags: ["</mark>"]
-                    },
-                    description: {
-                        fragment_size: 100,
-                        number_of_fragments: 1,
-                        pre_tags: ["<mark>"],
-                        post_tags: ["</mark>"]
-                    }
-                }
-            }
-        })
-    ]);
+        }
+    });
 
-    const writingsResults = writingsResult.hits.hits.map(hit => ({
+    const combinedResults = result.hits.hits.map(hit => ({
         ...(hit._source ?? {}),
         highlight: hit.highlight,
-        _type: "writing"
+        _type: hit._index === WRITINGS_INDEX ? "writing" : "repository"
     }));
 
-    const repositoriesResults = repositoriesResult.hits.hits.map(hit => ({
-        ...(hit._source ?? {}),
-        highlight: hit.highlight,
-        _type: "repository"
-    }));
+    const totalCombined = typeof result.hits.total === "number"
+        ? result.hits.total
+        : result.hits.total?.value ?? 0;
 
-    const combinedResults = [...writingsResults, ...repositoriesResults];
-    const totalWritings = typeof writingsResult.hits.total === "number"
-        ? writingsResult.hits.total
-        : writingsResult.hits.total?.value ?? 0;
-    const totalRepositories = typeof repositoriesResult.hits.total === "number"
-        ? repositoriesResult.hits.total
-        : repositoriesResult.hits.total?.value ?? 0;
-    const totalCombined = totalWritings + totalRepositories;
+    const writingsCount = combinedResults.filter(r => r._type === "writing").length;
+    const repositoriesCount = combinedResults.filter(r => r._type === "repository").length;
 
     return {
         results: combinedResults,
@@ -224,12 +210,12 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
         totalPages: Math.ceil(totalCombined / pageSize),
         breakdown: {
             writings: {
-                count: writingsResults.length,
-                total: totalWritings
+                count: writingsCount,
+                total: totalCombined
             },
             repositories: {
-                count: repositoriesResults.length,
-                total: totalRepositories
+                count: repositoriesCount,
+                total: totalCombined
             }
         }
     };

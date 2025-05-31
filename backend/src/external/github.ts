@@ -25,6 +25,33 @@ export const fetchRepositoryLanguages = async (languagesUrl: string): Promise<Re
     return await response.json() as Record<string, number>;
 };
 
+export const fetchRepositoryReadme = async (fullName: string): Promise<string> => {
+    try {
+        const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/readme`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github.v3+json",
+                "User-Agent": "SitusLuthfi-Backend/1.0.0"
+            }
+        });
+
+        if (!response.ok) {
+            return "";
+        }
+
+        const readmeData = await response.json() as { content: string, encoding: string };
+
+        if (readmeData.encoding === "base64") {
+            return Buffer.from(readmeData.content, "base64").toString("utf-8");
+        }
+
+        return readmeData.content;
+    } catch (error) {
+        console.error(`Failed to fetch README for ${fullName}:`, error);
+        return "";
+    }
+};
+
 export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
     const endpoint = `${GITHUB_API_BASE}/user/repos`;
 
@@ -53,19 +80,22 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
             hasMore = false;
         } else {
             const ownedRepos = repos.filter(repo => !repo.archived && !repo.fork);
-            const reposWithLanguages = await Promise.all(
+            const reposWithLanguagesAndReadme = await Promise.all(
                 ownedRepos.map(async (repo) => {
                     try {
-                        const languages = await fetchRepositoryLanguages(repo.languages_url);
-                        return { ...repo, languages };
+                        const [languages, readme] = await Promise.all([
+                            fetchRepositoryLanguages(repo.languages_url),
+                            fetchRepositoryReadme(repo.full_name)
+                        ]);
+                        return { ...repo, languages, readme };
                     } catch (error) {
-                        console.error(`Failed to fetch languages for ${repo.full_name}:`, error);
-                        return { ...repo, languages: {} };
+                        console.error(`Failed to fetch data for ${repo.full_name}:`, error);
+                        return { ...repo, languages: {}, readme: "" };
                     }
                 })
             );
 
-            allRepos = allRepos.concat(reposWithLanguages);
+            allRepos = allRepos.concat(reposWithLanguagesAndReadme);
             if (repos.length < perPage) {
                 hasMore = false;
             } else {

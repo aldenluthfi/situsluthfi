@@ -178,13 +178,13 @@ export const syncRepositoriesToDB = async () => {
     ) as Array<RowDataPacket[]>;
 
     const dbIds = dbRows.map(row => row.id.toString());
-    const repoIds = repositories.map(repo => repo.id.toString());
+    const newRepoIds = repositories.map(repo => repo.id.toString());
 
     for (const repo of repositories) {
         await pool.query(
             `
-            INSERT INTO repositories (id, name, description, languages, stargazers_count, forks_count, topics, created_at, updated_at, license, html_url)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO repositories (id, name, description, languages, stargazers_count, forks_count, topics, created_at, updated_at, license, html_url, readme)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
             name = VALUES(name),
             description = VALUES(description),
@@ -194,7 +194,8 @@ export const syncRepositoriesToDB = async () => {
             topics = VALUES(topics),
             updated_at = VALUES(updated_at),
             license = VALUES(license),
-            html_url = VALUES(html_url)`,
+            html_url = VALUES(html_url),
+            readme = VALUES(readme)`,
             [
                 repo.id,
                 repo.name,
@@ -207,11 +208,12 @@ export const syncRepositoriesToDB = async () => {
                 new Date(repo.updated_at),
                 JSON.stringify(repo.license),
                 repo.html_url,
+                repo.readme,
             ]
         );
     }
 
-    const idsToDelete = dbIds.filter(id => !repoIds.includes(id));
+    const idsToDelete = dbIds.filter(id => !newRepoIds.includes(id));
     if (idsToDelete.length > 0) {
         await pool.query(
             `DELETE FROM repositories WHERE id IN (${idsToDelete.map(() => "?").join(",")})`,
@@ -247,6 +249,7 @@ export const indexAllRepositoriesToES = async () => {
                 updated_at: row.updated_at,
                 license: row.license,
                 html_url: row.html_url,
+                readme: row.readme,
                 type: "repository",
             });
         } catch (error) {

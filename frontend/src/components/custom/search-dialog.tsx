@@ -6,7 +6,7 @@ import {
     DialogDescription
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { isMobile } from "@/lib/utils";
+import { isMobile, isWindows } from "@/lib/utils";
 import {
     IconSearch,
     IconFolder,
@@ -167,9 +167,17 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
     useEffect(() => {
         const handleGlobalKeyDown = (e: KeyboardEvent) => {
+            const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
+
+            if (modifierKey && e.key === 'k') {
+                e.preventDefault();
+                onOpenChange(!open);
+                return;
+            }
+
             if (open) return;
 
-            if (e.metaKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o')) {
+            if (modifierKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o')) {
                 e.preventDefault();
                 const navItem = navigationItems.find(item => item.shortcut.toLowerCase() === e.key.toLowerCase());
                 if (navItem) {
@@ -211,7 +219,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     };
 
     const handleShortcutKey = (e: React.KeyboardEvent) => {
-        if (e.metaKey && e.key >= '1' && e.key <= '9') {
+        const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
+
+        if (modifierKey && e.key >= '1' && e.key <= '9') {
             e.preventDefault();
             const shortcutIndex = parseInt(e.key) - 1;
             if (shortcutIndex < searchResults.length) {
@@ -229,7 +239,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         }
 
         if (
-            e.metaKey &&
+            modifierKey &&
             ['u', 'i', 'o'].includes(e.key.toLowerCase())
         ) {
             e.preventDefault();
@@ -362,11 +372,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                     </kbd>
                                                 )}
                                             </div>
-                                            {(item.highlight?.content || item.highlight?.description) && (
+                                            {(item.highlight?.content || item.highlight?.description || item.highlight?.readme ) && (
                                                 <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
                                                     <span
                                                         dangerouslySetInnerHTML={{
-                                                            __html: (item.highlight?.content || item.highlight?.description || []).join('...')
+                                                            __html: (item.highlight?.content || item.highlight?.description || item.highlight?.readme || []).join('...')
                                                         }}
                                                     />
                                                 </div>

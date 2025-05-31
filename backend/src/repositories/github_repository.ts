@@ -1,22 +1,39 @@
-import { fetchAllRepositories } from "../external/github";
-import { GitHubRepository, RepositoryObject } from "../lib/types";
 import { RowDataPacket } from "mysql2";
 import pool from "../db/mysql";
+import { RepositoryObject } from "../lib/types";
 
-export const fetchUserRepositories = async (): Promise<GitHubRepository[]> => {
-    return fetchAllRepositories();
+export const fetchUserRepositories = async (): Promise<RepositoryObject[]> => {
+    const [rows] = await pool.query(
+        "SELECT * FROM repositories ORDER BY updated_at DESC"
+    ) as Array<RowDataPacket[]>;
+
+    return rows.map(row => ({
+        id: row.id,
+        name: row.name,
+        description: row.description,
+        languages: row.languages,
+        stargazers_count: row.stargazers_count,
+        forks_count: row.forks_count,
+        topics: row.topics,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        license: row.license,
+        html_url: row.html_url,
+        readme: row.readme,
+    }));
 };
 
 export const fetchRepositoryByName = async (name: string): Promise<RepositoryObject | null> => {
-    const [[row]] = await pool.query(
-        "SELECT * FROM repositories WHERE name = ?",
+    const [rows] = await pool.query(
+        "SELECT * FROM repositories WHERE name = ? LIMIT 1",
         [name]
     ) as Array<RowDataPacket[]>;
 
-    if (!row) {
+    if (rows.length === 0) {
         return null;
     }
 
+    const row = rows[0];
     return {
         id: row.id,
         name: row.name,
@@ -29,5 +46,6 @@ export const fetchRepositoryByName = async (name: string): Promise<RepositoryObj
         updated_at: row.updated_at,
         license: row.license,
         html_url: row.html_url,
+        readme: row.readme,
     };
 };
