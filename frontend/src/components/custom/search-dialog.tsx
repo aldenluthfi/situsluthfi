@@ -12,7 +12,8 @@ import {
     IconFolder,
     IconBook,
     IconPhoto,
-    IconPencil
+    IconPencil,
+    IconSettings
 } from "@tabler/icons-react";
 import { useCallback, useRef, useState, useEffect } from "react";
 
@@ -72,7 +73,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 const controller = new AbortController();
                 searchAbortController.current = controller;
 
-                const res = await fetch(`/api/writings/search?q=${encodeURIComponent(value)}&pagesize=3&page=1`, {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(value)}&pagesize=3&page=1`, {
                     signal: controller.signal
                 });
 
@@ -102,7 +103,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             searchAbortController.current = controller;
 
             const nextPage = currentPage + 1;
-            const res = await fetch(`/api/writings/search?q=${encodeURIComponent(search)}&pagesize=3&page=${nextPage}`, {
+            const res = await fetch(`/api/search?q=${encodeURIComponent(search)}&pagesize=6&page=${nextPage}`, {
                 signal: controller.signal
             });
 
@@ -181,6 +182,34 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         return () => document.removeEventListener('keydown', handleGlobalKeyDown);
     }, [open]);
 
+    const handleEnterKey = (
+        e: React.KeyboardEvent,
+        seeMoreItems: number
+    ) => {
+        if (e.key !== 'Enter') return false;
+        e.preventDefault();
+        if (selectedIndex < searchResults.length) {
+            const selectedItem = searchResults[selectedIndex];
+            if (selectedItem) {
+                onOpenChange(false);
+                if (selectedItem._type === 'writing') {
+                    window.location.href = `/writings/${selectedItem.slug}`;
+                } else if (selectedItem._type === 'repository') {
+                    window.open(selectedItem.html_url, '_blank');
+                }
+            }
+        } else if (hasMore && selectedIndex === searchResults.length) {
+            loadMoreResults();
+        } else {
+            const navIndex = selectedIndex - searchResults.length - seeMoreItems;
+            if (navIndex < filteredNavigationItems.length) {
+                onOpenChange(false);
+                window.location.href = filteredNavigationItems[navIndex].href;
+            }
+        }
+        return true;
+    };
+
     const handleShortcutKey = (e: React.KeyboardEvent) => {
         if (e.metaKey && e.key >= '1' && e.key <= '9') {
             e.preventDefault();
@@ -189,7 +218,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 const selectedItem = searchResults[shortcutIndex];
                 if (selectedItem) {
                     onOpenChange(false);
-                    window.location.href = `/writings/${selectedItem.slug}`;
+                    if (selectedItem._type === 'writing') {
+                        window.location.href = `/writings/${selectedItem.slug}`;
+                    } else if (selectedItem._type === 'repository') {
+                        window.open(selectedItem.html_url, '_blank');
+                    }
                 }
             }
             return true;
@@ -227,30 +260,6 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             return true;
         }
         return false;
-    };
-
-    const handleEnterKey = (
-        e: React.KeyboardEvent,
-        seeMoreItems: number
-    ) => {
-        if (e.key !== 'Enter') return false;
-        e.preventDefault();
-        if (selectedIndex < searchResults.length) {
-            const selectedItem = searchResults[selectedIndex];
-            if (selectedItem) {
-                onOpenChange(false);
-                window.location.href = `/writings/${selectedItem.slug}`;
-            }
-        } else if (hasMore && selectedIndex === searchResults.length) {
-            loadMoreResults();
-        } else {
-            const navIndex = selectedIndex - searchResults.length - seeMoreItems;
-            if (navIndex < filteredNavigationItems.length) {
-                onOpenChange(false);
-                window.location.href = filteredNavigationItems[navIndex].href;
-            }
-        }
-        return true;
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -312,49 +321,59 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
                         {!searchLoading && !searchError && searchResults.length > 0 && (
                             <div className="text-foreground overflow-hidden p-1">
-                                {searchResults.map((item, index) => (
-                                    <div
-                                        key={item.id}
-                                        ref={selectedIndex === index ? selectedItemRef : null}
-                                        className={`relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
-                                                ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
-                                                : ''
-                                            }`}
-                                        onClick={() => {
-                                            onOpenChange(false);
-                                            window.location.href = `/writings/${item.slug}`;
-                                        }}
-                                        data-slot="button"
-                                    >
-                                        <div className="flex items-center justify-between font-body-bold gap-4">
-                                            <div className="flex items-center gap-4">
-                                                <IconPencil className="size-6 shrink-0" stroke={1.5} />
-                                                <span
-                                                    className="search-highlight"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: item.highlight?.title?.[0] || item.title
-                                                    }}
-                                                />
+                                {searchResults.map((item, index) => {
+                                    const isWriting = item._type === 'writing';
+                                    const isRepository = item._type === 'repository';
+                                    const Icon = isWriting ? IconPencil : IconSettings;
+
+                                    return (
+                                        <div
+                                            key={`${item._type}-${item.id}`}
+                                            ref={selectedIndex === index ? selectedItemRef : null}
+                                            className={`relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
+                                                    ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
+                                                    : ''
+                                                }`}
+                                            onClick={() => {
+                                                onOpenChange(false);
+                                                if (isWriting) {
+                                                    window.location.href = `/writings/${item.slug}`;
+                                                } else if (isRepository) {
+                                                    window.open(item.html_url, '_blank');
+                                                }
+                                            }}
+                                            data-slot="button"
+                                        >
+                                            <div className="flex items-center justify-between font-body-bold gap-4">
+                                                <div className="flex items-center gap-4">
+                                                    <Icon className="size-6 shrink-0" stroke={1.5} />
+                                                    <span
+                                                        className="search-highlight"
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: item.highlight?.title?.[0] || item.highlight?.name?.[0] || item.title || item.name
+                                                        }}
+                                                    />
+                                                </div>
+                                                {index + 1 <= 9 && !isMobile && (
+                                                    <kbd
+                                                        className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
+                                                    >
+                                                        <div className="!text-sm">⌘</div> {index + 1}
+                                                    </kbd>
+                                                )}
                                             </div>
-                                            {index + 1 <= 9 && !isMobile && (
-                                                <kbd
-                                                    className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
-                                                >
-                                                    <div className="!text-sm">⌘</div> {index + 1}
-                                                </kbd>
+                                            {(item.highlight?.content || item.highlight?.description) && (
+                                                <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
+                                                    <span
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: (item.highlight?.content || item.highlight?.description || []).join('...')
+                                                        }}
+                                                    />
+                                                </div>
                                             )}
                                         </div>
-                                        {item.highlight?.content && (
-                                            <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
-                                                <span
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: item.highlight.content.join('...')
-                                                    }}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
+                                    );
+                                })}
                                 {hasMore && (
                                     <div
                                         ref={selectedIndex === searchResults.length ? selectedItemRef : null}

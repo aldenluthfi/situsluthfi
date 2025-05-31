@@ -27,5 +27,7 @@ CREATE TABLE IF NOT EXISTS repositories (
     forks_count INT DEFAULT 0,
     topics JSON,
     created_at DATETIME,
-    updated_at DATETIME
+    updated_at DATETIME,
+    license JSON,
+    html_url VARCHAR(255)
 );
