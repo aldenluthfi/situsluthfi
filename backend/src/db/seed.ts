@@ -262,7 +262,7 @@ const waitForConnection = async (maxRetries = 30, retryDelay = 2000) => {
             await pool.query("SELECT 1");
             console.log("Database connection established.");
             return;
-        } catch (error) {
+        } catch {
             console.log(`Database connection attempt ${i + 1}/${maxRetries} failed. Retrying in ${retryDelay}ms...`);
             await new Promise(resolve => setTimeout(resolve, retryDelay));
         }
