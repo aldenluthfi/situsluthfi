@@ -14,7 +14,7 @@ import {
     IconBrandLinkedin,
     IconX,
     IconLink,
-    IconLicense
+    IconScale
 } from "@tabler/icons-react";
 
 const Footer = () => {
@@ -52,7 +52,7 @@ const Footer = () => {
         linkedin: <IconBrandLinkedin className="size-6" stroke={1.5} />,
         x: <IconX className="size-6" stroke={1.5} />,
         link: <IconLink className="size-6" stroke={1.5} />,
-        license: <IconLicense className="size-6" stroke={1.5} />,
+        license: <IconScale className="size-6" stroke={1.5} />,
     };
 
     const copyEmail = async () => {
@@ -108,7 +108,7 @@ const Footer = () => {
             <nav className="flex justify-between flex-col w-full desktop:w-desktop p-6">
                 <div className="flex max-tablet:flex-col max-tablet:space-y-4 tablet:justify-between tablet:items-end pb-6">
                     <TooltipProvider openDelay={0} closeDelay={0}>
-                        <Link to="/" className="px-3 font-heading text-2xl text-foreground w-1/5 h-full">
+                        <Link to="/" className="px-3 font-heading text-2xl text-primary-700 w-1/5 h-full">
                             aldenluth.fi
                         </Link>
                         <ul className="flex max-tablet: pl-1.5 tablet:justify-end gap-3">
@@ -277,11 +277,11 @@ const Footer = () => {
                     </TooltipProvider>
                 </div>
 
-                <Separator className='bg-primary-400' />
+                <Separator className='bg-primary' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
-                    <p className="max-tablet:px-3 text-sm font-body text-foreground">
-                        <span className="inline-block scale-x-[-1]">&copy;</span> 2023-2025 Alden Luthfi. All rights reversed.
+                    <p className="max-tablet:px-3 text-sm font-body text-primary-700">
+                        <span className="inline-block scale-x-[-1]">&copy;</span> 2025 Alden Luthfi. All rights reversed.
                     </p>
                 </div>
             </nav>

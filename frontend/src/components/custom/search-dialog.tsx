@@ -13,7 +13,7 @@ import {
     IconBook,
     IconPhoto,
     IconPencil,
-    IconSettings
+    IconBarrierBlock
 } from "@tabler/icons-react";
 import { useCallback, useRef, useState, useEffect } from "react";
 
@@ -334,7 +334,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 {searchResults.map((item, index) => {
                                     const isWriting = item._type === 'writing';
                                     const isRepository = item._type === 'repository';
-                                    const Icon = isWriting ? IconPencil : IconSettings;
+                                    const Icon = isWriting ? IconPencil : IconBarrierBlock;
 
                                     return (
                                         <div
@@ -372,11 +372,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                     </kbd>
                                                 )}
                                             </div>
-                                            {(item.highlight?.content || item.highlight?.description || item.highlight?.readme ) && (
+                                            {(item.highlight?.content || item.highlight?.description ) && (
                                                 <div className={`ml-10 text-sm search-highlight ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
                                                     <span
                                                         dangerouslySetInnerHTML={{
-                                                            __html: (item.highlight?.content || item.highlight?.description || item.highlight?.readme || []).join('...')
+                                                            __html: (item.highlight?.content || item.highlight?.description || []).join('...')
                                                         }}
                                                     />
                                                 </div>

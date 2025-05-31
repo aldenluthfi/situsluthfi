@@ -100,7 +100,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
         query: {
             multi_match: {
                 query,
-                fields: ["name^2", "description", "topics", "readme"],
+                fields: ["name^2", "description", "topics"],
                 fuzziness: "AUTO"
             }
         },
@@ -153,7 +153,7 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
         query: {
             multi_match: {
                 query,
-                fields: ["content", "title^2", "tags", "name^2", "description", "topics", "readme"],
+                fields: ["content", "title^2", "tags", "name^2", "description", "topics"],
                 fuzziness: "AUTO"
             }
         },

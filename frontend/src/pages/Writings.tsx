@@ -62,17 +62,17 @@ const Writings: React.FC = () => {
 
     const syncAbortController = useRef<AbortController | null>(null);
 
-    const fetchPage = (pageNum: number) => {
-        fetch(`/api/writings/get_page?pagesize=${PAGE_SIZE}&page=${pageNum}`)
-            .then((res) => res.json())
-            .then((resData) => {
-                setData(resData.results ?? []);
-                setTotalPages(resData.totalPages ?? 1);
-                setLoading(false);
-            })
-    };
-
     useEffect(() => {
+        const fetchPage = (pageNum: number) => {
+            fetch(`/api/writings/get_page?pagesize=${PAGE_SIZE}&page=${pageNum}`)
+                .then((res) => res.json())
+                .then((resData) => {
+                    setData(resData.results ?? []);
+                    setTotalPages(resData.totalPages ?? 1);
+                    setLoading(false);
+                })
+        };
+
         const handleSync = async () => {
             if (syncAbortController.current) {
                 syncAbortController.current.abort("page changed");
@@ -86,11 +86,12 @@ const Writings: React.FC = () => {
                 fetchPage(page);
             } catch (error: unknown) {
                 if ((error instanceof Error && error.name !== "AbortError") || (typeof error === "string" && error !== "page changed")) {
-                    console.error("Error syncing writing:", error);
+                    console.error("Error syncing writing, ", error);
                 }
             }
         };
 
+        setLoading(true);
         fetchPage(page);
         handleSync();
     }, [page]);
