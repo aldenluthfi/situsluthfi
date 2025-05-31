@@ -61,7 +61,7 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
 
     let hasMore = true;
     while (hasMore) {
-        const response = await fetch(`${endpoint}?page=${page}&per_page=${perPage}&sort=updated&direction=desc&type=owner`, {
+        const response = await fetch(`${endpoint}?page=${page}&per_page=${perPage}&sort=created&direction=desc&type=owner`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/vnd.github.v3+json",
