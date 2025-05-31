@@ -98,6 +98,7 @@ const syncAllWritingsContentToDB = async () => {
             await syncWritingContentToDB(row.slug);
         } catch (error) {
             console.error(`Error syncing content for writing ${row.slug}:`, error);
+            throw error;
         }
     }
 };
@@ -141,6 +142,7 @@ export const indexAllWritingContentsToES = async () => {
             await indexWritingContentToESBySlug(row.slug);
         } catch (error) {
             console.error(`Error indexing content for writing ${row.slug}:`, error);
+            throw error;
         }
     }
 };
@@ -249,12 +251,28 @@ export const indexAllRepositoriesToES = async () => {
             });
         } catch (error) {
             console.error(`Error indexing repository ${row.name}:`, error);
+            throw error;
         }
     }
 };
 
+const waitForConnection = async (maxRetries = 30, retryDelay = 2000) => {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            await pool.query("SELECT 1");
+            console.log("Database connection established.");
+            return;
+        } catch (error) {
+            console.log(`Database connection attempt ${i + 1}/${maxRetries} failed. Retrying in ${retryDelay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
+    }
+    throw new Error("Failed to connect to database after maximum retries");
+};
+
 const syncDatabase = async () => {
     try {
+        await waitForConnection();
         await syncWritingsToDB();
         await syncAllWritingsContentToDB();
         await syncAllFactsToDB();
@@ -265,6 +283,7 @@ const syncDatabase = async () => {
         console.log("All data indexed to Elasticsearch successfully.");
     } catch (error) {
         console.error("Error syncing data to DB:", error);
+        throw error;
     }
 
 };
