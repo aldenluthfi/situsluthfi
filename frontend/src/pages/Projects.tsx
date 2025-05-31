@@ -21,7 +21,43 @@ import {
     CarouselPrevious,
     CarouselNext,
 } from "@/components/ui/carousel";
+import { useTheme } from "@/components/custom/theme-provider";
 import type { RepositoryObject } from "@/lib/types";
+
+function ProjectImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
+    const [loaded, setLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
+
+    const imageUrl = mode !== 'dark' ? repo.cover_dark_url : repo.cover_light_url;
+    const fallbackUrl = mode !== 'dark' ? repo.cover_light_url : repo.cover_dark_url;
+    const hasImage = imageUrl || fallbackUrl;
+
+    if (!hasImage) return null;
+
+    return (
+        <div className="relative w-full aspect-[2/1] mb-4">
+            {!loaded && !imageError && (
+                <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
+            )}
+            <img
+                src={imageUrl || fallbackUrl}
+                alt={`${repo.name} preview`}
+                className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${
+                    loaded && !imageError ? "opacity-100" : "opacity-0"
+                }`}
+                onLoad={() => setLoaded(true)}
+                onError={() => {
+                    if (imageUrl && fallbackUrl && !imageError) {
+                        setImageError(true);
+                        setLoaded(false);
+                    } else {
+                        setImageError(true);
+                    }
+                }}
+            />
+        </div>
+    );
+}
 
 const Projects: React.FC = () => {
     useEffect(() => {
@@ -30,6 +66,7 @@ const Projects: React.FC = () => {
 
     const [data, setData] = useState<RepositoryObject[]>([]);
     const [loading, setLoading] = useState(true);
+    const { mode } = useTheme();
 
     useEffect(() => {
         const fetchRepositories = async () => {
@@ -88,8 +125,9 @@ const Projects: React.FC = () => {
                                 <CarouselItem key={i} className="basis-full">
                                     <Card className="motion-preset-slide-down h-full" style={{ animationDelay: `${i * 100}ms` }}>
                                         <CardHeader>
+                                            <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
                                             <CardTitle>
-                                                <Skeleton className="h-24 w-3/4" />
+                                                <Skeleton className="h-8 w-3/4" />
                                             </CardTitle>
                                             <CardDescription>
                                                 <Skeleton className="h-4 w-full mt-2" />
@@ -123,6 +161,7 @@ const Projects: React.FC = () => {
                                     >
                                         <Card className="h-full flex flex-col">
                                             <CardHeader>
+                                                <ProjectImageWithSkeleton repo={repo} mode={mode} />
                                                 <CardTitle className="font-heading text-3xl">
                                                     {repo.name}
                                                 </CardTitle>
@@ -144,14 +183,18 @@ const Projects: React.FC = () => {
                                             <CardFooter className='mt-auto'>
                                                 <div className="flex justify-between items-center text-sm text-muted-foreground w-full">
                                                     <div className="flex gap-4">
-                                                        <div className="flex items-center gap-1">
-                                                            <IconStar className="size-4" stroke={1.5} />
-                                                            {repo.stargazers_count}
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <IconGitFork className="size-4" stroke={1.5} />
-                                                            {repo.forks_count}
-                                                        </div>
+                                                        {repo.stargazers_count > 0 && (
+                                                            <div className="flex items-center gap-1">
+                                                                <IconStar className="size-4" stroke={1.5} />
+                                                                {repo.stargazers_count}
+                                                            </div>
+                                                        )}
+                                                        {repo.forks_count > 0 && (
+                                                            <div className="flex items-center gap-1">
+                                                                <IconGitFork className="size-4" stroke={1.5} />
+                                                                {repo.forks_count}
+                                                            </div>
+                                                        )}
                                                         {repo.license && (
                                                             <div className="flex items-center gap-1">
                                                                 <IconScale className="size-4" stroke={1.5} />

@@ -155,7 +155,7 @@ const Writings: React.FC = () => {
                     My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>
-            <div className="w-full max-w-3xl px-12 flex flex-col gap-6 pb-24">
+            <div className="w-full max-w-4xl px-12 flex flex-col gap-6 pb-24">
                 {!loading && (
                     <div className="flex justify-center">
                         <Pagination>

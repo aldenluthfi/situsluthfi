@@ -20,6 +20,8 @@ export const fetchUserRepositories = async (): Promise<RepositoryObject[]> => {
         license: row.license,
         html_url: row.html_url,
         readme: row.readme,
+        cover_light_url: row.cover_light_url,
+        cover_dark_url: row.cover_dark_url,
     }));
 };
 
@@ -47,5 +49,7 @@ export const fetchRepositoryByName = async (name: string): Promise<RepositoryObj
         license: row.license,
         html_url: row.html_url,
         readme: row.readme,
+        cover_light_url: row.cover_light_url,
+        cover_dark_url: row.cover_dark_url,
     };
 };

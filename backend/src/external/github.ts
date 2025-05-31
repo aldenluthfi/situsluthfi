@@ -52,6 +52,46 @@ export const fetchRepositoryReadme = async (fullName: string): Promise<string> =
     }
 };
 
+export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ lightUrl?: string; darkUrl?: string }> => {
+    const result: { lightUrl?: string; darkUrl?: string } = {};
+
+    try {
+        const lightResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/light.png`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github.v3+json",
+                "User-Agent": "SitusLuthfi-Backend/1.0.0"
+            }
+        });
+
+        if (lightResponse.ok) {
+            const lightData = await lightResponse.json() as { download_url: string };
+            result.lightUrl = lightData.download_url;
+        }
+    } catch (error) {
+        console.error(`Failed to fetch light cover image for ${fullName}:`, error);
+    }
+
+    try {
+        const darkResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/dark.png`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github.v3+json",
+                "User-Agent": "SitusLuthfi-Backend/1.0.0"
+            }
+        });
+
+        if (darkResponse.ok) {
+            const darkData = await darkResponse.json() as { download_url: string };
+            result.darkUrl = darkData.download_url;
+        }
+    } catch (error) {
+        console.error(`Failed to fetch dark cover image for ${fullName}:`, error);
+    }
+
+    return result;
+};
+
 export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
     const endpoint = `${GITHUB_API_BASE}/user/repos`;
 
@@ -80,14 +120,21 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
             hasMore = false;
         } else {
             const ownedRepos = repos.filter(repo => !repo.archived && !repo.fork);
-            const reposWithLanguagesAndReadme = await Promise.all(
+            const reposWithData = await Promise.all(
                 ownedRepos.map(async (repo) => {
                     try {
-                        const [languages, readme] = await Promise.all([
+                        const [languages, readme, coverImages] = await Promise.all([
                             fetchRepositoryLanguages(repo.languages_url),
-                            fetchRepositoryReadme(repo.full_name)
+                            fetchRepositoryReadme(repo.full_name),
+                            fetchRepositoryCoverImages(repo.full_name)
                         ]);
-                        return { ...repo, languages, readme };
+                        return {
+                            ...repo,
+                            languages,
+                            readme,
+                            cover_light_url: coverImages.lightUrl,
+                            cover_dark_url: coverImages.darkUrl
+                        };
                     } catch (error) {
                         console.error(`Failed to fetch data for ${repo.full_name}:`, error);
                         return { ...repo, languages: {}, readme: "" };
@@ -95,7 +142,7 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
                 })
             );
 
-            allRepos = allRepos.concat(reposWithLanguagesAndReadme);
+            allRepos = allRepos.concat(reposWithData);
             if (repos.length < perPage) {
                 hasMore = false;
             } else {

@@ -54,6 +54,8 @@ export type GitHubRepository = {
         url: string | null;
     } | null;
     readme: string;
+    cover_light_url?: string;
+    cover_dark_url?: string;
 };
 
 export type RepositoryObject = {
@@ -66,13 +68,11 @@ export type RepositoryObject = {
     topics: string[];
     created_at: string;
     updated_at: string;
-    license: {
-        key: string;
-        name: string;
-        url: string | null;
-    } | null;
+    license: { key: string; name: string; url: string; node_id: string; spdx_id: string } | null;
     html_url: string;
     readme: string;
+    cover_light_url?: string;
+    cover_dark_url?: string;
 };
 
 export type RepositoryIndexObject = RepositoryObject & IndexObject;

@@ -30,5 +30,7 @@ CREATE TABLE IF NOT EXISTS repositories (
     updated_at DATETIME,
     license JSON,
     html_url VARCHAR(255),
-    readme MEDIUMTEXT
+    readme MEDIUMTEXT,
+    cover_light_url VARCHAR(500),
+    cover_dark_url VARCHAR(500)
 );
