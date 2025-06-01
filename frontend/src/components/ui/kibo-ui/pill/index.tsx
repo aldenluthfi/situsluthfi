@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IconChevronDown, IconChevronUp, IconMinus } from '@tabler/icons-react';
+import { DynamicIcon } from '@/components/custom/dynamic-icon';
 import type { ComponentProps, ReactNode } from 'react';
 
 export type PillProps = ComponentProps<typeof Badge> & {
@@ -163,4 +164,33 @@ export const PillAvatarGroup = ({
   >
     {children}
   </div>
+);
+
+export type PillWithIconProps = ComponentProps<typeof Badge> & {
+  iconName?: string;
+  children: ReactNode;
+};
+
+export const PillWithIcon = ({
+  iconName,
+  children,
+  variant = 'default',
+  className,
+  ...props
+}: PillWithIconProps) => (
+  <Badge
+    variant={variant}
+    className={cn('gap-2 rounded-full px-3 py-1.5 font-normal', className)}
+    {...props}
+  >
+    {iconName && (
+      <DynamicIcon
+        icon={iconName}
+        size={12}
+        stroke={1.5}
+        className="size-3"
+      />
+    )}
+    {children}
+  </Badge>
 );

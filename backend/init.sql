@@ -32,5 +32,6 @@ CREATE TABLE IF NOT EXISTS repositories (
     html_url VARCHAR(255),
     readme MEDIUMTEXT,
     cover_light_url VARCHAR(500),
-    cover_dark_url VARCHAR(500)
+    cover_dark_url VARCHAR(500),
+    icon_map JSON
 );

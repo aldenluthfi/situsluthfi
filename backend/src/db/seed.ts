@@ -183,8 +183,8 @@ export const syncRepositoriesToDB = async () => {
     for (const repo of repositories) {
         await pool.query(
             `
-            INSERT INTO repositories (id, name, description, languages, stargazers_count, forks_count, topics, created_at, updated_at, license, html_url, readme, cover_light_url, cover_dark_url)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO repositories (id, name, description, languages, stargazers_count, forks_count, topics, created_at, updated_at, license, html_url, readme, cover_light_url, cover_dark_url, icon_map)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON DUPLICATE KEY UPDATE
             name = VALUES(name),
             description = VALUES(description),
@@ -197,7 +197,8 @@ export const syncRepositoriesToDB = async () => {
             html_url = VALUES(html_url),
             readme = VALUES(readme),
             cover_light_url = VALUES(cover_light_url),
-            cover_dark_url = VALUES(cover_dark_url)`,
+            cover_dark_url = VALUES(cover_dark_url),
+            icon_map = VALUES(icon_map)`,
             [
                 repo.id,
                 repo.name,
@@ -213,6 +214,7 @@ export const syncRepositoriesToDB = async () => {
                 repo.readme,
                 repo.cover_light_url || null,
                 repo.cover_dark_url || null,
+                JSON.stringify(repo.icon_map || {}),
             ]
         );
     }

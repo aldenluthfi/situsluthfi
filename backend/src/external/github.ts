@@ -92,6 +92,34 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
     return result;
 };
 
+export const fetchRepositoryIconMap = async (fullName: string): Promise<Record<string, string>> => {
+    try {
+        const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/iconmap.json`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "application/vnd.github.v3+json",
+                "User-Agent": "SitusLuthfi-Backend/1.0.0"
+            }
+        });
+
+        if (!response.ok) {
+            return {};
+        }
+
+        const iconMapData = await response.json() as { content: string, encoding: string };
+
+        if (iconMapData.encoding === "base64") {
+            const decodedContent = Buffer.from(iconMapData.content, "base64").toString("utf-8");
+            return JSON.parse(decodedContent);
+        }
+
+        return JSON.parse(iconMapData.content);
+    } catch (error) {
+        console.error(`Failed to fetch iconmap for ${fullName}:`, error);
+        return {};
+    }
+};
+
 export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
     const endpoint = `${GITHUB_API_BASE}/user/repos`;
 
@@ -119,25 +147,31 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
         if (repos.length === 0) {
             hasMore = false;
         } else {
-            const ownedRepos = repos.filter(repo => !repo.archived && !repo.fork);
+            const ownedRepos = repos.filter(repo => 
+                !repo.archived && 
+                !repo.fork && 
+                repo.name !== repo.owner.login
+            );
             const reposWithData = await Promise.all(
                 ownedRepos.map(async (repo) => {
                     try {
-                        const [languages, readme, coverImages] = await Promise.all([
+                        const [languages, readme, coverImages, iconMap] = await Promise.all([
                             fetchRepositoryLanguages(repo.languages_url),
                             fetchRepositoryReadme(repo.full_name),
-                            fetchRepositoryCoverImages(repo.full_name)
+                            fetchRepositoryCoverImages(repo.full_name),
+                            fetchRepositoryIconMap(repo.full_name)
                         ]);
                         return {
                             ...repo,
                             languages,
                             readme,
                             cover_light_url: coverImages.lightUrl,
-                            cover_dark_url: coverImages.darkUrl
+                            cover_dark_url: coverImages.darkUrl,
+                            icon_map: iconMap
                         };
                     } catch (error) {
                         console.error(`Failed to fetch data for ${repo.full_name}:`, error);
-                        return { ...repo, languages: {}, readme: "" };
+                        return { ...repo, languages: {}, readme: "", icon_map: {} };
                     }
                 })
             );

@@ -8,7 +8,7 @@ import {
     CardDescription,
     CardFooter,
 } from "@/components/ui/card";
-import { Pill } from "@/components/ui/kibo-ui/pill";
+import { Pill, PillWithIcon } from "@/components/ui/kibo-ui/pill";
 import {
     IconStar,
     IconGitFork,
@@ -119,7 +119,14 @@ const Projects: React.FC = () => {
                         loop: true,
                     }}
                     plugins={[
-                        autoplay()
+                        autoplay(
+                            {
+                                delay: 7500,
+                                stopOnInteraction: false,
+                                stopOnMouseEnter: true,
+                                playOnInit: true,
+                            }
+                        )
                     ]}
                 >
                     <CarouselPrevious className='ml-4 mr-2 desktop:ml-0' />
@@ -176,11 +183,18 @@ const Projects: React.FC = () => {
                                                     )}
                                                     {repo.topics && repo.topics.length > 0 && (
                                                         <div className="flex flex-wrap gap-2">
-                                                            {repo.topics.map((topic) => (
-                                                                <Pill key={topic} className='my-0.5'>
-                                                                    {topic}
-                                                                </Pill>
-                                                            ))}
+                                                            {repo.topics.map((topic) => {
+                                                                const iconName = repo.icon_map?.[topic];
+                                                                return iconName ? (
+                                                                    <PillWithIcon key={topic} iconName={iconName} className='my-0.5'>
+                                                                        {topic}
+                                                                    </PillWithIcon>
+                                                                ) : (
+                                                                    <Pill key={topic} className='my-0.5'>
+                                                                        {topic}
+                                                                    </Pill>
+                                                                );
+                                                            })}
                                                         </div>
                                                     )}
                                                 </CardDescription>

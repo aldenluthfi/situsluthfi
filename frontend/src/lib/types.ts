@@ -30,4 +30,5 @@ export type RepositoryObject = {
     readme: string;
     cover_light_url?: string;
     cover_dark_url?: string;
+    icon_map?: Record<string, string>;
 }

@@ -22,6 +22,7 @@ export const fetchUserRepositories = async (): Promise<RepositoryObject[]> => {
         readme: row.readme,
         cover_light_url: row.cover_light_url,
         cover_dark_url: row.cover_dark_url,
+        icon_map: row.icon_map,
     }));
 };
 
@@ -51,5 +52,6 @@ export const fetchRepositoryByName = async (name: string): Promise<RepositoryObj
         readme: row.readme,
         cover_light_url: row.cover_light_url,
         cover_dark_url: row.cover_dark_url,
+        icon_map: row.icon_map,
     };
 };
