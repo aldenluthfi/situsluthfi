@@ -128,7 +128,7 @@ const Projects: React.FC = () => {
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
                                 <CarouselItem key={i} className="basis-full">
-                                    <Card className="motion-preset-slide-down h-full" style={{ animationDelay: `${i * 100}ms` }}>
+                                    <Card className="motion-preset-fade h-full" style={{ animationDelay: `${i * 100}ms` }}>
                                         <CardHeader>
                                             <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
                                             <CardTitle>
