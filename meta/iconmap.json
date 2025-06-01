@@ -1,3 +1,11 @@
 {
-  "react": "IconBrandReact"
+  "react": "IconBrandReact",
+  "elasticsearch": "IconBrandElastic",
+  "mysql": "IconBrandMysql",
+  "docker": "IconBrandDocker",
+  "vite": "IconBrandVite",
+  "tailwind": "IconBrandTailwind",
+  "shadcn-ui": "IconShadow",
+  "information-retrieval": "IconSearch",
+  "portfolio-website": "IconWorldWww"
 }
