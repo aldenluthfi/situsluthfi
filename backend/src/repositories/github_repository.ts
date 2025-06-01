@@ -4,7 +4,7 @@ import { RepositoryObject } from "../lib/types";
 
 export const fetchUserRepositories = async (): Promise<RepositoryObject[]> => {
     const [rows] = await pool.query(
-        "SELECT * FROM repositories ORDER BY updated_at DESC"
+        "SELECT * FROM repositories ORDER BY created_at DESC"
     ) as Array<RowDataPacket[]>;
 
     return rows.map(row => ({

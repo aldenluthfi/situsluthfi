@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/carousel";
 import { useTheme } from "@/components/custom/theme-provider";
 import type { RepositoryObject } from "@/lib/types";
+import autoplay from "embla-carousel-autoplay";
 
 function ProjectImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
     const [loaded, setLoaded] = useState(false);
@@ -42,9 +43,8 @@ function ProjectImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode
             <img
                 src={imageUrl || fallbackUrl}
                 alt={`${repo.name} preview`}
-                className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${
-                    loaded && !imageError ? "opacity-100" : "opacity-0"
-                }`}
+                className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${loaded && !imageError ? "opacity-100" : "opacity-0"
+                    }`}
                 onLoad={() => setLoaded(true)}
                 onError={() => {
                     if (imageUrl && fallbackUrl && !imageError) {
@@ -118,7 +118,12 @@ const Projects: React.FC = () => {
                         align: "start",
                         loop: true,
                     }}
+                    plugins={[
+                        autoplay()
+                    ]}
                 >
+                    <CarouselPrevious className='ml-4 mr-2 desktop:ml-0' />
+                    <CarouselNext className='mr-4 ml-2 desktop:mr-0' />
                     <CarouselContent className='py-4'>
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
@@ -181,8 +186,8 @@ const Projects: React.FC = () => {
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardFooter className='mt-auto'>
-                                                <div className="flex justify-between items-center text-sm text-muted-foreground w-full">
-                                                    <div className="flex gap-4">
+                                                <div className="flex justify-between items-end text-sm text-muted-foreground w-full">
+                                                    <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                         {repo.stargazers_count > 0 && (
                                                             <div className="flex items-center gap-1">
                                                                 <IconStar className="size-4" stroke={1.5} />
@@ -198,11 +203,11 @@ const Projects: React.FC = () => {
                                                         {repo.license && (
                                                             <div className="flex items-center gap-1">
                                                                 <IconScale className="size-4" stroke={1.5} />
-                                                                {typeof repo.license === 'string' ? repo.license : repo.license.name || repo.license.key}
+                                                                {typeof repo.license === 'string' ? repo.license : repo.license.spdx_id || repo.license.key}
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <span>
+                                                    <span className='flex place-items-end'>
                                                         {new Date(repo.created_at).toLocaleDateString(
                                                             "en-GB",
                                                             {
@@ -219,8 +224,6 @@ const Projects: React.FC = () => {
                                 </CarouselItem>
                             ))}
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
                 </Carousel>
             </div>
         </div>
