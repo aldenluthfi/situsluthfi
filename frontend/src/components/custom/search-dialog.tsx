@@ -22,6 +22,8 @@ interface SearchDialogProps {
     readonly onOpenChange: (open: boolean) => void;
 }
 
+const PAGE_SIZE = 3;
+
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -73,7 +75,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 const controller = new AbortController();
                 searchAbortController.current = controller;
 
-                const res = await fetch(`/api/search?q=${encodeURIComponent(value)}&pagesize=3&page=1`, {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(value)}&pagesize=${PAGE_SIZE}&page=1`, {
                     signal: controller.signal
                 });
 
@@ -103,7 +105,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             searchAbortController.current = controller;
 
             const nextPage = currentPage + 1;
-            const res = await fetch(`/api/search?q=${encodeURIComponent(search)}&pagesize=6&page=${nextPage}`, {
+            const res = await fetch(`/api/search?q=${encodeURIComponent(search)}&pagesize=${PAGE_SIZE}&page=${nextPage}`, {
                 signal: controller.signal
             });
 
@@ -164,21 +166,6 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             });
         }
     }, [selectedIndex]);
-
-    useEffect(() => {
-        const handleGlobalKeyDown = (e: KeyboardEvent) => {
-            const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
-
-            if (modifierKey && e.key === 'k') {
-                e.preventDefault();
-                onOpenChange(!open);
-                return;
-            }
-        };
-
-        document.addEventListener('keydown', handleGlobalKeyDown);
-        return () => document.removeEventListener('keydown', handleGlobalKeyDown);
-    }, [open]);
 
     const handleEnterKey = (
         e: React.KeyboardEvent,
