@@ -174,16 +174,6 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 onOpenChange(!open);
                 return;
             }
-
-            if (open) return;
-
-            if (modifierKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o')) {
-                e.preventDefault();
-                const navItem = navigationItems.find(item => item.shortcut.toLowerCase() === e.key.toLowerCase());
-                if (navItem) {
-                    window.location.href = navItem.href;
-                }
-            }
         };
 
         document.addEventListener('keydown', handleGlobalKeyDown);
@@ -238,20 +228,6 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             return true;
         }
 
-        if (
-            modifierKey &&
-            ['u', 'i', 'o'].includes(e.key.toLowerCase())
-        ) {
-            e.preventDefault();
-            const navItem = navigationItems.find(
-                item => item.shortcut.toLowerCase() === e.key.toLowerCase()
-            );
-            if (navItem) {
-                onOpenChange(false);
-                window.location.href = navItem.href;
-            }
-            return true;
-        }
         return false;
     };
 
@@ -330,7 +306,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         )}
 
                         {!searchLoading && !searchError && searchResults.length > 0 && (
-                            <div className="text-foreground overflow-hidden p-1">
+                            <div className="text-foreground overflow-hidden p-1 gap-2 flex flex-col">
                                 {searchResults.map((item, index) => {
                                     const isWriting = item._type === 'writing';
                                     const isRepository = item._type === 'repository';
@@ -340,10 +316,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={`${item._type}-${item.id}`}
                                             ref={selectedIndex === index ? selectedItemRef : null}
-                                            className={`relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
+                                            className={`group relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
                                                 }`}
+                                            onMouseEnter={() => setSelectedIndex(index)}
                                             onClick={() => {
                                                 onOpenChange(false);
                                                 if (isWriting) {
@@ -366,7 +343,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                 </div>
                                                 {index + 1 <= 9 && !isMobile && (
                                                     <kbd
-                                                        className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
+                                                        className={`ml-auto font-mono rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap group-hover:bg-primary-300 group-hover:text-primary-700 ${selectedIndex === index ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}
                                                     >
                                                         <div className="!text-sm">⌘</div> {index + 1}
                                                     </kbd>
@@ -387,10 +364,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 {hasMore && (
                                     <div
                                         ref={selectedIndex === searchResults.length ? selectedItemRef : null}
-                                        className={`relative flex cursor-default items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
+                                        className={`relative flex cursor-default items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
                                                 ? 'bg-primary-200 text-primary-700'
                                                 : 'text-muted-foreground'
                                             }`}
+                                        onMouseEnter={() => setSelectedIndex(searchResults.length)}
                                         onClick={loadMoreResults}
                                         data-slot="button"
                                     >
@@ -405,7 +383,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         )}
 
                         {filteredNavigationItems.length > 0 && (
-                            <div className="text-foreground overflow-hidden p-1">
+                            <div className="text-foreground overflow-hidden p-1 gap-2 flex flex-col">
                                 {filteredNavigationItems.map((item, index) => {
                                     const seeMoreItems = hasMore ? 1 : 0;
                                     const actualIndex = searchResults.length + seeMoreItems + index;
@@ -414,10 +392,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={item.name}
                                             ref={selectedIndex === actualIndex ? selectedItemRef : null}
-                                            className={`relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
+                                            className={`group relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
                                                 }`}
+                                            onMouseEnter={() => setSelectedIndex(actualIndex)}
                                             onClick={() => { onOpenChange(false); window.location.href = item.href; }}
                                             data-slot="button"
                                         >
@@ -425,7 +404,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                             {item.name}
                                             {
                                                 !isMobile && (
-                                                    <kbd className={`ml-auto rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap ${selectedIndex === actualIndex ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}>
+                                                    <kbd className={`ml-auto font-mono rounded-sm py-1 px-2 flex gap-1 items-center text-xs whitespace-nowrap group-hover:bg-primary-300 group-hover:text-primary-700 ${selectedIndex === actualIndex ? 'bg-primary-300 text-primary-700' : 'bg-muted text-muted-foreground'}`}>
                                                         <div className="!text-sm">⌘</div> {item.shortcut}
                                                     </kbd>
                                                 )

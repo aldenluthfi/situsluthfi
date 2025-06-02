@@ -1,5 +1,6 @@
 import SlidingTitle from '../components/custom/sliding-title';
 import Squiggle from '../components/custom/squiggle';
+
 import {
     Carousel,
     CarouselContent,
@@ -168,7 +169,8 @@ const Home: React.FC = () => {
                 <Squiggle className="-scale-y-100 w-full fill-primary-100 -z-10" />
             </div>
 
-            <div className='h-screen'></div>
+            <div className='h-screen max-w-4xl'>
+            </div>
         </div>
     );
 };

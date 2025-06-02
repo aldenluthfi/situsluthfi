@@ -268,7 +268,11 @@ export const indexAllRepositoriesToES = async () => {
 const waitForConnection = async (maxRetries = 30, retryDelay = 2000) => {
     for (let i = 0; i < maxRetries; i++) {
         try {
-            await pool.query("SELECT 1");
+            await pool.query("SELECT 1 FROM writings LIMIT 1");
+            await pool.query("SELECT 1 FROM repositories LIMIT 1");
+            await pool.query("SELECT 1 FROM facts LIMIT 1");
+            await pool.query("SELECT 1 FROM writing_content LIMIT 1");
+
             console.log("Database connection established.");
             return;
         } catch {

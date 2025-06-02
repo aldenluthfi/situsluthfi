@@ -92,7 +92,6 @@ const Projects: React.FC = () => {
             }
         };
 
-        setLoading(true);
         fetchRepositories();
         handleSync();
     }, []);

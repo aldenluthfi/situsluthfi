@@ -39,7 +39,7 @@ export function Header() {
                         </li>
                     </ul>
                 </div>
-                <div className="flex items-center justify-end w-48 my-auto gap-2 mr-16">
+                <div className="flex items-center justify-end w-48 my-auto gap-3 mr-15">
                     <Button
                         variant="ghost"
                         size="icon"

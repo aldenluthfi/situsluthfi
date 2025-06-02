@@ -1,8 +1,9 @@
-import { StrictMode } from 'react'
+import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { IconHome, IconBook, IconFolder, IconPhoto, IconScale, IconRefresh, IconSearch } from '@tabler/icons-react'
 
 import Cursor from './components/custom/cursor'
 import Home from './pages/Home'
@@ -18,34 +19,162 @@ import Footer from './components/custom/footer'
 import Wrapper from './components/custom/wrapper'
 
 import { Toaster } from "@/components/ui/sonner"
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut
+} from "@/components/ui/context-menu"
+import { SearchDialog } from '@/components/custom/search-dialog'
+import { isWindows } from '@/lib/utils'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Cursor />
-    <Toaster
-      toastOptions={{
-        classNames: {
-          title: "!text-base !font-body-bold",
-          description: "!text-sm !font-body !text-muted-foreground",
-          toast: "!select-none !border-accent",
+function App() {
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
+
+      if (modifierKey && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(!searchOpen);
+        return;
+      }
+
+      if (searchOpen) return;
+
+      if (modifierKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o' || e.key.toLowerCase() === 'l' || e.key.toLowerCase() === 'h')) {
+        e.preventDefault();
+        switch (e.key.toLowerCase()) {
+          case 'u':
+            window.location.href = '/projects';
+            break;
+          case 'i':
+            window.location.href = '/writings';
+            break;
+          case 'o':
+            window.location.href = '/gallery';
+            break;
+          case 'l':
+            window.location.href = '/license';
+            break;
+          case 'h':
+            window.location.href = '/';
+            break;
         }
-      }}
-    />
-    <ThemeProvider storageKey="vite-ui-theme" defaultMode="dark" defaultTheme="yellow">
-      <Router>
-        <Wrapper>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/license" element={<License />} />
-            <Route path="/writings" element={<Writings />} />
-            <Route path="/writings/:slug" element={<Writing />} />
-            <Route path="/gallery" element={<PageUnderConstruction />} />
-            <Route path="/projects" element={<Projects />} />
-          </Routes>
-          <Footer />
-        </Wrapper>
-      </Router>
-    </ThemeProvider>
-  </StrictMode>,
-)
+      }
+    };
+
+    document.addEventListener('keydown', handleGlobalKeyDown);
+    return () => document.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [searchOpen]);
+
+  return (
+    <StrictMode>
+      <Cursor />
+      <Toaster
+        toastOptions={{
+          classNames: {
+            title: "!text-base !font-body-bold",
+            description: "!text-sm !font-body !text-muted-foreground",
+            toast: "!select-none !border-accent",
+          }
+        }}
+      />
+      <ThemeProvider storageKey="vite-ui-theme" defaultMode="dark" defaultTheme="yellow">
+        <Router>
+          <ContextMenu>
+            <ContextMenuTrigger asChild>
+              <div className="min-h-screen">
+                <Wrapper>
+                  <Header />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/license" element={<License />} />
+                    <Route path="/writings" element={<Writings />} />
+                    <Route path="/writings/:slug" element={<Writing />} />
+                    <Route path="/gallery" element={<PageUnderConstruction />} />
+                    <Route path="/projects" element={<Projects />} />
+                  </Routes>
+                  <Footer />
+                </Wrapper>
+              </div>
+            </ContextMenuTrigger>
+            <ContextMenuContent className='p-1.5 flex flex-col gap-1.5'>
+              <ContextMenuItem className='text-base group' onClick={() => setSearchOpen(true)} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconSearch className="size-6" stroke={1.5} />
+                  Search
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> K
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuSeparator className='my-0.25'/>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/'} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconHome className="size-6" stroke={1.5} />
+                  Home
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> H
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/projects'} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconFolder className="size-6" stroke={1.5} />
+                  Projects
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5  flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> U
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/writings'} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconBook className="size-6" stroke={1.5} />
+                  Writings
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> I
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/gallery'} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconPhoto className="size-6" stroke={1.5} />
+                  Gallery
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> O
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuSeparator className='my-0.25'/>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/license'} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconScale className="size-6" stroke={1.5} />
+                  License
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> L
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem className='text-base group' onClick={() => window.location.reload()} data-slot="button">
+                <div className="flex items-center gap-4 mr-8">
+                  <IconRefresh className="size-6" stroke={1.5} />
+                  Refresh
+                </div>
+                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                  <div className="!text-sm">⌘</div> R
+                </ContextMenuShortcut>
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+        </Router>
+      </ThemeProvider>
+    </StrictMode>
+  )
+}
+
+createRoot(document.getElementById('root')!).render(<App />)
