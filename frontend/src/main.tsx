@@ -1,4 +1,4 @@
-import { StrictMode, useState, useEffect } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 
@@ -29,9 +29,10 @@ import {
 } from "@/components/ui/context-menu"
 import { SearchDialog } from '@/components/custom/search-dialog'
 import { isWindows, isMobile } from '@/lib/utils'
+import { useSearch } from './hooks/use-search'
 
 function App() {
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { searchOpen, setSearchOpen, openSearch, toggleSearch } = useSearch();
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -39,7 +40,7 @@ function App() {
 
       if (modifierKey && e.key === 'k') {
         e.preventDefault();
-        setSearchOpen(!searchOpen);
+        toggleSearch();
         return;
       }
 
@@ -69,7 +70,7 @@ function App() {
 
     document.addEventListener('keydown', handleGlobalKeyDown);
     return () => document.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [searchOpen]);
+  }, [searchOpen, toggleSearch]);
 
   return (
     <StrictMode>
@@ -89,7 +90,7 @@ function App() {
             <ContextMenuTrigger asChild>
               <div className="min-h-screen">
                 <Wrapper>
-                  <Header />
+                  <Header onSearchClick={openSearch} />
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/license" element={<License />} />
@@ -103,7 +104,7 @@ function App() {
               </div>
             </ContextMenuTrigger>
             <ContextMenuContent className='p-1.5 flex flex-col gap-1.5'>
-              <ContextMenuItem className='text-base group' onClick={() => setSearchOpen(true)} data-slot="button">
+              <ContextMenuItem className='text-base group' onClick={openSearch} data-slot="button">
                 <div className="flex items-center gap-4 mr-8">
                   <IconSearch className="size-6" stroke={1.5} />
                   Search

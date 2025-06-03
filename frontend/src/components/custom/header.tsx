@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeSettings } from "@/components/custom/theme-settings";
-import { SearchDialog } from "@/components/custom/search-dialog";
 import {
     IconSearch
 } from "@tabler/icons-react";
 import { ScrollProgress } from '@/components/animate-ui/components/scroll-progress';
-import { useState } from "react";
 
-export function Header() {
-    const [open, setOpen] = useState(false);
+interface HeaderProps {
+    onSearchClick: () => void;
+}
 
+export function Header({ onSearchClick }: HeaderProps) {
     return (
         <header className="fixed top-0 flex z-10 w-screen bg-background justify-center">
             <nav className="flex justify-between items-start h-20 pt-1 w-full desktop:w-desktop">
@@ -43,7 +43,7 @@ export function Header() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setOpen(true)}
+                        onClick={onSearchClick}
                         className="hover:bg-accent text-foreground"
                         aria-label="Search"
                         title="Search"
@@ -55,7 +55,6 @@ export function Header() {
                     </div>
                 </div>
             </nav>
-            <SearchDialog open={open} onOpenChange={setOpen} />
             <ScrollProgress className="bg-primary h-1" />
         </header>
     );
