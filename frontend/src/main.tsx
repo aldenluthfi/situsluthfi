@@ -28,7 +28,7 @@ import {
   ContextMenuShortcut
 } from "@/components/ui/context-menu"
 import { SearchDialog } from '@/components/custom/search-dialog'
-import { isWindows } from '@/lib/utils'
+import { isWindows, isMobile } from '@/lib/utils'
 
 function App() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -108,7 +108,7 @@ function App() {
                   <IconSearch className="size-6" stroke={1.5} />
                   Search
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> K
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -118,7 +118,7 @@ function App() {
                   <IconHome className="size-6" stroke={1.5} />
                   Home
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> H
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -127,7 +127,7 @@ function App() {
                   <IconFolder className="size-6" stroke={1.5} />
                   Projects
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5  flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5  flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> U
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -136,7 +136,7 @@ function App() {
                   <IconBook className="size-6" stroke={1.5} />
                   Writings
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> I
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -145,7 +145,7 @@ function App() {
                   <IconPhoto className="size-6" stroke={1.5} />
                   Gallery
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> O
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -155,7 +155,7 @@ function App() {
                   <IconScale className="size-6" stroke={1.5} />
                   License
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> L
                 </ContextMenuShortcut>
               </ContextMenuItem>
@@ -164,7 +164,7 @@ function App() {
                   <IconRefresh className="size-6" stroke={1.5} />
                   Refresh
                 </div>
-                <ContextMenuShortcut className="ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700">
+                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> R
                 </ContextMenuShortcut>
               </ContextMenuItem>

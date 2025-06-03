@@ -134,32 +134,40 @@ const Projects: React.FC = () => {
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
                                 <CarouselItem key={i} className="basis-full">
-                                    <Card className="motion-preset-fade h-full" style={{ animationDelay: `${i * 100}ms` }}>
-                                        <CardHeader>
-                                            <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
-                                            <CardTitle>
-                                                <Skeleton className="h-8 w-3/4" />
-                                            </CardTitle>
-                                            <CardDescription>
-                                                <Skeleton className="h-4 w-full mt-2" />
-                                                <Skeleton className="h-4 w-2/3 mt-1" />
-                                                <div className="flex gap-2 mt-4">
-                                                    <Skeleton className="h-6 w-16" />
-                                                    <Skeleton className="h-6 w-20" />
-                                                    <Skeleton className="h-6 w-18" />
+                                    <div className='h-full p-6'>
+                                        <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
+                                            <CardHeader>
+                                                <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
+                                                <CardTitle>
+                                                    <Skeleton className="h-9 w-3/4" />
+                                                </CardTitle>
+                                                <CardDescription className="mt-2">
+                                                    <Skeleton className="h-4 w-full" />
+                                                    <Skeleton className="h-4 w-4/5 mt-1" />
+                                                    <Skeleton className="h-4 w-3/5 mt-1" />
+                                                    <Skeleton className="h-4 w-2/5 mt-1" />
+                                                    <div className="flex flex-wrap gap-2 mt-3">
+                                                        <Skeleton className="h-6 w-16 rounded-full" />
+                                                        <Skeleton className="h-6 w-20 rounded-full" />
+                                                        <Skeleton className="h-6 w-14 rounded-full" />
+                                                        <Skeleton className="h-6 w-18 rounded-full" />
+                                                    </div>
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardFooter className="mt-auto">
+                                                <div className="flex justify-between items-end w-full">
+                                                    <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
+                                                        <div className="flex gap-4">
+                                                            <Skeleton className="h-4 w-8" />
+                                                            <Skeleton className="h-4 w-8" />
+                                                            <Skeleton className="h-4 w-12" />
+                                                        </div>
+                                                    </div>
+                                                    <Skeleton className="h-4 w-20" />
                                                 </div>
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardFooter>
-                                            <div className="flex justify-between items-center w-full">
-                                                <div className="flex gap-4">
-                                                    <Skeleton className="h-4 w-12" />
-                                                    <Skeleton className="h-4 w-12" />
-                                                </div>
-                                                <Skeleton className="h-4 w-20" />
-                                            </div>
-                                        </CardFooter>
-                                    </Card>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
                                 </CarouselItem>
                             ))
                             : data.map((repo) => (
