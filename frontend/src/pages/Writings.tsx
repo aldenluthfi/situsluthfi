@@ -274,7 +274,6 @@ const Writings: React.FC = () => {
                         </PaginationContent>
                     </Pagination>
                 </div>
-                )
             </div>
         </div>
     );
