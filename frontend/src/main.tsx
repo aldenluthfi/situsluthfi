@@ -11,7 +11,7 @@ import License from './pages/License'
 import Writings from './pages/Writings'
 import Writing from './pages/Writing'
 import Projects from './pages/Projects'
-import PageUnderConstruction from './pages/PageUnderConstruction'
+import Gallery from './pages/Gallery'
 
 import ThemeProvider from "@/components/custom/theme-provider"
 import Header from './components/custom/header'
@@ -96,7 +96,7 @@ function App() {
                     <Route path="/license" element={<License />} />
                     <Route path="/writings" element={<Writings />} />
                     <Route path="/writings/:slug" element={<Writing />} />
-                    <Route path="/gallery" element={<PageUnderConstruction />} />
+                    <Route path="/gallery" element={<Gallery />} />
                     <Route path="/projects" element={<Projects />} />
                   </Routes>
                   <Footer />

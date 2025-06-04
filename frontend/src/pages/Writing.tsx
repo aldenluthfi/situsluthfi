@@ -467,7 +467,7 @@ const Writing: React.FC = () => {
                                         if (!toc) setToc(props.children);
                                         return (
                                             <div ref={tocInlineRef}>
-                                                <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50" id="table-of-contents">
+                                                <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50 rounded-md" id="table-of-contents">
                                                     <CardHeader className="-mb-6">
                                                         <strong className="font-body-bold">Table of Contents</strong>
                                                     </CardHeader>
@@ -548,7 +548,7 @@ const Writing: React.FC = () => {
                                 blockquote(props) {
                                     const { ...rest } = props
                                     return (
-                                        <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50">
+                                        <Card className="w-full my-4 px-6 pt-4 border-primary-600 bg-primary-200/50 rounded-md">
                                             <blockquote className="-mb-4" {...rest}>{props.children}</blockquote>
                                         </Card>
                                     );

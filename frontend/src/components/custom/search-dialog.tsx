@@ -251,7 +251,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 <DialogTitle>Command Panel</DialogTitle>
                 <DialogDescription>Search Anything</DialogDescription>
             </DialogHeader>
-            <DialogContent className="overflow-hidden p-0 max-w-lg mx-auto w-11/12 desktop:w-full">
+            <DialogContent className="overflow-hidden p-0 max-w-lg mx-auto w-11/12 desktop:w-full tablet:top-1/2 tablet:-translate-y-1/2 top-1/4 -translate-y-1/4">
                 <div className="bg-popover text-popover-foreground flex h-full w-full flex-col px-1 overflow-hidden rounded-md">
                     <style>{`
                         .search-highlight mark {
@@ -265,7 +265,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     <div className="flex h-12 items-center gap-2 border-b px-3">
                         <IconSearch className="size-6" stroke={1.5} />
                         <input
-                            className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                            className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 cursor-text"
                             placeholder="Search..."
                             value={search}
                             onChange={(e) => handleSearch(e.target.value)}
