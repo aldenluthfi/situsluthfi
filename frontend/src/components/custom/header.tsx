@@ -15,7 +15,7 @@ export function Header({ onSearchClick }: HeaderProps) {
         <header className="fixed top-0 flex z-10 w-screen bg-background justify-center">
             <nav className="flex justify-between items-start h-20 pt-1 w-full desktop:w-desktop">
                 <div className="z-30 pl-6 w-48 my-auto">
-                    <Link to="/" className="tablet:pl-3 font-heading text-2xl">
+                    <Link to="/" className="font-heading text-2xl">
                         aldenluth.fi
                     </Link>
                 </div>

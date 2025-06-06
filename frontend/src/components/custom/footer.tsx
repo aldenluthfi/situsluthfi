@@ -108,10 +108,10 @@ const Footer = () => {
             <nav className="flex justify-between flex-col w-full desktop:w-desktop p-6">
                 <div className="flex max-tablet:flex-col max-tablet:space-y-4 tablet:justify-between tablet:items-end pb-6">
                     <TooltipProvider openDelay={0} closeDelay={0}>
-                        <Link to="/" className="px-3 font-heading text-2xl text-primary-700 w-1/5 h-full">
+                        <Link to="/" className=" font-heading text-2xl text-primary-700 w-1/5 h-full">
                             aldenluth.fi
                         </Link>
-                        <ul className="flex max-tablet: pl-1.5 tablet:justify-end gap-3">
+                        <ul className="flex max-tablet:-ml-3 pl-1.5 tablet:justify-end gap-3">
                             <li>
                                 {!isMobile ? (
                                     <Tooltip>
@@ -280,7 +280,7 @@ const Footer = () => {
                 <Separator className='bg-primary' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
-                    <p className="max-tablet:px-3 text-sm font-body text-primary-700">
+                    <p className="text-sm font-body text-primary-700">
                         <span className="inline-block scale-x-[-1]">&copy;</span> 2025 Alden Luthfi. All rights reversed.
                     </p>
                 </div>
