@@ -353,7 +353,7 @@ const WorldMap = ({
             <div className='py-3 px-4 w-full border-b'>
                 {renderBreadcrumb()}
             </div>
-            <div className="flex items-center justify-center h-full w-full rounded-xl overflow-hidden bg-background">
+            <div className="flex items-center justify-center h-full w-full rounded-b-xl overflow-hidden bg-background">
                 {renderMap()}
             </div>
         </div>
