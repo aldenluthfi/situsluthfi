@@ -1,8 +1,11 @@
 import SlidingTitle from '@/components/custom/sliding-title';
 import WorldMap from '@/components/custom/world-map';
 import Squiggle from '@/components/custom/squiggle';
+import { useTheme } from "@/components/custom/theme-provider"
 
 const Gallery: React.FC = () => {
+    const { mode } = useTheme();
+
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
@@ -26,7 +29,7 @@ const Gallery: React.FC = () => {
                             selectables={{
                                 continents: ['Asia', 'Europe'],
                                 countries: {
-                                    Asia: ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea'],
+                                    Asia: ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
                                     Europe: ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
                                     Indonesia: ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung'],
                                     Malaysia: ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
@@ -37,13 +40,21 @@ const Gallery: React.FC = () => {
                                     'United Arab Emirates': ['Dubayy']
                                 }
                             }}
-                            pathStyles={{
-                                base: "stroke-muted",
-                                hover: "fill-primary",
-                                selected: "fill-primary",
-                                selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
-                                nonSelectable: "fill-card"
-                            }}
+                            pathStyles={ mode === 'dark' ? {
+                                    base: "stroke-muted",
+                                    hover: "fill-primary",
+                                    selected: "fill-primary",
+                                    selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
+                                    nonSelectable: "fill-card"
+                                } :
+                                {
+                                    base: "stroke-muted-foreground/50",
+                                    hover: "fill-primary-300",
+                                    selected: "fill-primary-300",
+                                    selectable: "fill-primary stroke-primary-600 pointer-events-auto",
+                                    nonSelectable: "fill-muted"
+                                }
+                            }
                             strokeWidth={0.5}
                             maxHeight='80vh'
                             maxWidth='90vw'
@@ -51,6 +62,8 @@ const Gallery: React.FC = () => {
                     </div>
                 </div>
                 <Squiggle className="-scale-y-100 w-full fill-primary-100 -z-10" />
+            </div>
+            <div className='h-screen max-w-4xl'>
             </div>
         </div>
     );

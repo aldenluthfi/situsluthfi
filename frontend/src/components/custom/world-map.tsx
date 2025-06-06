@@ -11,8 +11,7 @@ import {
     BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 import { cn } from '@/lib/utils';
-import { IconZoomIn, IconZoomOut } from '@tabler/icons-react';
-import { IconTarget } from '@tabler/icons-react';
+import { IconZoomIn, IconZoomOut, IconCurrentLocation } from '@tabler/icons-react';
 import { Button } from '@/components/ui/button';
 
 type ViewLevel = 'world' | 'continent' | 'country';
@@ -333,7 +332,7 @@ const WorldMap = ({
                             aria-label="Recenter"
                             type="button"
                         >
-                            <IconTarget className='size-6' stroke={1.5} />
+                            <IconCurrentLocation className='size-6' stroke={1.5} />
                         </Button>
                     </div>
                 )}

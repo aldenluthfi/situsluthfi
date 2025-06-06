@@ -188,25 +188,39 @@ const Map = ({
                 >
                     {stateCode?.map((code, index) => (
                         hints ? (
-                            <Tooltip key={index}>
-                                <TooltipTrigger data-slot={isSelectable(code) ? 'button' : ''}>
-                                    <path
-                                        onClick={() => handleClick(code)}
-                                        onMouseEnter={() => handleMouseEnter(code)}
-                                        onMouseLeave={() => handleMouseLeave(code)}
-                                        id={`${code}-${instanceId}`}
-                                        d={drawPath[code as keyof typeof drawPath]}
-                                        className={getPathClassName(code)}
-                                        style={{
-                                            fill: cityColors![code] ? cityColors![code] : undefined,
-                                        }}
-                                        data-disabled={!isSelectable(code)}
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    {isSelectable(code) ? code.replace(` ${name}`, '') : `I haven't been to ${code.replace(` ${name}`, '')}`}
-                                </TooltipContent>
-                            </Tooltip>
+                            isSelectable(code) ? (
+                                <Tooltip key={index}>
+                                    <TooltipTrigger data-slot="button">
+                                        <path
+                                            onClick={() => handleClick(code)}
+                                            onMouseEnter={() => handleMouseEnter(code)}
+                                            onMouseLeave={() => handleMouseLeave(code)}
+                                            id={`${code}-${instanceId}`}
+                                            d={drawPath[code as keyof typeof drawPath]}
+                                            className={getPathClassName(code)}
+                                            style={{
+                                                fill: cityColors![code] ? cityColors![code] : undefined,
+                                            }}
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {code.replace(` ${name}`, '')}
+                                    </TooltipContent>
+                                </Tooltip>
+                            ) : (
+                                <path
+                                    key={index}
+                                    onClick={() => handleClick(code)}
+                                    onMouseEnter={() => handleMouseEnter(code)}
+                                    onMouseLeave={() => handleMouseLeave(code)}
+                                    id={`${code}-${instanceId}`}
+                                    d={drawPath[code as keyof typeof drawPath]}
+                                    className={getPathClassName(code)}
+                                    style={{
+                                        fill: cityColors![code] ? cityColors![code] : undefined,
+                                    }}
+                                />
+                            )
                         ) : (
                             <path
                                 key={index}
