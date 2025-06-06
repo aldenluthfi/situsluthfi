@@ -36,6 +36,12 @@ export interface MapProps {
     cityColors?: CityColorMap;
     disableClick?: boolean;
     disableHover?: boolean;
+    maxWidth?: string;
+    maxHeight?: string;
+    zoom?: number;
+    panX?: number;
+    panY?: number;
+    name?: string;
 }
 
 const Map = ({
@@ -55,26 +61,70 @@ const Map = ({
     cityColors = {},
     disableClick = false,
     disableHover = false,
+    maxWidth = '600px',
+    maxHeight = '600px',
+    zoom = 1,
+    panX = 0,
+    panY = 0,
+    name,
 }: MapProps) => {
     const instanceId = useId().replace(/:/g, '');
     const [selectedStates, setSelectedStates] = useState<string[]>([]);
     const [hoveredState, setHoveredState] = useState<string | null>(null);
-    const [viewBox, setViewBox] = useState<string>('0 0 100 100');
+    const [baseViewBox, setBaseViewBox] = useState<{ x: number; y: number; width: number; height: number }>({ x: 0, y: 0, width: 100, height: 100 });
+    const [aspectRatio, setAspectRatio] = useState<number>(1);
 
     useEffect(() => {
         const svg = document.getElementById(`svg2-${instanceId}`) as SVGGraphicsElement | null;
         if (svg) {
             const bbox = svg.getBBox();
-            setViewBox(`${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+            setBaseViewBox({ x: bbox.x, y: bbox.y, width: bbox.width, height: bbox.height });
+            setAspectRatio(bbox.width / bbox.height);
         }
     }, [instanceId]);
 
-    const mapStyle = useMemo(
-        () => ({
-            strokeWidth,
-        }),
-        [strokeWidth]
-    );
+    const viewBox = useMemo(() => {
+        const centerX = baseViewBox.x + baseViewBox.width / 2;
+        const centerY = baseViewBox.y + baseViewBox.height / 2;
+
+        const scaledWidth = baseViewBox.width / zoom;
+        const scaledHeight = baseViewBox.height / zoom;
+
+        const viewX = centerX - scaledWidth / 2 - panX / zoom;
+        const viewY = centerY - scaledHeight / 2 - panY / zoom;
+
+        return `${viewX} ${viewY} ${scaledWidth} ${scaledHeight}`;
+    }, [baseViewBox, zoom, panX, panY]);
+
+    const containerStyle = useMemo(() => {
+        const maxWidthNum = parseFloat(maxWidth);
+        const maxHeightNum = parseFloat(maxHeight);
+
+        let width = maxWidth;
+        let height = maxHeight;
+
+        if (aspectRatio > 0 && maxWidthNum && maxHeightNum) {
+            const widthFromHeight = maxHeightNum * aspectRatio;
+            const heightFromWidth = maxWidthNum / aspectRatio;
+
+            if (widthFromHeight <= maxWidthNum) {
+                width = `${widthFromHeight}${maxHeight.replace(/[\d.]/g, '')}`;
+                height = maxHeight;
+            } else {
+                width = maxWidth;
+                height = `${heightFromWidth}${maxWidth.replace(/[\d.]/g, '')}`;
+            }
+        }
+
+        return {
+            width,
+            height,
+            maxWidth,
+            maxHeight,
+        };
+    }, [maxWidth, maxHeight, aspectRatio]);
+
+    const scaledStrokeWidth = useMemo(() => strokeWidth / zoom, [strokeWidth, zoom]);
 
     const isSelectable = (code: string) => selectables.includes(code);
 
@@ -124,8 +174,18 @@ const Map = ({
 
     return (
         <TooltipProvider>
-            <div className={cn("map", className)} style={mapStyle}>
-                <svg version="1.1" id={`svg2-${instanceId}`} x="0px" y="0px" viewBox={viewBox}>
+            <div
+                className={cn("map flex items-center justify-center", className)}
+                style={containerStyle}
+                data-name={name}
+            >
+                <svg
+                    version="1.1"
+                    id={`svg2-${instanceId}`}
+                    viewBox={viewBox}
+                    className="w-full h-full overflow-visible"
+                    style={{ strokeWidth: scaledStrokeWidth }}
+                >
                     {stateCode?.map((code, index) => (
                         hints ? (
                             <Tooltip key={index}>
@@ -143,7 +203,7 @@ const Map = ({
                                     />
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    {isSelectable(code) ? code : `I haven't been to ${code}`}
+                                    {isSelectable(code) ? code.replace(` ${name}`, '') : `I haven't been to ${code.replace(` ${name}`, '')}`}
                                 </TooltipContent>
                             </Tooltip>
                         ) : (

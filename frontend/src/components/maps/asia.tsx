@@ -78,7 +78,7 @@ export const stateCode = [
 export interface AsiaProps extends Omit<MapProps, 'stateCode'> {}
 
 const Asia = (props: AsiaProps) => {
-    return <Map stateCode={stateCode} {...props} />;
+    return <Map name='Asia' stateCode={stateCode} {...props} />;
 };
 
 export default Asia;
