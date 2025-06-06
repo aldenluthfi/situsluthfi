@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore } from '@/components/maps';
+import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE } from '@/components/maps';
 
 import {
     Breadcrumb,
@@ -26,7 +26,11 @@ const continentComponents = {
 const countryComponents: { [key: string]: React.ComponentType<any> } = {
     'Indonesia': Indonesia,
     'Malaysia': Malaysia,
-    'Singapore': Singapore
+    'Singapore': Singapore,
+    'South Korea': SouthKorea,
+    'Thailand': Thailand,
+    'Saudi Arabia': SaudiArabia,
+    'United Arab Emirates': UAE,
 };
 
 interface WorldMapProps {

@@ -189,7 +189,7 @@ const Map = ({
                     {stateCode?.map((code, index) => (
                         hints ? (
                             <Tooltip key={index}>
-                                <TooltipTrigger>
+                                <TooltipTrigger data-slot={isSelectable(code) ? 'button' : ''}>
                                     <path
                                         onClick={() => handleClick(code)}
                                         onMouseEnter={() => handleMouseEnter(code)}
@@ -200,6 +200,7 @@ const Map = ({
                                         style={{
                                             fill: cityColors![code] ? cityColors![code] : undefined,
                                         }}
+                                        data-disabled={!isSelectable(code)}
                                     />
                                 </TooltipTrigger>
                                 <TooltipContent>

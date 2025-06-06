@@ -1,7 +1,6 @@
 import SlidingTitle from '@/components/custom/sliding-title';
 import WorldMap from '@/components/custom/world-map';
 import Squiggle from '@/components/custom/squiggle';
-import { Indonesia, Singapore } from '@/components/maps';
 
 const Gallery: React.FC = () => {
     return (
@@ -31,14 +30,18 @@ const Gallery: React.FC = () => {
                                     Europe: ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
                                     Indonesia: ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung'],
                                     Malaysia: ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
-                                    Singapore: ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore']
+                                    Singapore: ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
+                                    'South Korea': ['Seoul', 'Incheon', 'Jeju'],
+                                    Thailand: ['Bangkok', 'Chon Buri'],
+                                    'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
+                                    'United Arab Emirates': ['Dubayy']
                                 }
                             }}
                             pathStyles={{
                                 base: "stroke-muted",
                                 hover: "fill-primary",
                                 selected: "fill-primary",
-                                selectable: "fill-primary-400 stroke-primary-300",
+                                selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
                                 nonSelectable: "fill-card"
                             }}
                             strokeWidth={0.5}
