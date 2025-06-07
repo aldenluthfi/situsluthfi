@@ -185,6 +185,7 @@ const WorldMap = ({
 
     const handleTouchStart = useCallback((e: React.TouchEvent) => {
         if (dragLocked || e.touches.length !== 1) return;
+        e.preventDefault();
         setDragging(true);
         dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         panStart.current = { ...panRef.current };
@@ -192,6 +193,7 @@ const WorldMap = ({
 
     const handleTouchMove = useCallback((e: React.TouchEvent) => {
         if (dragLocked || !dragging || !dragStart.current || !panStart.current || e.touches.length !== 1) return;
+        e.preventDefault();
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
         setPan({

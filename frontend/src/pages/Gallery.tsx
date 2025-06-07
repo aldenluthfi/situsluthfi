@@ -2,7 +2,7 @@ import SlidingTitle from '@/components/custom/sliding-title';
 import WorldMap from '@/components/custom/world-map';
 import Squiggle from '@/components/custom/squiggle';
 import { useTheme } from "@/components/custom/theme-provider"
-import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE } from '@/components/maps';
+import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE, Belgium, France, Germany, Netherlands, Italy, Switzerland, Spain } from '@/components/maps';
 
 const Gallery: React.FC = () => {
     const { mode } = useTheme();
@@ -38,7 +38,14 @@ const Gallery: React.FC = () => {
                                     'South Korea': SouthKorea,
                                     'Thailand': Thailand,
                                     'Saudi Arabia': SaudiArabia,
-                                    'United Arab Emirates': UAE
+                                    'United Arab Emirates': UAE,
+                                    'Belgium': Belgium,
+                                    'France': France,
+                                    'Germany': Germany,
+                                    'Italy': Italy,
+                                    'Netherlands': Netherlands,
+                                    'Spain': Spain,
+                                    'Switzerland': Switzerland
                                 }
                             }
                             selectables={{
@@ -51,7 +58,14 @@ const Gallery: React.FC = () => {
                                     'South Korea': ['Seoul', 'Incheon', 'Jeju'],
                                     'Thailand': ['Bangkok', 'Chon Buri'],
                                     'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
-                                    'United Arab Emirates': ['Dubayy']
+                                    'United Arab Emirates': ['Dubayy'],
+                                    'Belgium': ['Brussels Capital Region'],
+                                    'France': ['Île-de-France', 'Alsace'],
+                                    'Germany': ['Hesse'],
+                                    'Italy': ['Toscana', 'Veneto', 'Lazio', 'Vatican City Italy'],
+                                    'Netherlands': ['Noord-Holland'],
+                                    'Spain': ['Catalonia', 'Andalusia'],
+                                    'Switzerland': ['Obwalden', 'Bern', 'Genève']
                                 }
                             }
                             pathStyles={ mode === 'dark' ? {
