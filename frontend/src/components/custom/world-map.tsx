@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import {
     Breadcrumb,
     BreadcrumbList,
@@ -16,6 +16,12 @@ import {
     IconArrowsMove
 } from '@tabler/icons-react';
 import { Button } from '@/components/ui/button';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
+import { IconX } from '@tabler/icons-react';
 
 interface WorldMapProps {
     className?: string;
@@ -39,6 +45,9 @@ const ZOOM_STEP = 1.5;
 const MIN_ZOOM = 0.9;
 const MAX_ZOOM = 8;
 const ANIMATION_DURATION = 300;
+const PAN_SENSITIVITY = 0.8;
+const DOUBLE_TAP_DELAY = 300;
+const DOUBLE_TAP_DISTANCE = 50;
 
 const WorldMap = ({
     className,
@@ -57,9 +66,11 @@ const WorldMap = ({
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const [dragging, setDragging] = useState(false);
     const [dragLocked, setDragLocked] = useState(isMobile);
+    const [showDoubleTapHint, setShowDoubleTapHint] = useState(isMobile);
 
     const dragStart = useRef<{ x: number; y: number } | null>(null);
     const panStart = useRef<{ x: number; y: number } | null>(null);
+    const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
 
     const zoomRef = useRef(zoom);
     const panRef = useRef(pan);
@@ -127,6 +138,11 @@ const WorldMap = ({
                 setCurrentLevel(newBreadcrumbs.length - 1);
                 setSelected(newBreadcrumbs[newBreadcrumbs.length - 1]);
                 animateZoom(MIN_ZOOM);
+
+                if (isMobile) {
+                    setDragLocked(true);
+                }
+
             }, ANIMATION_DURATION);
         };
     }, [breadcrumbs, animateZoom, animatePan]);
@@ -147,6 +163,11 @@ const WorldMap = ({
                     return next;
                 });
                 animateZoom(MIN_ZOOM);
+
+                if (isMobile) {
+                    setDragLocked(true);
+                }
+
             }, ANIMATION_DURATION);
         }
     }, [currentLevel, selectables, selected, animateZoom, animatePan]);
@@ -178,25 +199,64 @@ const WorldMap = ({
         const dx = e.clientX - dragStart.current.x;
         const dy = e.clientY - dragStart.current.y;
         setPan({
-            x: panStart.current.x + (dx / zoomRef.current),
-            y: panStart.current.y + (dy / zoomRef.current),
+            x: panStart.current.x + (dx * PAN_SENSITIVITY / zoomRef.current),
+            y: panStart.current.y + (dy * PAN_SENSITIVITY / zoomRef.current),
         });
     }, [dragLocked, dragging]);
 
+    const dismissDoubleTapHint = useCallback(() => {
+        setShowDoubleTapHint(false);
+    }, []);
+
+    useEffect(() => {
+        if (showDoubleTapHint) {
+            const timer = setTimeout(() => {
+                dismissDoubleTapHint();
+            }, 8000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showDoubleTapHint, dismissDoubleTapHint]);
+
     const handleTouchStart = useCallback((e: React.TouchEvent) => {
-        if (dragLocked || e.touches.length !== 1) return;
+        if (e.touches.length !== 1) return;
+
+        const touch = e.touches[0];
+        const now = Date.now();
+
+        if (isMobile && lastTap.current) {
+            const timeDiff = now - lastTap.current.time;
+            const distance = Math.sqrt(
+                Math.pow(touch.clientX - lastTap.current.x, 2) +
+                Math.pow(touch.clientY - lastTap.current.y, 2)
+            );
+
+            if (timeDiff < DOUBLE_TAP_DELAY && distance < DOUBLE_TAP_DISTANCE) {
+                setDragLocked(prev => !prev);
+                if (showDoubleTapHint) {
+                    dismissDoubleTapHint();
+                }
+                lastTap.current = null;
+                return;
+            }
+        }
+
+        lastTap.current = { time: now, x: touch.clientX, y: touch.clientY };
+
+        if (dragLocked) return;
         setDragging(true);
-        dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        dragStart.current = { x: touch.clientX, y: touch.clientY };
         panStart.current = { ...panRef.current };
-    }, [dragLocked]);
+    }, [dragLocked, showDoubleTapHint, dismissDoubleTapHint]);
 
     const handleTouchMove = useCallback((e: React.TouchEvent) => {
         if (dragLocked || !dragging || !dragStart.current || !panStart.current || e.touches.length !== 1) return;
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
+
         setPan({
-            x: panStart.current.x + (dx / zoomRef.current),
-            y: panStart.current.y + (dy / zoomRef.current),
+            x: panStart.current.x + (dx * PAN_SENSITIVITY / (zoomRef.current * 0.25)),
+            y: panStart.current.y + (dy * PAN_SENSITIVITY / (zoomRef.current * 0.25)),
         });
     }, [dragLocked, dragging]);
 
@@ -292,18 +352,37 @@ const WorldMap = ({
                     </Button>
                 </div>
                 <div className="absolute bottom-3 right-3 flex flex-col gap-3">
-                    <Button
-                        onClick={() => setDragLocked(l => !l)}
-                        variant="default"
-                        size="icon"
-                        aria-label={dragLocked ? "Unlock dragging" : "Lock dragging"}
-                        type="button"
-                    >
-                        {dragLocked
-                            ? <IconLock className='size-6' stroke={1.5} />
-                            : <IconArrowsMove className='size-6' stroke={1.5} />
-                        }
-                    </Button>
+                    <Popover open={showDoubleTapHint}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                onClick={() => setDragLocked(l => !l)}
+                                variant="default"
+                                size="icon"
+                                aria-label={dragLocked ? "Unlock dragging" : "Lock dragging"}
+                                type="button"
+                            >
+                                {dragLocked
+                                    ? <IconLock className='size-6' stroke={1.5} />
+                                    : <IconArrowsMove className='size-6' stroke={1.5} />
+                                }
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent side="left" sideOffset={16} className="w-auto">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm">Double tap to toggle pan/zoom</span>
+                                <Button
+                                    onClick={dismissDoubleTapHint}
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-5 w-5 p-0 hover:bg-primary-400"
+                                    aria-label="Dismiss hint"
+                                    type="button"
+                                >
+                                    <IconX className="size-3" stroke={2} />
+                                </Button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 </div>
             </div>
         );
