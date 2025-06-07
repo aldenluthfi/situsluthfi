@@ -263,7 +263,7 @@ const Writing: React.FC = () => {
                                         chevron={false}
                                         aria-label="table of contents"
                                         title="table of contents"
-                                        className="relative py-4 z-60 h-full flex items-center justify-center rounded-l-md text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
+                                        className="relative py-4 z-60 h-auto flex items-center justify-center rounded-l-md text-primary-700 border border-primary-600 bg-primary-200 hover:bg-primary-300 rounded-r-none border-r-0"
                                     >
                                         <IconChevronRight className="size-6" stroke={1.5} />
                                     </AccordionTrigger>
@@ -276,7 +276,7 @@ const Writing: React.FC = () => {
                                             </CardHeader>
                                             <CardContent className="flex flex-col h-full">
                                                 <ScrollArea
-                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-72"
+                                                    className="h-min floating-toc-ul max-h-[60vh] pointer-events-auto overflow-y-auto w-[70vw] tablet:w-72"
                                                     showScrollbar={false}
                                                 >
                                                     <ul className="!pl-0 list-none">{toc}</ul>
