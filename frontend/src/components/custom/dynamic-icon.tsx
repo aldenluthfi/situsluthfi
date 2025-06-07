@@ -12,12 +12,12 @@ export const DynamicIcon = (props: Props): ReactElement => {
 
     const LazyIcon = React.lazy(async () => {
         const icons = await import('@tabler/icons-react')
-        const Icon = (icons as any)[icon]
-        return { default: Icon as React.ComponentType<{ size?: number; stroke?: number; className?: string }> }
+        const Icon = icons[icon as keyof typeof icons] as React.ComponentType<any>
+        return { default: Icon }
     })
 
     return (
-        <Suspense fallback={<div style={{ width: size * 4, height: size * 4 }} />}>
+        <Suspense fallback={<div style={{ width: size, height: size }} />}>
             <LazyIcon size={size} stroke={stroke} className={className} />
         </Suspense>
     )
