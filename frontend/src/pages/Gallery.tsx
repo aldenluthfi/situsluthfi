@@ -2,6 +2,7 @@ import SlidingTitle from '@/components/custom/sliding-title';
 import WorldMap from '@/components/custom/world-map';
 import Squiggle from '@/components/custom/squiggle';
 import { useTheme } from "@/components/custom/theme-provider"
+import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE } from '@/components/maps';
 
 const Gallery: React.FC = () => {
     const { mode } = useTheme();
@@ -26,20 +27,33 @@ const Gallery: React.FC = () => {
                 <div className='bg-primary-100 w-full py-10 flex justify-center items-center'>
                     <div className='p-10 desktop:p-0'>
                         <WorldMap
+                            components={
+                                {
+                                    'World': Continents,
+                                    'Asia': Asia,
+                                    'Europe': Europe,
+                                    'Indonesia': Indonesia,
+                                    'Malaysia': Malaysia,
+                                    'Singapore': Singapore,
+                                    'South Korea': SouthKorea,
+                                    'Thailand': Thailand,
+                                    'Saudi Arabia': SaudiArabia,
+                                    'United Arab Emirates': UAE
+                                }
+                            }
                             selectables={{
-                                continents: ['Asia', 'Europe'],
-                                countries: {
-                                    Asia: ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
-                                    Europe: ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
-                                    Indonesia: ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung'],
-                                    Malaysia: ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
-                                    Singapore: ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
+                                    'World': ['Asia', 'Europe'],
+                                    'Asia': ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
+                                    'Europe': ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
+                                    'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung'],
+                                    'Malaysia': ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
+                                    'Singapore': ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
                                     'South Korea': ['Seoul', 'Incheon', 'Jeju'],
-                                    Thailand: ['Bangkok', 'Chon Buri'],
+                                    'Thailand': ['Bangkok', 'Chon Buri'],
                                     'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
                                     'United Arab Emirates': ['Dubayy']
                                 }
-                            }}
+                            }
                             pathStyles={ mode === 'dark' ? {
                                     base: "stroke-muted",
                                     hover: "fill-primary",
@@ -49,9 +63,9 @@ const Gallery: React.FC = () => {
                                 } :
                                 {
                                     base: "stroke-muted-foreground/50",
-                                    hover: "fill-primary-300",
-                                    selected: "fill-primary-300",
-                                    selectable: "fill-primary stroke-primary-600 pointer-events-auto",
+                                    hover: "fill-primary",
+                                    selected: "fill-primary",
+                                    selectable: "fill-primary-400 stroke-primary-600 pointer-events-auto",
                                     nonSelectable: "fill-muted"
                                 }
                             }
