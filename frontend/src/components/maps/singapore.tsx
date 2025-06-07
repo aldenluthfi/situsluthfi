@@ -5,7 +5,7 @@ export const stateCode = ['Central Singapore', 'North East Singapore', 'North We
 export interface SingaporeProps extends Omit<MapProps, 'stateCode'> { }
 
 const Singapore = (props: SingaporeProps) => {
-    return <Map stateCode={stateCode} {...props} />;
+    return <Map name='Singapore' stateCode={stateCode} {...props} />;
 };
 
 export default Singapore;

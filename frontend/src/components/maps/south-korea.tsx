@@ -23,7 +23,7 @@ export const stateCode = [
 export interface SouthKoreaProps extends Omit<MapProps, 'stateCode'> { }
 
 const SouthKorea = (props: SouthKoreaProps) => {
-    return <Map stateCode={stateCode} {...props} />;
+    return <Map name='South Korea' stateCode={stateCode} {...props} />;
 };
 
 export default SouthKorea;

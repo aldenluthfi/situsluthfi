@@ -90,8 +90,8 @@ const Map = ({
         const scaledWidth = baseViewBox.width / zoom;
         const scaledHeight = baseViewBox.height / zoom;
 
-        const viewX = centerX - scaledWidth / 2 - panX / zoom;
-        const viewY = centerY - scaledHeight / 2 - panY / zoom;
+        const viewX = centerX - scaledWidth / 2 - panX;
+        const viewY = centerY - scaledHeight / 2 - panY;
 
         return `${viewX} ${viewY} ${scaledWidth} ${scaledHeight}`;
     }, [baseViewBox, zoom, panX, panY]);
@@ -243,3 +243,4 @@ const Map = ({
 };
 
 export default Map;
+// No changes needed if you only use onClick for selection
