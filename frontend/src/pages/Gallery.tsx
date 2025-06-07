@@ -83,7 +83,7 @@ const Gallery: React.FC = () => {
                                     nonSelectable: "fill-muted"
                                 }
                             }
-                            strokeWidth={0.5}
+                            strokeWidth={1}
                             maxHeight='80vh'
                             maxWidth='90vw'
                         />

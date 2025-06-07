@@ -7,7 +7,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
-import { cn } from '@/lib/utils';
+import { cn, isMobile } from '@/lib/utils';
 import {
     IconZoomIn,
     IconZoomOut,
@@ -56,7 +56,7 @@ const WorldMap = ({
     const [zoom, setZoom] = useState(MIN_ZOOM);
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const [dragging, setDragging] = useState(false);
-    const [dragLocked, setDragLocked] = useState(false);
+    const [dragLocked, setDragLocked] = useState(isMobile);
 
     const dragStart = useRef<{ x: number; y: number } | null>(null);
     const panStart = useRef<{ x: number; y: number } | null>(null);
@@ -185,7 +185,6 @@ const WorldMap = ({
 
     const handleTouchStart = useCallback((e: React.TouchEvent) => {
         if (dragLocked || e.touches.length !== 1) return;
-        e.preventDefault();
         setDragging(true);
         dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         panStart.current = { ...panRef.current };
@@ -193,7 +192,6 @@ const WorldMap = ({
 
     const handleTouchMove = useCallback((e: React.TouchEvent) => {
         if (dragLocked || !dragging || !dragStart.current || !panStart.current || e.touches.length !== 1) return;
-        e.preventDefault();
         const dx = e.touches[0].clientX - dragStart.current.x;
         const dy = e.touches[0].clientY - dragStart.current.y;
         setPan({
@@ -254,7 +252,7 @@ const WorldMap = ({
         return (
             <div
                 className="relative flex items-center justify-center h-full w-full select-none"
-                style={{ touchAction: 'none' }}
+                style={{ touchAction: dragLocked ? 'auto' : 'none' }}
                 onMouseDown={handleMouseDown}
                 onMouseMove={dragging && !dragLocked ? handleMouseMove : undefined}
                 onMouseUp={endDrag}
