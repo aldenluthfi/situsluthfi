@@ -24,7 +24,7 @@ const Gallery: React.FC = () => {
             </div>
             <div className='flex flex-col -space-y-1 justify-center items-center w-full'>
                 <Squiggle className="w-full fill-primary-100 -z-10" />
-                <div className='bg-primary-100 w-full py-10 flex justify-center items-center'>
+                <div className='bg-primary-100 w-full desktop:py-10 flex justify-center items-center'>
                     <div className='p-10 desktop:p-0'>
                         <WorldMap
                             components={

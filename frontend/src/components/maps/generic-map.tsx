@@ -204,7 +204,9 @@ const Map = ({
                                         />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        {code.replace(` ${name}`, '')}
+                                        <div className='max-tablet:text-xs'>
+                                            {code.replace(` ${name}`, '')}
+                                        </div>
                                     </TooltipContent>
                                 </Tooltip>
                             ) : (
@@ -243,4 +245,3 @@ const Map = ({
 };
 
 export default Map;
-// No changes needed if you only use onClick for selection

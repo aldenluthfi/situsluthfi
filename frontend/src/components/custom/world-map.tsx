@@ -139,10 +139,6 @@ const WorldMap = ({
                 setSelected(newBreadcrumbs[newBreadcrumbs.length - 1]);
                 animateZoom(MIN_ZOOM);
 
-                if (isMobile) {
-                    setDragLocked(true);
-                }
-
             }, ANIMATION_DURATION);
         };
     }, [breadcrumbs, animateZoom, animatePan]);
@@ -163,10 +159,6 @@ const WorldMap = ({
                     return next;
                 });
                 animateZoom(MIN_ZOOM);
-
-                if (isMobile) {
-                    setDragLocked(true);
-                }
 
             }, ANIMATION_DURATION);
         }
@@ -367,18 +359,18 @@ const WorldMap = ({
                                 }
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent side="left" sideOffset={16} className="w-auto">
+                        <PopoverContent side="left" className="w-auto flex items-center">
                             <div className="flex items-center gap-2">
-                                <span className="text-sm">Double tap to toggle pan/zoom</span>
+                                <span className="text-sm">double tap to toggle pan</span>
                                 <Button
                                     onClick={dismissDoubleTapHint}
                                     variant="ghost"
-                                    size="sm"
-                                    className="h-5 w-5 p-0 hover:bg-primary-400"
+                                    size="icon"
+                                    className="h-4 w-4 -mr-1"
                                     aria-label="Dismiss hint"
                                     type="button"
                                 >
-                                    <IconX className="size-3" stroke={2} />
+                                    <IconX className="size-4" stroke={1.5} />
                                 </Button>
                             </div>
                         </PopoverContent>
