@@ -32,7 +32,7 @@ export const syncWritingsToDB = async () => {
             [
                 writing.id,
                 writing.title,
-                slugify(writing.title, { lower: true, remove: /[*+~.()""!:@]/g }),
+                slugify(writing.title, { lower: true, remove: /[*+~.()""!:@?,]/g }),
                 JSON.stringify(writing.tags),
                 new Date(writing.createdAt),
                 new Date(writing.lastUpdated),

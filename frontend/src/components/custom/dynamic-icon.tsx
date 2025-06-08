@@ -17,7 +17,7 @@ export const DynamicIcon = (props: Props): ReactElement => {
     })
 
     return (
-        <Suspense fallback={<div style={{ width: size, height: size }} />}>
+        <Suspense fallback={<div style={{ width: 0, height: 0 }} />}>
             <LazyIcon size={size} stroke={stroke} className={className} />
         </Suspense>
     )
