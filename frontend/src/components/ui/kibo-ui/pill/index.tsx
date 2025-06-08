@@ -128,7 +128,7 @@ export const PillDelta = ({ className, delta }: PillDeltaProps) => {
 };
 
 export type PillIconProps = {
-  icon: React.ElementType;
+  icon: React.ElementType | string;
   className?: string;
 };
 
@@ -137,11 +137,19 @@ export const PillIcon = ({
   className,
   ...props
 }: PillIconProps) => (
-  <Icon
-    stroke={1.5}
-    className={cn('size-3', className)}
-    {...props}
-  />
+  typeof Icon === 'string' ? (
+    <DynamicIcon
+      icon={Icon}
+      className={cn('size-3', className)}
+      {...props}
+    />
+  ) : (
+    <Icon
+      stroke={1.5}
+      className={cn('size-3', className)}
+      {...props}
+    />
+  )
 );
 
 export type PillAvatarGroupProps = {
@@ -170,27 +178,3 @@ export type PillWithIconProps = ComponentProps<typeof Badge> & {
   iconName?: string;
   children: ReactNode;
 };
-
-export const PillWithIcon = ({
-  iconName,
-  children,
-  variant = 'default',
-  className,
-  ...props
-}: PillWithIconProps) => (
-  <Badge
-    variant={variant}
-    className={cn('gap-2 rounded-full px-3 py-1.5 font-normal', className)}
-    {...props}
-  >
-    {iconName && (
-      <DynamicIcon
-        icon={iconName}
-        size={12}
-        stroke={1.5}
-        className="size-3"
-      />
-    )}
-    {children}
-  </Badge>
-);

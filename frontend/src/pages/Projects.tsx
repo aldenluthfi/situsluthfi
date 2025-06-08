@@ -8,7 +8,7 @@ import {
     CardDescription,
     CardFooter,
 } from "@/components/ui/card";
-import { Pill, PillWithIcon } from "@/components/ui/kibo-ui/pill";
+import { Pill, PillIcon } from "@/components/ui/kibo-ui/pill";
 import {
     IconStar,
     IconGitFork,
@@ -192,12 +192,9 @@ const Projects: React.FC = () => {
                                                         <div className="flex flex-wrap gap-2">
                                                             {repo.topics.map((topic) => {
                                                                 const iconName = repo.icon_map?.[topic];
-                                                                return iconName ? (
-                                                                    <PillWithIcon key={topic} iconName={iconName} className='my-0.5'>
-                                                                        {topic}
-                                                                    </PillWithIcon>
-                                                                ) : (
+                                                                return  (
                                                                     <Pill key={topic} className='my-0.5'>
+                                                                        {iconName ? <PillIcon icon={iconName} className="size-4" /> : <></>}
                                                                         {topic}
                                                                     </Pill>
                                                                 );

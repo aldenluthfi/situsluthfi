@@ -1,4 +1,6 @@
 import React, { type ReactElement, Suspense } from "react"
+import { IconLoader2 } from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
 
 interface Props {
     icon: string
@@ -17,7 +19,7 @@ export const DynamicIcon = (props: Props): ReactElement => {
     })
 
     return (
-        <Suspense fallback={<div style={{ width: 0, height: 0 }} />}>
+        <Suspense fallback={<IconLoader2 size={size} stroke={stroke} className={cn("animate-spin", className)} />}>
             <LazyIcon size={size} stroke={stroke} className={className} />
         </Suspense>
     )
