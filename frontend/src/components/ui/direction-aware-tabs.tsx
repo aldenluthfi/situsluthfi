@@ -65,7 +65,7 @@ function DirectionAwareTabs({
     <div className=" flex flex-col items-center w-full px-10">
       <div
         className={cn(
-          "flex max-tablet:grid max-tablet:grid-cols-2 gap-2 border border-input rounded-lg cursor-pointer bg-card p-2 shadow-xs tablet:w-2xl",
+          "flex max-tablet:grid max-tablet:grid-cols-2 gap-2 border border-input rounded-lg cursor-pointer bg-card p-2 shadow-xs tablet:w-2xl ultrawide:w-3xl",
           className,
           rounded
         )}
@@ -75,7 +75,7 @@ function DirectionAwareTabs({
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
             style={{ WebkitTapHighlightColor: "transparent" }}
-            className={`flex-1 rounded-md shadow-none font-body text-lg flex-grow bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "bg-primary-300 text-primary-700" : ""}`}
+            className={`flex-1 rounded-md shadow-none font-body text-lg ultrawide:text-2xl flex-grow bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "bg-primary-300 text-primary-700" : ""}`}
           >
             {activeTab === tab.id && (
               <motion.span

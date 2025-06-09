@@ -5,8 +5,6 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselPrevious,
-    CarouselNext
 } from "@/components/ui/carousel";
 
 import {
@@ -27,7 +25,6 @@ import weirdosImg from "../assets/images/weirdos.webp";
 import medpropImg from "../assets/images/medprop.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTheme } from '@/components/custom/theme-provider';
 
 const ResponsiveTooltip = ({
     children,
@@ -212,7 +209,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className='max-w-4xl pt-20'>
-                <p className="font-body text-2xl text-center my-4">
+                <p className="font-body  text-lg tablet:text-2xl ultrawide:text-4xl text-center my-4">
                     As you can probably see, I'm a
                     <br />
                     <span className="text-primary font-body-bold">Jack of all trades</span>, you can hire me as

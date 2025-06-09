@@ -15,25 +15,25 @@ export function Header({ onSearchClick }: HeaderProps) {
         <header className="fixed top-0 flex z-10 w-screen bg-background justify-center">
             <nav className="flex justify-between items-start h-20 pt-1 w-full desktop:w-desktop">
                 <div className="z-30 pl-6 w-48 my-auto">
-                    <Link to="/" className="font-heading text-2xl">
+                    <Link to="/" className="font-heading text-2xl ultrawide:text-3xl">
                         aldenluth.fi
                     </Link>
                 </div>
 
-                <div className="hidden w-full tablet:flex justify-center font-body-bold text-sm my-auto">
+                <div className="hidden w-full tablet:flex justify-center font-body-bold my-auto">
                     <ul className="-ml-6 -mr-14 tablet:grid gap-6 grid-cols-3">
                         <li>
-                            <Button variant="default" size="default" asChild>
+                            <Button variant="default" size="default" className="text-sm ultrawide:text-lg" asChild>
                                 <Link to="/projects">Projects</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button variant="default" size="default" asChild>
+                            <Button variant="default" size="default" className="text-sm ultrawide:text-lg" asChild>
                                 <Link to="/writings">Writings</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button variant="default" size="default" asChild>
+                            <Button variant="default" size="default" className="text-sm ultrawide:text-lg" asChild>
                                 <Link to="/gallery">Gallery</Link>
                             </Button>
                         </li>
