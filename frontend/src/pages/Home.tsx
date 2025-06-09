@@ -109,7 +109,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     Hello! my name is <span className="text-primary font-body-bold">Luthfi</span>, <span />
-                    <br className="ultrawide:hidden" />
+                    <br />
                     but most people call me <span className="text-primary font-body-bold">Upi</span>, I'm a
                 </p>
                 <SlidingTitle
@@ -118,7 +118,7 @@ const Home: React.FC = () => {
                 <p
                     className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     and a <span className="text-primary font-body-bold">computer science</span> student
-                    <br className="ultrawide:hidden" />
+                    <br />
                     at Universitas Indonesia
                 </p>
             </div>

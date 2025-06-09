@@ -177,9 +177,7 @@ export function Cursor() {
             ref={cursorRef}
             className={`cursor ${isMobile ? "hidden" : "inline-block"} fixed z-[2147483647] w-10 h-10 bg-transparent pointer-events-none border-solid border-primary rounded-full border-2`}
             data-cursor-size={size}
-        >
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-1 w-1 bg-primary rounded-full" />
-        </div>
+        />
     );
 }
 

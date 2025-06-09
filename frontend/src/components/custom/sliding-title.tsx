@@ -36,7 +36,7 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
                 slideSpeed.current = slideSpeed.current * 0.95;
             }
 
-            textX.current = (getTranslateX(text) - slideSpeed.current - 5);
+            textX.current = (getTranslateX(text) - slideSpeed.current - 3);
 
             if (textX.current < -text.getBoundingClientRect().width * 0.25) {
                 textX.current += text.getBoundingClientRect().width * 0.5;
