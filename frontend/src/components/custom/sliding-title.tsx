@@ -36,12 +36,12 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
                 slideSpeed.current = slideSpeed.current * 0.95;
             }
 
-            textX.current = (getTranslateX(text) - slideSpeed.current - 2);
+            textX.current = (getTranslateX(text) - slideSpeed.current - 5);
 
             if (textX.current < -text.getBoundingClientRect().width * 0.25) {
-                textX.current += text.getBoundingClientRect().width * 0.5 + 11;
+                textX.current += text.getBoundingClientRect().width * 0.5;
             } else if (textX.current > text.getBoundingClientRect().width * 0.25) {
-                textX.current -= text.getBoundingClientRect().width * 0.5 + 11;
+                textX.current -= text.getBoundingClientRect().width * 0.5;
             }
 
             deltaX.current = mouseX.current - oldMouseX.current;
@@ -85,7 +85,7 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
     return (
         <h1
             ref={textRef}
-            className={`text-6xl self-center tablet:text-8xl ultrawide:text-10xl justify-center font-heading whitespace-nowrap ${className}`}
+            className={`text-8xl self-center tablet:text-10xl ultrawide:text-12xl justify-center font-heading whitespace-nowrap ${className}`}
         >
             {marqueeText}
         </h1>

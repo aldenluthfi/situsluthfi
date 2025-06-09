@@ -11,6 +11,7 @@ export function Cursor() {
     const animationRef = useRef<number>(0);
     const [size, setSize] = useState<'default' | 'hover' | 'active' | 'hoverActive'>('default');
     const mouseDownRef = useRef(false);
+    const lastMouseEventRef = useRef<MouseEvent | null>(null);
 
     const resizeCursor = (
         newSize: 'default' | 'hover' | 'active' | 'hoverActive',
@@ -95,6 +96,7 @@ export function Cursor() {
         };
 
         const handleMouseMove = (e: MouseEvent) => {
+            lastMouseEventRef.current = e;
             updateCursor(e);
         };
 
@@ -106,6 +108,12 @@ export function Cursor() {
         const handleMouseUp = (e: MouseEvent) => {
             mouseDownRef.current = false;
             updateCursor(e);
+        };
+
+        const handleScroll = () => {
+            if (lastMouseEventRef.current) {
+                updateCursor(lastMouseEventRef.current);
+            }
         };
 
         const tick = () => {
@@ -144,8 +152,11 @@ export function Cursor() {
         };
 
         window.addEventListener('mousemove', handleMouseMove);
+
         document.addEventListener('mousedown', handleMouseDown);
         document.addEventListener('mouseup', handleMouseUp);
+
+        document.addEventListener('scroll', handleScroll);
 
         animationRef.current = requestAnimationFrame(tick);
 
@@ -153,6 +164,7 @@ export function Cursor() {
             window.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mousedown', handleMouseDown);
             document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('scroll', handleScroll);
 
             if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
