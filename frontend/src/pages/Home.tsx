@@ -117,22 +117,12 @@ const Home: React.FC = () => {
             label: "everything",
             content: (
                 <div className='p-8'>
-                    <Carousel className="w-full">
-                        <CarouselContent>
-                            <CarouselItem>
-                            </CarouselItem>
-                            <CarouselItem>
-                            </CarouselItem>
-                        </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
-                    </Carousel>
                 </div>
             )
         },
         {
             id: 1,
-            label: "developer",
+            label: "a developer",
             content: (
                 <div className='p-8'>
                 </div>
@@ -140,7 +130,7 @@ const Home: React.FC = () => {
         },
         {
             id: 2,
-            label: "humanitarian",
+            label: "a humanitarian",
             content: (
                 <div className='p-8'>
                 </div>
@@ -148,7 +138,7 @@ const Home: React.FC = () => {
         },
         {
             id: 3,
-            label: "academic",
+            label: "an academic",
             content: (
                 <div className='p-8'>
                 </div>
@@ -222,6 +212,11 @@ const Home: React.FC = () => {
             </div>
 
             <div className='max-w-4xl pt-20'>
+                <p className="font-body text-2xl text-center my-4">
+                    As you can probably see, I'm a
+                    <br />
+                    <span className="text-primary font-body-bold">Jack of all trades</span>, you can hire me as
+                </p>
                 <DirectionAwareTabs tabs={cv_tabs} />
             </div>
         </div>

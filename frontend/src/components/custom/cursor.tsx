@@ -73,6 +73,7 @@ export function Cursor() {
     useEffect(() => {
         const isClickableElement = (target: HTMLElement): boolean => {
             return (
+                target !== null &&
                 target.tagName === 'A' ||
                 target.tagName === 'BUTTON' ||
                 target.getAttribute('data-slot') === 'button' ||
