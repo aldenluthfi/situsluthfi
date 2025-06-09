@@ -4,7 +4,9 @@ import Squiggle from '../components/custom/squiggle';
 import {
     Carousel,
     CarouselContent,
-    CarouselItem
+    CarouselItem,
+    CarouselPrevious,
+    CarouselNext
 } from "@/components/ui/carousel";
 
 import {
@@ -24,10 +26,8 @@ import holeboysImg from "../assets/images/holeboys.webp";
 import weirdosImg from "../assets/images/weirdos.webp";
 import medpropImg from "../assets/images/medprop.webp";
 
-import cvAll1 from "../assets/images/cv-all-1.webp";
-import cvAll2 from "../assets/images/cv-all-2.webp";
-
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTheme } from '@/components/custom/theme-provider';
 
 const ResponsiveTooltip = ({
     children,
@@ -117,7 +117,16 @@ const Home: React.FC = () => {
             label: "everything",
             content: (
                 <div className='p-8'>
-                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
+                    <Carousel className="w-full">
+                        <CarouselContent>
+                            <CarouselItem>
+                            </CarouselItem>
+                            <CarouselItem>
+                            </CarouselItem>
+                        </CarouselContent>
+                        <CarouselPrevious />
+                        <CarouselNext />
+                    </Carousel>
                 </div>
             )
         },
@@ -126,7 +135,6 @@ const Home: React.FC = () => {
             label: "developer",
             content: (
                 <div className='p-8'>
-                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
                 </div>
             )
         },
@@ -135,7 +143,6 @@ const Home: React.FC = () => {
             label: "humanitarian",
             content: (
                 <div className='p-8'>
-                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
                 </div>
             )
         },
@@ -144,7 +151,6 @@ const Home: React.FC = () => {
             label: "academic",
             content: (
                 <div className='p-8'>
-                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
                 </div>
             )
         }
