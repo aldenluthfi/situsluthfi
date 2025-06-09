@@ -14,7 +14,7 @@ export function ThemeSelector() {
     const { theme, setTheme } = useTheme();
 
     return (
-        <ScrollArea className={isMobile ? "h-[286px]" : "h-[292px]"} showScrollbar={false}>
+        <ScrollArea className={isMobile ? "h-[286px]" : "h-[291px]"} showScrollbar={false}>
             <div className={`pt-1 ${isMobile ? "" : "pb-2"} flex flex-col gap-2 flex-wrap items-center`}>
                 {themes.map((t) => (
                     <Button
