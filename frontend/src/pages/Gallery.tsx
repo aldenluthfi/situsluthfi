@@ -12,13 +12,13 @@ const Gallery: React.FC = () => {
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mb-6">
                     This is my silly excuse of a <span className="text-primary font-body-bold">gallery</span>, <span />
-                    <br className="ultrawide:hidden" />
+                    <br/>
                     here you will find
                 </p>
                 <SlidingTitle text="People · Panoramas · Cultures · Oddities" />
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mt-6">
                     I have <span className="text-primary font-body-bold">seen</span> in all
-                    <br className="ultrawide:hidden" />
+                    <br/>
                     of my travels around this <span className="text-primary font-body-bold">blob of dust</span>
                 </p>
             </div>

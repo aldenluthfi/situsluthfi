@@ -143,7 +143,7 @@ const Writings: React.FC = () => {
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-32 ultrawide:mt-48 mb-16">
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     Here are some of my <span className="text-primary font-body-bold">writings</span>,
-                    <br className="ultrawide:hidden" />
+                    <br/>
                     I usually write about
                 </p>
                 <SlidingTitle
@@ -151,7 +151,7 @@ const Writings: React.FC = () => {
                 />
                 <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
                     and other random stuff
-                    <br className="ultrawide:hidden" />
+                    <br/>
                     My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>

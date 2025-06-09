@@ -13,13 +13,20 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
+import { DirectionAwareTabs } from "@/components/ui/direction-aware-tabs"
+
 import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
 import { isMobile } from "@/lib/utils";
+
 import soloImg from "../assets/images/solo.webp";
 import holeboysImg from "../assets/images/holeboys.webp";
 import weirdosImg from "../assets/images/weirdos.webp";
 import medpropImg from "../assets/images/medprop.webp";
+
+import cvAll1 from "../assets/images/cv-all-1.webp";
+import cvAll2 from "../assets/images/cv-all-2.webp";
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ResponsiveTooltip = ({
@@ -104,6 +111,45 @@ const Home: React.FC = () => {
         };
     }, []);
 
+    const cv_tabs = [
+        {
+            id: 0,
+            label: "everything",
+            content: (
+                <div className='p-8'>
+                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
+                </div>
+            )
+        },
+        {
+            id: 1,
+            label: "developer",
+            content: (
+                <div className='p-8'>
+                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
+                </div>
+            )
+        },
+        {
+            id: 2,
+            label: "humanitarian",
+            content: (
+                <div className='p-8'>
+                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
+                </div>
+            )
+        },
+        {
+            id: 3,
+            label: "academic",
+            content: (
+                <div className='p-8'>
+                    <img src={cvAll1} alt="CV All Page 1"  className='rounded-xl border-1 border-input'/>
+                </div>
+            )
+        }
+    ]
+
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
@@ -123,7 +169,7 @@ const Home: React.FC = () => {
                 </p>
             </div>
 
-            <div className="flex flex-col -space-y-5">
+            <div className="flex flex-col -space-y-5 border-0">
                 <Squiggle className="w-full fill-primary-100 -z-10" />
 
                 <Carousel
@@ -169,7 +215,8 @@ const Home: React.FC = () => {
                 <Squiggle className="-scale-y-100 w-full fill-primary-100 -z-10" />
             </div>
 
-            <div className='h-screen max-w-4xl'>
+            <div className='max-w-4xl pt-20'>
+                <DirectionAwareTabs tabs={cv_tabs} />
             </div>
         </div>
     );
