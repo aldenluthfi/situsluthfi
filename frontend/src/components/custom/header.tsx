@@ -20,7 +20,7 @@ export function Header({ onSearchClick }: HeaderProps) {
                     </Link>
                 </div>
 
-                <div className="hidden w-full tablet:flex justify-center font-body-bold my-auto">
+                <div className="hidden w-full tablet:flex justify-center my-auto">
                     <ul className="-ml-6 -mr-14 tablet:grid gap-6 grid-cols-3">
                         <li>
                             <Button variant="default" size="default" className="text-sm ultrawide:text-base" asChild>

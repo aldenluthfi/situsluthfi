@@ -379,7 +379,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={item.name}
                                             ref={selectedIndex === actualIndex ? selectedItemRef : null}
-                                            className={`group relative flex items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
+                                            className={`group relative flex items-center gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
                                                 }`}

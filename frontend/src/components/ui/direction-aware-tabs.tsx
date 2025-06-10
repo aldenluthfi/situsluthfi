@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from "react"
+import { type ReactNode, useEffect, useMemo, useState } from "react"
 import { AnimatePresence, MotionConfig, motion } from "motion/react"
 import useMeasure from "react-use-measure"
 
@@ -17,6 +17,7 @@ interface OgImageSectionProps {
   className?: string
   rounded?: string
   onChange?: () => void
+  autoPlay?: boolean
 }
 
 function DirectionAwareTabs({
@@ -24,6 +25,7 @@ function DirectionAwareTabs({
   className,
   rounded,
   onChange,
+  autoPlay = false,
 }: OgImageSectionProps) {
   const [activeTab, setActiveTab] = useState(0)
   const [direction, setDirection] = useState(0)
@@ -48,6 +50,20 @@ function DirectionAwareTabs({
       onChange ? onChange() : null
     }
   }
+
+  useEffect(() => {
+    if (!autoPlay || isAnimating) return
+
+    const interval = setInterval(() => {
+      const nextTab = (activeTab + 1) % tabs.length
+      const newDirection = nextTab > activeTab ? 1 : -1
+      setDirection(newDirection)
+      setActiveTab(nextTab)
+      onChange ? onChange() : null
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [autoPlay, isAnimating, tabs, onChange])
 
   const variants = {
     initial: (direction: number) => ({
@@ -113,7 +129,9 @@ function DirectionAwareTabs({
             onClick={() => handleTabClick(tab.id)}
             size="icon"
             style={{ WebkitTapHighlightColor: "transparent" }}
-            className={`bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "text-primary-700 duration-400" : ""}`}
+            className={`bg-transparent hover:bg-transparent text-foreground ${
+              activeTab === tab.id ? "text-primary-700 duration-400" : ""
+            }`}
           >
             {activeTab === tab.id && (
               <motion.span

@@ -19,7 +19,7 @@ import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
 import { isMobile } from "@/lib/utils";
 
-import { IconSparkles, IconCode, IconHeartHandshake, IconSchool } from '@tabler/icons-react';
+import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconDeviceGamepad2, IconPalette } from '@tabler/icons-react';
 
 import soloImg from "../assets/images/solo.webp";
 import holeboysImg from "../assets/images/holeboys.webp";
@@ -113,7 +113,7 @@ const Home: React.FC = () => {
     const cv_tabs = [
         {
             id: 0,
-            label: "a developer",
+            label: "a software developer",
             icon: <IconCode className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
@@ -122,8 +122,8 @@ const Home: React.FC = () => {
         },
         {
             id: 1,
-            label: "a humanitarian",
-            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
+            label: "a game developer",
+            icon: <IconDeviceGamepad2 className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -131,8 +131,8 @@ const Home: React.FC = () => {
         },
         {
             id: 2,
-            label: "an academic",
-            icon: <IconSchool className='size-6' stroke={1.5} />,
+            label: "a cybersecurity analyst",
+            icon: <IconCloudLock className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -140,7 +140,35 @@ const Home: React.FC = () => {
         },
         {
             id: 3,
-            label: "honestly, anything",
+            label: "a graphic designer",
+            icon: <IconPalette className='size-6' stroke={1.5} />,
+            content: (
+                <div className='p-8'>
+                </div>
+            )
+        },
+        {
+            id: 4,
+            label: "a humanitarian volunteer",
+            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
+            content: (
+                <div className='p-8'>
+                </div>
+            )
+        },
+        {
+            id: 5,
+            label: "an academic tutor",
+            icon: <IconSchool className='size-6' stroke={1.5} />,
+            content: (
+                <div className='p-8'>
+                </div>
+            )
+        },
+
+        {
+            id: 6,
+            label: "honestly, anything!",
             icon: <IconSparkles className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
@@ -218,9 +246,9 @@ const Home: React.FC = () => {
                 <p className="font-body text-lg tablet:text-2xl text-center mt-8">
                     As you can probably see, I'm a
                     <br />
-                    <span className="text-primary font-body-bold">Jack of all trades</span>, you can hire me as
+                    <span className="text-primary font-body-bold">Jack of all trades</span>, you can have me as
                 </p>
-                <DirectionAwareTabs tabs={cv_tabs} />
+                <DirectionAwareTabs tabs={cv_tabs} autoPlay />
             </div>
         </div>
     );
