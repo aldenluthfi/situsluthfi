@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export function Header({ onSearchClick }: HeaderProps) {
     return (
-        <header className="fixed top-0 flex z-10 w-screen bg-background justify-center">
+        <header className="fixed top-0 flex z-1000 w-screen bg-background justify-center">
             <nav className="flex justify-between items-start h-20 pt-1 w-full desktop:w-desktop">
                 <div className="z-30 pl-6 w-48 my-auto">
                     <Link to="/" className="font-heading text-2xl ultrawide:text-3xl">
@@ -39,7 +39,7 @@ export function Header({ onSearchClick }: HeaderProps) {
                         </li>
                     </ul>
                 </div>
-                <div className="flex items-center justify-end w-48 my-auto gap-3 ml-1 mr-15">
+                <div className="flex items-center justify-end w-48 my-auto gap-3 mr-14 tablet:mr-16">
                     <Button
                         variant="ghost"
                         size="icon"

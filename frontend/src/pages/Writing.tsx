@@ -240,7 +240,7 @@ const Writing: React.FC = () => {
     let isHeader = false;
 
     return (
-        <>
+        <div className="max-w-screen overflow-x-hidden">
             {toc && (
                 <div
                     className={`fixed right-0 flex items-center h-full z-50 transition-transform duration-300 ease-in-out`}
@@ -592,7 +592,7 @@ const Writing: React.FC = () => {
                     </>
                 )}
             </div>
-        </>
+        </ div>
     );
 }
 
