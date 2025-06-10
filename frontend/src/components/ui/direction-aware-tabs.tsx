@@ -9,6 +9,7 @@ type Tab = {
   id: number
   label: string
   content: ReactNode
+  icon?: ReactNode
 }
 
 interface OgImageSectionProps {
@@ -32,6 +33,11 @@ function DirectionAwareTabs({
   const content = useMemo(() => {
     const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content
     return activeTabContent || null
+  }, [activeTab, tabs])
+
+  const label = useMemo(() => {
+    const activeTabLabel = tabs.find((tab) => tab.id === activeTab)?.label
+    return activeTabLabel || ""
   }, [activeTab, tabs])
 
   const handleTabClick = (newTabId: number) => {
@@ -62,10 +68,41 @@ function DirectionAwareTabs({
   }
 
   return (
-    <div className=" flex flex-col items-center w-full px-10">
+    <div className=" flex flex-col items-center w-full">
+      <div>
+        <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
+          <motion.div
+            className="relative h-min text-nowrap w-full mb-8"
+            initial={false}
+          >
+            <div className="p-1" ref={ref}>
+              <AnimatePresence
+                custom={direction}
+                mode="popLayout"
+                onExitComplete={() => setIsAnimating(false)}
+              >
+                <motion.div
+                  key={activeTab}
+                  variants={variants}
+                  initial="initial"
+                  animate="active"
+                  exit="exit"
+                  custom={direction}
+                  onAnimationStart={() => setIsAnimating(true)}
+                  onAnimationComplete={() => setIsAnimating(false)}
+                  className="font-body text-lg tablet:text-2xl text-center"
+                >
+                  {label}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        </MotionConfig>
+      </div>
+
       <div
         className={cn(
-          "flex max-tablet:grid max-tablet:grid-cols-2 gap-2 border border-input rounded-lg bg-card p-2 shadow-xs tablet:w-2xl ultrawide:w-3xl",
+          "flex gap-2 border border-input rounded-lg bg-card p-2",
           className,
           rounded
         )}
@@ -74,8 +111,9 @@ function DirectionAwareTabs({
           <Button
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
+            size="icon"
             style={{ WebkitTapHighlightColor: "transparent" }}
-            className={`flex-1 rounded-md shadow-none font-body-bold text-lg ultrawide:text-xl flex-grow bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "text-primary-700 duration-400" : ""}`}
+            className={`bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "text-primary-700 duration-400" : ""}`}
           >
             {activeTab === tab.id && (
               <motion.span
@@ -84,8 +122,7 @@ function DirectionAwareTabs({
                 transition={{ type: "spring", bounce: 0.19, duration: 0.4 }}
               />
             )}
-
-            {tab.label}
+            {tab.icon}
           </Button>
         ))}
       </div>

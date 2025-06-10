@@ -19,6 +19,8 @@ import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
 import { isMobile } from "@/lib/utils";
 
+import { IconSparkles, IconCode, IconHeartHandshake, IconSchool } from '@tabler/icons-react';
+
 import soloImg from "../assets/images/solo.webp";
 import holeboysImg from "../assets/images/holeboys.webp";
 import weirdosImg from "../assets/images/weirdos.webp";
@@ -57,7 +59,7 @@ const ResponsiveTooltip = ({
             >
                 {children}
             </PopoverTrigger>
-            <PopoverContent className="w-auto text-sm tablet:text-md" hideWhenDetached>
+            <PopoverContent className="w-auto text-sm tablet:text-md ultrawide:text-lg" hideWhenDetached>
                 {content}
             </PopoverContent>
         </Popover>
@@ -111,7 +113,8 @@ const Home: React.FC = () => {
     const cv_tabs = [
         {
             id: 0,
-            label: "everything",
+            label: "a developer",
+            icon: <IconCode className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -119,7 +122,8 @@ const Home: React.FC = () => {
         },
         {
             id: 1,
-            label: "a developer",
+            label: "a humanitarian",
+            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -127,7 +131,8 @@ const Home: React.FC = () => {
         },
         {
             id: 2,
-            label: "a humanitarian",
+            label: "an academic",
+            icon: <IconSchool className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -135,7 +140,8 @@ const Home: React.FC = () => {
         },
         {
             id: 3,
-            label: "an academic",
+            label: "honestly, anything",
+            icon: <IconSparkles className='size-6' stroke={1.5} />,
             content: (
                 <div className='p-8'>
                 </div>
@@ -163,7 +169,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="flex flex-col -space-y-5 border-0">
-                <Squiggle className="w-full fill-primary-100 -z-10" />
+                <Squiggle className="w-full fill-primary-100" />
 
                 <Carousel
                     opts={{
@@ -180,7 +186,7 @@ const Home: React.FC = () => {
                             startDelay: 0,
                         }),
                     ]}
-                    className='bg-primary-100'
+                    className='bg-primary-100 z-10'
                 >
                     <CarouselContent className="py-10">
                         {
@@ -205,11 +211,11 @@ const Home: React.FC = () => {
                     </CarouselContent>
                 </Carousel>
 
-                <Squiggle className="-scale-y-100 w-full fill-primary-100 -z-10" />
+                <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
 
             <div className='max-w-4xl pt-20'>
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center my-8">
+                <p className="font-body text-lg tablet:text-2xl text-center mt-8">
                     As you can probably see, I'm a
                     <br />
                     <span className="text-primary font-body-bold">Jack of all trades</span>, you can hire me as
