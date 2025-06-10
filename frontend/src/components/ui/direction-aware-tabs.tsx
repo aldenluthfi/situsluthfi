@@ -75,7 +75,7 @@ function DirectionAwareTabs({
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
             style={{ WebkitTapHighlightColor: "transparent" }}
-            className={`flex-1 rounded-md shadow-none font-body-bold text-lg ultrawide:text-2xl flex-grow bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "text-primary-700" : ""}`}
+            className={`flex-1 rounded-md shadow-none font-body-bold text-lg ultrawide:text-xl flex-grow bg-transparent hover:bg-transparent text-foreground ${activeTab === tab.id ? "text-primary-700 duration-400" : ""}`}
           >
             {activeTab === tab.id && (
               <motion.span
