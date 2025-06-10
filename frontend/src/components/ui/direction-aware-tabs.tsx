@@ -65,7 +65,7 @@ function DirectionAwareTabs({
     <div className=" flex flex-col items-center w-full px-10">
       <div
         className={cn(
-          "flex max-tablet:grid max-tablet:grid-cols-2 gap-2 border border-input rounded-lg cursor-pointer bg-card p-2 shadow-xs tablet:w-2xl ultrawide:w-3xl",
+          "flex max-tablet:grid max-tablet:grid-cols-2 gap-2 border border-input rounded-lg bg-card p-2 shadow-xs tablet:w-2xl ultrawide:w-3xl",
           className,
           rounded
         )}

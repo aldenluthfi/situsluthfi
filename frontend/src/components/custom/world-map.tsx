@@ -270,7 +270,7 @@ const WorldMap = ({
                             ) : (
                                 <BreadcrumbLink
                                     onClick={goBack(index)}
-                                    className="cursor-pointer text-primary hover:text-primary-800"
+                                    className="text-primary hover:text-primary-800"
                                 >
                                     {breadcrumb}
                                 </BreadcrumbLink>

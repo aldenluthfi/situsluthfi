@@ -168,7 +168,6 @@ const Map = ({
             selectable ? pathStyles.selectable : pathStyles.nonSelectable,
             isSelected && pathStyles.selected,
             isHovered && !isSelected && pathStyles.hover,
-            (disableClick || !selectable) ? 'cursor-default' : 'cursor-pointer'
         );
     };
 

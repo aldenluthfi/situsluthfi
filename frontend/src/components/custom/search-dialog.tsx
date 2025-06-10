@@ -265,7 +265,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                     <div className="flex h-12 items-center gap-2 border-b px-3">
                         <IconSearch className="size-6" stroke={1.5} />
                         <input
-                            className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 cursor-text"
+                            className="placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:opacity-50"
                             placeholder="Search..."
                             value={search}
                             onChange={(e) => handleSearch(e.target.value)}
@@ -286,7 +286,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         )}
                         {searchError && !searchLoading && (
                             <div className="text-foreground overflow-hidden p-1">
-                                <div className="relative flex cursor-default items-center font-body-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
+                                <div className="relative flex items-center font-body-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
                                     {searchError}
                                 </div>
                             </div>
@@ -303,7 +303,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={`${item._type}-${item.id}`}
                                             ref={selectedIndex === index ? selectedItemRef : null}
-                                            className={`group relative flex cursor-default flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
+                                            className={`group relative flex flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
                                                 }`}
@@ -351,7 +351,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 {hasMore && (
                                     <div
                                         ref={selectedIndex === searchResults.length ? selectedItemRef : null}
-                                        className={`relative flex cursor-default items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
+                                        className={`relative flex items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
                                                 ? 'bg-primary-200 text-primary-700'
                                                 : 'text-muted-foreground'
                                             }`}
@@ -379,7 +379,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={item.name}
                                             ref={selectedIndex === actualIndex ? selectedItemRef : null}
-                                            className={`group relative flex cursor-default items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
+                                            className={`group relative flex items-center font-body-bold gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
                                                 }`}
