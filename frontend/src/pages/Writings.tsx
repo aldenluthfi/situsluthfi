@@ -141,7 +141,7 @@ const Writings: React.FC = () => {
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-32 ultrawide:mt-48 mb-16">
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
+                <p className="font-body text-lg tablet:text-2xl text-center">
                     Here are some of my <span className="text-primary font-body-bold">writings</span>,
                     <br/>
                     I usually write about
@@ -149,13 +149,13 @@ const Writings: React.FC = () => {
                 <SlidingTitle
                     text="Education · Computer Science · Philosophy · Arts and Culture · Politics · Mathematics"
                 />
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
+                <p className="font-body text-lg tablet:text-2xl text-center">
                     and other random stuff
                     <br/>
                     My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>
-            <div className="w-full max-w-4xl px-12 flex flex-col gap-6 pb-24">
+            <div className="w-full max-w-desktop px-12 flex flex-col gap-6 pb-24">
                 {loading
                     ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <Card
@@ -185,7 +185,7 @@ const Writings: React.FC = () => {
                         >
                             <Card key={item.id}>
                                 <CardHeader>
-                                    <CardTitle className="font-heading text-3xl">
+                                    <CardTitle className="font-heading text-4xl">
                                         {item.title}
                                     </CardTitle>
                                     <CardDescription className="mt-2">
@@ -195,8 +195,8 @@ const Writings: React.FC = () => {
                                                     {item.tags.map((tag: string) => {
                                                         const Icon = tagIconMap[tag] || IconDots;
                                                         return (
-                                                            <Pill key={tag}>
-                                                                <PillIcon icon={Icon} />
+                                                            <Pill key={tag} className="text-sm tablet:text-base teblet:px-3 tablet:py-1.5">
+                                                                <PillIcon icon={Icon} className="size-3 tablet:size-4"/>
                                                                 {tag}
                                                             </Pill>
                                                         );
@@ -207,7 +207,7 @@ const Writings: React.FC = () => {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <span className="text-muted-foreground text-sm">
+                                    <span className="text-muted-foreground text-base">
                                         {(new Date(item.createdAt).toLocaleDateString(
                                             "en-GB",
                                             {

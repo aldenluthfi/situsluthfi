@@ -4,13 +4,12 @@ import { cn } from "@/lib/utils"
 
 interface Props {
     icon: string
-    size?: number
     stroke?: number
     className?: string
 }
 
 export const DynamicIcon = (props: Props): ReactElement => {
-    const { icon, size = 6, stroke = 1.5, className } = props
+    const { icon, stroke = 1.5, className } = props
 
     const LazyIcon = React.lazy(async () => {
         const icons = await import('@tabler/icons-react')
@@ -19,8 +18,8 @@ export const DynamicIcon = (props: Props): ReactElement => {
     })
 
     return (
-        <Suspense fallback={<IconLoader2 size={size} stroke={stroke} className={cn("animate-spin", className)} />}>
-            <LazyIcon size={size} stroke={stroke} className={className} />
+        <Suspense fallback={<IconLoader2 stroke={stroke} className={cn("animate-spin", className)} />}>
+            <LazyIcon stroke={stroke} className={className} />
         </Suspense>
     )
 }

@@ -24,8 +24,14 @@ import {
 import { useTheme } from "@/components/custom/theme-provider";
 import type { RepositoryObject } from "@/lib/types";
 import autoplay from "embla-carousel-autoplay";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+    TooltipProvider
+} from "@/components/animate-ui/components/tooltip";
 
-function ProjectImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
+function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
     const [loaded, setLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
 
@@ -99,19 +105,19 @@ const Projects: React.FC = () => {
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-32 ultrawide:mt-48 mb-16">
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mb-6">
+                <p className="font-body text-lg tablet:text-2xl text-center mb-6">
                     These are my <span className="text-primary font-body-bold">projects</span>
-                    <br/>
+                    <br />
                     Here you can find a growing collection of
                 </p>
                 <SlidingTitle text="Algorithms · Frameworks · Languages · Experiments · Tech Stacks" />
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
+                <p className="font-body text-lg tablet:text-2xl text-center">
                     I explored in my journey as a developer
-                    <br/>
+                    <br />
                     <span className="text-primary font-body-bold">stay tuned</span> for updates!
                 </p>
             </div>
-            <div className="w-full max-w-4xl px-12 pb-24">
+            <div className="w-full max-w-desktop px-12 pb-24">
                 <Carousel
                     opts={{
                         align: "start",
@@ -180,31 +186,43 @@ const Projects: React.FC = () => {
                                     >
                                         <Card className="h-full flex flex-col">
                                             <CardHeader>
-                                                <ProjectImageWithSkeleton repo={repo} mode={mode} />
-                                                <CardTitle className="font-heading text-3xl">
-                                                    {repo.name}
-                                                </CardTitle>
-                                                <CardDescription className="mt-2">
+                                                <ImageWithSkeleton repo={repo} mode={mode} />
+                                                <CardDescription>
                                                     {repo.description && (
-                                                        <p className="text-sm mb-3">{repo.description}</p>
+                                                        <p className="text-base mb-3">{repo.description}</p>
                                                     )}
                                                     {repo.topics && repo.topics.length > 0 && (
                                                         <div className="flex flex-wrap gap-2">
-                                                            {repo.topics.map((topic) => {
-                                                                const iconName = repo.icon_map?.[topic];
-                                                                return  (
-                                                                    <Pill key={topic} className='my-0.5'>
-                                                                        {iconName ? <PillIcon icon={iconName} className="size-4" /> : <></>}
-                                                                        {topic}
-                                                                    </Pill>
-                                                                );
-                                                            })}
+                                                            <TooltipProvider>
+                                                                {repo.topics.map((topic) => {
+                                                                    const iconName = repo.icon_map?.[topic];
+                                                                    return (
+                                                                        window.innerWidth < 768 ?
+                                                                            <Tooltip key={topic}>
+                                                                                <TooltipTrigger>
+                                                                                    <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
+                                                                                        {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                        <span className='max-tablet:hidden'>{topic}</span>
+                                                                                    </Pill>
+                                                                                </TooltipTrigger>
+                                                                                <TooltipContent>
+                                                                                    <span className='text-center'>{topic}</span>
+                                                                                </TooltipContent>
+                                                                            </Tooltip>
+                                                                            :
+                                                                            <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
+                                                                                {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                <span className='max-tablet:hidden'>{topic}</span>
+                                                                            </Pill>
+                                                                    );
+                                                                })}
+                                                            </TooltipProvider>
                                                         </div>
                                                     )}
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardFooter className='mt-auto'>
-                                                <div className="flex justify-between items-end text-sm text-muted-foreground w-full">
+                                                <div className="flex justify-between items-end text-base text-muted-foreground w-full">
                                                     <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                         {repo.stargazers_count > 0 && (
                                                             <div className="flex items-center gap-1">

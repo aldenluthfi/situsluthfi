@@ -130,6 +130,7 @@ export const PillDelta = ({ className, delta }: PillDeltaProps) => {
 export type PillIconProps = {
   icon: React.ElementType | string;
   className?: string;
+  size?: number;
 };
 
 export const PillIcon = ({
@@ -140,13 +141,13 @@ export const PillIcon = ({
   typeof Icon === 'string' ? (
     <DynamicIcon
       icon={Icon}
-      className={cn('size-3', className)}
+      className={className}
       {...props}
     />
   ) : (
     <Icon
       stroke={1.5}
-      className={cn('size-3', className)}
+      className={className}
       {...props}
     />
   )

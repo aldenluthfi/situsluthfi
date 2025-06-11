@@ -15,7 +15,6 @@ import {
 
 import { DirectionAwareTabs } from "@/components/ui/direction-aware-tabs"
 
-import Autoscroll from "embla-carousel-auto-scroll"
 import { useState, useEffect } from 'react';
 import { isMobile } from "@/lib/utils";
 
@@ -23,7 +22,6 @@ import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, 
 
 import soloImg from "../assets/images/solo.webp";
 import holeboysImg from "../assets/images/holeboys.webp";
-import weirdosImg from "../assets/images/weirdos.webp";
 import medpropImg from "../assets/images/medprop.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -88,7 +86,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         document.title = "aldenluth.fi | Home";
 
-        const images = [soloImg, holeboysImg, weirdosImg, medpropImg];
+        const images = [soloImg, holeboysImg, medpropImg];
         const preloadLinks: HTMLLinkElement[] = [];
 
         images.forEach(src => {
@@ -180,7 +178,7 @@ const Home: React.FC = () => {
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
+                <p className="font-body text-lg tablet:text-2xl text-center">
                     Hello! my name is <span className="text-primary font-body-bold">Luthfi</span>, <span />
                     <br />
                     but most people call me <span className="text-primary font-body-bold">Upi</span>, I'm a
@@ -189,7 +187,7 @@ const Home: React.FC = () => {
                     text="Humanitarian Activist · Creative Overthinker · Teaching Assistant · Snobby Cinephile · Graphic Designer"
                 />
                 <p
-                    className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center">
+                    className="font-body text-lg tablet:text-2xl text-center">
                     and a <span className="text-primary font-body-bold">computer science</span> student
                     <br />
                     at Universitas Indonesia
@@ -204,27 +202,16 @@ const Home: React.FC = () => {
                         loop: true,
                         watchFocus: false,
                     }}
-                    plugins={[
-                        Autoscroll({
-                            direction: "backward",
-                            stopOnInteraction: false,
-                            stopOnFocusIn: false,
-                            stopOnMouseEnter: false,
-                            speed: 2,
-                            startDelay: 0,
-                        }),
-                    ]}
-                    className='bg-primary-100 z-10'
+                    className='bg-primary-100 z-10 w-screen'
                 >
                     <CarouselContent className="py-10">
                         {
                             Array(2).fill(0).flatMap(() => ([
                                 { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
                                 { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
-                                { src: weirdosImg, alt: "Weirdos", tooltip: "Weirdos being weird" },
                                 { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
                             ])).map((image, index) => (
-                                <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2">
+                                <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2 desktop:basis-5/12">
                                     <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
                                         <div className='px-3 tablet:px-5 overflow-visible'>
                                             <ImageWithSkeleton
@@ -242,7 +229,7 @@ const Home: React.FC = () => {
                 <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
 
-            <div className='max-w-4xl pt-20'>
+            <div className='max-w-desktop pt-20'>
                 <p className="font-body text-lg tablet:text-2xl text-center mt-8">
                     As you can probably see, I'm a
                     <br />

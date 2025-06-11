@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useMemo, useState } from "react"
+import { type ReactNode, useEffect, useMemo, useState, useRef } from "react"
 import { AnimatePresence, MotionConfig, motion } from "motion/react"
 import useMeasure from "react-use-measure"
 
@@ -18,6 +18,7 @@ interface OgImageSectionProps {
   rounded?: string
   onChange?: () => void
   autoPlay?: boolean
+  pauseOnInteract?: boolean
 }
 
 function DirectionAwareTabs({
@@ -26,11 +27,14 @@ function DirectionAwareTabs({
   rounded,
   onChange,
   autoPlay = false,
+  pauseOnInteract = true,
 }: OgImageSectionProps) {
   const [activeTab, setActiveTab] = useState(0)
   const [direction, setDirection] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [ref, bounds] = useMeasure()
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const content = useMemo(() => {
     const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content
@@ -47,12 +51,15 @@ function DirectionAwareTabs({
       const newDirection = newTabId > activeTab ? 1 : -1
       setDirection(newDirection)
       setActiveTab(newTabId)
+      if (pauseOnInteract && autoPlay) {
+        setIsPaused(true)
+      }
       onChange ? onChange() : null
     }
   }
 
   useEffect(() => {
-    if (!autoPlay || isAnimating) return
+    if (!autoPlay || isAnimating || isPaused) return
 
     const interval = setInterval(() => {
       const nextTab = (activeTab + 1) % tabs.length
@@ -63,7 +70,25 @@ function DirectionAwareTabs({
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [autoPlay, isAnimating, tabs, onChange])
+  }, [autoPlay, isAnimating, isPaused, activeTab, tabs, onChange])
+
+  useEffect(() => {
+    if (!pauseOnInteract || !autoPlay) return
+
+    const handleScroll = () => {
+      if (!containerRef.current || !isPaused) return
+
+      const rect = containerRef.current.getBoundingClientRect()
+      const notVisible = rect.top > window.innerHeight || rect.bottom < 0
+
+      if (notVisible && isPaused) {
+        setIsPaused(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [pauseOnInteract, autoPlay, isPaused])
 
   const variants = {
     initial: (direction: number) => ({
@@ -84,7 +109,7 @@ function DirectionAwareTabs({
   }
 
   return (
-    <div className=" flex flex-col items-center w-full">
+    <div ref={containerRef} className=" flex flex-col items-center w-full">
       <div>
         <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
           <motion.div
@@ -118,7 +143,7 @@ function DirectionAwareTabs({
 
       <div
         className={cn(
-          "flex gap-2 border border-input rounded-lg bg-card p-2",
+          "flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2",
           className,
           rounded
         )}
@@ -129,7 +154,7 @@ function DirectionAwareTabs({
             onClick={() => handleTabClick(tab.id)}
             size="icon"
             style={{ WebkitTapHighlightColor: "transparent" }}
-            className={`bg-transparent hover:bg-transparent text-foreground ${
+            className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${
               activeTab === tab.id ? "text-primary-700 duration-400" : ""
             }`}
           >

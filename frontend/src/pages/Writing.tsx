@@ -76,7 +76,7 @@ function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
                 <Skeleton className="inset-0 rounded-md w-full h-[300px] object-contain" />
             )}
             <MediaPlayer
-                className="rounded-md self-center justify-self-center w-full max-w-3xl"
+                className="rounded-md self-center justify-self-center w-full max-w-desktop"
             >
                 <MediaPlayerVideo
                     src={src}
@@ -299,7 +299,7 @@ const Writing: React.FC = () => {
                     </div>
                 </div>
             )}
-            <div className='w-screen desktop:w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>
+            <div className='max-w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>
                 {!data ? (
                     <div className="space-y-4 mb-8">
                         <Skeleton className="w-3/4 h-10" />

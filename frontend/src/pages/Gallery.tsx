@@ -10,13 +10,13 @@ const Gallery: React.FC = () => {
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mb-6">
+                <p className="font-body text-lg tablet:text-2xl text-center mb-6">
                     This is my silly excuse of a <span className="text-primary font-body-bold">gallery</span>, <span />
                     <br/>
                     here you will find
                 </p>
                 <SlidingTitle text="People · Panoramas · Cultures · Oddities" />
-                <p className="font-body text-lg tablet:text-2xl ultrawide:text-4xl text-center mt-6">
+                <p className="font-body text-lg tablet:text-2xl text-center mt-6">
                     I have <span className="text-primary font-body-bold">seen</span> in all
                     <br/>
                     of my travels around this <span className="text-primary font-body-bold">blob of dust</span>
@@ -24,7 +24,7 @@ const Gallery: React.FC = () => {
             </div>
             <div className='flex flex-col -space-y-1 justify-center items-center w-full'>
                 <Squiggle className="w-full fill-primary-100" />
-                <div className='bg-primary-100 w-full desktop:py-10 flex justify-center items-center z-10'>
+                <div className='bg-primary-100 w-screen desktop:py-10 flex justify-center items-center z-10'>
                     <div className='p-10 desktop:p-0'>
                         <WorldMap
                             components={
@@ -52,7 +52,7 @@ const Gallery: React.FC = () => {
                                     'World': ['Asia', 'Europe'],
                                     'Asia': ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
                                     'Europe': ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
-                                    'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung'],
+                                    'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung', 'Yogyakarta'],
                                     'Malaysia': ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
                                     'Singapore': ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
                                     'South Korea': ['Seoul', 'Incheon', 'Jeju'],
@@ -91,7 +91,7 @@ const Gallery: React.FC = () => {
                 </div>
                 <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
-            <div className='h-screen max-w-4xl'>
+            <div className='h-screen max-w-desktop'>
             </div>
         </div>
     );
