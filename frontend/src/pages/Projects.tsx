@@ -178,7 +178,7 @@ const Projects: React.FC = () => {
                             ))
                             : data.map((repo) => (
                                 <CarouselItem key={repo.id} className="basis-full">
-                                    <div className='p-[8.3333%] desktop:p-6'>
+                                    <div className='p-[8.3333%] desktop:p-6 h-full'>
                                         <a
                                             href={repo.html_url}
                                             target="_blank"
