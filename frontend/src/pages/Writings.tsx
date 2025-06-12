@@ -155,7 +155,7 @@ const Writings: React.FC = () => {
                     My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>
-            <div className="w-full max-w-desktop px-12 flex flex-col gap-6 pb-24">
+            <div className="w-10/12 max-w-desktop flex flex-col gap-6 pb-24">
                 {loading
                     ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <Card

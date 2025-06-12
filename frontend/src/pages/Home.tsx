@@ -16,7 +16,7 @@ import {
 import { DirectionAwareTabs } from "@/components/ui/direction-aware-tabs"
 
 import { useState, useEffect } from 'react';
-import { isMobile } from "@/lib/utils";
+import { cn, isMobile } from "@/lib/utils";
 
 import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconDeviceGamepad2, IconPalette } from '@tabler/icons-react';
 
@@ -69,14 +69,19 @@ const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string
     return (
         <div className="relative w-full">
             {!loaded && (
-                <Skeleton className="absolute inset-0 w-full h-full rounded-xl" />
+            <Skeleton className="absolute inset-0 w-full h-full rounded-xl" />
             )}
             <img
-                src={src}
-                alt={alt}
-                className={`hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300 rounded-xl w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"} ${className ?? ""}`}
-                onLoad={() => setLoaded(true)}
-                draggable={false}
+            src={src}
+            alt={alt}
+            className={cn(
+                "rounded-xl w-full transition-opacity duration-300",
+                isMobile && "hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300",
+                loaded ? "opacity-100" : "opacity-0",
+                className
+            )}
+            onLoad={() => setLoaded(true)}
+            draggable={false}
             />
         </div>
     );
@@ -204,16 +209,16 @@ const Home: React.FC = () => {
                     }}
                     className='bg-primary-100 z-10 w-screen'
                 >
-                    <CarouselContent className="py-10">
+                    <CarouselContent className="py-8">
                         {
                             Array(2).fill(0).flatMap(() => ([
                                 { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
                                 { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
                                 { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
                             ])).map((image, index) => (
-                                <CarouselItem key={index + 1} className="max-w-11/12 tablet:basis-1/2 desktop:basis-5/12">
+                                <CarouselItem key={index + 1} className="ml-8 mr-4 max-w-10/12 tablet:basis-1/2 desktop:basis-5/12">
                                     <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
-                                        <div className='px-3 tablet:px-5 overflow-visible'>
+                                        <div className='overflow-visible'>
                                             <ImageWithSkeleton
                                                 src={image.src}
                                                 alt={image.alt}

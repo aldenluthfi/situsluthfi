@@ -134,17 +134,17 @@ const Projects: React.FC = () => {
                         )
                     ]}
                 >
-                    <div className="flex justify-center gap-2 mb-4 desktop:hidden">
-                        <CarouselPrevious className="relative top-8 left-0 translate-y-0 translate-x-0" />
-                        <CarouselNext className="relative top-8 right-0 translate-y-0 translate-x-0" />
+                    <div className="z-10 relative flex justify-center gap-2 -mb-4 h-full items-end desktop:hidden">
+                        <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0" />
+                        <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0" />
                     </div>
-                    <CarouselPrevious className='hidden desktop:block ml-4 mr-2 desktop:ml-0' />
-                    <CarouselNext className='hidden desktop:block mr-4 ml-2 desktop:mr-0' />
+                    <CarouselPrevious className='hidden desktop:block z-10 -left-12' />
+                    <CarouselNext className='hidden desktop:block z-10 -right-12' />
                     <CarouselContent className='py-4'>
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
                                 <CarouselItem key={i} className="basis-full">
-                                    <div className='h-full p-6'>
+                                    <div className='h-full p-[8.3333%] desktop:p-6'>
                                         <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                             <CardHeader>
                                                 <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
@@ -182,7 +182,7 @@ const Projects: React.FC = () => {
                                         href={repo.html_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 block h-full p-6"
+                                        className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 block h-full p-[8.3333%] desktop:p-6"
                                     >
                                         <Card className="h-full flex flex-col">
                                             <CardHeader>
