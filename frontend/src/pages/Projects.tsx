@@ -13,6 +13,7 @@ import {
     IconStar,
     IconGitFork,
     IconScale,
+    IconCalendar
 } from "@tabler/icons-react";
 import {
     Carousel,
@@ -23,7 +24,7 @@ import {
 } from "@/components/ui/carousel";
 import { useTheme } from "@/components/custom/theme-provider";
 import type { RepositoryObject } from "@/lib/types";
-import autoplay from "embla-carousel-autoplay";
+// import autoplay from "embla-carousel-autoplay";
 import {
     Tooltip,
     TooltipContent,
@@ -124,14 +125,14 @@ const Projects: React.FC = () => {
                         loop: true,
                     }}
                     plugins={[
-                        autoplay(
-                            {
-                                delay: 7500,
-                                stopOnInteraction: false,
-                                stopOnMouseEnter: true,
-                                playOnInit: true,
-                            }
-                        )
+                        // autoplay(
+                        //     {
+                        //         delay: 7500,
+                        //         stopOnInteraction: false,
+                        //         stopOnMouseEnter: true,
+                        //         playOnInit: true,
+                        //     }
+                        // )
                     ]}
                 >
                     <CarouselPrevious className='ml-4 mr-2 desktop:ml-0' />
@@ -222,7 +223,7 @@ const Projects: React.FC = () => {
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardFooter className='mt-auto'>
-                                                <div className="flex justify-between items-end text-base text-muted-foreground w-full">
+                                                <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1">
                                                     <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                         {repo.stargazers_count > 0 && (
                                                             <div className="flex items-center gap-1">
@@ -243,7 +244,8 @@ const Projects: React.FC = () => {
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <span className='flex place-items-end'>
+                                                    <span className='flex items-center gap-1'>
+                                                        <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
                                                         {new Date(repo.created_at).toLocaleDateString(
                                                             "en-GB",
                                                             {
