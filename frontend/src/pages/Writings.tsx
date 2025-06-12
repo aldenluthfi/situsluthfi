@@ -167,13 +167,16 @@ const Writings: React.FC = () => {
                                 <CardTitle>
                                     <Skeleton className="h-10 w-full tablet:w-3/4" />
                                 </CardTitle>
-                                <CardDescription className="flex gap-2">
-                                    <Skeleton className="h-8 w-24 mt-4" />
-                                    <Skeleton className="h-8 w-24 mt-4" />
+                                <CardDescription className="mt-2">
+                                    <div className="flex flex-wrap gap-2">
+                                        <Skeleton className="h-8 w-20 rounded-full" />
+                                        <Skeleton className="h-8 w-24 rounded-full" />
+                                        <Skeleton className="h-8 w-16 rounded-full" />
+                                    </div>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <Skeleton className="h-3 w-32" />
+                                <Skeleton className="h-4 w-40" />
                             </CardContent>
                         </Card>
                     ))

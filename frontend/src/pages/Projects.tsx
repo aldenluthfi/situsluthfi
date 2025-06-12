@@ -4,7 +4,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
     Card,
     CardHeader,
-    CardTitle,
     CardDescription,
     CardFooter,
 } from "@/components/ui/card";
@@ -24,7 +23,7 @@ import {
 } from "@/components/ui/carousel";
 import { useTheme } from "@/components/custom/theme-provider";
 import type { RepositoryObject } from "@/lib/types";
-// import autoplay from "embla-carousel-autoplay";
+import autoplay from "embla-carousel-autoplay";
 import {
     Tooltip,
     TooltipContent,
@@ -125,14 +124,14 @@ const Projects: React.FC = () => {
                         loop: true,
                     }}
                     plugins={[
-                        // autoplay(
-                        //     {
-                        //         delay: 7500,
-                        //         stopOnInteraction: false,
-                        //         stopOnMouseEnter: true,
-                        //         playOnInit: true,
-                        //     }
-                        // )
+                        autoplay(
+                            {
+                                delay: 7500,
+                                stopOnInteraction: false,
+                                stopOnMouseEnter: true,
+                                playOnInit: true,
+                            }
+                        )
                     ]}
                 >
                     <CarouselPrevious className='ml-4 mr-2 desktop:ml-0' />
@@ -145,24 +144,20 @@ const Projects: React.FC = () => {
                                         <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                             <CardHeader>
                                                 <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
-                                                <CardTitle>
-                                                    <Skeleton className="h-9 w-3/4" />
-                                                </CardTitle>
-                                                <CardDescription className="mt-2">
-                                                    <Skeleton className="h-4 w-full" />
-                                                    <Skeleton className="h-4 w-4/5 mt-1" />
-                                                    <Skeleton className="h-4 w-3/5 mt-1" />
-                                                    <Skeleton className="h-4 w-2/5 mt-1" />
-                                                    <div className="flex flex-wrap gap-2 mt-3">
-                                                        <Skeleton className="h-6 w-16 rounded-full" />
-                                                        <Skeleton className="h-6 w-20 rounded-full" />
-                                                        <Skeleton className="h-6 w-14 rounded-full" />
-                                                        <Skeleton className="h-6 w-18 rounded-full" />
+                                                <CardDescription>
+                                                    <Skeleton className="h-4 w-full mb-1" />
+                                                    <Skeleton className="h-4 w-4/5 mb-1" />
+                                                    <Skeleton className="h-4 w-3/5 mb-3" />
+                                                    <div className="flex flex-wrap gap-2">
+                                                        <Skeleton className="h-7 w-16 rounded-full" />
+                                                        <Skeleton className="h-7 w-20 rounded-full" />
+                                                        <Skeleton className="h-7 w-14 rounded-full" />
+                                                        <Skeleton className="h-7 w-18 rounded-full" />
                                                     </div>
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardFooter className="mt-auto">
-                                                <div className="flex justify-between items-end w-full">
+                                                <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end w-full gap-1">
                                                     <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                         <div className="flex gap-4">
                                                             <Skeleton className="h-4 w-8" />
