@@ -172,7 +172,7 @@ const Map = ({
     };
 
     return (
-        <TooltipProvider>
+        <TooltipProvider openDelay={0} closeDelay={2000}>
             <div
                 className={cn("map flex items-center justify-center", className)}
                 style={containerStyle}

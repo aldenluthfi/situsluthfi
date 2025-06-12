@@ -189,7 +189,7 @@ const Projects: React.FC = () => {
                                                     )}
                                                     {repo.topics && repo.topics.length > 0 && (
                                                         <div className="flex flex-wrap gap-2">
-                                                            <TooltipProvider>
+                                                            <TooltipProvider openDelay={0} closeDelay={500}>
                                                                 {repo.topics.map((topic) => {
                                                                     const iconName = repo.icon_map?.[topic];
                                                                     return (
