@@ -117,7 +117,7 @@ const Projects: React.FC = () => {
                     <span className="text-primary font-body-bold">stay tuned</span> for updates!
                 </p>
             </div>
-            <div className="w-full max-w-desktop px-12 pb-24">
+            <div className="w-full max-w-desktop desktop:px-12 pb-24">
                 <Carousel
                     opts={{
                         align: "start",
@@ -134,8 +134,12 @@ const Projects: React.FC = () => {
                         )
                     ]}
                 >
-                    <CarouselPrevious className='ml-4 mr-2 desktop:ml-0' />
-                    <CarouselNext className='mr-4 ml-2 desktop:mr-0' />
+                    <div className="flex justify-center gap-2 mb-4 desktop:hidden">
+                        <CarouselPrevious className="relative top-8 left-0 translate-y-0 translate-x-0" />
+                        <CarouselNext className="relative top-8 right-0 translate-y-0 translate-x-0" />
+                    </div>
+                    <CarouselPrevious className='hidden desktop:block ml-4 mr-2 desktop:ml-0' />
+                    <CarouselNext className='hidden desktop:block mr-4 ml-2 desktop:mr-0' />
                     <CarouselContent className='py-4'>
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
