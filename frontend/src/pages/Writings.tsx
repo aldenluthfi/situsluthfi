@@ -155,11 +155,11 @@ const Writings: React.FC = () => {
                     My <span className="text-primary font-body-bold">opinions</span> are often wrong
                 </p>
             </div>
-            <div className="w-10/12 max-w-desktop flex flex-col gap-6 pb-24">
+            <div className="w-full max-w-desktop flex flex-col gap-6 pb-24 items-center">
                 {loading
                     ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <Card
-                            className="motion-preset-slide-down"
+                            className="motion-preset-slide-down w-10/12"
                             style={{ animationDelay: `${i * 100}ms` }}
                             key={i + 1}
                         >
@@ -184,7 +184,7 @@ const Writings: React.FC = () => {
                         <Link
                             key={item.id}
                             to={`/writings/${item.slug}`}
-                            className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300"
+                            className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 w-10/12"
                         >
                             <Card key={item.id}>
                                 <CardHeader>

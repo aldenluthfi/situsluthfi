@@ -117,7 +117,7 @@ const Projects: React.FC = () => {
                     <span className="text-primary font-body-bold">stay tuned</span> for updates!
                 </p>
             </div>
-            <div className="w-full max-w-desktop desktop:px-12 pb-24">
+            <div className="w-full max-w-desktop pb-24">
                 <Carousel
                     opts={{
                         align: "start",
@@ -134,7 +134,7 @@ const Projects: React.FC = () => {
                         )
                     ]}
                 >
-                    <div className="z-10 relative flex justify-center gap-2 -mb-4 h-full items-end desktop:hidden">
+                    <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333%] h-full items-end desktop:hidden">
                         <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0" />
                         <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0" />
                     </div>
@@ -178,86 +178,88 @@ const Projects: React.FC = () => {
                             ))
                             : data.map((repo) => (
                                 <CarouselItem key={repo.id} className="basis-full">
-                                    <a
-                                        href={repo.html_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 block h-full p-[8.3333%] desktop:p-6"
-                                    >
-                                        <Card className="h-full flex flex-col">
-                                            <CardHeader>
-                                                <ImageWithSkeleton repo={repo} mode={mode} />
-                                                <CardDescription>
-                                                    {repo.description && (
-                                                        <p className="text-base mb-3">{repo.description}</p>
-                                                    )}
-                                                    {repo.topics && repo.topics.length > 0 && (
-                                                        <div className="flex flex-wrap gap-2">
-                                                            <TooltipProvider openDelay={0} closeDelay={500}>
-                                                                {repo.topics.map((topic) => {
-                                                                    const iconName = repo.icon_map?.[topic];
-                                                                    return (
-                                                                        window.innerWidth < 768 ?
-                                                                            <Tooltip key={topic}>
-                                                                                <TooltipTrigger>
-                                                                                    <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
-                                                                                        {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
-                                                                                        <span className='max-tablet:hidden'>{topic}</span>
-                                                                                    </Pill>
-                                                                                </TooltipTrigger>
-                                                                                <TooltipContent>
-                                                                                    <span className='text-center'>{topic}</span>
-                                                                                </TooltipContent>
-                                                                            </Tooltip>
-                                                                            :
-                                                                            <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
-                                                                                {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
-                                                                                <span className='max-tablet:hidden'>{topic}</span>
-                                                                            </Pill>
-                                                                    );
-                                                                })}
-                                                            </TooltipProvider>
+                                    <div className='p-[8.3333%] desktop:p-6'>
+                                        <a
+                                            href={repo.html_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block h-full"
+                                        >
+                                            <Card className="h-full flex flex-col hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 ">
+                                                <CardHeader>
+                                                    <ImageWithSkeleton repo={repo} mode={mode} />
+                                                    <CardDescription>
+                                                        {repo.description && (
+                                                            <p className="text-base mb-3">{repo.description}</p>
+                                                        )}
+                                                        {repo.topics && repo.topics.length > 0 && (
+                                                            <div className="flex flex-wrap gap-2">
+                                                                <TooltipProvider openDelay={0} closeDelay={500}>
+                                                                    {repo.topics.map((topic) => {
+                                                                        const iconName = repo.icon_map?.[topic];
+                                                                        return (
+                                                                            window.innerWidth < 768 ?
+                                                                                <Tooltip key={topic}>
+                                                                                    <TooltipTrigger>
+                                                                                        <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
+                                                                                            {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                            <span className='max-tablet:hidden'>{topic}</span>
+                                                                                        </Pill>
+                                                                                    </TooltipTrigger>
+                                                                                    <TooltipContent>
+                                                                                        <span className='text-center'>{topic}</span>
+                                                                                    </TooltipContent>
+                                                                                </Tooltip>
+                                                                                :
+                                                                                <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
+                                                                                    {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                    <span className='max-tablet:hidden'>{topic}</span>
+                                                                                </Pill>
+                                                                        );
+                                                                    })}
+                                                                </TooltipProvider>
+                                                            </div>
+                                                        )}
+                                                    </CardDescription>
+                                                </CardHeader>
+                                                <CardFooter className='mt-auto'>
+                                                    <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1">
+                                                        <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
+                                                            {repo.stargazers_count > 0 && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconStar className="size-4" stroke={1.5} />
+                                                                    {repo.stargazers_count}
+                                                                </div>
+                                                            )}
+                                                            {repo.forks_count > 0 && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconGitFork className="size-4" stroke={1.5} />
+                                                                    {repo.forks_count}
+                                                                </div>
+                                                            )}
+                                                            {repo.license && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconScale className="size-4" stroke={1.5} />
+                                                                    {typeof repo.license === 'string' ? repo.license : repo.license.spdx_id || repo.license.key}
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
-                                                </CardDescription>
-                                            </CardHeader>
-                                            <CardFooter className='mt-auto'>
-                                                <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1">
-                                                    <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
-                                                        {repo.stargazers_count > 0 && (
-                                                            <div className="flex items-center gap-1">
-                                                                <IconStar className="size-4" stroke={1.5} />
-                                                                {repo.stargazers_count}
-                                                            </div>
-                                                        )}
-                                                        {repo.forks_count > 0 && (
-                                                            <div className="flex items-center gap-1">
-                                                                <IconGitFork className="size-4" stroke={1.5} />
-                                                                {repo.forks_count}
-                                                            </div>
-                                                        )}
-                                                        {repo.license && (
-                                                            <div className="flex items-center gap-1">
-                                                                <IconScale className="size-4" stroke={1.5} />
-                                                                {typeof repo.license === 'string' ? repo.license : repo.license.spdx_id || repo.license.key}
-                                                            </div>
-                                                        )}
+                                                        <span className='flex items-center gap-1'>
+                                                            <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
+                                                            {new Date(repo.created_at).toLocaleDateString(
+                                                                "en-GB",
+                                                                {
+                                                                    year: "numeric",
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                }
+                                                            )}
+                                                        </span>
                                                     </div>
-                                                    <span className='flex items-center gap-1'>
-                                                        <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
-                                                        {new Date(repo.created_at).toLocaleDateString(
-                                                            "en-GB",
-                                                            {
-                                                                year: "numeric",
-                                                                month: "short",
-                                                                day: "numeric",
-                                                            }
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            </CardFooter>
-                                        </Card>
-                                    </a>
+                                                </CardFooter>
+                                            </Card>
+                                        </a>
+                                    </div>
                                 </CarouselItem>
                             ))}
                     </CarouselContent>
