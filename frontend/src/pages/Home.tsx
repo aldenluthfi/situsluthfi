@@ -221,6 +221,7 @@ const Home: React.FC = () => {
                         )
                     ]}
                     className='bg-primary-100 z-10 w-screen'
+                    dir='rtl'
                 >
                     <CarouselContent className="py-8">
                         {
