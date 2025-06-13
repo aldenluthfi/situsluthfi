@@ -208,6 +208,7 @@ const Home: React.FC = () => {
                     opts={{
                         loop: true,
                         watchFocus: false,
+                        direction: "rtl",
                     }}
                     plugins={[
                         Autoplay(
