@@ -138,13 +138,13 @@ const Projects: React.FC = () => {
                         <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0" />
                         <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0" />
                     </div>
-                    <CarouselPrevious className='hidden desktop:block z-10 -left-12' />
-                    <CarouselNext className='hidden desktop:block z-10 -right-12' />
-                    <CarouselContent className='py-4'>
+                    <CarouselPrevious className='hidden desktop:block z-10' />
+                    <CarouselNext className='hidden desktop:block z-10' />
+                    <CarouselContent>
                         {loading
                             ? Array.from({ length: 6 }).map((_, i) => (
                                 <CarouselItem key={i} className="basis-full">
-                                    <div className='h-full p-[8.3333%] desktop:p-6'>
+                                    <div className='h-full w-full p-[8.3333%]'>
                                         <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                             <CardHeader>
                                                 <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
@@ -178,14 +178,14 @@ const Projects: React.FC = () => {
                             ))
                             : data.map((repo) => (
                                 <CarouselItem key={repo.id} className="basis-full">
-                                    <div className='p-[8.3333%] desktop:p-6 h-full'>
+                                    <div className='p-[8.3333%] h-full w-full'>
                                         <a
                                             href={repo.html_url}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="block h-full"
                                         >
-                                            <Card className="h-full flex flex-col hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 ">
+                                            <Card className="h-full flex flex-col hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300">
                                                 <CardHeader>
                                                     <ImageWithSkeleton repo={repo} mode={mode} />
                                                     <CardDescription>

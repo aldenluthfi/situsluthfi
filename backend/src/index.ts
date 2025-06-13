@@ -11,11 +11,7 @@ const port = "3000";
 
 app.use(cors());
 app.use(compression({
-    level: 9,
-    brotli: {
-        enabled: true,
-        zlib: {}
-    }
+    level: 9
 }));
 
 app.use("/api", router);

@@ -20,11 +20,13 @@ import { cn, isMobile } from "@/lib/utils";
 
 import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconDeviceGamepad2, IconPalette } from '@tabler/icons-react';
 
-import soloImg from "../assets/images/solo.webp";
-import holeboysImg from "../assets/images/holeboys.webp";
-import medpropImg from "../assets/images/medprop.webp";
+import soloImg from "@/assets/images/solo.webp";
+import holeboysImg from "@/assets/images/holeboys.webp";
+import medpropImg from "@/assets/images/medprop.webp";
+import weirdosImg from "@/assets/images/weirdos.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import Autoplay from 'embla-carousel-autoplay';
 
 const ResponsiveTooltip = ({
     children,
@@ -69,19 +71,19 @@ const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string
     return (
         <div className="relative w-full">
             {!loaded && (
-            <Skeleton className="absolute inset-0 w-full h-full rounded-xl" />
+                <Skeleton className="absolute inset-0 tablet:basis-1/2 desktop:basis-5/12 rounded-xl" />
             )}
             <img
-            src={src}
-            alt={alt}
-            className={cn(
-                "rounded-xl w-full transition-opacity duration-300",
-                isMobile && "hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300",
-                loaded ? "opacity-100" : "opacity-0",
-                className
-            )}
-            onLoad={() => setLoaded(true)}
-            draggable={false}
+                src={src}
+                alt={alt}
+                className={cn(
+                    "rounded-xl w-full transition-opacity duration-300",
+                    !isMobile && "hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-bouncier motion-duration-300",
+                    loaded ? "opacity-100" : "opacity-0",
+                    className
+                )}
+                onLoad={() => setLoaded(true)}
+                draggable={false}
             />
         </div>
     );
@@ -91,7 +93,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         document.title = "aldenluth.fi | Home";
 
-        const images = [soloImg, holeboysImg, medpropImg];
+        const images = [soloImg, holeboysImg, medpropImg, weirdosImg];
         const preloadLinks: HTMLLinkElement[] = [];
 
         images.forEach(src => {
@@ -207,6 +209,16 @@ const Home: React.FC = () => {
                         loop: true,
                         watchFocus: false,
                     }}
+                    plugins={[
+                        Autoplay(
+                            {
+                                delay: 7500,
+                                stopOnInteraction: false,
+                                stopOnMouseEnter: true,
+                                playOnInit: true,
+                            }
+                        )
+                    ]}
                     className='bg-primary-100 z-10 w-screen'
                 >
                     <CarouselContent className="py-8">
@@ -214,6 +226,7 @@ const Home: React.FC = () => {
                             Array(2).fill(0).flatMap(() => ([
                                 { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
                                 { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
+                                { src: weirdosImg, alt: "Just Weirdos", tooltip: "Weirdos being weirdos" },
                                 { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
                             ])).map((image, index) => (
                                 <CarouselItem key={index + 1} className="ml-8 mr-4 max-w-10/12 tablet:basis-1/2 desktop:basis-5/12">
