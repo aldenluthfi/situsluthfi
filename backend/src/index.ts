@@ -11,7 +11,7 @@ const port = "3000";
 
 app.use(cors());
 app.use(compression({
-    level: 9
+    level: 9,
 }));
 
 app.use("/api", router);

@@ -115,7 +115,7 @@ const Home: React.FC = () => {
         };
     }, []);
 
-    const cv_tabs = [
+    const tabs = [
         {
             id: 0,
             label: "a software developer",
@@ -253,7 +253,7 @@ const Home: React.FC = () => {
                     <br />
                     <span className="text-primary font-body-bold">Jack of all trades</span>, you can have me as
                 </p>
-                <DirectionAwareTabs tabs={cv_tabs} autoPlay />
+                <DirectionAwareTabs tabs={tabs} autoPlay />
             </div>
         </div>
     );
