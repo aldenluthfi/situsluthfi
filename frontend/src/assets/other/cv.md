@@ -56,7 +56,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Volunteering Experience [full | design | humanitarian | tutor]
 
-#### **Gerakan UI Mengajar** Universitas Indonesia [full | humanitarian | tutor]
+#### **Gerakan UI Mengajar** Universitas Indonesia [full | design | humanitarian | tutor]
 ##### **Staff of Social Community Department** Jan 2024 - Mar 2024 [full | humanitarian | tutor]
 
 - **One month** of community service **in Pesawaran, Lampung**. [full | humanitarian | tutor]

@@ -13,17 +13,8 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-import { DirectionAwareTabs } from "@/components/ui/direction-aware-tabs"
-
-import {
-    Card,
-    CardContent,
-} from "@/components/ui/card"
-
 import { useState, useEffect } from 'react';
 import { cn, isMobile } from "@/lib/utils";
-
-import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette } from '@tabler/icons-react';
 
 import soloImg from "@/assets/images/solo.webp";
 import holeboysImg from "@/assets/images/holeboys.webp";
@@ -122,94 +113,6 @@ const Home: React.FC = () => {
         };
     }, []);
 
-    const tabs = [
-        {
-            id: 0,
-            label: "a software developer",
-            icon: <IconCode className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="software" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        },
-        {
-            id: 1,
-            label: "a cybersecurity analyst",
-            icon: <IconCloudLock className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="cybersecurity" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        },
-        {
-            id: 2,
-            label: "a graphic designer",
-            icon: <IconPalette className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="design" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        },
-        {
-            id: 3,
-            label: "a humanitarian volunteer",
-            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="humanitarian" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        },
-        {
-            id: 4,
-            label: "an academic tutor",
-            icon: <IconSchool className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="tutor" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        },
-
-        {
-            id: 6,
-            label: "honestly, anything!",
-            icon: <IconSparkles className='size-6' stroke={1.5} />,
-            content: (
-                <div className='my-8 flex justify-center'>
-                    <Card className="w-10/12 max-w-desktop">
-                        <CardContent>
-                            <CV type="full" />
-                        </CardContent>
-                    </Card>
-                </div>
-            )
-        }
-    ]
-
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
@@ -283,8 +186,10 @@ const Home: React.FC = () => {
                     <br />
                     <span className="text-primary font-body-bold">Jack of all trades</span>, you can have me as
                 </p>
-                <DirectionAwareTabs tabs={tabs} autoPlay />
+                <CV showTabs autoPlay className='pb-24'/>
             </div>
+
+            <div className='h-[200vh]'></div>
         </div>
     );
 };

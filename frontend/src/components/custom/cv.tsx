@@ -1,8 +1,12 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, MotionConfig } from "motion/react";
+import useMeasure from "react-use-measure";
 
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+
 import remarkGfm from 'remark-gfm';
 import {
     Table,
@@ -12,78 +16,115 @@ import {
     TableCell,
 } from "@/components/ui/table";
 
+import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette } from '@tabler/icons-react';
+
+import cvContent from '@/assets/other/cv.md?raw';
+
 interface CVProps {
     type?: "full" | "software" | "cybersecurity" | "design" | "humanitarian" | "tutor";
     className?: string;
+    showTabs?: boolean;
+    autoPlay?: boolean;
+    pauseOnInteract?: boolean;
+}
+
+interface ParsedSection {
+    type: 'persistent' | 'variable';
+    content: string;
+    shouldShow: boolean;
 }
 
 const CV: React.FC<CVProps> = ({
     type = "full",
-    className = ""
+    className = "",
+    showTabs = false,
+    autoPlay = false,
+    pauseOnInteract = true
 }) => {
-    const [cvContent, setCvContent] = useState<string>("");
-    const previousTypeRef = useRef<string>(type);
+    const [activeTab, setActiveTab] = useState(() => {
+        const tabs = [
+            { id: "software", label: "a software developer", icon: <IconCode className='size-6' stroke={1.5} /> },
+            { id: "cybersecurity", label: "a cybersecurity analyst", icon: <IconCloudLock className='size-6' stroke={1.5} /> },
+            { id: "design", label: "a graphic designer", icon: <IconPalette className='size-6' stroke={1.5} /> },
+            { id: "humanitarian", label: "a humanitarian volunteer", icon: <IconHeartHandshake className='size-6' stroke={1.5} /> },
+            { id: "tutor", label: "an academic tutor", icon: <IconSchool className='size-6' stroke={1.5} /> },
+            { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> }
+        ];
+        return tabs.findIndex(tab => tab.id === type);
+    });
 
-    const fetchCV = useCallback(async () => {
-        try {
-            const response = await fetch("/src/assets/other/cv.md");
-            if (!response.ok) {
-                throw new Error("Failed to fetch CV");
+    const [isPaused, setIsPaused] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [direction, setDirection] = useState(0);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [ref] = useMeasure();
+    const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
+
+    const tabs = [
+        { id: "software", label: "a software developer", icon: <IconCode className='size-6' stroke={1.5} /> },
+        { id: "cybersecurity", label: "a cybersecurity analyst", icon: <IconCloudLock className='size-6' stroke={1.5} /> },
+        { id: "design", label: "a graphic designer", icon: <IconPalette className='size-6' stroke={1.5} /> },
+        { id: "humanitarian", label: "a humanitarian volunteer", icon: <IconHeartHandshake className='size-6' stroke={1.5} /> },
+        { id: "tutor", label: "an academic tutor", icon: <IconSchool className='size-6' stroke={1.5} /> },
+        { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> }
+    ];
+
+    const currentType = tabs[activeTab]?.id || "full";
+    const currentLabel = tabs[activeTab]?.label || "";
+
+    const parsedSections = useMemo(() => {
+        const sections = cvContent.split(/(?=^##)/gm).filter(section => section.trim());
+
+        return sections.map(section => {
+            const hasTag = /\[([^\]]+)\]/.test(section);
+            const tagMatch = section.match(/\[([^\]]+)\]/);
+
+            const isPersistentSection = section.includes('## Personal Information') ||
+                                      section.includes('## About Me') ||
+                                      section.includes('# Alden Luthfi');
+
+            let shouldShow = true;
+            if (hasTag && tagMatch && currentType !== "full") {
+                const tags = tagMatch[1].split('|').map(tag => tag.trim());
+                shouldShow = tags.includes(currentType);
             }
-            const content = await response.text();
-            setCvContent(content);
-        } catch (error) {
-            console.error("Error fetching CV:", error);
-            setCvContent("");
-        }
-    }, []);
 
-    useEffect(() => {
-        fetchCV();
-    }, [fetchCV]);
+            return {
+                type: (hasTag && !isPersistentSection) ? 'variable' as const : 'persistent' as const,
+                content: section,
+                shouldShow: isPersistentSection ? true : shouldShow
+            };
+        });
+    }, [currentType]);
+
+    const verticalDirection = useMemo(() => {
+        if (prevSections.length === 0) return 0;
+
+        const prevVisibleCount = prevSections.filter(s => s.shouldShow).length;
+        const currentVisibleCount = parsedSections.filter(s => s.shouldShow).length;
+
+        return currentVisibleCount > prevVisibleCount ? 1 : currentVisibleCount < prevVisibleCount ? -1 : 0;
+    }, [parsedSections, prevSections]);
 
     const getTextContent = (children: any): string => {
         if (Array.isArray(children)) {
             return children.map(child =>
                 typeof child === 'string' ? child :
-                typeof child === 'object' && child?.props?.children ? getTextContent(child.props.children) : ''
+                    typeof child === 'object' && child?.props?.children ? getTextContent(child.props.children) : ''
             ).join('');
         }
         return typeof children === 'string' ? children : '';
     };
 
-    const shouldShowElement = (children: any): boolean => {
-        if (type === "full") return true;
+    const shouldShowElement = (children: any, targetType: string): boolean => {
+        if (targetType === "full") return true;
 
         const content = getTextContent(children);
-
         const tagMatch = content.match(/\[([^\]]+)\]/);
         if (!tagMatch) return true;
 
         const tags = tagMatch[1].split('|').map(tag => tag.trim());
-        return tags.includes(type);
-    };
-
-    const shouldAnimate = (children: any): boolean => {
-        const currentShow = shouldShowElement(children);
-        
-        // Check if element was visible with previous type
-        const content = getTextContent(children);
-        const tagMatch = content.match(/\[([^\]]+)\]/);
-        
-        let previousShow = true;
-        if (previousTypeRef.current !== "full" && tagMatch) {
-            const tags = tagMatch[1].split('|').map(tag => tag.trim());
-            previousShow = tags.includes(previousTypeRef.current);
-        }
-        
-        // Only animate if visibility changes
-        return currentShow !== previousShow;
-    };
-
-    const getStableElementId = (children: any): string => {
-        const content = getTextContent(children);
-        return btoa(content.slice(0, 50)).replace(/[^a-zA-Z0-9]/g, '').slice(0, 10);
+        return tags.includes(targetType);
     };
 
     const stripTagsFromChildren = (children: any): any => {
@@ -101,261 +142,483 @@ const CV: React.FC<CVProps> = ({
         return typeof children === 'string' ? children.replace(/\s*\[[^\]]+\]/, '') : children;
     };
 
+    const handleTabClick = (newTabIndex: number) => {
+        if (newTabIndex !== activeTab && !isAnimating) {
+            setPrevSections(parsedSections);
+            const newDirection = newTabIndex > activeTab ? 1 : -1;
+            setDirection(newDirection);
+            setActiveTab(newTabIndex);
+            if (pauseOnInteract && autoPlay) {
+                setIsPaused(true);
+            }
+        }
+    };
+
     useEffect(() => {
-        previousTypeRef.current = type;
-    }, [type]);
+        if (!autoPlay || isAnimating || isPaused || !showTabs) return;
+
+        const interval = setInterval(() => {
+            const nextTab = (activeTab + 1) % tabs.length;
+            const newDirection = nextTab > activeTab ? 1 : -1;
+            setDirection(newDirection);
+            setActiveTab(nextTab);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [autoPlay, isAnimating, isPaused, activeTab, tabs.length, showTabs]);
+
+    useEffect(() => {
+        if (!pauseOnInteract || !autoPlay || !showTabs) return;
+
+        const handleScroll = () => {
+            if (!containerRef.current) return;
+
+            const rect = containerRef.current.getBoundingClientRect();
+            const notVisible = rect.top > window.innerHeight || rect.bottom < 0;
+
+            if (notVisible && isPaused) {
+                setIsPaused(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [pauseOnInteract, autoPlay, isPaused, showTabs]);
+
+    const horizontalVariants = {
+        initial: (direction: number) => ({
+            x: 300 * direction,
+            opacity: 0,
+            filter: "blur(4px)",
+        }),
+        active: {
+            x: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+        },
+        exit: (direction: number) => ({
+            x: -300 * direction,
+            opacity: 0,
+            filter: "blur(4px)",
+        }),
+    };
+
+    const verticalVariants = {
+        initial: (direction: number) => ({
+            y: 50 * direction,
+            opacity: 0,
+        }),
+        active: {
+            y: 0,
+            opacity: 1,
+        },
+        exit: (direction: number) => ({
+            y: -50 * direction,
+            opacity: 0,
+        }),
+    };
+
+    const tabVariants = {
+        initial: (direction: number) => ({
+            x: 300 * direction,
+            opacity: 0,
+            filter: "blur(4px)",
+        }),
+        active: {
+            x: 0,
+            opacity: 1,
+            filter: "blur(0px)",
+        },
+        exit: (direction: number) => ({
+            x: -300 * direction,
+            opacity: 0,
+            filter: "blur(4px)",
+        }),
+    };
 
     return (
-        <div className={`w-full ${className}`}>
-            <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                    h1(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.h1
-                                        key={animate ? `h1-${elementId}-${type}` : `h1-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, y: -20 } : false}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={animate ? { opacity: 0, y: -20 } : undefined}
-                                        transition={animate ? { duration: 0.3 } : { duration: 0 }}
-                                        {...rest}
-                                        className="text-4xl font-heading mb-4 text-center"
+        <div ref={containerRef} className={`w-full flex flex-col ${showTabs ? 'items-center' : ''} ${className}`}>
+            {showTabs && (
+                <>
+                    <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
+                        <motion.div
+                            className="relative h-min text-nowrap w-full mb-8"
+                            initial={false}
+                        >
+                            <div className="p-1" ref={ref}>
+                                <AnimatePresence
+                                    custom={direction}
+                                    mode="popLayout"
+                                    onExitComplete={() => setIsAnimating(false)}
+                                >
+                                    <motion.div
+                                        key={activeTab}
+                                        variants={tabVariants}
+                                        initial="initial"
+                                        animate="active"
+                                        exit="exit"
+                                        custom={direction}
+                                        onAnimationStart={() => setIsAnimating(true)}
+                                        onAnimationComplete={() => setIsAnimating(false)}
+                                        className="font-body text-lg tablet:text-2xl text-center"
                                     >
-                                        {cleanChildren}
-                                    </motion.h1>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    h2(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
+                                        {currentLabel}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+                        </motion.div>
+                    </MotionConfig>
 
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.h2
-                                        key={animate ? `h2-${elementId}-${type}` : `h2-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, x: -30 } : false}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={animate ? { opacity: 0, x: -30 } : undefined}
-                                        transition={animate ? { duration: 0.3, delay: 0.1 } : { duration: 0 }}
-                                        {...rest}
-                                        className="text-2xl font-heading mt-6 mb-3 border-b border-foreground pb-2"
-                                    >
-                                        {cleanChildren}
-                                    </motion.h2>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    h3(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.h3
-                                        key={animate ? `h3-${elementId}-${type}` : `h3-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, y: 10 } : false}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={animate ? { opacity: 0, y: 10 } : undefined}
-                                        transition={animate ? { duration: 0.3 } : { duration: 0 }}
-                                        {...rest}
-                                        className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-4 mb-2"
-                                    >
-                                        {cleanChildren}
-                                    </motion.h3>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    h4(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.h4
-                                        key={animate ? `h4-${elementId}-${type}` : `h4-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, x: 20 } : false}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={animate ? { opacity: 0, x: 20 } : undefined}
-                                        transition={animate ? { duration: 0.3, delay: 0.05 } : { duration: 0 }}
-                                        {...rest}
-                                        className="flex italic [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-lg justify-between w-full mt-3"
-                                    >
-                                        {cleanChildren}
-                                    </motion.h4>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    h5(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.h4
-                                        key={animate ? `h5-${elementId}-${type}` : `h5-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, x: 15 } : false}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={animate ? { opacity: 0, x: 15 } : undefined}
-                                        transition={animate ? { duration: 0.3, delay: 0.1 } : { duration: 0 }}
-                                        {...rest}
-                                        className="flex [&>strong]:text-foreground justify-between w-full mb-1"
-                                    >
-                                        {cleanChildren}
-                                    </motion.h4>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    p(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.p
-                                        key={animate ? `p-${elementId}-${type}` : `p-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, y: 5 } : false}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={animate ? { opacity: 0, y: 5 } : undefined}
-                                        transition={animate ? { duration: 0.3, delay: 0.15 } : { duration: 0 }}
-                                        {...rest}
-                                        className="mb-3 text-justify leading-relaxed"
-                                    >
-                                        {cleanChildren}
-                                    </motion.p>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    ul(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.ul
-                                        key={animate ? `ul-${elementId}-${type}` : `ul-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, x: -10 } : false}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={animate ? { opacity: 0, x: -10 } : undefined}
-                                        transition={animate ? { duration: 0.3, delay: 0.2 } : { duration: 0 }}
-                                        {...rest}
-                                        className="list-disc pl-6 mb-3"
-                                    >
-                                        {children}
-                                    </motion.ul>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    li(props) {
-                        const { children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...rest } = props;
-                        const shouldShow = shouldShowElement(children);
-                        const animate = shouldAnimate(children);
-                        const elementId = getStableElementId(children);
-                        const cleanChildren = stripTagsFromChildren(children);
-
-                        return (
-                            <AnimatePresence mode="wait">
-                                {shouldShow && (
-                                    <motion.li
-                                        key={animate ? `li-${elementId}-${type}` : `li-${elementId}-stable`}
-                                        initial={animate ? { opacity: 0, x: -5 } : false}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={animate ? { opacity: 0, x: -5 } : undefined}
-                                        transition={animate ? { duration: 0.2, delay: 0.1 } : { duration: 0 }}
-                                        {...rest}
-                                        className="leading-relaxed"
-                                    >
-                                        {cleanChildren}
-                                    </motion.li>
-                                )}
-                            </AnimatePresence>
-                        );
-                    },
-                    a(props) {
-                        const { ...rest } = props;
-                        return (
-                            <a
-                                {...rest}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary underline hover:text-primary-700 transition-colors"
+                    <div className="flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2 -mb-18 sticky top-28 z-10">
+                        {tabs.map((tab, index) => (
+                            <Button
+                                key={tab.id}
+                                onClick={() => handleTabClick(index)}
+                                size="icon"
+                                style={{ WebkitTapHighlightColor: "transparent" }}
+                                className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${activeTab === index ? "text-primary-700 duration-400" : ""
+                                    }`}
                             >
-                                {rest.children}
-                            </a>
-                        );
-                    },
-                    table(props) {
-                        const { ...rest } = props;
-                        return (
-                            <Table {...rest} className="border-none text-base">
-                                {props.children}
-                            </Table>
-                        );
-                    },
-                    thead() {
-                        return null;
-                    },
-                    tbody(props) {
-                        const { ...rest } = props;
-                        return <TableBody {...rest}>{props.children}</TableBody>;
-                    },
-                    tr(props) {
-                        const { ...rest } = props;
-                        return <TableRow {...rest} className="border-none hover:bg-transparent">{props.children}</TableRow>;
-                    },
-                    th(props) {
-                        const { ...rest } = props;
-                        return <TableHead {...rest} className="font-body-bold text-left border-none">{props.children}</TableHead>;
-                    },
-                    td(props) {
-                        const { ...rest } = props;
-                        return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-0 py-1">{props.children}</TableCell>;
-                    },
-                    hr() {
-                        return <Separator className='w-full my-4 bg-muted' />;
-                    },
-                }}
-            >
-                {cvContent}
-            </ReactMarkdown>
+                                {activeTab === index && (
+                                    <motion.span
+                                        layoutId="bubble"
+                                        className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
+                                        transition={{ type: "spring", bounce: 0.19, duration: 0.4 }}
+                                    />
+                                )}
+                                {tab.icon}
+                            </Button>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            <Card className="w-10/12 mt-28 px-4 py-10">
+                <CardContent>
+                    <div className="space-y-0">
+                        {parsedSections.map((section, index) => {
+                            if (section.type === 'persistent') {
+                                return (
+                                    <AnimatePresence key={`persistent-${index}`} mode="wait">
+                                        {section.shouldShow && (
+                                            <motion.div
+                                                variants={verticalVariants}
+                                                initial="initial"
+                                                animate="active"
+                                                exit="exit"
+                                                custom={verticalDirection}
+                                                transition={{ duration: 0.3, type: "spring", bounce: 0.1 }}
+                                            >
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{
+                                                        h1(props) {
+                                                            const { children, ...rest } = props;
+                                                            const cleanChildren = stripTagsFromChildren(children);
+                                                            return (
+                                                                <h1 {...rest} className="text-4xl font-heading mb-4 text-center">
+                                                                    {cleanChildren}
+                                                                </h1>
+                                                            );
+                                                        },
+                                                        h2(props) {
+                                                            const { children, ...rest } = props;
+                                                            const cleanChildren = stripTagsFromChildren(children);
+                                                            return (
+                                                                <h2 {...rest} className="text-2xl font-heading mt-6 mb-3 border-b border-foreground pb-2">
+                                                                    {cleanChildren}
+                                                                </h2>
+                                                            );
+                                                        },
+                                                        h3(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-4 mb-2">
+                                                                    {cleanChildren}
+                                                                </h3>
+                                                            );
+                                                        },
+                                                        h4(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-lg justify-between w-full mt-3">
+                                                                    {cleanChildren}
+                                                                </h4>
+                                                            );
+                                                        },
+                                                        h5(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h4 {...rest} className="flex [&>strong]:text-foreground justify-between w-full mb-1">
+                                                                    {cleanChildren}
+                                                                </h4>
+                                                            );
+                                                        },
+                                                        p(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <p {...rest} className="mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold leading-relaxed">
+                                                                    {cleanChildren}
+                                                                </p>
+                                                            );
+                                                        },
+                                                        ul(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <ul {...rest} className="list-disc pl-6 mb-3">
+                                                                    {children}
+                                                                </ul>
+                                                            );
+                                                        },
+                                                        li(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <li {...rest} className="leading-relaxed [&>strong]:text-primary [&>strong]:font-body-bold">
+                                                                    {cleanChildren}
+                                                                </li>
+                                                            );
+                                                        },
+                                                        a(props) {
+                                                            const { ...rest } = props;
+                                                            return (
+                                                                <a
+                                                                    {...rest}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="text-primary underline hover:text-primary-700 transition-colors"
+                                                                >
+                                                                    {rest.children}
+                                                                </a>
+                                                            );
+                                                        },
+                                                        table(props) {
+                                                            const { ...rest } = props;
+                                                            return (
+                                                                <Table {...rest} className="border-none text-base">
+                                                                    {props.children}
+                                                                </Table>
+                                                            );
+                                                        },
+                                                        thead() {
+                                                            return null;
+                                                        },
+                                                        tbody(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableBody {...rest}>{props.children}</TableBody>;
+                                                        },
+                                                        tr(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableRow {...rest} className="border-none hover:bg-transparent">{props.children}</TableRow>;
+                                                        },
+                                                        th(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableHead {...rest} className="font-body-bold text-left border-none">{props.children}</TableHead>;
+                                                        },
+                                                        td(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-0 py-1">{props.children}</TableCell>;
+                                                        },
+                                                        hr() {
+                                                            return <Separator className='w-full my-4 bg-muted' />;
+                                                        },
+                                                    }}
+                                                >
+                                                    {section.content}
+                                                </ReactMarkdown>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                );
+                            } else {
+                                return (
+                                    <AnimatePresence
+                                        key={`variable-${index}`}
+                                        custom={direction}
+                                        mode="wait"
+                                    >
+                                        {section.shouldShow && (
+                                            <motion.div
+                                                variants={horizontalVariants}
+                                                initial="initial"
+                                                animate="active"
+                                                exit="exit"
+                                                custom={direction}
+                                                transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
+                                            >
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{
+                                                        h2(props) {
+                                                            const { children, ...rest } = props;
+                                                            const cleanChildren = stripTagsFromChildren(children);
+                                                            return (
+                                                                <h2 {...rest} className="text-2xl font-heading mt-6 mb-3 border-b border-foreground pb-2">
+                                                                    {cleanChildren}
+                                                                </h2>
+                                                            );
+                                                        },
+                                                        h3(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-4 mb-2">
+                                                                    {cleanChildren}
+                                                                </h3>
+                                                            );
+                                                        },
+                                                        h4(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-lg justify-between w-full mt-3">
+                                                                    {cleanChildren}
+                                                                </h4>
+                                                            );
+                                                        },
+                                                        h5(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <h4 {...rest} className="flex [&>strong]:text-foreground justify-between w-full mb-1">
+                                                                    {cleanChildren}
+                                                                </h4>
+                                                            );
+                                                        },
+                                                        p(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <p {...rest} className="mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold leading-relaxed">
+                                                                    {cleanChildren}
+                                                                </p>
+                                                            );
+                                                        },
+                                                        ul(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <ul {...rest} className="list-disc pl-6 mb-3">
+                                                                    {children}
+                                                                </ul>
+                                                            );
+                                                        },
+                                                        li(props) {
+                                                            const { children, ...rest } = props;
+                                                            const shouldShow = shouldShowElement(children, currentType);
+                                                            const cleanChildren = stripTagsFromChildren(children);
+
+                                                            if (!shouldShow) return null;
+
+                                                            return (
+                                                                <li {...rest} className="leading-relaxed [&>strong]:text-primary [&>strong]:font-body-bold">
+                                                                    {cleanChildren}
+                                                                </li>
+                                                            );
+                                                        },
+                                                        a(props) {
+                                                            const { ...rest } = props;
+                                                            return (
+                                                                <a
+                                                                    {...rest}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="text-primary underline hover:text-primary-700 transition-colors"
+                                                                >
+                                                                    {rest.children}
+                                                                </a>
+                                                            );
+                                                        },
+                                                        table(props) {
+                                                            const { ...rest } = props;
+                                                            return (
+                                                                <Table {...rest} className="border-none text-base">
+                                                                    {props.children}
+                                                                </Table>
+                                                            );
+                                                        },
+                                                        thead() {
+                                                            return null;
+                                                        },
+                                                        tbody(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableBody {...rest}>{props.children}</TableBody>;
+                                                        },
+                                                        tr(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableRow {...rest} className="border-none hover:bg-transparent">{props.children}</TableRow>;
+                                                        },
+                                                        th(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableHead {...rest} className="font-body-bold text-left border-none">{props.children}</TableHead>;
+                                                        },
+                                                        td(props) {
+                                                            const { ...rest } = props;
+                                                            return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-0 py-1">{props.children}</TableCell>;
+                                                        },
+                                                        hr() {
+                                                            return <Separator className='w-full my-4 bg-muted' />;
+                                                        },
+                                                    }}
+                                                >
+                                                    {section.content}
+                                                </ReactMarkdown>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                );
+                            }
+                        })}
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 };
