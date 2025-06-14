@@ -41,17 +41,6 @@ const CV: React.FC<CVProps> = ({
     autoPlay = false,
     pauseOnInteract = true
 }) => {
-    const [activeTab, setActiveTab] = useState(() => {
-        const tabs = [
-            { id: "software", label: "a software developer", icon: <IconCode className='size-6' stroke={1.5} /> },
-            { id: "cybersecurity", label: "a cybersecurity analyst", icon: <IconCloudLock className='size-6' stroke={1.5} /> },
-            { id: "design", label: "a graphic designer", icon: <IconPalette className='size-6' stroke={1.5} /> },
-            { id: "humanitarian", label: "a humanitarian volunteer", icon: <IconHeartHandshake className='size-6' stroke={1.5} /> },
-            { id: "tutor", label: "an academic tutor", icon: <IconSchool className='size-6' stroke={1.5} /> },
-            { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> }
-        ];
-        return tabs.findIndex(tab => tab.id === type);
-    });
 
     const [isPaused, setIsPaused] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -61,13 +50,17 @@ const CV: React.FC<CVProps> = ({
     const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
 
     const tabs = [
+        { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> },
         { id: "software", label: "a software developer", icon: <IconCode className='size-6' stroke={1.5} /> },
         { id: "cybersecurity", label: "a cybersecurity analyst", icon: <IconCloudLock className='size-6' stroke={1.5} /> },
         { id: "design", label: "a graphic designer", icon: <IconPalette className='size-6' stroke={1.5} /> },
         { id: "humanitarian", label: "a humanitarian volunteer", icon: <IconHeartHandshake className='size-6' stroke={1.5} /> },
-        { id: "tutor", label: "an academic tutor", icon: <IconSchool className='size-6' stroke={1.5} /> },
-        { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> }
+        { id: "tutor", label: "an academic tutor", icon: <IconSchool className='size-6' stroke={1.5} /> }
     ];
+
+    const [activeTab, setActiveTab] = useState(() => {
+        return tabs.findIndex(tab => tab.id === type);
+    });
 
     const currentType = tabs[activeTab]?.id || "full";
     const currentLabel = tabs[activeTab]?.label || "";
@@ -153,13 +146,12 @@ const CV: React.FC<CVProps> = ({
             }
         }
     };
-
     useEffect(() => {
         if (!autoPlay || isAnimating || isPaused || !showTabs) return;
 
         const interval = setInterval(() => {
-            const nextTab = (activeTab + 1) % tabs.length;
-            const newDirection = nextTab > activeTab ? 1 : -1;
+            const nextTab = activeTab === 0 ? tabs.length - 1 : activeTab - 1;
+            const newDirection = nextTab < activeTab ? -1 : 1;
             setDirection(newDirection);
             setActiveTab(nextTab);
         }, 3000);
@@ -199,9 +191,9 @@ const CV: React.FC<CVProps> = ({
             filter: "blur(0px)",
             transition: {
                 height: { duration: 0.2, ease: "easeOut" },
-                x: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1 },
-                opacity: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1 },
-                filter: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1 },
+                x: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
+                opacity: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
+                filter: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
             }
         },
         exit: (direction: number) => ({
@@ -210,9 +202,9 @@ const CV: React.FC<CVProps> = ({
             opacity: 0,
             filter: "blur(4px)",
             transition: {
-                x: { duration: 0.4, type: "spring", bounce: 0.2 },
-                opacity: { duration: 0.4, type: "spring", bounce: 0.2 },
-                filter: { duration: 0.4, type: "spring", bounce: 0.2 },
+                x: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
+                opacity: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
+                filter: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
                 height: { duration: 0.2, ease: "easeIn", delay: 0.3 },
             }
         }),
@@ -230,8 +222,8 @@ const CV: React.FC<CVProps> = ({
             opacity: 1,
             transition: {
                 height: { duration: 0.15, ease: "easeOut" },
-                y: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05 },
-                opacity: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05 },
+                y: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05, ease: "easeOut" },
+                opacity: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05, ease: "easeOut" },
             }
         },
         exit: (direction: number) => ({
@@ -239,8 +231,8 @@ const CV: React.FC<CVProps> = ({
             y: -50 * direction,
             opacity: 0,
             transition: {
-                y: { duration: 0.3, type: "spring", bounce: 0.1 },
-                opacity: { duration: 0.3, type: "spring", bounce: 0.1 },
+                y: { duration: 0.3, type: "spring", bounce: 0.1, ease: "easeIn" },
+                opacity: { duration: 0.3, type: "spring", bounce: 0.1, ease: "easeIn" },
                 height: { duration: 0.15, ease: "easeIn", delay: 0.25 },
             }
         }),
@@ -268,7 +260,7 @@ const CV: React.FC<CVProps> = ({
         <div ref={containerRef} className={`w-full flex flex-col ${showTabs ? 'items-center' : ''} ${className}`}>
             {showTabs && (
                 <>
-                    <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
+                    <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2, ease: "easeInOut" }}>
                         <motion.div
                             className="relative h-min w-full mb-8"
                             initial={false}
@@ -311,7 +303,7 @@ const CV: React.FC<CVProps> = ({
                                     <motion.span
                                         layoutId="bubble"
                                         className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
-                                        transition={{ type: "spring", bounce: 0.19, duration: 0.4 }}
+                                        transition={{ type: "spring", bounce: 0.19, duration: 0.4, ease: "easeInOut" }}
                                     />
                                 )}
                                 {tab.icon}
