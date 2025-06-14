@@ -72,7 +72,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Organizational Experience [full | humanitarian | design | cybersecurity]
 
-#### **Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | humanitarian]
+#### **Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design | humanitarian]
 ##### **Deputy Coordinator of Socio-Politics** June 2025 - Current [full | humanitarian]
 
 ##### **External Deputy of Social Service Department** Apr 2024 - Dec 2024 [full | humanitarian]
