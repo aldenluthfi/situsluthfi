@@ -188,8 +188,6 @@ const Home: React.FC = () => {
                 </p>
                 <CV showTabs autoPlay className='pb-24'/>
             </div>
-
-            <div className='h-[200vh]'></div>
         </div>
     );
 };

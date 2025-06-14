@@ -6,7 +6,6 @@ import useMeasure from "react-use-measure";
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 import remarkGfm from 'remark-gfm';
 import {
@@ -271,7 +270,7 @@ const CV: React.FC<CVProps> = ({
                 <>
                     <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
                         <motion.div
-                            className="relative h-min text-nowrap w-full mb-8"
+                            className="relative h-min w-full mb-8"
                             initial={false}
                         >
                             <div className="p-1" ref={ref}>
@@ -322,8 +321,7 @@ const CV: React.FC<CVProps> = ({
                 </>
             )}
 
-            <Card className="w-10/12 mt-28 px-4 py-10">
-                <ScrollArea showScrollbar={false} className="h-[90vh]">
+            <Card className="w-10/12 mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10 h-[90vh] overflow-scroll">
                     <CardContent>
                         <div className="space-y-0">
                             {parsedSections.map((section, index) => {
@@ -339,7 +337,6 @@ const CV: React.FC<CVProps> = ({
                                                     custom={verticalDirection}
                                                     className="overflow-hidden"
                                                 >
-
                                                     <ReactMarkdown
                                                         remarkPlugins={[remarkGfm]}
                                                         components={{
@@ -347,7 +344,7 @@ const CV: React.FC<CVProps> = ({
                                                                 const { children, ...rest } = props;
                                                                 const cleanChildren = stripTagsFromChildren(children);
                                                                 return (
-                                                                    <h1 {...rest} className="text-4xl font-heading mb-4 text-center">
+                                                                    <h1 {...rest} className="text-2xl tablet:text-3xl desktop:text-4xl font-heading mb-3 tablet:mb-4 text-center">
                                                                         {cleanChildren}
                                                                     </h1>
                                                                 );
@@ -356,7 +353,7 @@ const CV: React.FC<CVProps> = ({
                                                                 const { children, ...rest } = props;
                                                                 const cleanChildren = stripTagsFromChildren(children);
                                                                 return (
-                                                                    <h2 {...rest} className="text-2xl font-heading mt-6 mb-3 border-b border-foreground pb-2">
+                                                                    <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-4 tablet:mt-6 mb-2 tablet:mb-3 border-b border-foreground pb-1 tablet:pb-2">
                                                                         {cleanChildren}
                                                                     </h2>
                                                                 );
@@ -369,7 +366,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-4 mb-2">
+                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-3 tablet:mt-4 mb-1 tablet:mb-2 text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </h3>
                                                                 );
@@ -382,7 +379,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-lg justify-between w-full mt-3">
+                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-sm [&>strong]:tablet:text-base [&>strong]:desktop:text-lg flex-col tablet:flex-row tablet:justify-between w-full mt-2 tablet:mt-3 text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </h4>
                                                                 );
@@ -395,7 +392,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground justify-between w-full mb-1">
+                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground flex-col tablet:flex-row tablet:justify-between w-full mb-1 text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </h4>
                                                                 );
@@ -408,7 +405,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <p {...rest} className="mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold leading-relaxed">
+                                                                    <p {...rest} className="mb-2 tablet:mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </p>
                                                                 );
@@ -420,7 +417,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <ul {...rest} className="list-disc pl-6 mb-3">
+                                                                    <ul {...rest} className="list-disc pl-4 tablet:pl-6 mb-2 tablet:mb-3 text-sm tablet:text-base desktop:text-lg">
                                                                         {children}
                                                                     </ul>
                                                                 );
@@ -433,7 +430,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <li {...rest} className="leading-relaxed [&>strong]:text-primary [&>strong]:font-body-bold">
+                                                                    <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </li>
                                                                 );
@@ -445,7 +442,7 @@ const CV: React.FC<CVProps> = ({
                                                                         {...rest}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className="text-primary underline hover:text-primary-700 transition-colors"
+                                                                        className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
                                                                     >
                                                                         {rest.children}
                                                                     </a>
@@ -454,7 +451,7 @@ const CV: React.FC<CVProps> = ({
                                                             table(props) {
                                                                 const { ...rest } = props;
                                                                 return (
-                                                                    <Table {...rest} className="border-none text-base">
+                                                                    <Table {...rest} className="-ml-2 border-none text-sm tablet:text-base desktop:text-lg">
                                                                         {props.children}
                                                                     </Table>
                                                                 );
@@ -468,15 +465,15 @@ const CV: React.FC<CVProps> = ({
                                                             },
                                                             tr(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableRow {...rest} className="border-none hover:bg-transparent">{props.children}</TableRow>;
+                                                                return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
                                                             },
                                                             th(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableHead {...rest} className="font-body-bold text-left border-none">{props.children}</TableHead>;
+                                                                return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
                                                             },
                                                             td(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-0 py-1">{props.children}</TableCell>;
+                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
                                                             },
                                                             hr() {
                                                                 return <Separator className='w-full my-4 bg-muted' />;
@@ -513,7 +510,7 @@ const CV: React.FC<CVProps> = ({
                                                                 const { children, ...rest } = props;
                                                                 const cleanChildren = stripTagsFromChildren(children);
                                                                 return (
-                                                                    <h2 {...rest} className="text-2xl font-heading mt-6 mb-3 border-b border-foreground pb-2">
+                                                                    <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-4 tablet:mt-6 mb-2 tablet:mb-3 border-b border-foreground pb-1 tablet:pb-2">
                                                                         {cleanChildren}
                                                                     </h2>
                                                                 );
@@ -526,7 +523,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-4 mb-2">
+                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-3 tablet:mt-4 mb-1 tablet:mb-2 text-base tablet:text-lg desktop:text-xl">
                                                                         {cleanChildren}
                                                                     </h3>
                                                                 );
@@ -539,7 +536,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-lg justify-between w-full mt-3">
+                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-sm [&>strong]:tablet:text-base [&>strong]:desktop:text-lg flex-col tablet:flex-row tablet:justify-between w-full mt-2 tablet:mt-3 text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </h4>
                                                                 );
@@ -552,7 +549,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground justify-between w-full mb-1">
+                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground flex-col tablet:flex-row tablet:justify-between w-full mb-1 text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </h4>
                                                                 );
@@ -565,7 +562,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <p {...rest} className="mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold leading-relaxed">
+                                                                    <p {...rest} className="mb-2 tablet:mb-3 text-justify [&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </p>
                                                                 );
@@ -577,7 +574,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <ul {...rest} className="list-disc pl-6 mb-3">
+                                                                    <ul {...rest} className="list-disc pl-4 tablet:pl-6 mb-2 tablet:mb-3 text-sm tablet:text-base desktop:text-lg">
                                                                         {children}
                                                                     </ul>
                                                                 );
@@ -590,7 +587,7 @@ const CV: React.FC<CVProps> = ({
                                                                 if (!shouldShow) return null;
 
                                                                 return (
-                                                                    <li {...rest} className="leading-relaxed [&>strong]:text-primary [&>strong]:font-body-bold">
+                                                                    <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
                                                                         {cleanChildren}
                                                                     </li>
                                                                 );
@@ -602,7 +599,7 @@ const CV: React.FC<CVProps> = ({
                                                                         {...rest}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className="text-primary underline hover:text-primary-700 transition-colors"
+                                                                        className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
                                                                     >
                                                                         {rest.children}
                                                                     </a>
@@ -611,7 +608,7 @@ const CV: React.FC<CVProps> = ({
                                                             table(props) {
                                                                 const { ...rest } = props;
                                                                 return (
-                                                                    <Table {...rest} className="border-none text-base">
+                                                                    <Table {...rest} className="-ml-2 border-none text-sm tablet:text-base desktop:text-lg">
                                                                         {props.children}
                                                                     </Table>
                                                                 );
@@ -625,15 +622,15 @@ const CV: React.FC<CVProps> = ({
                                                             },
                                                             tr(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableRow {...rest} className="border-none hover:bg-transparent">{props.children}</TableRow>;
+                                                                return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
                                                             },
                                                             th(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableHead {...rest} className="font-body-bold text-left border-none">{props.children}</TableHead>;
+                                                                return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
                                                             },
                                                             td(props) {
                                                                 const { ...rest } = props;
-                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-0 py-1">{props.children}</TableCell>;
+                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
                                                             },
                                                             hr() {
                                                                 return <Separator className='w-full my-4 bg-muted' />;
@@ -650,7 +647,6 @@ const CV: React.FC<CVProps> = ({
                             })}
                         </div>
                     </CardContent>
-                </ScrollArea>
             </Card>
         </div>
     );
