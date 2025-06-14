@@ -12,82 +12,80 @@ const Gallery: React.FC = () => {
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
                 <p className="font-body text-lg tablet:text-2xl text-center mb-6">
                     This is my silly excuse of a <span className="text-primary font-body-bold">gallery</span>, <span />
-                    <br/>
+                    <br />
                     here you will find
                 </p>
                 <SlidingTitle text="People · Panoramas · Cultures · Oddities" />
                 <p className="font-body text-lg tablet:text-2xl text-center mt-6">
                     I have <span className="text-primary font-body-bold">seen</span> in all
-                    <br/>
+                    <br />
                     of my travels around this <span className="text-primary font-body-bold">blob of dust</span>
                 </p>
             </div>
             <div className='flex flex-col -space-y-1 justify-center items-center w-full'>
                 <Squiggle className="w-full fill-primary-100" />
-                <div className='bg-primary-100 w-screen desktop:py-10 flex justify-center items-center z-10'>
-                    <div className='p-10 desktop:p-0'>
-                        <WorldMap
-                            components={
-                                {
-                                    'World': Continents,
-                                    'Asia': Asia,
-                                    'Europe': Europe,
-                                    'Indonesia': Indonesia,
-                                    'Malaysia': Malaysia,
-                                    'Singapore': Singapore,
-                                    'South Korea': SouthKorea,
-                                    'Thailand': Thailand,
-                                    'Saudi Arabia': SaudiArabia,
-                                    'United Arab Emirates': UAE,
-                                    'Belgium': Belgium,
-                                    'France': France,
-                                    'Germany': Germany,
-                                    'Italy': Italy,
-                                    'Netherlands': Netherlands,
-                                    'Spain': Spain,
-                                    'Switzerland': Switzerland
-                                }
+                <div className='bg-primary-100 w-screen py-[3.6666%] desktop:py-[2vh] flex justify-center items-center z-10'>
+                    <WorldMap
+                        components={
+                            {
+                                'World': Continents,
+                                'Asia': Asia,
+                                'Europe': Europe,
+                                'Indonesia': Indonesia,
+                                'Malaysia': Malaysia,
+                                'Singapore': Singapore,
+                                'South Korea': SouthKorea,
+                                'Thailand': Thailand,
+                                'Saudi Arabia': SaudiArabia,
+                                'United Arab Emirates': UAE,
+                                'Belgium': Belgium,
+                                'France': France,
+                                'Germany': Germany,
+                                'Italy': Italy,
+                                'Netherlands': Netherlands,
+                                'Spain': Spain,
+                                'Switzerland': Switzerland
                             }
-                            selectables={{
-                                    'World': ['Asia', 'Europe'],
-                                    'Asia': ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
-                                    'Europe': ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
-                                    'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung', 'Yogyakarta'],
-                                    'Malaysia': ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
-                                    'Singapore': ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
-                                    'South Korea': ['Seoul', 'Incheon', 'Jeju'],
-                                    'Thailand': ['Bangkok', 'Chon Buri'],
-                                    'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
-                                    'United Arab Emirates': ['Dubayy'],
-                                    'Belgium': ['Brussels Capital Region'],
-                                    'France': ['Île-de-France', 'Alsace'],
-                                    'Germany': ['Hesse'],
-                                    'Italy': ['Toscana', 'Veneto', 'Lazio', 'Vatican City Italy'],
-                                    'Netherlands': ['Noord-Holland'],
-                                    'Spain': ['Catalonia', 'Andalusia'],
-                                    'Switzerland': ['Obwalden', 'Bern', 'Genève']
-                                }
+                        }
+                        selectables={{
+                            'World': ['Asia', 'Europe'],
+                            'Asia': ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
+                            'Europe': ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
+                            'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung', 'Yogyakarta'],
+                            'Malaysia': ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
+                            'Singapore': ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
+                            'South Korea': ['Seoul', 'Incheon', 'Jeju'],
+                            'Thailand': ['Bangkok', 'Chon Buri'],
+                            'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
+                            'United Arab Emirates': ['Dubayy'],
+                            'Belgium': ['Brussels Capital Region'],
+                            'France': ['Île-de-France', 'Alsace'],
+                            'Germany': ['Hesse'],
+                            'Italy': ['Toscana', 'Veneto', 'Lazio', 'Vatican City Italy'],
+                            'Netherlands': ['Noord-Holland'],
+                            'Spain': ['Catalonia', 'Andalusia'],
+                            'Switzerland': ['Obwalden', 'Bern', 'Genève']
+                        }
+                        }
+                        pathStyles={mode === 'dark' ? {
+                            base: "stroke-muted",
+                            hover: "fill-primary",
+                            selected: "fill-primary",
+                            selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
+                            nonSelectable: "fill-card"
+                        } :
+                            {
+                                base: "stroke-muted-foreground/50",
+                                hover: "fill-primary",
+                                selected: "fill-primary",
+                                selectable: "fill-primary-400 stroke-primary-600 pointer-events-auto",
+                                nonSelectable: "fill-muted"
                             }
-                            pathStyles={ mode === 'dark' ? {
-                                    base: "stroke-muted",
-                                    hover: "fill-primary",
-                                    selected: "fill-primary",
-                                    selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
-                                    nonSelectable: "fill-card"
-                                } :
-                                {
-                                    base: "stroke-muted-foreground/50",
-                                    hover: "fill-primary",
-                                    selected: "fill-primary",
-                                    selectable: "fill-primary-400 stroke-primary-600 pointer-events-auto",
-                                    nonSelectable: "fill-muted"
-                                }
-                            }
-                            strokeWidth={1}
-                            maxHeight='80vh'
-                            maxWidth='90vw'
-                        />
-                    </div>
+                        }
+                        strokeWidth={1}
+                        maxHeight='83.3333vh'
+                        maxWidth={window.innerWidth < 1024 ? '83.3333vw' : '90vw'}
+                    />
                 </div>
                 <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>

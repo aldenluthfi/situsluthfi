@@ -42,7 +42,7 @@ function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: strin
     if (!hasImage) return null;
 
     return (
-        <div className="relative w-full aspect-[2/1] mb-4">
+        <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4">
             {!loaded && !imageError && (
                 <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
             )}
@@ -122,6 +122,7 @@ const Projects: React.FC = () => {
                     opts={{
                         align: "start",
                         loop: true,
+                        direction: "rtl",
                     }}
                     plugins={[
                         autoplay(
@@ -133,9 +134,10 @@ const Projects: React.FC = () => {
                             }
                         )
                     ]}
+                    dir="rtl"
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
-                        <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333%] h-full items-end desktop:hidden">
+                        <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333% + 1rem] h-full items-end desktop:hidden" dir='ltr'>
                             <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0" />
                             <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0" />
                         </div>
@@ -148,21 +150,21 @@ const Projects: React.FC = () => {
                                         <div className='h-full w-full p-[8.3333%]'>
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
-                                                    <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" />
+                                                    <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" dir='ltr' />
                                                     <CardDescription>
-                                                        <Skeleton className="h-4 w-full mb-1" />
-                                                        <Skeleton className="h-4 w-4/5 mb-1" />
-                                                        <Skeleton className="h-4 w-3/5 mb-3" />
-                                                        <div className="flex flex-wrap gap-2">
-                                                            <Skeleton className="h-7 w-16 rounded-full" />
-                                                            <Skeleton className="h-7 w-20 rounded-full" />
-                                                            <Skeleton className="h-7 w-14 rounded-full" />
-                                                            <Skeleton className="h-7 w-18 rounded-full" />
+                                                        <Skeleton className="h-4 w-full mb-1" dir='ltr'/>
+                                                        <Skeleton className="h-4 w-4/5 mb-1" dir='ltr' />
+                                                        <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
+                                                        <div className="flex flex-wrap gap-2" dir='ltr'>
+                                                            <Skeleton className="h-8 w-8 tablet:w-16 rounded-full" />
+                                                            <Skeleton className="h-8 w-8 tablet:w-20 rounded-full" />
+                                                            <Skeleton className="h-8 w-8 tablet:w-14 rounded-full" />
+                                                            <Skeleton className="h-8 w-8 tablet:w-18 rounded-full" />
                                                         </div>
                                                     </CardDescription>
                                                 </CardHeader>
                                                 <CardFooter className="mt-auto">
-                                                    <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end w-full gap-1">
+                                                    <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end w-full gap-1" dir='ltr'>
                                                         <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                             <div className="flex gap-4">
                                                                 <Skeleton className="h-4 w-8" />
@@ -191,10 +193,10 @@ const Projects: React.FC = () => {
                                                         <ImageWithSkeleton repo={repo} mode={mode} />
                                                         <CardDescription>
                                                             {repo.description && (
-                                                                <p className="text-base mb-3">{repo.description}</p>
+                                                                <p className="text-base mb-3" dir='ltr'>{repo.description}</p>
                                                             )}
                                                             {repo.topics && repo.topics.length > 0 && (
-                                                                <div className="flex flex-wrap gap-2">
+                                                                <div className="flex flex-wrap gap-2" dir='ltr'>
                                                                     {repo.topics.map((topic) => {
                                                                         const iconName = repo.icon_map?.[topic];
                                                                         return (
@@ -222,7 +224,7 @@ const Projects: React.FC = () => {
                                                         </CardDescription>
                                                     </CardHeader>
                                                     <CardFooter className='mt-auto'>
-                                                        <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1">
+                                                        <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1" dir='ltr'>
                                                             <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
                                                                 {repo.stargazers_count > 0 && (
                                                                     <div className="flex items-center gap-1">

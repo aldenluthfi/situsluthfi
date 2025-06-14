@@ -164,8 +164,9 @@ const Writings: React.FC = () => {
                             key={i + 1}
                         >
                             <CardHeader>
-                                <CardTitle>
-                                    <Skeleton className="h-10 w-full tablet:w-3/4" />
+                                <CardTitle className="flex flex-col gap-2">
+                                    <Skeleton className="h-6 desktop:h-10 w-full" />
+                                    <Skeleton className="h-6 desktop:hidden w-1/2" />
                                 </CardTitle>
                                 <CardDescription className="mt-2">
                                     <div className="flex flex-wrap gap-2">
@@ -188,7 +189,7 @@ const Writings: React.FC = () => {
                         >
                             <Card key={item.id}>
                                 <CardHeader>
-                                    <CardTitle className="font-heading text-4xl">
+                                    <CardTitle className="font-heading text-2xl desktop:text-4xl">
                                         {item.title}
                                     </CardTitle>
                                     <CardDescription className="mt-2">
@@ -198,7 +199,7 @@ const Writings: React.FC = () => {
                                                     {item.tags.map((tag: string) => {
                                                         const Icon = tagIconMap[tag] || IconDots;
                                                         return (
-                                                            <Pill key={tag} className="text-sm tablet:text-base teblet:px-3 tablet:py-1.5">
+                                                            <Pill key={tag} className="text-sm tablet:text-base tablet:px-3 tablet:py-1.5">
                                                                 <PillIcon icon={Icon} className="size-3 tablet:size-4"/>
                                                                 {tag}
                                                             </Pill>
@@ -210,7 +211,7 @@ const Writings: React.FC = () => {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <span className="text-muted-foreground text-base">
+                                    <span className="text-muted-foreground text-sm tablet:text-base">
                                         {(new Date(item.createdAt).toLocaleDateString(
                                             "en-GB",
                                             {

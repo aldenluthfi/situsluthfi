@@ -15,10 +15,15 @@ import {
 
 import { DirectionAwareTabs } from "@/components/ui/direction-aware-tabs"
 
+import {
+    Card,
+    CardContent,
+} from "@/components/ui/card"
+
 import { useState, useEffect } from 'react';
 import { cn, isMobile } from "@/lib/utils";
 
-import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconDeviceGamepad2, IconPalette } from '@tabler/icons-react';
+import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette } from '@tabler/icons-react';
 
 import soloImg from "@/assets/images/solo.webp";
 import holeboysImg from "@/assets/images/holeboys.webp";
@@ -27,6 +32,8 @@ import weirdosImg from "@/assets/images/weirdos.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import Autoplay from 'embla-carousel-autoplay';
+
+import CV from "@/components/custom/cv";
 
 const ResponsiveTooltip = ({
     children,
@@ -121,52 +128,68 @@ const Home: React.FC = () => {
             label: "a software developer",
             icon: <IconCode className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="software" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         },
         {
             id: 1,
-            label: "a game developer",
-            icon: <IconDeviceGamepad2 className='size-6' stroke={1.5} />,
+            label: "a cybersecurity analyst",
+            icon: <IconCloudLock className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="cybersecurity" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         },
         {
             id: 2,
-            label: "a cybersecurity analyst",
-            icon: <IconCloudLock className='size-6' stroke={1.5} />,
+            label: "a graphic designer",
+            icon: <IconPalette className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="design" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         },
         {
             id: 3,
-            label: "a graphic designer",
-            icon: <IconPalette className='size-6' stroke={1.5} />,
+            label: "a humanitarian volunteer",
+            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="humanitarian" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         },
         {
             id: 4,
-            label: "a humanitarian volunteer",
-            icon: <IconHeartHandshake className='size-6' stroke={1.5} />,
-            content: (
-                <div className='p-8'>
-                </div>
-            )
-        },
-        {
-            id: 5,
             label: "an academic tutor",
             icon: <IconSchool className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="tutor" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         },
@@ -176,7 +199,12 @@ const Home: React.FC = () => {
             label: "honestly, anything!",
             icon: <IconSparkles className='size-6' stroke={1.5} />,
             content: (
-                <div className='p-8'>
+                <div className='my-8 flex justify-center'>
+                    <Card className="w-10/12 max-w-desktop">
+                        <CardContent>
+                            <CV type="full" />
+                        </CardContent>
+                    </Card>
                 </div>
             )
         }
@@ -227,9 +255,9 @@ const Home: React.FC = () => {
                         {
                             Array(2).fill(0).flatMap(() => ([
                                 { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
-                                { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
-                                { src: weirdosImg, alt: "Just Weirdos", tooltip: "Weirdos being weirdos" },
                                 { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
+                                { src: weirdosImg, alt: "Just Weirdos", tooltip: "Weirdos being weirdos" },
+                                { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
                             ])).map((image, index) => (
                                 <CarouselItem key={index + 1} className="ml-8 mr-4 max-w-10/12 tablet:basis-1/2 desktop:basis-5/12">
                                     <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
