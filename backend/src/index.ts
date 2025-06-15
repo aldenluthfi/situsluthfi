@@ -13,6 +13,7 @@ app.use(cors());
 app.use(compression({
     level: 9,
 }));
+app.use(express.json({ limit: "10mb" }));
 
 app.use("/api", router);
 

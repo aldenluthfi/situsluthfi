@@ -48,5 +48,8 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "gitignore": [
+    "temp"
+  ]
 }

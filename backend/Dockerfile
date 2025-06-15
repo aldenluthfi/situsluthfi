@@ -2,12 +2,21 @@ FROM node:slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y default-mysql-client && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    default-mysql-client \
+    texlive-xetex \
+    texlive-latex-extra \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
+
+RUN mkdir -p /app/assets/fonts /app/assets/images
+
+COPY assets/fonts/ /app/assets/fonts/
+COPY assets/images/ /app/assets/images/
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY init-db.sh /init-db.sh
