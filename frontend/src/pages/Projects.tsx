@@ -100,7 +100,7 @@ const Projects: React.FC = () => {
         setLoading(true);
         fetchRepositories();
         handleSync();
-    }, [data]);
+    }, []);
 
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
@@ -151,7 +151,7 @@ const Projects: React.FC = () => {
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
                                                     <div dir='ltr'>
-                                                        <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" dir='ltr' />
+                                                        <Skeleton className="w-full aspect-[2/1] rounded-md mb-4 tablet:mb-6" dir='ltr' />
                                                         <CardDescription>
                                                             <Skeleton className="h-4 w-full mb-2" dir='ltr' />
                                                             <Skeleton className="h-4 w-4/5 mb-2" dir='ltr' />
