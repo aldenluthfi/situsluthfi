@@ -169,7 +169,7 @@ const CV: React.FC<CVProps> = ({
             const rect = containerRef.current.getBoundingClientRect();
             const notVisible = rect.top > window.innerHeight || rect.bottom < 0;
 
-            if (notVisible && isPaused) {
+            if (notVisible && isPaused && !isExpanded) {
                 setIsPaused(false);
             }
         };
