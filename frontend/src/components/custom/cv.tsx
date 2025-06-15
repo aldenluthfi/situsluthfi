@@ -6,6 +6,7 @@ import useMeasure from "react-use-measure";
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { useTheme } from '@/components/custom/theme-provider';
 
 import remarkGfm from 'remark-gfm';
 import {
@@ -16,9 +17,10 @@ import {
     TableCell,
 } from "@/components/ui/table";
 
-import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette } from '@tabler/icons-react';
+import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette, IconDownload } from '@tabler/icons-react';
 
 import cvContent from '@/assets/other/cv.md?raw';
+import cvLatexContent from '@/assets/other/cv.texraw?raw';
 
 interface CVProps {
     type?: "full" | "software" | "cybersecurity" | "design" | "humanitarian" | "tutor";
@@ -49,6 +51,7 @@ const CV: React.FC<CVProps> = ({
     const [ref] = useMeasure();
     const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
     const [isExpanded, setIsExpanded] = useState(false);
+    const { mode, theme } = useTheme();
 
     const tabs = [
         { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> },
@@ -147,10 +150,246 @@ const CV: React.FC<CVProps> = ({
             }
         }
     };
+
+    const processLatexContent = useMemo(() => {
+        const lines = cvLatexContent.split('\n');
+        const documentStartIndex = lines.findIndex(line => line.includes('\\begin{document}'));
+
+        const preambleLines = lines.slice(0, documentStartIndex);
+        const documentLines = lines.slice(documentStartIndex);
+
+        const filteredPreamble = preambleLines;
+        const filteredDocumentLines: string[] = [];
+        let skipBlock = false;
+        let skipDaftar = false;
+        let braceDepth = 0;
+        let daftarBraceDepth = 0;
+        let skipEntryBlock = false;
+        let entryBlockDepth = 0;
+
+        for (let i = 0; i < documentLines.length; i++) {
+            const line = documentLines[i];
+            const tagMatch = line.match(/\[([^\]]+)\]/);
+
+            if (line.includes('\\includegraphics')) {
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]$/g, ''));
+                continue;
+            }
+
+            if (line.includes('\\daftar{')) {
+                if (tagMatch && currentType !== "full") {
+                    const tags = tagMatch[1].split('|').map(tag => tag.trim());
+                    const shouldInclude = tags.includes(currentType);
+
+                    if (!shouldInclude) {
+                        skipDaftar = true;
+                        daftarBraceDepth = 0;
+                        for (const char of line) {
+                            if (char === '{') daftarBraceDepth++;
+                            if (char === '}') daftarBraceDepth--;
+                        }
+                        if (daftarBraceDepth <= 0) skipDaftar = false;
+                        continue;
+                    }
+                }
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                continue;
+            }
+
+            if (skipDaftar && line.includes('\\butir{')) {
+                for (const char of line) {
+                    if (char === '{') daftarBraceDepth++;
+                    if (char === '}') daftarBraceDepth--;
+                }
+                if (daftarBraceDepth <= 0) skipDaftar = false;
+                continue;
+            }
+
+            if (line.includes('\\entri') || line.includes('\\entriTanpaJudul')) {
+                if (tagMatch && currentType !== "full") {
+                    const tags = tagMatch[1].split('|').map(tag => tag.trim());
+                    const shouldInclude = tags.includes(currentType);
+
+                    if (!shouldInclude) {
+                        skipEntryBlock = true;
+                        entryBlockDepth = 0;
+                        for (const char of line) {
+                            if (char === '{') entryBlockDepth++;
+                            if (char === '}') entryBlockDepth--;
+                        }
+                        if (entryBlockDepth > 0) {
+                            continue;
+                        } else {
+                            skipEntryBlock = false;
+                            continue;
+                        }
+                    }
+                }
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                continue;
+            }
+
+            if (skipEntryBlock) {
+                for (const char of line) {
+                    if (char === '{') entryBlockDepth++;
+                    if (char === '}') entryBlockDepth--;
+                }
+
+                if (line.includes('\\daftar{') || line.includes('\\butir{') || entryBlockDepth > 0) {
+                    continue;
+                } else {
+                    skipEntryBlock = false;
+                }
+            }
+
+            if (line.includes('\\bagian{')) {
+                if (tagMatch && currentType !== "full") {
+                    const tags = tagMatch[1].split('|').map(tag => tag.trim());
+                    const shouldInclude = tags.includes(currentType);
+
+                    if (!shouldInclude) {
+                        skipBlock = true;
+                        braceDepth = 0;
+                        for (const char of line) {
+                            if (char === '{') braceDepth++;
+                            if (char === '}') braceDepth--;
+                        }
+                        if (braceDepth <= 0) skipBlock = false;
+                        continue;
+                    }
+                }
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                continue;
+            }
+
+            if (tagMatch && !skipBlock && !skipDaftar && !skipEntryBlock) {
+                if (currentType !== "full") {
+                    const tags = tagMatch[1].split('|').map(tag => tag.trim());
+                    const shouldInclude = tags.includes(currentType);
+
+                    if (!shouldInclude) {
+                        continue;
+                    }
+                }
+
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+            } else if (skipBlock) {
+                for (const char of line) {
+                    if (char === '{') braceDepth++;
+                    if (char === '}') braceDepth--;
+                }
+                if (braceDepth <= 0) skipBlock = false;
+                continue;
+            } else if (skipDaftar) {
+                for (const char of line) {
+                    if (char === '{') daftarBraceDepth++;
+                    if (char === '}') daftarBraceDepth--;
+                }
+                if (daftarBraceDepth <= 0) skipDaftar = false;
+                continue;
+            } else if (!skipBlock && !skipDaftar && !skipEntryBlock) {
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+            }
+        }
+
+        return [...filteredPreamble, ...filteredDocumentLines].join('\n');
+    }, [currentType, cvLatexContent]);
+
+    const getThemeColors = useMemo(() => {
+        const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        const backgroundColor = isDark ? 'RGB}{24, 24, 27' : 'RGB}{250, 250, 250';
+        const foregroundColor = isDark ? 'RGB}{250, 250, 250' : 'RGB}{24, 24, 27';
+
+        let highlightColor: string;
+
+        switch (theme) {
+            case 'yellow':
+                highlightColor = 'RGB}{234, 179, 8';
+                break;
+            case 'red':
+                highlightColor = 'RGB}{239, 68, 68';
+                break;
+            case 'blue':
+                highlightColor = 'RGB}{59, 130, 246';
+                break;
+            case 'green':
+                highlightColor = 'RGB}{34, 197, 94';
+                break;
+            case 'purple':
+                highlightColor = 'RGB}{168, 85, 247';
+                break;
+            case 'pink':
+                highlightColor = 'RGB}{236, 72, 153';
+                break;
+            case 'orange':
+                highlightColor = 'RGB}{249, 115, 22';
+                break;
+            case 'cyan':
+                highlightColor = 'RGB}{6, 182, 212';
+                break;
+            case 'emerald':
+                highlightColor = 'RGB}{16, 185, 129';
+                break;
+            case 'indigo':
+                highlightColor = 'RGB}{99, 102, 241';
+                break;
+            case 'lime':
+                highlightColor = 'RGB}{132, 204, 22';
+                break;
+            case 'teal':
+                highlightColor = 'RGB}{20, 184, 166';
+                break;
+            case 'violet':
+                highlightColor = 'RGB}{139, 92, 246';
+                break;
+            case 'rose':
+                highlightColor = 'RGB}{244, 63, 94';
+                break;
+            case 'neutral':
+                highlightColor = 'RGB}{115, 115, 115';
+                break;
+            default:
+                highlightColor = 'RGB}{234, 179, 8';
+        }
+
+        return {
+            background: backgroundColor,
+            foreground: foregroundColor,
+            highlight: highlightColor
+        };
+    }, [mode, theme]);
+
+    const themedLatexContent = useMemo(() => {
+        const colors = getThemeColors;
+        return processLatexContent
+            .replace(/\\definecolor\{background\}\{RGB\}\{[^}]+\}/, `\\definecolor{background}{${colors.background}}`)
+            .replace(/\\definecolor\{foreground\}\{RGB\}\{[^}]+\}/, `\\definecolor{foreground}{${colors.foreground}}`)
+            .replace(/\\definecolor\{hightlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{hightlight}{${colors.highlight}}`);
+    }, [processLatexContent, getThemeColors]);
+
+    const handleDownload = async () => {
+        try {
+            const blob = new Blob([themedLatexContent], { type: 'application/x-tex' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `alden-luthfi-cv-${currentType}.tex`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Download error:', error);
+        }
+    };
+
     useEffect(() => {
-        if (!autoPlay || isAnimating || isPaused || !showTabs) return;
+        if (!autoPlay || isAnimating || isPaused || !showTabs || isExpanded) return;
 
         const interval = setInterval(() => {
+
             const nextTab = activeTab === 0 ? tabs.length - 1 : activeTab - 1;
             const newDirection = nextTab < activeTab ? -1 : 1;
             setDirection(newDirection);
@@ -158,7 +397,15 @@ const CV: React.FC<CVProps> = ({
         }, 3000);
 
         return () => clearInterval(interval);
-    }, [autoPlay, isAnimating, isPaused, activeTab, tabs.length, showTabs]);
+    }, [autoPlay, isAnimating, isPaused, activeTab, tabs.length, showTabs, isExpanded]);
+
+    useEffect(() => {
+        if (isExpanded && autoPlay) {
+            setIsPaused(true);
+        } else if (!isPaused && autoPlay) {
+            setIsPaused(false);
+        }
+    }, [isExpanded, autoPlay]);
 
     useEffect(() => {
         if (!pauseOnInteract || !autoPlay || !showTabs) return;
@@ -169,7 +416,7 @@ const CV: React.FC<CVProps> = ({
             const rect = containerRef.current.getBoundingClientRect();
             const notVisible = rect.top > window.innerHeight || rect.bottom < 0;
 
-            if (notVisible && isPaused && !isExpanded) {
+            if (notVisible && isPaused) {
                 setIsPaused(false);
             }
         };
@@ -263,7 +510,7 @@ const CV: React.FC<CVProps> = ({
                 <>
                     <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2, ease: "easeInOut" }}>
                         <motion.div
-                            className="relative h-min w-full mb-8"
+                            className="relative h-min w-full mb-3 tablet:mb-5 desktop:mb-7"
                             initial={false}
                         >
                             <div className="p-1" ref={ref}>
@@ -290,31 +537,48 @@ const CV: React.FC<CVProps> = ({
                         </motion.div>
                     </MotionConfig>
 
-                    <div className="flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2 -mb-18 sticky top-28 z-10">
-                        {tabs.map((tab, index) => (
+                    <div className="ml-12 flex gap-3 items-center">
+                        <div className="flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
+                            {tabs.map((tab, index) => (
+                                <Button
+                                    key={tab.id}
+                                    onClick={() => handleTabClick(index)}
+                                    size="icon"
+                                    name={tab.id}
+                                    style={{ WebkitTapHighlightColor: "transparent" }}
+                                    className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${activeTab === index ? "text-primary-700 duration-400" : ""
+                                        }`}
+                                >
+                                    {activeTab === index && (
+                                        <motion.span
+                                            layoutId="bubble"
+                                            className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
+                                            transition={{ type: "spring", bounce: 0.19, duration: 0.4, ease: "easeInOut" }}
+                                        />
+                                    )}
+                                    {tab.icon}
+                                </Button>
+                            ))}
+                        </div>
+
+                        <div className="border border-input rounded-lg bg-card p-2">
                             <Button
-                                key={tab.id}
-                                onClick={() => handleTabClick(index)}
+                                onClick={handleDownload}
                                 size="icon"
-                                style={{ WebkitTapHighlightColor: "transparent" }}
-                                className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${activeTab === index ? "text-primary-700 duration-400" : ""
-                                    }`}
+                                variant="ghost"
+                                className="bg-transparent hover:bg-transparent text-foreground"
+                                title="Download CV as LaTeX"
                             >
-                                {activeTab === index && (
-                                    <motion.span
-                                        layoutId="bubble"
-                                        className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
-                                        transition={{ type: "spring", bounce: 0.19, duration: 0.4, ease: "easeInOut" }}
-                                    />
-                                )}
-                                {tab.icon}
+                                <IconDownload className="size-6" stroke={1.5} />
                             </Button>
-                        ))}
+                        </div>
                     </div>
+
+                    <div className="-mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10" />
                 </>
             )}
 
-            <Card className="w-10/12 mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
+            <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
                 <CardContent className="overflow-hidden">
                     <div className="space-y-0">
                         {parsedSections.map((section, index) => {
@@ -348,7 +612,7 @@ const CV: React.FC<CVProps> = ({
                                                             const { children, ...rest } = props;
                                                             const cleanChildren = stripTagsFromChildren(children);
                                                             return (
-                                                                <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 mb-1 tablet:mb-2 desktop:mb-3 border-b border-foreground pb-1 tablet:pb-2">
+                                                                <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
                                                                     {cleanChildren}
                                                                 </h2>
                                                             );
@@ -374,7 +638,7 @@ const CV: React.FC<CVProps> = ({
                                                             if (!shouldShow) return null;
 
                                                             return (
-                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-sm [&>strong]:tablet:text-base [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-1 tablet:mt-2 desktop:mt-3 text-sm tablet:text-base desktop:text-lg">
+                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
                                                                     {cleanChildren}
                                                                 </h4>
                                                             );
@@ -400,7 +664,7 @@ const CV: React.FC<CVProps> = ({
                                                             if (!shouldShow) return null;
 
                                                             return (
-                                                                <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold mt-3 text-sm tablet:text-base desktop:text-lg">
                                                                     {cleanChildren}
                                                                 </p>
                                                             );
@@ -446,7 +710,7 @@ const CV: React.FC<CVProps> = ({
                                                         table(props) {
                                                             const { ...rest } = props;
                                                             return (
-                                                                <Table {...rest} className="-ml-2 border-none text-sm tablet:text-base desktop:text-lg">
+                                                                <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
                                                                     {props.children}
                                                                 </Table>
                                                             );
@@ -505,7 +769,7 @@ const CV: React.FC<CVProps> = ({
                                                             const { children, ...rest } = props;
                                                             const cleanChildren = stripTagsFromChildren(children);
                                                             return (
-                                                                <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 mb-1 tablet:mb-2 desktop:mb-3 border-b border-foreground pb-1 tablet:pb-2">
+                                                                <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
                                                                     {cleanChildren}
                                                                 </h2>
                                                             );
@@ -531,7 +795,7 @@ const CV: React.FC<CVProps> = ({
                                                             if (!shouldShow) return null;
 
                                                             return (
-                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-sm [&>strong]:tablet:text-base [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-1 tablet:mt-2 desktop:mt-3 text-sm tablet:text-base desktop:text-lg">
+                                                                <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
                                                                     {cleanChildren}
                                                                 </h4>
                                                             );
@@ -557,7 +821,7 @@ const CV: React.FC<CVProps> = ({
                                                             if (!shouldShow) return null;
 
                                                             return (
-                                                                <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary mt-3 [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
                                                                     {cleanChildren}
                                                                 </p>
                                                             );
@@ -603,7 +867,7 @@ const CV: React.FC<CVProps> = ({
                                                         table(props) {
                                                             const { ...rest } = props;
                                                             return (
-                                                                <Table {...rest} className="-ml-2 border-none text-sm tablet:text-base desktop:text-lg">
+                                                                <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
                                                                     {props.children}
                                                                 </Table>
                                                             );
@@ -647,7 +911,7 @@ const CV: React.FC<CVProps> = ({
                     {!isExpanded && (
                         <div className="flex justify-center mt-6">
                             <Button
-                                onClick={() => {setIsExpanded(true); setIsPaused(true)}}
+                                onClick={() => setIsExpanded(true)}
                                 variant="outline"
                                 className="bg-card hover:bg-muted"
                             >
@@ -659,11 +923,11 @@ const CV: React.FC<CVProps> = ({
                     {isExpanded && (
                         <div className="flex justify-center mt-6">
                             <Button
-                                onClick={() => {setIsExpanded(false); setIsPaused(false)}}
+                                onClick={() => setIsExpanded(false)}
                                 variant="outline"
                                 className="bg-card hover:bg-muted"
                             >
-                                Show Less, TL;DR
+                                See less, tl;dr
                             </Button>
                         </div>
                     )}

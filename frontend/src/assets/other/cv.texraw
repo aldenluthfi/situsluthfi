@@ -1,0 +1,361 @@
+\documentclass[9pt]{extarticle}
+
+\usepackage[a4paper, total={16.5cm, 25cm}]{geometry}
+\usepackage[bf]{titlesec}
+\usepackage{fontspec}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{wrapfig}
+\usepackage{pagecolor}
+\usepackage{graphicx}
+\usepackage{xspace}
+
+\definecolor{background}{RGB}{24, 24, 27}
+\definecolor{foreground}{RGB}{250, 250, 250}
+\definecolor{hightlight}{RGB}{235, 179, 5}
+
+\pagenumbering{gobble}
+
+\hypersetup{
+    colorlinks = true,
+    urlcolor = foreground,
+}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\pagecolor{background}
+\color{foreground}
+\setmainfont[
+    Path=../fonts/,
+    BoldFont={CastledownPro-Heavy.ttf},
+]{CastledownPro-Regular.ttf}
+
+%================================CUSTOM COMMANDS==============================%
+
+\newcommand{\bagian}[1]{
+    \setmainfont[
+        Path=../fonts/,
+        BoldFont={GreycliffCF-Heavy.otf},
+        BoldItalicFont={GreycliffCF-HeavyOblique.otf},
+        RawFeature=+ss01,
+        RawFeature=+ss03,
+    ]{GreycliffCF-Heavy.otf}
+    \vspace{5pt}
+    \section*{\Large{#1}}
+    \vspace{-15pt}
+    \rule{\textwidth}{0.5pt}
+    \setmainfont[
+        Path=../fonts/,
+        BoldFont={CastledownPro-Heavy.ttf},
+    ]{CastledownPro-Regular.ttf}
+}
+
+\newcommand{\rincian}[2]{
+    \vspace{2pt}
+    #1 & #2 \\
+}
+
+\newcommand{\perinci}[1]{
+    \begin{tabularx}{\textwidth}[t]{@{}>{\bfseries}l!{:}X}
+    #1
+    \end{tabularx}
+    \vspace{-10pt}
+}
+
+\newcommand{\entri}[4]{
+    \par
+    \vspace{+5pt}
+    \noindent
+    \normalsize{\textbf{#1}} \hfill #2 \\
+    {\textbf{\small{#3}} \hfill \small{#4}}
+    \par
+}
+
+\newcommand{\entriTanpaJudul}[2] {
+    \vspace{+5pt}
+    \noindent
+    {\textbf{\small{#1}} \hfill \small{#2}}
+    \par
+}
+
+\newcommand{\daftar}[1]{
+    \begin{enumerate}[topsep=1pt,itemsep=-1.5pt]
+        \small{#1}
+    \end{enumerate}
+}
+
+\newcommand{\butir}[2]{
+    \item[#1]{#2}
+}
+
+\newcommand{\tekan}[1]{
+    \unskip\color{hightlight}#1\color{foreground}\xspace
+}
+
+\ExplSyntaxOn
+
+\cs_new_eq:NN \IfFontFeatureExists \fontspec_if_feature:nTF
+\cs_new:Npn \mico_fontfeature_if_active:nTF #1
+  { \tl_if_in:NnTF \l_fontspec_rawfeatures_sclist { #1 } }
+\cs_new_eq:NN \IfFontFeatureActive \mico_fontfeature_if_active:nTF
+
+\ExplSyntaxOff
+
+%===================================DOCUMENT==================================%
+
+\begin{document}
+\begin{center}
+    \setmainfont[
+        Path=../fonts/,
+        BoldFont={GreycliffCF-Heavy.otf},
+        BoldItalicFont={GreycliffCF-HeavyOblique.otf},
+        RawFeature=+ss01,
+        RawFeature=+ss03,
+    ]{GreycliffCF-Heavy.otf}
+    \textbf{\Huge Alden Luthfi}
+    \vspace{+5pt}
+    \setmainfont[
+        Path=../fonts/,
+        BoldFont={CastledownPro-Heavy.ttf},
+    ]{CastledownPro-Regular.ttf}
+
+    (+62) 8118-0000-93 | hi@aldenluth.fi
+    \vspace{-15pt}
+\end{center}
+
+\bagian{About Me}
+\begin{wrapfigure}{l}{1.75cm}
+    \vspace{-12pt}
+    \includegraphics[width=1.8cm]{../images/solo2.png}
+\end{wrapfigure}
+\small{
+    \indent A dependable \tekan{hard worker} with a passion in education and technology. I'm a \tekan{problem solver}, a thoughtful and \tekan{creative} humanitarian who will always find a way to improve whatever thing I'm working on. A calculative and tactful logician yet a \tekan{public speaker} who speaks from the heart. A one of a kind, \tekan{jack of all trades} with great team work and \tekan{leadership skills}. But most important of all, a human being who \tekan{love and is eager to learn}. My interests include education, mathematics, community service, graphic and UI/UX design, cyber security, cryptography, logic, and all things computer science!}
+\vspace{-5pt}
+
+\bagian{Personal Information}
+\perinci{
+    \rincian
+    {Domicile}
+    {Salemba, Central Jakarta}
+    \rincian
+    {Linkedin}
+    {
+        \href{https://www.linkedin.com/in/aldenluthfi/}
+        {https://www.linkedin.com/in/aldenluthfi/}
+    }
+    \rincian
+    {Github}
+    {
+        \href{https://github.com/aldenluthfi}
+        {{https://github.com/aldenluthfi}}
+    }
+}
+\vspace{-7.5pt}
+
+\bagian{Education}
+\vspace{-15pt}
+\entri
+{Universitas Indonesia (UI)}
+{Indonesia}
+{\normalfont{3.93 GPA. Bachelor of Computer Science}}
+{2022 - Current}
+\entri
+{SMA Negeri 8 Jakarta}
+{Indonesia}
+{\normalfont{Science and Mathemathics Major}}
+{2019 - 2022}
+\vspace{-7.5pt}
+
+\bagian{Work Experience} [full|software|tutor]
+\vspace{-15pt} [full|software|tutor]
+\entri [full|software|tutor]
+{Faculty of Computer Science UI} [full|software|tutor]
+{} [full|software|tutor]
+{Coordinator Teaching Assistant of Introduction to Computer Organization} [full|software|tutor]
+{Jan 2025 - Current} [full|software|tutor]
+\daftar{ [full|software|tutor]
+    \butir{$\Sigma$}{\tekan{Supervises} and manages \tekan{15 teaching assistants} of the course.}
+    \butir{$\Sigma$}{Proof reads and revises all the course materials.}
+    \butir{$\Sigma$}{The course introduces basic of \tekan{CPU architecture} and MIPS and AVR \tekan{assembly language} programming. The course serves as a successor to the course of Introduction to Digital Systems.}
+}
+\entriTanpaJudul [full|software|tutor]
+{Coordinator Teaching Assistant of Platform Based Programming} [full|software|tutor]
+{Aug 2024 - Dec 2024} [full|software|tutor]
+\daftar{ [full|software|tutor]
+    \butir{$\Phi$}{\tekan{Supervises} and manages \tekan{25 teaching assistants} of the course.}
+    \butir{$\Phi$}{Proof reads and revises all the course materials.}
+    \butir{$\Phi$}{The course introduces basic \tekan{software engineering} concepts and uses Python's Django and Dart's Flutter as the main technology stack for \tekan{web development} and \tekan{mobile development} respectively.}
+}
+\entriTanpaJudul [full|software|tutor]
+{Teaching Assistant of Data Structures and Algorithms} [full|software|tutor]
+{Jun 2024 - Aug 2024} [full|software|tutor]
+\daftar{ [full|software|tutor]
+    \butir{$\Omega$}{Is responsible for \tekan{teaching} and grading \tekan{15 students}.}
+    \butir{$\Omega$}{Arguably \tekan{the most recognizable course} in computer science, the course focuses on teaching the basics of data structures and algorithms, such as \tekan{sorting algorithms}, \tekan{lists}, \tekan{trees}, and \tekan{graphs}.}
+}
+\entriTanpaJudul [full|software|tutor]
+{Teaching Assistant of Programming Foundations 2} [full|software|tutor]
+{Jan 2024 - Jun 2024} [full|software|tutor]
+\daftar{ [full|software|tutor]
+    \butir{$\Pi$}{Is responsible for \tekan{teaching} and grading \tekan{15 students}.}
+    \butir{$\Pi$}{The course focuses on teaching the basics of programming using \tekan{Java}, including \tekan{object oriented concepts} to help students advance in their understanding of industry standards.}
+}
+\entriTanpaJudul [full|software|tutor]
+{Coordinator Teaching Assistant of Introduction to Digital Systems} [full|software|tutor]
+{Aug 2023 - Dec 2023} [full|software|tutor]
+\daftar{ [full|software|tutor]
+    \butir{$\Delta$}{Supervises and \tekan{manages} \tekan{20 teaching assistants} of the course.}
+    \butir{$\Delta$}{Proof reads and revises all the course materials.}
+    \butir{$\Delta$}{The course focuses on introducting the \tekan{concepts of logic} and digital systems concepts crucial to computer science and uses Logisim as a tool.}
+}
+\vspace{-7.5pt} [full|software|tutor]
+
+\bagian{Volunteering Experience} [full|design|humanitarian|tutor]
+\vspace{-15pt} [full|design|humanitarian|tutor]
+\entri [full|design|humanitarian|tutor]
+{Gerakan UI Mengajar} [full|design|humanitarian|tutor]
+{Universtas Indonesia} [full|design|humanitarian|tutor]
+{Staff of Social Community Department} [full|humanitarian|tutor]
+{Jan 2024 - Mar 2024} [full|humanitarian|tutor]
+\daftar{ [full|humanitarian|tutor]
+    \butir{$\exists$}{\tekan{One month} of community service \tekan{in Pesawaran, Lampung}.}
+    \butir{$\exists$}{Teaches elementary school students at SDN 19 Way Ratay}
+    \butir{$\exists$}{Ensuring every goal of the project is met.}
+}
+\entriTanpaJudul [full|humanitarian|tutor]
+{Staff of Creative Media} [full|design|humanitarian|tutor]
+{Aug 2022 - Mar 2023} [full|design|humanitarian|tutor]
+\daftar{ [full|design|humanitarian|tutor]
+    \butir{$\forall$}{\tekan{One month} of community service \tekan{in Ngluyu, East Java}.}
+    \butir{$\forall$}{Responsible for \tekan{creating content} such as \tekan{Instagram feeds} and \tekan{reels} video editing.}
+    \butir{$\forall$}{Responsible for creating and managing the organization website.}
+    \butir{$\forall$}{Field photographer and videographer at SDN 2 Sugihwaras.}
+}
+\vspace{-7.5pt} [full|design|humanitarian|tutor]
+
+\bagian{Organizational Experience} [full|humanitarian|design|cybersecurity]
+\vspace{-15pt} [full|humanitarian|design|cybersecurity]
+\entri [full|design|humanitarian]
+{Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI} [full|design|humanitarian]
+{Faculty of Computer Science UI} [full|design|humanitarian]
+{Deputy Coordinator of Socio-Politics} [full|humanitarian]
+{June 2025 - Current} [full|humanitarian]
+\entriTanpaJudul [full|humanitarian]
+{External Deputy of Social Service Department} [full|humanitarian]
+{Apr 2024 - Dec 2024} [full|humanitarian]
+\daftar{ [full|humanitarian]
+    \butir{$\mathbb{N}$}{Responsible for the \tekan{external affairs} of the department.}
+    \butir{$\mathbb{N}$}{Manages a team of 15 staff members.}
+    \butir{$\mathbb{N}$}{Supervises and ensures all of our \tekan{7 community projects} are running smoothly.}
+}
+\entriTanpaJudul [full]
+{Staff of Media Bureau} [full|design]
+{Apr 2023 - Jan 2024} [full|design]
+\daftar{ [full|design]
+    \butir{$\mathbb{Z}$}{Responsible for \tekan{creating content} such as \tekan{Instagram feeds} and \tekan{reels} video editing.}
+    \butir{$\mathbb{Z}$}{Is part of the \tekan{public relations} branch of the organization.}
+}
+\entri [full|cybersecurity]
+{RISTEK Fakultas Ilmu Komputer UI} [full|cybersecurity]
+{Faculty of Computer Science UI} [full|cybersecurity]
+{Network, Security, and Operating Systems Lead} [full|cybersecurity]
+{Mar 2024 - Feb 2025} [full|cybersecurity]
+\daftar{ [full|cybersecurity]
+    \butir{$\mathbb{Q}$}{\tekan{Finalist in Gemastik 2024}, the biggest IT competition in Indonesia.}
+    \butir{$\mathbb{Q}$}{Won a number of local Capture the Flag competitions}
+    \butir{$\mathbb{Q}$}{\tekan{Encourages others} to pursue the same passion in cybersecurity}
+}
+\entriTanpaJudul [full|cybersecurity]
+{Network, Security, and Operating Systems Member} [full|cybersecurity]
+{Mar 2023 - Feb 2024} [full|cybersecurity]
+\daftar{ [full|cybersecurity]
+    \butir{$\mathbb{A}$}{Trained in numerous competitions and workshops.}
+    \butir{$\mathbb{A}$}{Developed a passion for \tekan{cybersecurity}, especially in \tekan{cryptography}}
+}
+\entri [full]
+{COMPFEST Fakultas Ilmu Komputer UI} [full]
+{Faculty of Computer Science UI} [full]
+{PIC of Human Resources of Creative} [full]
+{Jan 2024 - Mar 2025} [full]
+\daftar{ [full]
+    \butir{$\mathbb{R}$}{\tekan{Responsible} for a team of \tekan{30 PICs and staff members}.}
+    \butir{$\mathbb{R}$}{Held a number of internal bonding activities for the field.}
+}
+\entriTanpaJudul [full]
+{Expert Staff of Documentation and Animation} [full|design]
+{Jan 2023 - Dec 2023} [full|design]
+\daftar{ [full|design]
+    \butir{$\mathbb{C}$}{Used \tekan{Adobe After Effects} to edit the organization's company profle}
+}
+\entri [full]
+{Open House Fakultas Ilmu Komputer UI} [full]
+{Faculty of Computer Science UI} [full]
+{PIC of Human Resources} [full]
+{Aug 2023 - Sept 2023} [full]
+\daftar{ [full]
+    \butir{$\mathbb{H}$}{\tekan{Managed} a team of \tekan{12 staff members}.}
+    \butir{$\mathbb{H}$}{Introduced a number of \tekan{new additions} to the organization's work environment.}
+}
+\entri [full|humanitarian]
+{Badan Eksekutif Mahasiswa UI} [full|humanitarian]
+{Universitas Indonesia} [full|humanitarian]
+{Social and Community Department Staff} [full|humanitarian]
+{Mar 2023 - Dec 2023} [full|humanitarian]
+\daftar{ [full|humanitarian]
+    \butir{$\mathbb{P}$}{Held a \tekan{workshop and talkshow} to raise awareness for the \tekan{use of sign language}}
+    \butir{$\mathbb{P}$}{Raise \tekan{awareness of drug use} in a prison in Jakarta}
+    \butir{$\mathbb{P}$}{Did \tekan{2 week of community service} at the border village of \tekan{Mota'ain, Atambua, East Nusa Tenggara} 500m from the border between Indonesia and East Timor}
+}
+\vspace{-7.5pt} [full|humanitarian|design|cybersecurity]
+
+\bagian{Skills}
+\perinci{
+    \rincian
+    {Languages}
+    {Indonesian (Native), English (Full Professional Proficiency)}
+    \rincian
+    {Technology Mastered}
+    {C, C++, Java, Python, Django, Flutter, Matlab}
+    \rincian
+    {Tools}
+    {Adobe Creative Cloud, Figma, Visual Studio Code, Neovim}
+}
+\vspace{-7.5pt}
+
+\bagian{Awards} [full|cybersecurity]
+\vspace{-15pt} [full|cybersecurity]
+\entri [full|cybersecurity]
+{1st Runner Up} [full|cybersecurity]
+{PwC Indonesia} [full|cybersecurity]
+{\normalfont{PwC Hackaday}} [full|cybersecurity]
+{November 2024} [full|cybersecurity]
+\entri [full|cybersecurity]
+{Finalist of the Division II (Cyber Security)} [full|cybersecurity]
+{Pusat Prestasi Nasional} [full|cybersecurity]
+{\normalfont{Gemastik 2024}} [full|cybersecurity]
+{September 2024} [full|cybersecurity]
+\entri [full|cybersecurity]
+{3rd Place} [full|cybersecurity]
+{Universitas Gunadarma} [full|cybersecurity]
+{\normalfont{Technofair CTF 11}} [full|cybersecurity]
+{September 2024} [full|cybersecurity]
+\vspace{-7.5pt} [full|cybersecurity]
+
+\bagian{Certifications} [full|humanitarian]
+\vspace{-15pt} [full|humanitarian]
+\entri [full|humanitarian]
+{Indonesian Sign Language Certification} [full|humanitarian]
+{Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
+{\normalfont{Level 2}} [full|humanitarian]
+{May 2024} [full|humanitarian]
+\entri [full|humanitarian]
+{Indonesian Sign Language Certification} [full|humanitarian]
+{Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
+{\normalfont{Level 1}} [full|humanitarian]
+{December 2024} [full|humanitarian]
+\vspace{-7.5pt} [full|humanitarian]
+
+\end{document}
