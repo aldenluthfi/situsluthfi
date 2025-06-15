@@ -85,7 +85,6 @@ const Projects: React.FC = () => {
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching repositories:", error);
-                setLoading(false);
             }
         };
 
@@ -98,9 +97,10 @@ const Projects: React.FC = () => {
             }
         };
 
+        setLoading(true);
         fetchRepositories();
         handleSync();
-    }, []);
+    }, [data]);
 
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
@@ -150,18 +150,20 @@ const Projects: React.FC = () => {
                                         <div className='h-full w-full p-[8.3333%]'>
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
-                                                    <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" dir='ltr' />
-                                                    <CardDescription>
-                                                        <Skeleton className="h-4 w-full mb-1" dir='ltr'/>
-                                                        <Skeleton className="h-4 w-4/5 mb-1" dir='ltr' />
-                                                        <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
-                                                        <div className="flex flex-wrap gap-2" dir='ltr'>
-                                                            <Skeleton className="h-8 w-8 tablet:w-16 rounded-full" />
-                                                            <Skeleton className="h-8 w-8 tablet:w-20 rounded-full" />
-                                                            <Skeleton className="h-8 w-8 tablet:w-14 rounded-full" />
-                                                            <Skeleton className="h-8 w-8 tablet:w-18 rounded-full" />
-                                                        </div>
-                                                    </CardDescription>
+                                                    <div dir='ltr'>
+                                                        <Skeleton className="w-full aspect-[2/1] rounded-md mb-4" dir='ltr' />
+                                                        <CardDescription>
+                                                            <Skeleton className="h-4 w-full mb-2" dir='ltr' />
+                                                            <Skeleton className="h-4 w-4/5 mb-2" dir='ltr' />
+                                                            <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
+                                                            <div className="flex flex-wrap gap-2" dir='ltr'>
+                                                                <Skeleton className="size-10 tablet:h-9 tablet:w-28 rounded-md tablet:rounded-full" dir='ltr' />
+                                                                <Skeleton className="size-10 tablet:h-9 tablet:w-32 rounded-md tablet:rounded-full" dir='ltr' />
+                                                                <Skeleton className="size-10 tablet:h-9 tablet:w-22 rounded-md tablet:rounded-full" dir='ltr' />
+                                                                <Skeleton className="size-10 tablet:h-9 tablet:w-30 rounded-md tablet:rounded-full" dir='ltr' />
+                                                            </div>
+                                                        </CardDescription>
+                                                    </div>
                                                 </CardHeader>
                                                 <CardFooter className="mt-auto">
                                                     <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end w-full gap-1" dir='ltr'>
