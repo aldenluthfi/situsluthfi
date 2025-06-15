@@ -74,12 +74,12 @@ export function Cursor() {
         const isClickableElement = (target: HTMLElement): boolean => {
             return (
                 target !== null &&
-                target.tagName === 'A' ||
-                target.tagName === 'BUTTON' ||
-                target.getAttribute('data-slot') === 'button' ||
-                (target.getAttribute('data-slot') === 'tooltip-trigger' && target.getAttribute('data-disabled') !== 'true') ||
-                target.closest('[data-slot="button"]') !== null ||
-                target.closest('a, button') !== null
+                target?.tagName === 'A' ||
+                target?.tagName === 'BUTTON' ||
+                target?.getAttribute('data-slot') === 'button' ||
+                (target?.getAttribute('data-slot') === 'tooltip-trigger' && target?.getAttribute('data-disabled') !== 'true') ||
+                target?.closest('[data-slot="button"]') !== null ||
+                target?.closest('a, button') !== null
             );
         };
 

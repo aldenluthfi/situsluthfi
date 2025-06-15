@@ -8,12 +8,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Personal Information
 
-|                          |   |                                                                                      |
-|--------------------------|---|--------------------------------------------------------------------------------------|
-| **Place, Date of Birth** | : | Jakarta, 10 February 2004                                                            |
-| **Domicile**             | : | Salemba, Central Jakarta                                                             |
-| **LinkedIn**             | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
-| **GitHub**               | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
+|              |   |                                                                                      |
+|--------------|---|--------------------------------------------------------------------------------------|
+| **Domicile** | : | Salemba, Central Jakarta                                                             |
+| **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
+| **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
 
 ## Education
 
@@ -123,11 +122,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Skills
 
-|                         |   |                                                              |
-|-------------------------|---|--------------------------------------------------------------|
-| **Languages**           | : | Indonesian (Native), English (Full Professional Proficiency) |
-| **Technology Mastered** | : | C, C++, Java, Python, Django, Flutter, Matlab                |
-| **Tools**               | : | Adobe Creative Cloud, Figma, Visual Studio Code, Neovim      |
+|                |   |                                                              |
+|----------------|---|--------------------------------------------------------------|
+| **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency) |
+| **Technology** | : | C, C++, Java, Python, Django, Flutter, Matlab                |
+| **Tools**      | : | Adobe Creative Cloud, Figma, Visual Studio Code, Neovim      |
 
 ## Awards [full | cybersecurity]
 
