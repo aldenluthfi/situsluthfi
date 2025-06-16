@@ -189,6 +189,7 @@ const Writing: React.FC = () => {
 
             const data = await res.json();
             setData(data);
+            setToc(null);
             document.title = `aldenluth.fi | ${data.title}`;
         } catch (error) {
             console.error("Error fetching writing:", error);

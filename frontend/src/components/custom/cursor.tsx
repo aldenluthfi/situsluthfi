@@ -8,6 +8,7 @@ export function Cursor() {
     const circlePositionRef = useRef({ x: 0, y: 0 });
     const currentScaleRef = useRef(0);
     const currentAngleRef = useRef(0);
+    const currentBlurRef = useRef(0);
     const animationRef = useRef<number>(0);
     const [size, setSize] = useState<'default' | 'hover' | 'active' | 'hoverActive'>('default');
     const mouseDownRef = useRef(false);
@@ -133,9 +134,13 @@ export function Cursor() {
 
             const mouseVelocity = Math.min(Math.sqrt(deltaMouseX ** 2 + deltaMouseY ** 2) * 4, 150);
             const scaleValue = (mouseVelocity / 150) * 0.4;
+            const blurValue = (mouseVelocity / 150) * 3;
 
             currentScaleRef.current += (scaleValue - currentScaleRef.current) * speed;
+            currentBlurRef.current += (blurValue - currentBlurRef.current) * speed;
+
             const scaleTransform = `scale(${1 + currentScaleRef.current}, ${1 - currentScaleRef.current})`;
+            const blurFilter = `blur(${currentBlurRef.current}px)`;
 
             const angle = Math.atan2(deltaMouseY, deltaMouseX) * 180 / Math.PI;
 
@@ -146,6 +151,7 @@ export function Cursor() {
             const rotateTransform = `rotate(${currentAngleRef.current}deg)`;
 
             cursorRef.current.style.transform = `translate(-50%, -50%) ${rotateTransform} ${scaleTransform}`;
+            cursorRef.current.style.filter = blurFilter;
             cursorRef.current.style.left = `${circlePositionRef.current.x}px`;
             cursorRef.current.style.top = `${circlePositionRef.current.y}px`;
 
