@@ -137,12 +137,12 @@ const Projects: React.FC = () => {
                     dir="rtl"
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
-                        <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333% + 1rem] h-full items-end desktop:hidden" dir='ltr'>
-                            <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0" />
-                            <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0" />
+                        <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333% + 1rem] h-full items-end desktop:hidden">
+                            <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0 rotate-180" />
+                            <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0  rotate-180" />
                         </div>
-                        <CarouselPrevious className='hidden desktop:block z-10' />
-                        <CarouselNext className='hidden desktop:block z-10' />
+                        <CarouselNext className='hidden desktop:block z-10 -left-12 rotate-180'/>
+                        <CarouselPrevious className='hidden desktop:block z-10 -right-12 rotate-180'/>
                         <CarouselContent>
                             {loading
                                 ? Array.from({ length: 6 }).map((_, i) => (

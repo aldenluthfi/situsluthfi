@@ -19,10 +19,21 @@ import {
     TableCell,
 } from "@/components/ui/table";
 
-import { IconSparkles, IconCode, IconHeartHandshake, IconSchool, IconCloudLock, IconPalette, IconDownload } from '@tabler/icons-react';
+import {
+    IconSparkles,
+    IconCode,
+    IconHeartHandshake,
+    IconSchool,
+    IconCloudLock,
+    IconPalette,
+    IconDownload,
+    IconBalloon,
+    IconTie
+} from '@tabler/icons-react';
 
 import cvContent from '@/assets/other/cv.md?raw';
 import cvLatexContent from '@/assets/other/cv.texraw?raw';
+import { isMobile } from "@/lib/utils";
 
 interface CVProps {
     type?: "full" | "software" | "cybersecurity" | "design" | "humanitarian" | "tutor";
@@ -53,6 +64,7 @@ const CV: React.FC<CVProps> = ({
     const [ref] = useMeasure();
     const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isSerious, setIsSerious] = useState(true);
     const { mode, theme } = useTheme();
 
     const tabs = [
@@ -370,6 +382,10 @@ const CV: React.FC<CVProps> = ({
             .replace(/\\definecolor\{hightlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{hightlight}{${colors.highlight}}`);
     }, [processLatexContent, getThemeColors]);
 
+    const handleSeriousnessToggle = () => {
+        setIsSerious(!isSerious);
+    }
+
     const handlePDFGeneration = async () => {
         let factData = null;
         let factError = null;
@@ -451,7 +467,7 @@ const CV: React.FC<CVProps> = ({
                     icon: null
                 }),
                 error: (error) => ({
-                    message: "Failed to generate CV",
+                    message: "Failed to Generate CV",
                     description: (
                         <div className="flex flex-col space-y-2">
                             <div className="!text-sm !font-body !text-muted-foreground">
@@ -598,8 +614,14 @@ const CV: React.FC<CVProps> = ({
         }),
     };
 
+    const seriousnessIcon = isSerious ? (
+        <IconTie className="size-6" stroke={1.5} />
+    ) : (
+        <IconBalloon className="size-6" stroke={1.5} />
+    );
+
     return (
-        <TooltipProvider>
+        <TooltipProvider openDelay={0}>
             <div ref={containerRef} className={`w-full flex flex-col ${showTabs ? 'items-center' : ''} ${className}`}>
                 {showTabs && (
                     <>
@@ -632,7 +654,40 @@ const CV: React.FC<CVProps> = ({
                             </motion.div>
                         </MotionConfig>
 
-                        <div className="ml-12 flex gap-3 items-start -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
+                        <div className="flex gap-3 items-start -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
+                            <div className="border border-input rounded-lg bg-card p-2">
+                                {
+                                    !isMobile ? (
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Button
+                                                    size="icon"
+                                                    variant="ghost"
+                                                    className="bg-transparent hover:bg-transparent text-foreground"
+                                                    title="Toggle Seriousness"
+                                                    onClick={handleSeriousnessToggle}
+                                                >
+                                                    {seriousnessIcon}
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                Toggle Seriousness
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    ) : (
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="bg-transparent hover:bg-transparent text-foreground"
+                                            title="Toggle Seriousness"
+                                            onClick={handleSeriousnessToggle}
+                                        >
+                                            {seriousnessIcon}
+                                        </Button>
+                                    )
+                                }
+                            </div>
+
                             <div className="grid grid-cols-3 tablet:flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
                                 {tabs.map((tab, index) => (
                                     <Button
@@ -657,8 +712,25 @@ const CV: React.FC<CVProps> = ({
                             </div>
 
                             <div className="border border-input rounded-lg bg-card p-2">
-                                <Tooltip>
-                                    <TooltipTrigger>
+                                {
+                                    !isMobile ? (
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Button
+                                                    onClick={handlePDFGeneration}
+                                                    size="icon"
+                                                    variant="ghost"
+                                                    className="bg-transparent hover:bg-transparent text-foreground"
+                                                    title="Generate and view PDF"
+                                                >
+                                                    <IconDownload className="size-6" stroke={1.5} />
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                Generate Tailored Resume
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    ) : (
                                         <Button
                                             onClick={handlePDFGeneration}
                                             size="icon"
@@ -668,11 +740,8 @@ const CV: React.FC<CVProps> = ({
                                         >
                                             <IconDownload className="size-6" stroke={1.5} />
                                         </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        Download Tailored Resume
-                                    </TooltipContent>
-                                </Tooltip>
+                                    )
+                                }
                             </div>
                         </div>
                     </>
@@ -1015,7 +1084,7 @@ const CV: React.FC<CVProps> = ({
                                     variant="outline"
                                     className="bg-card hover:bg-muted"
                                 >
-                                    See more, experience and such
+                                    See more, experiences et cetera
                                 </Button>
                             </div>
                         )}
@@ -1027,7 +1096,7 @@ const CV: React.FC<CVProps> = ({
                                     variant="outline"
                                     className="bg-card hover:bg-muted"
                                 >
-                                    See less, tl;dr
+                                    See less boring stuff
                                 </Button>
                             </div>
                         )}
