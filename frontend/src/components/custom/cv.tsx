@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useTheme } from '@/components/custom/theme-provider';
 import { toast } from "sonner";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/animate-ui/components/tooltip';
 
 import remarkGfm from 'remark-gfm';
 import {
@@ -27,13 +26,13 @@ import {
     IconCloudLock,
     IconPalette,
     IconDownload,
-    IconBalloon,
-    IconTie
+    IconEye,
+    IconFileCv,
+    IconBarrierBlock
 } from '@tabler/icons-react';
 
 import cvContent from '@/assets/other/cv.md?raw';
 import cvLatexContent from '@/assets/other/cv.texraw?raw';
-import { isMobile } from "@/lib/utils";
 
 interface CVProps {
     type?: "full" | "software" | "cybersecurity" | "design" | "humanitarian" | "tutor";
@@ -64,7 +63,7 @@ const CV: React.FC<CVProps> = ({
     const [ref] = useMeasure();
     const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
     const [isExpanded, setIsExpanded] = useState(false);
-    const [isSerious, setIsSerious] = useState(true);
+    const [visualMode, setVisualMode] = useState(false);
     const { mode, theme } = useTheme();
 
     const tabs = [
@@ -382,8 +381,8 @@ const CV: React.FC<CVProps> = ({
             .replace(/\\definecolor\{hightlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{hightlight}{${colors.highlight}}`);
     }, [processLatexContent, getThemeColors]);
 
-    const handleSeriousnessToggle = () => {
-        setIsSerious(!isSerious);
+    const handleVisualModeToggle = () => {
+        setVisualMode(!visualMode);
     }
 
     const handlePDFGeneration = async () => {
@@ -614,496 +613,462 @@ const CV: React.FC<CVProps> = ({
         }),
     };
 
-    const seriousnessIcon = isSerious ? (
-        <IconTie className="size-6" stroke={1.5} />
+    const seriousnessIcon = visualMode ? (
+        <IconEye className="size-6" stroke={1.5} />
     ) : (
-        <IconBalloon className="size-6" stroke={1.5} />
+        <IconFileCv className="size-6" stroke={1.5} />
     );
 
     return (
-        <TooltipProvider openDelay={0}>
-            <div ref={containerRef} className={`w-full flex flex-col ${showTabs ? 'items-center' : ''} ${className}`}>
-                {showTabs && (
-                    <>
-                        <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2, ease: "easeInOut" }}>
-                            <motion.div
-                                className="relative h-min w-full mb-3 tablet:mb-5 desktop:mb-7"
-                                initial={false}
-                            >
-                                <div className="p-1" ref={ref}>
-                                    <AnimatePresence
+        <div ref={containerRef} className={`w-full flex flex-col ${showTabs ? 'items-center' : ''} ${className}`}>
+            {showTabs && (
+                <>
+                    <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2, ease: "easeInOut" }}>
+                        <motion.div
+                            className="relative h-min w-full mb-3 tablet:mb-5 desktop:mb-7"
+                            initial={false}
+                        >
+                            <div className="p-1" ref={ref}>
+                                <AnimatePresence
+                                    custom={direction}
+                                    mode="popLayout"
+                                    onExitComplete={() => setIsAnimating(false)}
+                                >
+                                    <motion.div
+                                        key={activeTab}
+                                        variants={tabVariants}
+                                        initial="initial"
+                                        animate="active"
+                                        exit="exit"
                                         custom={direction}
-                                        mode="popLayout"
-                                        onExitComplete={() => setIsAnimating(false)}
+                                        onAnimationStart={() => setIsAnimating(true)}
+                                        onAnimationComplete={() => setIsAnimating(false)}
+                                        className="font-body text-lg tablet:text-2xl text-center"
                                     >
-                                        <motion.div
-                                            key={activeTab}
-                                            variants={tabVariants}
-                                            initial="initial"
-                                            animate="active"
-                                            exit="exit"
-                                            custom={direction}
-                                            onAnimationStart={() => setIsAnimating(true)}
-                                            onAnimationComplete={() => setIsAnimating(false)}
-                                            className="font-body text-lg tablet:text-2xl text-center"
-                                        >
-                                            {currentLabel}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                </div>
-                            </motion.div>
-                        </MotionConfig>
-
-                        <div className="flex gap-3 items-start -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
-                            <div className="border border-input rounded-lg bg-card p-2">
-                                {
-                                    !isMobile ? (
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <Button
-                                                    size="icon"
-                                                    variant="ghost"
-                                                    className="bg-transparent hover:bg-transparent text-foreground"
-                                                    title="Toggle Seriousness"
-                                                    onClick={handleSeriousnessToggle}
-                                                >
-                                                    {seriousnessIcon}
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                Toggle Seriousness
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    ) : (
-                                        <Button
-                                            size="icon"
-                                            variant="ghost"
-                                            className="bg-transparent hover:bg-transparent text-foreground"
-                                            title="Toggle Seriousness"
-                                            onClick={handleSeriousnessToggle}
-                                        >
-                                            {seriousnessIcon}
-                                        </Button>
-                                    )
-                                }
+                                        {currentLabel}
+                                    </motion.div>
+                                </AnimatePresence>
                             </div>
+                        </motion.div>
+                    </MotionConfig>
 
-                            <div className="grid grid-cols-3 tablet:flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
-                                {tabs.map((tab, index) => (
+                    <div className="flex gap-3 items-start -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
+                        <div className="border border-input rounded-lg bg-card p-2">
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className="bg-transparent hover:bg-transparent text-foreground"
+                                title="Toggle Seriousness"
+                                onClick={handleVisualModeToggle}
+                            >
+                                {seriousnessIcon}
+                            </Button>
+                        </div>
+
+                        <div className="grid grid-cols-3 tablet:flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
+                            {tabs.map((tab, index) => (
+                                <Button
+                                    key={tab.id}
+                                    onClick={() => handleTabClick(index)}
+                                    size="icon"
+                                    name={tab.id}
+                                    style={{ WebkitTapHighlightColor: "transparent" }}
+                                    className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${activeTab === index ? "text-primary-700 duration-400" : ""
+                                        }`}
+                                >
+                                    {activeTab === index && (
+                                        <motion.span
+                                            layoutId="bubble"
+                                            className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
+                                            transition={{ type: "spring", bounce: 0.19, duration: 0.4, ease: "easeInOut" }}
+                                        />
+                                    )}
+                                    {tab.icon}
+                                </Button>
+                            ))}
+                        </div>
+
+                        <div className="border border-input rounded-lg bg-card p-2">
+                            <Button
+                                onClick={handlePDFGeneration}
+                                size="icon"
+                                variant="ghost"
+                                className="bg-transparent hover:bg-transparent text-foreground"
+                                title="Generate and view PDF"
+                            >
+                                <IconDownload className="size-6" stroke={1.5} />
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            )}
+            {
+                !visualMode ? (
+                    <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
+                        <CardContent className="overflow-hidden">
+                            <div className="space-y-0">
+                                {parsedSections.map((section, index) => {
+                                    const shouldShowSection = section.shouldShow && (isExpanded || section.type === 'persistent');
+
+                                    if (section.type === 'persistent') {
+                                        return (
+                                            <AnimatePresence key={`persistent-${index}`} mode="wait">
+                                                {shouldShowSection && (
+                                                    <motion.div
+                                                        variants={verticalVariants}
+                                                        initial="initial"
+                                                        animate="active"
+                                                        exit="exit"
+                                                        custom={verticalDirection}
+                                                        className="overflow-hidden"
+                                                    >
+                                                        <ReactMarkdown
+                                                            remarkPlugins={[remarkGfm]}
+                                                            components={{
+                                                                h1(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+                                                                    return (
+                                                                        <h1 {...rest} className="text-2xl tablet:text-3xl desktop:text-4xl font-heading tablet:mb-2 desktop:mb-4 text-center">
+                                                                            {cleanChildren}
+                                                                        </h1>
+                                                                    );
+                                                                },
+                                                                h2(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+                                                                    return (
+                                                                        <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
+                                                                            {cleanChildren}
+                                                                        </h2>
+                                                                    );
+                                                                },
+                                                                h3(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-2 tablet:mt-3 desktop:mt-4 mb-1 tablet:mb-1 desktop:mb-2 text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </h3>
+                                                                    );
+                                                                },
+                                                                h4(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </h4>
+                                                                    );
+                                                                },
+                                                                h5(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </h4>
+                                                                    );
+                                                                },
+                                                                p(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold mt-3 text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </p>
+                                                                    );
+                                                                },
+                                                                ul(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <ul {...rest} className="list-disc pl-6 mb-1 tablet:mb-2 desktop:mb-3 text-sm tablet:text-base desktop:text-lg">
+                                                                            {children}
+                                                                        </ul>
+                                                                    );
+                                                                },
+                                                                li(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </li>
+                                                                    );
+                                                                },
+                                                                a(props) {
+                                                                    const { ...rest } = props;
+                                                                    return (
+                                                                        <a
+                                                                            {...rest}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
+                                                                        >
+                                                                            {rest.children}
+                                                                        </a>
+                                                                    );
+                                                                },
+                                                                table(props) {
+                                                                    const { ...rest } = props;
+                                                                    return (
+                                                                        <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
+                                                                            {props.children}
+                                                                        </Table>
+                                                                    );
+                                                                },
+                                                                thead() {
+                                                                    return null;
+                                                                },
+                                                                tbody(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableBody {...rest}>{props.children}</TableBody>;
+                                                                },
+                                                                tr(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
+                                                                },
+                                                                th(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
+                                                                },
+                                                                td(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
+                                                                },
+                                                                hr() {
+                                                                    return <Separator className='w-full my-4 bg-muted' />;
+                                                                },
+                                                            }}
+                                                        >
+                                                            {section.content}
+                                                        </ReactMarkdown>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        );
+                                    } else {
+                                        return (
+                                            <AnimatePresence
+                                                key={`variable-${index}`}
+                                                custom={direction}
+                                                mode="wait"
+                                            >
+                                                {shouldShowSection && (
+                                                    <motion.div
+                                                        variants={horizontalVariants}
+                                                        initial="initial"
+                                                        animate="active"
+                                                        exit="exit"
+                                                        custom={direction}
+                                                        className="overflow-hidden"
+                                                    >
+
+                                                        <ReactMarkdown
+                                                            remarkPlugins={[remarkGfm]}
+                                                            components={{
+                                                                h2(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+                                                                    return (
+                                                                        <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
+                                                                            {cleanChildren}
+                                                                        </h2>
+                                                                    );
+                                                                },
+                                                                h3(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-2 tablet:mt-3 desktop:mt-4 mb-1 tablet:mb-1 desktop:mb-2 text-base tablet:text-lg desktop:text-xl">
+                                                                            {cleanChildren}
+                                                                        </h3>
+                                                                    );
+                                                                },
+                                                                h4(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </h4>
+                                                                    );
+                                                                },
+                                                                h5(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </h4>
+                                                                    );
+                                                                },
+                                                                p(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary mt-3 [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </p>
+                                                                    );
+                                                                },
+                                                                ul(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <ul {...rest} className="list-disc pl-6 mb-1 tablet:mb-2 desktop:mb-3 text-sm tablet:text-base desktop:text-lg">
+                                                                            {children}
+                                                                        </ul>
+                                                                    );
+                                                                },
+                                                                li(props) {
+                                                                    const { children, ...rest } = props;
+                                                                    const shouldShow = shouldShowElement(children, currentType);
+                                                                    const cleanChildren = stripTagsFromChildren(children);
+
+                                                                    if (!shouldShow) return null;
+
+                                                                    return (
+                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                            {cleanChildren}
+                                                                        </li>
+                                                                    );
+                                                                },
+                                                                a(props) {
+                                                                    const { ...rest } = props;
+                                                                    return (
+                                                                        <a
+                                                                            {...rest}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                            className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
+                                                                        >
+                                                                            {rest.children}
+                                                                        </a>
+                                                                    );
+                                                                },
+                                                                table(props) {
+                                                                    const { ...rest } = props;
+                                                                    return (
+                                                                        <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
+                                                                            {props.children}
+                                                                        </Table>
+                                                                    );
+                                                                },
+                                                                thead() {
+                                                                    return null;
+                                                                },
+                                                                tbody(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableBody {...rest}>{props.children}</TableBody>;
+                                                                },
+                                                                tr(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
+                                                                },
+                                                                th(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
+                                                                },
+                                                                td(props) {
+                                                                    const { ...rest } = props;
+                                                                    return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
+                                                                },
+                                                                hr() {
+                                                                    return <Separator className='w-full tablet:my-2 desktop:my-4 bg-muted' />;
+                                                                },
+                                                            }}
+                                                        >
+                                                            {section.content}
+                                                        </ReactMarkdown>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        );
+                                    }
+                                })}
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex flex-col items-center -mt-8 tablet:-mt-6 desktop:-mb-4">
+
+                            {!isExpanded && (
+                                <div className="flex justify-center mt-6">
                                     <Button
-                                        key={tab.id}
-                                        onClick={() => handleTabClick(index)}
-                                        size="icon"
-                                        name={tab.id}
-                                        style={{ WebkitTapHighlightColor: "transparent" }}
-                                        className={`bg-transparent shadow-none hover:bg-transparent text-foreground ${activeTab === index ? "text-primary-700 duration-400" : ""
-                                            }`}
+                                        onClick={() => setIsExpanded(true)}
+                                        variant="outline"
+                                        className="bg-card hover:bg-muted"
                                     >
-                                        {activeTab === index && (
-                                            <motion.span
-                                                layoutId="bubble"
-                                                className="absolute inset-0 -z-10 bg-primary-300 shadow-xs text-primary-700 rounded-md"
-                                                transition={{ type: "spring", bounce: 0.19, duration: 0.4, ease: "easeInOut" }}
-                                            />
-                                        )}
-                                        {tab.icon}
+                                        See more, experiences et cetera
                                     </Button>
-                                ))}
-                            </div>
+                                </div>
+                            )}
 
-                            <div className="border border-input rounded-lg bg-card p-2">
-                                {
-                                    !isMobile ? (
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <Button
-                                                    onClick={handlePDFGeneration}
-                                                    size="icon"
-                                                    variant="ghost"
-                                                    className="bg-transparent hover:bg-transparent text-foreground"
-                                                    title="Generate and view PDF"
-                                                >
-                                                    <IconDownload className="size-6" stroke={1.5} />
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                Generate Tailored Resume
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    ) : (
-                                        <Button
-                                            onClick={handlePDFGeneration}
-                                            size="icon"
-                                            variant="ghost"
-                                            className="bg-transparent hover:bg-transparent text-foreground"
-                                            title="Generate and view PDF"
-                                        >
-                                            <IconDownload className="size-6" stroke={1.5} />
-                                        </Button>
-                                    )
-                                }
-                            </div>
-                        </div>
-                    </>
-                )}
-
-                <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
-                    <CardContent className="overflow-hidden">
-                        <div className="space-y-0">
-                            {parsedSections.map((section, index) => {
-                                const shouldShowSection = section.shouldShow && (isExpanded || section.type === 'persistent');
-
-                                if (section.type === 'persistent') {
-                                    return (
-                                        <AnimatePresence key={`persistent-${index}`} mode="wait">
-                                            {shouldShowSection && (
-                                                <motion.div
-                                                    variants={verticalVariants}
-                                                    initial="initial"
-                                                    animate="active"
-                                                    exit="exit"
-                                                    custom={verticalDirection}
-                                                    className="overflow-hidden"
-                                                >
-                                                    <ReactMarkdown
-                                                        remarkPlugins={[remarkGfm]}
-                                                        components={{
-                                                            h1(props) {
-                                                                const { children, ...rest } = props;
-                                                                const cleanChildren = stripTagsFromChildren(children);
-                                                                return (
-                                                                    <h1 {...rest} className="text-2xl tablet:text-3xl desktop:text-4xl font-heading tablet:mb-2 desktop:mb-4 text-center">
-                                                                        {cleanChildren}
-                                                                    </h1>
-                                                                );
-                                                            },
-                                                            h2(props) {
-                                                                const { children, ...rest } = props;
-                                                                const cleanChildren = stripTagsFromChildren(children);
-                                                                return (
-                                                                    <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
-                                                                        {cleanChildren}
-                                                                    </h2>
-                                                                );
-                                                            },
-                                                            h3(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-2 tablet:mt-3 desktop:mt-4 mb-1 tablet:mb-1 desktop:mb-2 text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </h3>
-                                                                );
-                                                            },
-                                                            h4(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </h4>
-                                                                );
-                                                            },
-                                                            h5(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </h4>
-                                                                );
-                                                            },
-                                                            p(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold mt-3 text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </p>
-                                                                );
-                                                            },
-                                                            ul(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <ul {...rest} className="list-disc pl-6 mb-1 tablet:mb-2 desktop:mb-3 text-sm tablet:text-base desktop:text-lg">
-                                                                        {children}
-                                                                    </ul>
-                                                                );
-                                                            },
-                                                            li(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </li>
-                                                                );
-                                                            },
-                                                            a(props) {
-                                                                const { ...rest } = props;
-                                                                return (
-                                                                    <a
-                                                                        {...rest}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
-                                                                    >
-                                                                        {rest.children}
-                                                                    </a>
-                                                                );
-                                                            },
-                                                            table(props) {
-                                                                const { ...rest } = props;
-                                                                return (
-                                                                    <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
-                                                                        {props.children}
-                                                                    </Table>
-                                                                );
-                                                            },
-                                                            thead() {
-                                                                return null;
-                                                            },
-                                                            tbody(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableBody {...rest}>{props.children}</TableBody>;
-                                                            },
-                                                            tr(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
-                                                            },
-                                                            th(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
-                                                            },
-                                                            td(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
-                                                            },
-                                                            hr() {
-                                                                return <Separator className='w-full my-4 bg-muted' />;
-                                                            },
-                                                        }}
-                                                    >
-                                                        {section.content}
-                                                    </ReactMarkdown>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    );
-                                } else {
-                                    return (
-                                        <AnimatePresence
-                                            key={`variable-${index}`}
-                                            custom={direction}
-                                            mode="wait"
-                                        >
-                                            {shouldShowSection && (
-                                                <motion.div
-                                                    variants={horizontalVariants}
-                                                    initial="initial"
-                                                    animate="active"
-                                                    exit="exit"
-                                                    custom={direction}
-                                                    className="overflow-hidden"
-                                                >
-
-                                                    <ReactMarkdown
-                                                        remarkPlugins={[remarkGfm]}
-                                                        components={{
-                                                            h2(props) {
-                                                                const { children, ...rest } = props;
-                                                                const cleanChildren = stripTagsFromChildren(children);
-                                                                return (
-                                                                    <h2 {...rest} className="text-lg tablet:text-xl desktop:text-2xl font-heading mt-3 tablet:mt-4 desktop:mt-6 border-b border-foreground pb-1 tablet:pb-2">
-                                                                        {cleanChildren}
-                                                                    </h2>
-                                                                );
-                                                            },
-                                                            h3(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h3 {...rest} className="w-full [&>a]:no-underline [&>a]:text-foreground [&>a]:pointer-events-none text-center mt-2 tablet:mt-3 desktop:mt-4 mb-1 tablet:mb-1 desktop:mb-2 text-base tablet:text-lg desktop:text-xl">
-                                                                        {cleanChildren}
-                                                                    </h3>
-                                                                );
-                                                            },
-                                                            h4(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </h4>
-                                                                );
-                                                            },
-                                                            h5(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </h4>
-                                                                );
-                                                            },
-                                                            p(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary mt-3 [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </p>
-                                                                );
-                                                            },
-                                                            ul(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <ul {...rest} className="list-disc pl-6 mb-1 tablet:mb-2 desktop:mb-3 text-sm tablet:text-base desktop:text-lg">
-                                                                        {children}
-                                                                    </ul>
-                                                                );
-                                                            },
-                                                            li(props) {
-                                                                const { children, ...rest } = props;
-                                                                const shouldShow = shouldShowElement(children, currentType);
-                                                                const cleanChildren = stripTagsFromChildren(children);
-
-                                                                if (!shouldShow) return null;
-
-                                                                return (
-                                                                    <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
-                                                                        {cleanChildren}
-                                                                    </li>
-                                                                );
-                                                            },
-                                                            a(props) {
-                                                                const { ...rest } = props;
-                                                                return (
-                                                                    <a
-                                                                        {...rest}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="text-primary underline hover:text-primary-700 transition-colors text-sm tablet:text-base desktop:text-lg"
-                                                                    >
-                                                                        {rest.children}
-                                                                    </a>
-                                                                );
-                                                            },
-                                                            table(props) {
-                                                                const { ...rest } = props;
-                                                                return (
-                                                                    <Table {...rest} className="-ml-2 border-none text-sm mt-3 tablet:text-base desktop:text-lg">
-                                                                        {props.children}
-                                                                    </Table>
-                                                                );
-                                                            },
-                                                            thead() {
-                                                                return null;
-                                                            },
-                                                            tbody(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableBody {...rest}>{props.children}</TableBody>;
-                                                            },
-                                                            tr(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableRow {...rest} className="border-none hover:bg-transparent align-top">{props.children}</TableRow>;
-                                                            },
-                                                            th(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
-                                                            },
-                                                            td(props) {
-                                                                const { ...rest } = props;
-                                                                return <TableCell {...rest} className="border-none [&>strong]:text-foreground px-2 py-1 whitespace-normal align-top">{props.children}</TableCell>;
-                                                            },
-                                                            hr() {
-                                                                return <Separator className='w-full tablet:my-2 desktop:my-4 bg-muted' />;
-                                                            },
-                                                        }}
-                                                    >
-                                                        {section.content}
-                                                    </ReactMarkdown>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    );
-                                }
-                            })}
-                        </div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col items-center -mt-8 tablet:-mt-6 desktop:-mb-4">
-
-                        {!isExpanded && (
-                            <div className="flex justify-center mt-6">
-                                <Button
-                                    onClick={() => setIsExpanded(true)}
-                                    variant="outline"
-                                    className="bg-card hover:bg-muted"
-                                >
-                                    See more, experiences et cetera
-                                </Button>
-                            </div>
-                        )}
-
-                        {isExpanded && (
-                            <div className="flex justify-center mt-6">
-                                <Button
-                                    onClick={() => setIsExpanded(false)}
-                                    variant="outline"
-                                    className="bg-card hover:bg-muted"
-                                >
-                                    See less boring stuff
-                                </Button>
-                            </div>
-                        )}
-                    </CardFooter>
-                </Card>
-            </div>
-        </TooltipProvider>
+                            {isExpanded && (
+                                <div className="flex justify-center mt-6">
+                                    <Button
+                                        onClick={() => setIsExpanded(false)}
+                                        variant="outline"
+                                        className="bg-card hover:bg-muted"
+                                    >
+                                        See less boring stuff
+                                    </Button>
+                                </div>
+                            )}
+                        </CardFooter>
+                    </Card>
+                ) : (
+                    <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
+                        <CardContent className="text-center flex flex-col items-center justify-center gap-3">
+                            <IconBarrierBlock className="size-6" stroke={1.5} />
+                            Under construction, please check back later.
+                        </CardContent>
+                    </Card>
+                )
+            }
+        </div>
     );
 };
 

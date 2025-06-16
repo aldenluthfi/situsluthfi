@@ -245,7 +245,7 @@ function TooltipArrow({ side }: TooltipArrowProps) {
   return (
     <div
       className={cn(
-        'absolute bg-primary-300 fill-primary-300 z-50 size-2.5 rotate-45 rounded-[2px]',
+        'absolute bg-primary-300 fill-primary-300 z-3000 size-2.5 rotate-45 rounded-[2px]',
         (side === 'top' || side === 'bottom') && 'left-1/2 -translate-x-1/2',
         (side === 'left' || side === 'right') && 'top-1/2 -translate-y-1/2',
         side === 'top' && '-bottom-[3px]',
@@ -287,7 +287,7 @@ function TooltipOverlay() {
         <TooltipPortal>
           <motion.div
             data-slot="tooltip-overlay-container"
-            className="fixed z-50"
+            className="fixed z-3000"
             style={{
               top: position.y,
               left: position.x,
