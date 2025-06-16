@@ -632,8 +632,8 @@ const CV: React.FC<CVProps> = ({
                             </motion.div>
                         </MotionConfig>
 
-                        <div className="ml-12 flex gap-3 items-center -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
-                            <div className="flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
+                        <div className="ml-12 flex gap-3 items-start -mb-18 sticky top-22 tablet:top-24 desktop:top-28 z-10">
+                            <div className="grid grid-cols-3 tablet:flex gap-2 ultrawide:gap-3 border border-input rounded-lg bg-card p-2">
                                 {tabs.map((tab, index) => (
                                     <Button
                                         key={tab.id}
