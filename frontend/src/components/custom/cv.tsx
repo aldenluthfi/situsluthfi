@@ -389,80 +389,60 @@ const CV: React.FC<CVProps> = ({
     }
 
     const handlePDFGeneration = async () => {
-        let factData = null;
-        let factError = null;
-
-        try {
-            const factResponse = await fetch("/api/facts");
-            if (factResponse.ok) {
-                factData = await factResponse.json();
-            } else {
-                factError = "Failed to load fun fact";
-            }
-        } catch (error) {
-            factError = "Failed to load fun fact";
-        }
+        const factPromise = fetch("/api/facts")
+            .then(response => response.ok ? response.json() : Promise.reject("Failed to load fun fact"))
+            .catch(() => null);
 
         toast.promise(
             (async () => {
-                const response = await fetch('/api/pdf/generate-cv', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        latexContent: themedLatexContent,
-                        filename: `alden-luthfi-cv-${currentType}`,
-                        type: currentType,
-                        mode: mode,
-                        theme: theme
+                const [factData, pdfResponse] = await Promise.allSettled([
+                    factPromise,
+                    fetch('/api/pdf/generate-cv', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            latexContent: themedLatexContent,
+                            filename: `alden-luthfi-cv-${currentType}`,
+                            type: currentType,
+                            mode: mode,
+                            theme: theme
+                        })
                     })
-                });
+                ]);
 
+                const fact = factData.status === 'fulfilled' ? factData.value : null;
+
+                if (pdfResponse.status === 'rejected') {
+                    throw new Error('Failed to generate PDF');
+                }
+
+                const response = pdfResponse.value;
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-                    throw new Error(errorData.error || 'Failed to generate PDF');
+                    throw new Error(errorData.error ?? 'Failed to generate PDF');
                 }
 
                 const { pdfUrl } = await response.json();
                 window.open(pdfUrl, '_blank');
 
-                return { success: true };
+                return { success: true, fact };
             })(),
             {
-                loading: <div>
-                    Generating Tailored Resume...
-                    {factData && (
-                        <div className="flex flex-col space-y-2 pt-2">
-                            <div className="!text-sm !font-body !text-muted-foreground">
-                                Fun Fact #{factData.id}
-                            </div>
-                            <div className="!text-sm !font-body !text-muted-foreground">
-                                {factData.text}
-                            </div>
-                            <div className="!font-body !text-muted-foreground">
-                                <a className="underline" href={factData.source} target="_blank" rel="noopener noreferrer" aria-label={factData.source}>Source</a>
-                            </div>
-                        </div>
-                    )}
-                    {factError && (
-                        <div className="!text-sm !font-body !text-muted-foreground pt-2">
-                            {factError}
-                        </div>
-                    )}
-                </div>,
-                success: () => ({
+                loading: "Generating Tailored Resume...",
+                success: (data) => ({
                     message: "Tailored Resume Generated Successfully!",
-                    description: factData ? (
+                    description: data.fact ? (
                         <div className="flex flex-col space-y-2 pt-2">
                             <div className="!text-sm !font-body !text-muted-foreground">
-                                Fun Fact #{factData.id}
+                                Fun Fact #{data.fact.id}
                             </div>
                             <div className="!text-sm !font-body !text-muted-foreground">
-                                {factData.text}
+                                {data.fact.text}
                             </div>
                             <div className="!font-body !text-muted-foreground">
-                                <a className="underline" href={factData.source} target="_blank" rel="noopener noreferrer" aria-label={factData.source}>Source</a>
+                                <a className="underline" href={data.fact.source} target="_blank" rel="noopener noreferrer" aria-label={data.fact.source}>Source</a>
                             </div>
                         </div>
                     ) : null,
@@ -471,23 +451,8 @@ const CV: React.FC<CVProps> = ({
                 error: (error) => ({
                     message: "Failed to Generate CV",
                     description: (
-                        <div className="flex flex-col space-y-2">
-                            <div className="!text-sm !font-body !text-muted-foreground">
-                                {error instanceof Error ? error.message : "Please try again."}
-                            </div>
-                            {factData && (
-                                <>
-                                    <div className="!text-sm !font-body !text-muted-foreground pt-2">
-                                        Fun Fact #{factData.id}
-                                    </div>
-                                    <div className="!text-sm !font-body !text-muted-foreground">
-                                        {factData.text}
-                                    </div>
-                                    <div className="!font-body !text-muted-foreground">
-                                        <a className="underline" href={factData.source} target="_blank" rel="noopener noreferrer" aria-label={factData.source}>Source</a>
-                                    </div>
-                                </>
-                            )}
+                        <div className="!text-sm !font-body !text-muted-foreground">
+                            {error instanceof Error ? error.message : "Please try again."}
                         </div>
                     )
                 }),
