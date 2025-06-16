@@ -76,6 +76,9 @@ const CV: React.FC<CVProps> = ({
     ];
 
     const [activeTab, setActiveTab] = useState(() => {
+        if (autoPlay) {
+            return tabs.length - 1;
+        }
         return tabs.findIndex(tab => tab.id === type);
     });
 
@@ -498,7 +501,6 @@ const CV: React.FC<CVProps> = ({
         if (!autoPlay || isAnimating || isPaused || !showTabs || isExpanded) return;
 
         const interval = setInterval(() => {
-
             const nextTab = activeTab === 0 ? tabs.length - 1 : activeTab - 1;
             const newDirection = nextTab < activeTab ? -1 : 1;
             setDirection(newDirection);
