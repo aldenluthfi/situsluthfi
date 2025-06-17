@@ -672,14 +672,14 @@ const CV: React.FC<CVProps> = ({
             {
                 !visualMode ? (
                     <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
-                        <CardContent className="overflow-hidden">
+                        <CardContent className="overflow-visible">
                             <div className="space-y-0">
                                 {parsedSections.map((section, index) => {
                                     const shouldShowSection = section.shouldShow && (isExpanded || section.type === 'persistent');
 
                                     if (section.type === 'persistent') {
                                         return (
-                                            <AnimatePresence key={`persistent-${index}`} mode="wait">
+                                            <AnimatePresence key={`persistent-${index}-${type}`} mode="wait">
                                                 {shouldShowSection && (
                                                     <motion.div
                                                         variants={verticalVariants}
@@ -744,7 +744,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
+                                                                        <h4 {...rest} className="flex [&>em]:not-italic [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </h4>
                                                                     );
@@ -901,7 +901,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <h4 {...rest} className="flex [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
+                                                                        <h4 {...rest} className="flex [&>em]:not-italic [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </h4>
                                                                     );

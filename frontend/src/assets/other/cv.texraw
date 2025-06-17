@@ -155,6 +155,17 @@
 }
 \vspace{-7.5pt}
 
+\bagian{Skills}
+\perinci{
+    \rincian
+    {Languages}
+    {Indonesian (Native), English (Full Professional Proficiency)}
+    \rincian
+    {Technology Mastered}
+    {C, C++, Java, Javascript, Typescript, Rust, Python, Flutter, Elasticsearch, MySQL, PostgreSQL, Docker, Vite, React, Adobe Photoshop, Adobe After Effects, Adobe Illustrator, Adobe Premiere Pro, Figma, Visual Studio Code, Neovim, Matlab}
+}
+\vspace{-7.5pt}
+
 \bagian{Education}
 \vspace{-15pt}
 \entri
@@ -165,7 +176,7 @@
 \entri
 {SMA Negeri 8 Jakarta}
 {Indonesia}
-{\normalfont{Science and Mathemathics Major}}
+{\normalfont{Science and Mathematics Major}}
 {2019 - 2022}
 \vspace{-7.5pt}
 
@@ -174,14 +185,14 @@
 \entri [full|software|tutor]
 {Faculty of Computer Science UI} [full|software|tutor]
 {} [full|software|tutor]
-{Coordinator Teaching Assistant of Introduction to Computer Organization} [full|software|tutor]
-{Jan 2025 - Current} [full|software|tutor]
-\daftar{ [full|software|tutor]
+{Coordinator Teaching Assistant of Introduction to Computer Organization} [full|tutor]
+{Jan 2025 - Current} [full|tutor]
+\daftar{ [full|tutor]
     \butir{$\Sigma$}{\tekan{Supervises} and manages \tekan{15 teaching assistants} of the course.}
     \butir{$\Sigma$}{Proof reads and revises all the course materials.}
     \butir{$\Sigma$}{The course introduces basic of \tekan{CPU architecture} and MIPS and AVR \tekan{assembly language} programming. The course serves as a successor to the course of Introduction to Digital Systems.}
 }
-\entriTanpaJudul [full|software|tutor]
+\entriTanpaJudul [full|tutor]
 {Coordinator Teaching Assistant of Platform Based Programming} [full|software|tutor]
 {Aug 2024 - Dec 2024} [full|software|tutor]
 \daftar{ [full|software|tutor]
@@ -203,13 +214,13 @@
     \butir{$\Pi$}{Is responsible for \tekan{teaching} and grading \tekan{15 students}.}
     \butir{$\Pi$}{The course focuses on teaching the basics of programming using \tekan{Java}, including \tekan{object oriented concepts} to help students advance in their understanding of industry standards.}
 }
-\entriTanpaJudul [full|software|tutor]
-{Coordinator Teaching Assistant of Introduction to Digital Systems} [full|software|tutor]
-{Aug 2023 - Dec 2023} [full|software|tutor]
-\daftar{ [full|software|tutor]
+\entriTanpaJudul [full|tutor]
+{Coordinator Teaching Assistant of Introduction to Digital Systems} [full|tutor]
+{Aug 2023 - Dec 2023} [full|tutor]
+\daftar{ [full|tutor]
     \butir{$\Delta$}{Supervises and \tekan{manages} \tekan{20 teaching assistants} of the course.}
     \butir{$\Delta$}{Proof reads and revises all the course materials.}
-    \butir{$\Delta$}{The course focuses on introducting the \tekan{concepts of logic} and digital systems concepts crucial to computer science and uses Logisim as a tool.}
+    \butir{$\Delta$}{The course focuses on introducing the \tekan{concepts of logic} and digital systems concepts crucial to computer science and uses Logisim as a tool.}
 }
 \vspace{-7.5pt} [full|software|tutor]
 
@@ -311,20 +322,6 @@
 }
 \vspace{-7.5pt} [full|humanitarian|design|cybersecurity]
 
-\bagian{Skills}
-\perinci{
-    \rincian
-    {Languages}
-    {Indonesian (Native), English (Full Professional Proficiency)}
-    \rincian
-    {Technology Mastered}
-    {C, C++, Java, Python, Django, Flutter, Matlab}
-    \rincian
-    {Tools}
-    {Adobe Creative Cloud, Figma, Visual Studio Code, Neovim}
-}
-\vspace{-7.5pt}
-
 \bagian{Awards} [full|cybersecurity]
 \vspace{-15pt} [full|cybersecurity]
 \entri [full|cybersecurity]
@@ -350,7 +347,7 @@
 {Indonesian Sign Language Certification} [full|humanitarian]
 {Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
 {\normalfont{Level 2}} [full|humanitarian]
-{May 2024} [full|humanitarian]
+{May 2025} [full|humanitarian]
 \entri [full|humanitarian]
 {Indonesian Sign Language Certification} [full|humanitarian]
 {Pusat Bahasa Isyarat Indonesia} [full|humanitarian]

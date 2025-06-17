@@ -14,6 +14,13 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 | **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
 | **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
 
+## Skills
+
+|                |   |                                                                                                                                                                                                                                            |
+|----------------|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                               |
+| **Technology** | : | C, C++, Java, Javascript, Typescript, Rust, Python, Flutter, Elasticsearch, MySQL, PostgreSQL, Docker, Vite, React, Adobe Photoshop, Adobe After Effects, Adobe Illustrator, Adobe Premiere Pro, Figma, Visual Studio Code, Neovim, Matlab |
+
 ## Education
 
 #### **Universitas Indonesia (UI)** Indonesia
@@ -25,11 +32,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Work Experience [full | software | tutor]
 
 #### **Faculty of Computer Science UI** [full | software | tutor]
-##### **Coordinator Teaching Assistant of Introduction to Computer Organization** Jan 2025 - Current [full | software | tutor]
+##### **Coordinator Teaching Assistant of Introduction to Computer Organization** Jan 2025 - Current [full | tutor]
 
-- **Supervises** and manages **15 teaching assistants** of the course. [full | software | tutor]
-- Proof reads and revises all the course materials. [full | software | tutor]
-- The course introduces basic of **CPU architecture** and MIPS and AVR **assembly language** programming. The course serves as a successor to the course of Introduction to Digital Systems. [full | software | tutor]
+- **Supervises** and manages **15 teaching assistants** of the course. [full | tutor]
+- Proof reads and revises all the course materials. [full | tutor]
+- The course introduces basic of **CPU architecture** and MIPS and AVR **assembly language** programming. The course serves as a successor to the course of Introduction to Digital Systems. [full | tutor]
 
 ##### **Coordinator Teaching Assistant of Platform Based Programming** Aug 2024 - Dec 2024 [full | software | tutor]
 
@@ -47,11 +54,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Is responsible for **teaching** and grading **15 students**. [full | software | tutor]
 - The course focuses on teaching the basics of programming using **Java**, including **object oriented concepts** to help students advance in their understanding of industry standards. [full | software | tutor]
 
-##### **Coordinator Teaching Assistant of Introduction to Digital Systems** Aug 2023 - Dec 2023 [full | software | tutor]
+##### **Coordinator Teaching Assistant of Introduction to Digital Systems** Aug 2023 - Dec 2023 [full | tutor]
 
-- Supervises and **manages** **20 teaching assistants** of the course. [full | software | tutor]
-- Proof reads and revises all the course materials. [full | software | tutor]
-- The course focuses on introducing the **concepts of logic** and digital systems concepts crucial to computer science and uses Logisim as a tool. [full | software | tutor]
+- Supervises and **manages** **20 teaching assistants** of the course. [full | tutor]
+- Proof reads and revises all the course materials. [full | tutor]
+- The course focuses on introducing the **concepts of logic** and digital systems concepts crucial to computer science and uses Logisim as a tool. [full | tutor]
 
 ## Volunteering Experience [full | design | humanitarian | tutor]
 
@@ -120,13 +127,48 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Raise **awareness of drug use** in a prison in Jakarta [full | humanitarian]
 - Did **2 week of community service** at the border village of **Mota'ain, Atambua, East Nusa Tenggara** 500m from the border between Indonesia and East Timor [full | humanitarian]
 
-## Skills
+## Projects [full | software | design | cybersecurity]
+#### **aldenluth.fi** 2025 [full | software | design]
+##### **Personal Portfolio Website with a Lot of Features** *[Repo](https://github.com/aldenluthfi/situsluthfi) | [Website](https://aldenluth.fi/)* [full | software | design]
 
-|                |   |                                                              |
-|----------------|---|--------------------------------------------------------------|
-| **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency) |
-| **Technology** | : | C, C++, Java, Python, Django, Flutter, Matlab                |
-| **Tools**      | : | Adobe Creative Cloud, Figma, Visual Studio Code, Neovim      |
+- 
+- 
+- 
+
+#### **TemuSearch** 2025 [full | software ]
+##### **LLM-Based Movie Search Engine, Powered by Elasticsearh** *[Frontend Repo](https://github.com/aldenluthfi/fe-temu-search-engine) | [Backend Repo](https://github.com/nabilmuafa/be-temu-search-engine)* [full | software]
+
+- 
+- 
+- 
+
+#### **Malpolys** 2025 [full | software | design]
+##### **Tower Defense Game built in Godot, Featuring the Dijkstra Algorithm!** *[Repo](https://github.com/aldenluthfi/malpolys) | [itch.io Page](https://kejuwafel.itch.io/malpolys)* [full | software | design]
+
+- 
+- 
+- 
+
+#### **Anemoia** 2025 [full | software ]
+##### **Puzzle Game built in Godot, Made by a Group of Devs** *[Repo](https://github.com/sun-jar/anemoia) | [itch.io Page](https://sunjar.itch.io/anemoia)* [full | software ]
+
+- 
+- 
+- 
+
+#### **Fineksi Dashboard** 2025 [full | software | design]
+##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://github.com/sun-jar/anemoia)* [full | software | design]
+
+- 
+- 
+- 
+
+#### **YouTrend** 2024 [full | software]
+##### **Graph-Database-Based YouTube Trend Viewer, Powered by Ontotext** *[Repo](https://github.com/pesolosep/Adila-Fans-Club)* [full | software]
+
+- 
+- 
+- 
 
 ## Awards [full | cybersecurity]
 
@@ -142,7 +184,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Certifications [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
-##### **Level 2** May 2024 [full | humanitarian]
+##### **Level 2** May 2025 [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
 ##### **Level 1** December 2024 [full | humanitarian]

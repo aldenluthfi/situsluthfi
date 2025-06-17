@@ -241,7 +241,7 @@ const Writing: React.FC = () => {
     let isHeader = false;
 
     return (
-        <div className="max-w-screen overflow-x-hidden">
+        <div className="w-full max-w-desktop mx-auto overflow-x-hidden">
             {toc && (
                 <div
                     className={`fixed right-0 flex items-center h-full z-50 transition-transform duration-300 ease-in-out`}
@@ -300,7 +300,7 @@ const Writing: React.FC = () => {
                     </div>
                 </div>
             )}
-            <div className='max-w-desktop mx-auto px-12 tablet:px-24 py-28 min-h-screen text-pretty'>
+            <div className='w-10/12 mx-auto py-28 min-h-screen text-pretty'>
                 {!data ? (
                     <div className="space-y-4 mb-8">
                         <Skeleton className="w-3/4 h-10" />
