@@ -696,11 +696,11 @@ const License: React.FC =  () => {
                 {
                     h1(props) {
                         const { ...rest } = props
-                        return <h1 {...rest} className="text-lg font-body-bold text-center mb-2">{rest.children}</h1>
+                        return <h1 {...rest} className="text-lg font-bold text-center mb-2">{rest.children}</h1>
                     },
                     h2(props) {
                         const { ...rest } = props
-                        return <h2 {...rest} className="font-body-bold text-center mb-4">{rest.children}</h2>
+                        return <h2 {...rest} className="font-bold text-center mb-4">{rest.children}</h2>
                     },
                     p(props) {
                         const { ...rest } = props

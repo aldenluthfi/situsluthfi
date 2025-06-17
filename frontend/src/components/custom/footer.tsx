@@ -66,7 +66,7 @@ const Footer = () => {
             {
                 loading: <div>
                     Email Copied!
-                    <div className="!text-sm !font-body !text-muted-foreground">
+                    <div className="!text-sm !text-muted-foreground">
                         Fun Fact Loading...
                     </div>
                 </div>,
@@ -74,13 +74,13 @@ const Footer = () => {
                     message: "Email Copied!",
                     description: status === 200 ?
                         <div className="flex flex-col space-y-2 pt-2">
-                            <div className="!text-sm !font-body !text-muted-foreground">
+                            <div className="!text-sm !text-muted-foreground">
                                 Fun Fact #{data.id}
                             </div>
-                            <div className="!text-sm !font-body !text-muted-foreground">
+                            <div className="!text-sm !text-muted-foreground">
                                 {data.text}
                             </div>
-                            <div className="!font-body !text-muted-foreground">
+                            <div className=" !text-muted-foreground">
                                 <a className="underline" href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
                             </div>
                         </div> : "",
@@ -280,7 +280,7 @@ const Footer = () => {
                 <Separator className='bg-primary' />
 
                 <div className="flex pt-6 max-tablet:justify-start tablet:justify-center">
-                    <p className="text-sm ultrawide:text-base font-body text-primary-700">
+                    <p className="text-sm ultrawide:text-base text-primary-700">
                         <span className="inline-block scale-x-[-1]">&copy;</span> 2025 Alden Luthfi. All rights reversed.
                     </p>
                 </div>

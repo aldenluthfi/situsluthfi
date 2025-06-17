@@ -141,18 +141,18 @@ const Writings: React.FC = () => {
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-32 ultrawide:mt-48 mb-16">
-                <p className="font-body text-lg tablet:text-2xl text-center">
-                    Here are some of my <span className="text-primary font-body-bold">writings</span>,
+                <p className="text-lg tablet:text-2xl text-center">
+                    Here are some of my <span className="text-primary font-bold">writings</span>,
                     <br/>
                     I usually write about
                 </p>
                 <SlidingTitle
                     text="Education · Computer Science · Philosophy · Arts and Culture · Politics · Mathematics"
                 />
-                <p className="font-body text-lg tablet:text-2xl text-center">
+                <p className="text-lg tablet:text-2xl text-center">
                     and other random stuff
                     <br/>
-                    My <span className="text-primary font-body-bold">opinions</span> are often wrong
+                    My <span className="text-primary font-bold">opinions</span> are often wrong
                 </p>
             </div>
             <div className="w-full max-w-desktop flex flex-col gap-6 pb-24 items-center">

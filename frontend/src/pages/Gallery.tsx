@@ -10,16 +10,16 @@ const Gallery: React.FC = () => {
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
-                <p className="font-body text-lg tablet:text-2xl text-center mb-6">
-                    This is my silly excuse of a <span className="text-primary font-body-bold">gallery</span>, <span />
+                <p className="text-lg tablet:text-2xl text-center mb-6">
+                    This is my silly excuse of a <span className="text-primary font-bold">gallery</span>, <span />
                     <br />
                     here you will find
                 </p>
                 <SlidingTitle text="People · Panoramas · Cultures · Oddities" />
-                <p className="font-body text-lg tablet:text-2xl text-center mt-6">
-                    I have <span className="text-primary font-body-bold">seen</span> in all
+                <p className="text-lg tablet:text-2xl text-center mt-6">
+                    I have <span className="text-primary font-bold">seen</span> in all
                     <br />
-                    of my travels around this <span className="text-primary font-body-bold">blob of dust</span>
+                    of my travels around this <span className="text-primary font-bold">blob of dust</span>
                 </p>
             </div>
             <div className='flex flex-col -space-y-1 justify-center items-center w-full'>

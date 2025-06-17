@@ -116,17 +116,17 @@ const Home: React.FC = () => {
     return (
         <div className="flex flex-col min-h-screen items-center overflow-clip">
             <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
-                <p className="font-body text-lg tablet:text-2xl text-center">
-                    Hello! my name is <span className="text-primary font-body-bold">Luthfi</span>, <span />
+                <p className="text-lg tablet:text-2xl text-center">
+                    Hello! my name is <span className="text-primary font-bold">Luthfi</span>, <span />
                     <br />
-                    but most people call me <span className="text-primary font-body-bold">Upi</span>, I'm a
+                    but most people call me <span className="text-primary font-bold">Upi</span>, I'm a
                 </p>
                 <SlidingTitle
                     text="Humanitarian Activist · Creative Overthinker · Teaching Assistant · Snobby Cinephile · Graphic Designer"
                 />
                 <p
-                    className="font-body text-lg tablet:text-2xl text-center">
-                    and a <span className="text-primary font-body-bold">computer science</span> student
+                    className="text-lg tablet:text-2xl text-center">
+                    and a <span className="text-primary font-bold">computer science</span> student
                     <br />
                     at Universitas Indonesia
                 </p>
@@ -181,10 +181,10 @@ const Home: React.FC = () => {
             </div>
 
             <div className='max-w-desktop pt-20'>
-                <p className="font-body text-lg tablet:text-2xl text-center mt-8">
+                <p className="text-lg tablet:text-2xl text-center mt-8">
                     As you can probably see, I'm a
                     <br />
-                    <span className="text-primary font-body-bold">Jack of all trades</span>, you can have me as
+                    <span className="text-primary font-bold">Jack of all trades</span>, you can have me as
                 </p>
                 <CV showTabs autoPlay className='pb-24'/>
             </div>

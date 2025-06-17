@@ -21,8 +21,9 @@
 }
 
 @font-face {
-    font-family: 'heading-italic';
+    font-family: 'heading';
     src: url('../src/assets/fonts/GreycliffCF-HeavyOblique.otf') format('opentype');
+    font-style: italic;
 }
 
 @font-face {
@@ -31,8 +32,22 @@
 }
 
 @font-face {
-    font-family: 'body-bold';
+    font-family: 'body';
+    src: url('../src/assets/fonts/CastledownPro-Italic.ttf') format('truetype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'body';
     src: url('../src/assets/fonts/CastledownPro-Heavy.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'body';
+    src: url('../src/assets/fonts/CastledownPro-HeavyItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
 }
 
 @font-face {
@@ -49,14 +64,10 @@
 
     --font-heading: 'heading', 'sans-serif';
     --font-heading--font-feature-settings: "ss01", "ss03";
-    --font-heading-italic: 'heading-italic', 'sans-serif';
-    --font-heading-italic--font-feature-settings: "ss01", "ss03";
     --font-code: 'code', 'serif';
     --font-code--font-feature-settings: "ss10", "ss01", "ss04", "cv30", "cv14", "ss07", "cv30", "ss09", "cv12";
     --font-body: 'body', 'sans-serif';
     --font-body--font-feature-settings: "ss02", "ss03";
-    --font-body-bold: 'body-bold', 'sans-serif';
-    --font-body-bold--font-feature-settings: "ss02", "ss03";
 
     --font-sans: var(--font-body);
     --font-sans--font-feature-settings: var(--font-body--font-feature-settings);

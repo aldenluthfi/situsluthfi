@@ -75,9 +75,9 @@ export default function App() {
       <Toaster
         toastOptions={{
           classNames: {
-            title: "!text-base !font-body-bold",
-            description: "!text-sm !font-body !text-muted-foreground",
-            toast: "!select-none !border-accent",
+            title: "!text-base !font-bold",
+            description: "!text-sm !text-muted-foreground",
+            toast: "!select-none !font-body !border-accent",
           }
         }}
       />

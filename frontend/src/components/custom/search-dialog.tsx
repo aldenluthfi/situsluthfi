@@ -286,7 +286,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         )}
                         {searchError && !searchLoading && (
                             <div className="text-foreground overflow-hidden p-1">
-                                <div className="relative flex items-center font-body-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
+                                <div className="relative flex items-center font-bold gap-3 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none opacity-50 pointer-events-none">
                                     {searchError}
                                 </div>
                             </div>
@@ -318,7 +318,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                             }}
                                             data-slot="button"
                                         >
-                                            <div className="flex items-center justify-between font-body-bold gap-4">
+                                            <div className="flex items-center justify-between font-bold gap-4">
                                                 <div className="flex items-center gap-4">
                                                     <Icon className="size-6 shrink-0" stroke={1.5} />
                                                     <span
@@ -351,7 +351,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 {hasMore && (
                                     <div
                                         ref={selectedIndex === searchResults.length ? selectedItemRef : null}
-                                        className={`relative flex items-center font-body text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
+                                        className={`relative flex items-center text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
                                                 ? 'bg-primary-200 text-primary-700'
                                                 : 'text-muted-foreground'
                                             }`}

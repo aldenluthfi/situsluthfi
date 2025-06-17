@@ -89,8 +89,8 @@ const CV: React.FC<CVProps> = ({
         const sections = cvContent.split(/(?=^##)/gm).filter(section => section.trim());
 
         return sections.map(section => {
-            const hasTag = /\[([^\]]+)\]/.test(section);
-            const tagMatch = section.match(/\[([^\]]+)\]/);
+            const hasTag = /\[([^\]]+)\]\s*$/.test(section.trim());
+            const tagMatch = section.match(/\[([^\]]+)\]\s*$/);
 
             const isPersistentSection = section.includes('## Personal Information') ||
                 section.includes('## About Me') ||
@@ -133,7 +133,7 @@ const CV: React.FC<CVProps> = ({
         if (targetType === "full") return true;
 
         const content = getTextContent(children);
-        const tagMatch = content.match(/\[([^\]]+)\]/);
+        const tagMatch = content.match(/\[([^\]]+)\]\s*$/);
         if (!tagMatch) return true;
 
         const tags = tagMatch[1].split('|').map(tag => tag.trim());
@@ -145,14 +145,14 @@ const CV: React.FC<CVProps> = ({
             return children.map((child, index) => {
                 if (typeof child === 'string') {
                     if (index === children.length - 1) {
-                        return child.replace(/\s*\[[^\]]+\]/, '');
+                        return child.replace(/\s*\[[^\]]+\]\s*$/, '');
                     }
                     return child;
                 }
                 return child;
             });
         }
-        return typeof children === 'string' ? children.replace(/\s*\[[^\]]+\]/, '') : children;
+        return typeof children === 'string' ? children.replace(/\s*\[[^\]]+\]\s*$/, '') : children;
     };
 
     const handleTabClick = (newTabIndex: number) => {
@@ -183,9 +183,8 @@ const CV: React.FC<CVProps> = ({
         let skipEntryBlock = false;
         let entryBlockDepth = 0;
 
-        for (let i = 0; i < documentLines.length; i++) {
-            const line = documentLines[i];
-            const tagMatch = line.match(/\[([^\]]+)\]/);
+        for (const line of documentLines) {
+            const tagMatch = line.match(/\[([^\]]+)\]\s*$/);
 
             if (line.includes('\\includegraphics')) {
                 filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]$/g, ''));
@@ -208,7 +207,7 @@ const CV: React.FC<CVProps> = ({
                         continue;
                     }
                 }
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]\s*$/g, ''));
                 continue;
             }
 
@@ -241,7 +240,7 @@ const CV: React.FC<CVProps> = ({
                         }
                     }
                 }
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]\s*$/g, ''));
                 continue;
             }
 
@@ -274,7 +273,7 @@ const CV: React.FC<CVProps> = ({
                         continue;
                     }
                 }
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]\s*$/g, ''));
                 continue;
             }
 
@@ -288,7 +287,7 @@ const CV: React.FC<CVProps> = ({
                     }
                 }
 
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]\s*$/g, ''));
             } else if (skipBlock) {
                 for (const char of line) {
                     if (char === '{') braceDepth++;
@@ -304,7 +303,7 @@ const CV: React.FC<CVProps> = ({
                 if (daftarBraceDepth <= 0) skipDaftar = false;
                 continue;
             } else if (!skipBlock && !skipDaftar && !skipEntryBlock) {
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]/g, ''));
+                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]\s*$/g, ''));
             }
         }
 
@@ -381,7 +380,7 @@ const CV: React.FC<CVProps> = ({
         return processLatexContent
             .replace(/\\definecolor\{background\}\{RGB\}\{[^}]+\}/, `\\definecolor{background}{${colors.background}}`)
             .replace(/\\definecolor\{foreground\}\{RGB\}\{[^}]+\}/, `\\definecolor{foreground}{${colors.foreground}}`)
-            .replace(/\\definecolor\{hightlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{hightlight}{${colors.highlight}}`);
+            .replace(/\\definecolor\{highlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{highlight}{${colors.highlight}}`);
     }, [processLatexContent, getThemeColors]);
 
     const handleVisualModeToggle = () => {
@@ -435,13 +434,13 @@ const CV: React.FC<CVProps> = ({
                     message: "Tailored Resume Generated Successfully!",
                     description: data.fact ? (
                         <div className="flex flex-col space-y-2 pt-2">
-                            <div className="!text-sm !font-body !text-muted-foreground">
+                            <div className="!text-sm !text-muted-foreground">
                                 Fun Fact #{data.fact.id}
                             </div>
-                            <div className="!text-sm !font-body !text-muted-foreground">
+                            <div className="!text-sm !text-muted-foreground">
                                 {data.fact.text}
                             </div>
-                            <div className="!font-body !text-muted-foreground">
+                            <div className="!text-muted-foreground">
                                 <a className="underline" href={data.fact.source} target="_blank" rel="noopener noreferrer" aria-label={data.fact.source}>Source</a>
                             </div>
                         </div>
@@ -451,7 +450,7 @@ const CV: React.FC<CVProps> = ({
                 error: (error) => ({
                     message: "Failed to Generate CV",
                     description: (
-                        <div className="!text-sm !font-body !text-muted-foreground">
+                        <div className="!text-sm !text-muted-foreground">
                             {error instanceof Error ? error.message : "Please try again."}
                         </div>
                     )
@@ -610,7 +609,7 @@ const CV: React.FC<CVProps> = ({
                                         custom={direction}
                                         onAnimationStart={() => setIsAnimating(true)}
                                         onAnimationComplete={() => setIsAnimating(false)}
-                                        className="font-body text-lg tablet:text-2xl text-center"
+                                        className="text-lg tablet:text-2xl text-center"
                                     >
                                         {currentLabel}
                                     </motion.div>
@@ -731,7 +730,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
+                                                                        <h4 {...rest} className="flex italic [&>strong]:font-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </h4>
                                                                     );
@@ -757,7 +756,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-body-bold mt-3 text-sm tablet:text-base desktop:text-lg">
+                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary [&>strong]:font-bold mt-3 text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </p>
                                                                     );
@@ -782,7 +781,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-bold text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </li>
                                                                     );
@@ -821,7 +820,7 @@ const CV: React.FC<CVProps> = ({
                                                                 },
                                                                 th(props) {
                                                                     const { ...rest } = props;
-                                                                    return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
+                                                                    return <TableHead {...rest} className="font-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
                                                                 },
                                                                 td(props) {
                                                                     const { ...rest } = props;
@@ -888,7 +887,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <h4 {...rest} className="flex italic [&>strong]:font-body-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
+                                                                        <h4 {...rest} className="flex italic [&>strong]:font-bold [&>strong]:not-italic [&>strong]:text-foreground [&>strong]:text-base [&>strong]:tablet:text-lg [&>strong]:desktop:text-lg flex-col desktop:flex-row desktop:justify-between w-full mt-3 text-base tablet:text-lg desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </h4>
                                                                     );
@@ -914,7 +913,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary mt-3 [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                        <p {...rest} className="mb-1 tablet:mb-2 desktop:mb-3 [&>strong]:text-primary mt-3 [&>strong]:font-bold text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </p>
                                                                     );
@@ -939,7 +938,7 @@ const CV: React.FC<CVProps> = ({
                                                                     if (!shouldShow) return null;
 
                                                                     return (
-                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-body-bold text-sm tablet:text-base desktop:text-lg">
+                                                                        <li {...rest} className="[&>strong]:text-primary [&>strong]:font-bold text-sm tablet:text-base desktop:text-lg">
                                                                             {cleanChildren}
                                                                         </li>
                                                                     );
@@ -978,7 +977,7 @@ const CV: React.FC<CVProps> = ({
                                                                 },
                                                                 th(props) {
                                                                     const { ...rest } = props;
-                                                                    return <TableHead {...rest} className="font-body-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
+                                                                    return <TableHead {...rest} className="font-bold text-left border-none whitespace-normal align-top">{props.children}</TableHead>;
                                                                 },
                                                                 td(props) {
                                                                     const { ...rest } = props;

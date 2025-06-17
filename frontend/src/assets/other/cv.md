@@ -8,18 +8,18 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Personal Information
 
-|              |   |                                                                                      |
-|--------------|---|--------------------------------------------------------------------------------------|
-| **Domicile** | : | Salemba, Central Jakarta                                                             |
-| **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
-| **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
+ |               |   |                                                                                       | 
+ | -------------- | --- | -------------------------------------------------------------------------------------- | 
+ |  **Domicile** | : | Salemba, Central Jakarta                                                              | 
+ |  **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/)  | 
+ |  **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                      | 
 
 ## Skills
 
-|                |   |                                                                                                                                                                                                                                            |
-|----------------|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                               |
-| **Technology** | : | C, C++, Java, Javascript, Typescript, Rust, Python, Flutter, Elasticsearch, MySQL, PostgreSQL, Docker, Vite, React, Adobe Photoshop, Adobe After Effects, Adobe Illustrator, Adobe Premiere Pro, Figma, Visual Studio Code, Neovim, Matlab |
+ |                 |   |                                                                                                                                                                                                                                                      | 
+ | ---------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | 
+ |  **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                                         | 
+ |  **Technology** | : | Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite  | 
 
 ## Education
 
@@ -32,7 +32,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Work Experience [full | software | tutor]
 
 #### **Faculty of Computer Science UI** [full | software | tutor]
-##### **Coordinator Teaching Assistant of Introduction to Computer Organization** Jan 2025 - Current [full | tutor]
+##### **Coordinator Teaching Assistant of Intro to Computer Organization** Jan 2025 - Current [full | tutor]
 
 - **Supervises** and manages **15 teaching assistants** of the course. [full | tutor]
 - Proof reads and revises all the course materials. [full | tutor]
@@ -54,7 +54,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Is responsible for **teaching** and grading **15 students**. [full | software | tutor]
 - The course focuses on teaching the basics of programming using **Java**, including **object oriented concepts** to help students advance in their understanding of industry standards. [full | software | tutor]
 
-##### **Coordinator Teaching Assistant of Introduction to Digital Systems** Aug 2023 - Dec 2023 [full | tutor]
+##### **Coordinator Teaching Assistant of Intro to Digital Systems** Aug 2023 - Dec 2023 [full | tutor]
 
 - Supervises and **manages** **20 teaching assistants** of the course. [full | tutor]
 - Proof reads and revises all the course materials. [full | tutor]
@@ -84,91 +84,92 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ##### **External Deputy of Social Service Department** Apr 2024 - Dec 2024 [full | humanitarian]
 
 - Responsible for the **external affairs** of the department. [full | humanitarian]
-- Manages a team of 15 staff members. [full | humanitarian]
+- **Manages** a team of **15 staff members**. [full | humanitarian]
 - Supervises and ensures all of our **7 community projects** are running smoothly. [full | humanitarian]
 
-##### **Staff of Media Bureau** Apr 2023 - Jan 2024 [ full | design ]
+##### **Staff of Media Bureau** Apr 2023 - Jan 2024 [full | design]
 
-- Responsible for **creating content** such as **Instagram feeds** and **reels** video editing. [full | design ]
-- Is part of the **public relations** branch of the organization. [full | design ]
+- Responsible for **creating content** such as **Instagram feeds** and **reels** video editing. [full | design]
+- Is part of the **public relations** branch of the organization. [full | design]
 
 #### **RISTEK Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | cybersecurity]
 ##### **Network, Security, and Operating Systems Lead** Mar 2024 - Feb 2025 [full | cybersecurity]
 
 - **Finalist in Gemastik 2024**, the biggest IT competition in Indonesia. [full | cybersecurity]
-- Won a number of local Capture the Flag competitions [full | cybersecurity]
+- **Won** a number of local Capture the Flag **competitions** [full | cybersecurity]
 - **Encourages others** to pursue the same passion in cybersecurity [full | cybersecurity]
 
 ##### **Network, Security, and Operating Systems Member** Mar 2023 - Feb 2024 [full | cybersecurity]
 
-- Trained in numerous competitions and workshops. [full | cybersecurity ]
+- Trained in numerous competitions and workshops. [full | cybersecurity]
 - Developed a passion for **cybersecurity**, especially in **cryptography** [full | cybersecurity]
 
-#### **COMPFEST Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [ full | design ]
-##### **PIC of Human Resources of Creative** Jan 2024 - Mar 2025 [ full ]
+#### **COMPFEST Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design]
+##### **PIC of Human Resources of Creative** Jan 2024 - Mar 2025 [full]
 
-- **Responsible** for a team of **30 PICs and staff members**. [ full ]
-- Held a number of internal bonding activities for the field. [ full ]
+- **Responsible** for a team of **30 PICs and staff members**. [full]
+- Held a number of internal bonding activities for the field. [full]
 
-##### **Expert Staff of Documentation and Animation** Jan 2023 - Dec 2023 [full | design ]
+##### **Expert Staff of Documentation and Animation** Jan 2023 - Dec 2023 [full | design]
 
-- Used **Adobe After Effects** to edit the organization's company profile [full | design ]
+- Used **Adobe After Effects** to edit the organization's company profile [full | design]
 
-#### **Open House Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [ full ]
-##### **PIC of Human Resources** Aug 2023 - Sept 2023 [ full ]
+#### **Open House Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full]
+##### **PIC of Human Resources** Aug 2023 - Sept 2023 [full]
 
-- **Managed** a team of **12 staff members**. [ full ]
-- Introduced a number of **new additions** to the organization's work environment. [ full ]
+- **Managed** a team of **12 staff members**. [full]
+- Introduced a number of **new additions** to the organization's work environment. [full]
 
-#### **Badan Eksekutif Mahasiswa UI** Universitas Indonesia [full | humanitarian ]
+#### **Badan Eksekutif Mahasiswa UI** Universitas Indonesia [full | humanitarian]
 ##### **Social and Community Department Staff** Mar 2023 - Dec 2023 [full | humanitarian]
 
-- Held a **workshop and talkshow** to raise awareness for the **use of sign language** [full | humanitarian ]
+- Held a **workshop and talkshow** to raise awareness for the **use of sign language** [full | humanitarian]
 - Raise **awareness of drug use** in a prison in Jakarta [full | humanitarian]
 - Did **2 week of community service** at the border village of **Mota'ain, Atambua, East Nusa Tenggara** 500m from the border between Indonesia and East Timor [full | humanitarian]
 
-## Projects [full | software | design | cybersecurity]
+## Projects [full | software | design]
+
 #### **aldenluth.fi** 2025 [full | software | design]
 ##### **Personal Portfolio Website with a Lot of Features** *[Repo](https://github.com/aldenluthfi/situsluthfi) | [Website](https://aldenluth.fi/)* [full | software | design]
 
-- 
-- 
-- 
+- Fully working **Search Engine** that can search through all projects and blogs, powered by **Elasticsearch** [full | software | design]
+- Featuring **minimalistic UI** and a UX design that is **responsive**, **customizable** and **accessible**. [full | software | design]
+- Backend is built using **Express.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
 
-#### **TemuSearch** 2025 [full | software ]
+#### **TemuSearch** 2025 [full | software]
 ##### **LLM-Based Movie Search Engine, Powered by Elasticsearh** *[Frontend Repo](https://github.com/aldenluthfi/fe-temu-search-engine) | [Backend Repo](https://github.com/nabilmuafa/be-temu-search-engine)* [full | software]
 
-- 
-- 
-- 
+- Powered by **Elasticsearch** as the **search engine**. [full | software]
+- Uses **Qwen-7B** as the **LLM** to generate a summary of the top results. [full | software]
+- Frontend is built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software]
 
 #### **Malpolys** 2025 [full | software | design]
 ##### **Tower Defense Game built in Godot, Featuring the Dijkstra Algorithm!** *[Repo](https://github.com/aldenluthfi/malpolys) | [itch.io Page](https://kejuwafel.itch.io/malpolys)* [full | software | design]
 
-- 
-- 
-- 
+- Featuring **Procedural Level Generation** utilizing **Dijkstra's Algorithm**. [full | software | design]
+- **Designed** and **developed** the game from scratch, including the **game mechanics**, **level design** and **pixel art**. [full | software | design]
+- Written in **GDScript** using the **Godot Engine**. [full | software | design]
 
-#### **Anemoia** 2025 [full | software ]
-##### **Puzzle Game built in Godot, Made by a Group of Devs** *[Repo](https://github.com/sun-jar/anemoia) | [itch.io Page](https://sunjar.itch.io/anemoia)* [full | software ]
+#### **Anemoia** 2025 [full | software]
+##### **Puzzle Game built in Godot, Made by a Group of Devs** *[Repo](https://github.com/sun-jar/anemoia) | [itch.io Page](https://sunjar.itch.io/anemoia)* [full | software]
 
-- 
-- 
-- 
+- Develops the game with a group of **5 developers**, utilizing with project management tools like **Trello**. [full | software]
+- **Collaborated** to design and develop the game from scratch, including the **game mechanics**, **level design**. [full | software]
+- Written in **GDScript** using the **Godot Engine**. [full | software ]
 
 #### **Fineksi Dashboard** 2025 [full | software | design]
 ##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://github.com/sun-jar/anemoia)* [full | software | design]
 
-- 
-- 
-- 
+- Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
+- Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
+- Backend is built using **Node.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
 
 #### **YouTrend** 2024 [full | software]
 ##### **Graph-Database-Based YouTube Trend Viewer, Powered by Ontotext** *[Repo](https://github.com/pesolosep/Adila-Fans-Club)* [full | software]
 
-- 
-- 
-- 
+- Powered by **Ontotext GraphDB** as the **graph database**. [full | software]
+- More than **200,000 rows** YouTube videos and channels are processed. [full | software]
+- Tracks Trends of the top 1000 YouTube channels in the world. [full | software]
 
 ## Awards [full | cybersecurity]
 

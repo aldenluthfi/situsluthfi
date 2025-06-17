@@ -15,13 +15,13 @@
 
 \definecolor{background}{RGB}{24, 24, 27}
 \definecolor{foreground}{RGB}{250, 250, 250}
-\definecolor{hightlight}{RGB}{235, 179, 5}
+\definecolor{highlight}{RGB}{235, 179, 5}
 
 \pagenumbering{gobble}
 
 \hypersetup{
     colorlinks = true,
-    urlcolor = foreground,
+    urlcolor = highlight,
 }
 
 \hyphenpenalty=10000
@@ -50,6 +50,7 @@
     \setmainfont[
         Path=../fonts/,
         BoldFont={CastledownPro-Heavy.ttf},
+        BoldItalicFont={CastledownPro-HeavyItalic.ttf}, 
     ]{CastledownPro-Regular.ttf}
 }
 
@@ -92,7 +93,7 @@
 }
 
 \newcommand{\tekan}[1]{
-    \unskip\color{hightlight}#1\color{foreground}\xspace
+    \unskip\color{highlight}#1\color{foreground}\xspace
 }
 
 \ExplSyntaxOn
@@ -120,6 +121,7 @@
     \setmainfont[
         Path=../fonts/,
         BoldFont={CastledownPro-Heavy.ttf},
+        BoldItalicFont={CastledownPro-HeavyItalic.ttf},
     ]{CastledownPro-Regular.ttf}
 
     (+62) 8118-0000-93 | hi@aldenluth.fi
@@ -161,8 +163,8 @@
     {Languages}
     {Indonesian (Native), English (Full Professional Proficiency)}
     \rincian
-    {Technology Mastered}
-    {C, C++, Java, Javascript, Typescript, Rust, Python, Flutter, Elasticsearch, MySQL, PostgreSQL, Docker, Vite, React, Adobe Photoshop, Adobe After Effects, Adobe Illustrator, Adobe Premiere Pro, Figma, Visual Studio Code, Neovim, Matlab}
+    {Technology}
+    {Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite}
 }
 \vspace{-7.5pt}
 
@@ -185,7 +187,7 @@
 \entri [full|software|tutor]
 {Faculty of Computer Science UI} [full|software|tutor]
 {} [full|software|tutor]
-{Coordinator Teaching Assistant of Introduction to Computer Organization} [full|tutor]
+{Coordinator Teaching Assistant of Intro to Computer Organization} [full|tutor]
 {Jan 2025 - Current} [full|tutor]
 \daftar{ [full|tutor]
     \butir{$\Sigma$}{\tekan{Supervises} and manages \tekan{15 teaching assistants} of the course.}
@@ -215,7 +217,7 @@
     \butir{$\Pi$}{The course focuses on teaching the basics of programming using \tekan{Java}, including \tekan{object oriented concepts} to help students advance in their understanding of industry standards.}
 }
 \entriTanpaJudul [full|tutor]
-{Coordinator Teaching Assistant of Introduction to Digital Systems} [full|tutor]
+{Coordinator Teaching Assistant of Intro to Digital Systems} [full|tutor]
 {Aug 2023 - Dec 2023} [full|tutor]
 \daftar{ [full|tutor]
     \butir{$\Delta$}{Supervises and \tekan{manages} \tekan{20 teaching assistants} of the course.}
@@ -299,7 +301,7 @@
 {Expert Staff of Documentation and Animation} [full|design]
 {Jan 2023 - Dec 2023} [full|design]
 \daftar{ [full|design]
-    \butir{$\mathbb{C}$}{Used \tekan{Adobe After Effects} to edit the organization's company profle}
+    \butir{$\mathbb{C}$}{Used \tekan{Adobe After Effects} to edit the organization's company profile}
 }
 \entri [full]
 {Open House Fakultas Ilmu Komputer UI} [full]
@@ -321,6 +323,70 @@
     \butir{$\mathbb{P}$}{Did \tekan{2 week of community service} at the border village of \tekan{Mota'ain, Atambua, East Nusa Tenggara} 500m from the border between Indonesia and East Timor}
 }
 \vspace{-7.5pt} [full|humanitarian|design|cybersecurity]
+
+\bagian{Projects} [full|software|design]
+\vspace{-15pt} [full|software|design]
+\entri [full|software|design]
+{aldenluth.fi} [full|software|design]
+{2025} [full|software|design]
+{Personal Portfolio Website with a Lot of Features} [full|software|design]
+{\href{https://github.com/aldenluthfi/situsluthfi}{Repo} | \href{https://aldenluth.fi/}{Website}} [full|software|design]
+\daftar{ [full|software|design]
+    \butir{$\alpha$}{Fully working \tekan{Search Engine} that can search through all projects and blogs, powered by \tekan{Elasticsearch}}
+    \butir{$\alpha$}{Featuring \tekan{minimalistic UI} and a UX design that is \tekan{responsive}, \tekan{customizable} and \tekan{accessible}.}
+    \butir{$\alpha$}{Backend is built using \tekan{Express.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and \tekan{Docker}.}
+}
+\entri [full|software]
+{TemuSearch} [full|software]
+{2025} [full|software]
+{LLM-Based Movie Search Engine, Powered by Elasticsearch} [full|software]
+{\href{https://github.com/aldenluthfi/fe-temu-search-engine}{Frontend Repo} | \href{https://github.com/nabilmuafa/be-temu-search-engine}{Backend Repo}} [full|software]
+\daftar{ [full|software]
+    \butir{$\beta$}{Powered by \tekan{Elasticsearch} as the \tekan{search engine}.}
+    \butir{$\beta$}{Uses \tekan{Qwen-7B} as the \tekan{LLM} to generate a summary of the top results.}
+    \butir{$\beta$}{Frontend is built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
+}
+\entri [full|software|design]
+{Malpolys} [full|software|design]
+{2025} [full|software|design]
+{Tower Defense Game built in Godot, Featuring the Dijkstra Algorithm!} [full|software|design]
+{\href{https://github.com/aldenluthfi/malpolys}{Repo} | \href{https://kejuwafel.itch.io/malpolys}{itch.io Page}} [full|software|design]
+\daftar{ [full|software|design]
+    \butir{$\gamma$}{Featuring \tekan{Procedural Level Generation} utilizing \tekan{Dijkstra's Algorithm}.}
+    \butir{$\gamma$}{\tekan{Designed} and \tekan{developed} the game from scratch, including the \tekan{game mechanics}, \tekan{level design} and \tekan{pixel art}.}
+    \butir{$\gamma$}{Written in \tekan{GDScript} using the \tekan{Godot Engine}.}
+}
+\entri [full|software]
+{Anemoia} [full|software]
+{2025} [full|software]
+{Puzzle Game built in Godot, Made by a Group of Devs} [full|software]
+{\href{https://github.com/sun-jar/anemoia}{Repo} | \href{https://sunjar.itch.io/anemoia}{itch.io Page}} [full|software]
+\daftar{ [full|software]
+    \butir{$\delta$}{Develops the game with a group of \tekan{5 developers}, utilizing with project management tools like \tekan{Trello}.}
+    \butir{$\delta$}{\tekan{Collaborated} to design and develop the game from scratch, including the \tekan{game mechanics}, \tekan{level design}.}
+    \butir{$\delta$}{Written in \tekan{GDScript} using the \tekan{Godot Engine}.}
+}
+\entri [full|software|design]
+{Fineksi Dashboard} [full|software|design]
+{2025} [full|software|design]
+{A Dashboard for Fineksi, a Financial Management Company} [full|software|design]
+{\href{https://github.com/sun-jar/anemoia}{Demo Video}} [full|software|design]
+\daftar{ [full|software|design]
+    \butir{$\epsilon$}{Built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
+    \butir{$\epsilon$}{Features a \tekan{dashboard} with \tekan{charts} and \tekan{tables} to display financial data, with components based on \tekan{shadcn/ui}.}
+    \butir{$\epsilon$}{Backend is built using \tekan{Node.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and \tekan{Docker}.}
+}
+\entri [full|software]
+{YouTrend} [full|software]
+{2024} [full|software]
+{Graph-Database-Based YouTube Trend Viewer, Powered by Ontotext} [full|software]
+{\href{https://github.com/pesolosep/Adila-Fans-Club}{Repo}} [full|software]
+\daftar{ [full|software]
+    \butir{$\zeta$}{Powered by \tekan{Ontotext GraphDB} as the \tekan{graph database}.}
+    \butir{$\zeta$}{More than \tekan{200,000 rows} YouTube videos and channels are processed.}
+    \butir{$\zeta$}{Tracks Trends of the top 1000 YouTube channels in the world.}
+}
+\vspace{-7.5pt} [full|software|design]
 
 \bagian{Awards} [full|cybersecurity]
 \vspace{-15pt} [full|cybersecurity]
