@@ -47,8 +47,9 @@
     \rule{\textwidth}{0.5pt}
     \setmainfont[
         Path=../fonts/,
+        ItalicFont={CastledownPro-Italic.ttf},
         BoldFont={CastledownPro-Heavy.ttf},
-        BoldItalicFont={CastledownPro-HeavyItalic.ttf}, 
+        BoldItalicFont={CastledownPro-HeavyItalic.ttf},
     ]{CastledownPro-Regular.ttf}
 }
 
@@ -68,7 +69,7 @@
     \par
     \vspace{+5pt}
     \noindent
-    \normalsize{\textbf{#1}} \hfill #2 \\
+    \normalsize{\textbf{#1}} \hfill \textit{#2} \\
     {\textbf{\small{#3}} \hfill \small{#4}}
     \par
 }
@@ -91,7 +92,7 @@
 }
 
 \newcommand{\tekan}[1]{
-    \unskip\color{highlight}#1\color{foreground}\xspace
+    \unskip\color{highlight}\textbf{#1}\color{foreground}\xspace
 }
 
 \ExplSyntaxOn
@@ -118,6 +119,7 @@
     \vspace{+5pt}
     \setmainfont[
         Path=../fonts/,
+        ItalicFont={CastledownPro-Italic.ttf},
         BoldFont={CastledownPro-Heavy.ttf},
         BoldItalicFont={CastledownPro-HeavyItalic.ttf},
     ]{CastledownPro-Regular.ttf}

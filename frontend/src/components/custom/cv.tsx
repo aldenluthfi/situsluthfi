@@ -633,7 +633,7 @@ const CV: React.FC<CVProps> = ({
             if (!shouldShow) return null;
 
             return (
-                <h4 {...rest} className="flex [&>em]:not-italic [&>strong]:text-foreground [&>strong]:font-normal flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
+                <h4 {...rest} className="flex [&>em]:not-italic [&>strong]:text-foreground flex-col desktop:flex-row desktop:justify-between w-full mb-0.5 tablet:mb-1 text-sm tablet:text-base desktop:text-lg">
                     {cleanChildren}
                 </h4>
             );
