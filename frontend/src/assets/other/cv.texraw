@@ -370,7 +370,7 @@
 {Fineksi Dashboard} [full|software|design]
 {2025} [full|software|design]
 {A Dashboard for Fineksi, a Financial Management Company} [full|software|design]
-{\href{https://github.com/sun-jar/anemoia}{Demo Video}} [full|software|design]
+{\href{https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh}{Demo Video}} [full|software|design]
 \daftar{ [full|software|design]
     \butir{$\epsilon$}{Built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
     \butir{$\epsilon$}{Features a \tekan{dashboard} with \tekan{charts} and \tekan{tables} to display financial data, with components based on \tekan{shadcn/ui}.}

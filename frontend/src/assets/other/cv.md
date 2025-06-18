@@ -158,7 +158,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Written in **GDScript** using the **Godot Engine**. [full | software ]
 
 #### **Fineksi Dashboard** 2025 [full | software | design]
-##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://github.com/sun-jar/anemoia)* [full | software | design]
+##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh)* [full | software | design]
 
 - Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
 - Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
