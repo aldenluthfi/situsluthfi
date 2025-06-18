@@ -1,6 +1,6 @@
 \documentclass[9pt]{extarticle}
 
-\usepackage[a4paper, total={16.5cm, 25cm}]{geometry}
+\usepackage[a4paper, total={18.5cm, 27cm}]{geometry}
 \usepackage[bf]{titlesec}
 \usepackage{fontspec}
 \usepackage{tabularx}
@@ -8,9 +8,7 @@
 \usepackage{amssymb}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{wrapfig}
 \usepackage{pagecolor}
-\usepackage{graphicx}
 \usepackage{xspace}
 
 \definecolor{background}{RGB}{24, 24, 27}
@@ -129,10 +127,6 @@
 \end{center}
 
 \bagian{About Me}
-\begin{wrapfigure}{l}{1.75cm}
-    \vspace{-12pt}
-    \includegraphics[width=1.8cm]{../images/solo2.png}
-\end{wrapfigure}
 \small{
     \indent A dependable \tekan{hard worker} with a passion in education and technology. I'm a \tekan{problem solver}, a thoughtful and \tekan{creative} humanitarian who will always find a way to improve whatever thing I'm working on. A calculative and tactful logician yet a \tekan{public speaker} who speaks from the heart. A one of a kind, \tekan{jack of all trades} with great team work and \tekan{leadership skills}. But most important of all, a human being who \tekan{love and is eager to learn}. My interests include education, mathematics, community service, graphic and UI/UX design, cyber security, cryptography, logic, and all things computer science!}
 \vspace{-5pt}
@@ -356,16 +350,6 @@
     \butir{$\gamma$}{\tekan{Designed} and \tekan{developed} the game from scratch, including the \tekan{game mechanics}, \tekan{level design} and \tekan{pixel art}.}
     \butir{$\gamma$}{Written in \tekan{GDScript} using the \tekan{Godot Engine}.}
 }
-\entri [full|software]
-{Anemoia} [full|software]
-{2025} [full|software]
-{Puzzle Game built in Godot, Made by a Group of Devs} [full|software]
-{\href{https://github.com/sun-jar/anemoia}{Repo} | \href{https://sunjar.itch.io/anemoia}{itch.io Page}} [full|software]
-\daftar{ [full|software]
-    \butir{$\delta$}{Develops the game with a group of \tekan{5 developers}, utilizing with project management tools like \tekan{Trello}.}
-    \butir{$\delta$}{\tekan{Collaborated} to design and develop the game from scratch, including the \tekan{game mechanics}, \tekan{level design}.}
-    \butir{$\delta$}{Written in \tekan{GDScript} using the \tekan{Godot Engine}.}
-}
 \entri [full|software|design]
 {Fineksi Dashboard} [full|software|design]
 {2025} [full|software|design]
@@ -375,16 +359,6 @@
     \butir{$\epsilon$}{Built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
     \butir{$\epsilon$}{Features a \tekan{dashboard} with \tekan{charts} and \tekan{tables} to display financial data, with components based on \tekan{shadcn/ui}.}
     \butir{$\epsilon$}{Backend is built using \tekan{Node.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and \tekan{Docker}.}
-}
-\entri [full|software]
-{YouTrend} [full|software]
-{2024} [full|software]
-{Graph-Database-Based YouTube Trend Viewer, Powered by Ontotext} [full|software]
-{\href{https://github.com/pesolosep/Adila-Fans-Club}{Repo}} [full|software]
-\daftar{ [full|software]
-    \butir{$\zeta$}{Powered by \tekan{Ontotext GraphDB} as the \tekan{graph database}.}
-    \butir{$\zeta$}{More than \tekan{200,000 rows} YouTube videos and channels are processed.}
-    \butir{$\zeta$}{Tracks Trends of the top 1000 YouTube channels in the world.}
 }
 \vspace{-7.5pt} [full|software|design]
 
@@ -416,6 +390,12 @@
 {May 2025} [full|humanitarian]
 \entri [full|humanitarian]
 {Indonesian Sign Language Certification} [full|humanitarian]
+{Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
+{\normalfont{Level 1}} [full|humanitarian]
+{December 2024} [full|humanitarian]
+\vspace{-7.5pt} [full|humanitarian]
+
+\end{document}
 {Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
 {\normalfont{Level 1}} [full|humanitarian]
 {December 2024} [full|humanitarian]

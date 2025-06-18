@@ -4,8 +4,8 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     default-mysql-client \
-    texlive-xetex \
     texlive-latex-extra \
+    texlive-xetex \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
@@ -16,7 +16,6 @@ COPY . .
 RUN mkdir -p /app/assets/fonts /app/assets/images
 
 COPY assets/fonts/ /app/assets/fonts/
-COPY assets/images/ /app/assets/images/
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY init-db.sh /init-db.sh

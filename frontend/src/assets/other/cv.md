@@ -150,26 +150,12 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - **Designed** and **developed** the game from scratch, including the **game mechanics**, **level design** and **pixel art**. [full | software | design]
 - Written in **GDScript** using the **Godot Engine**. [full | software | design]
 
-#### **Anemoia** 2025 [full | software]
-##### **Puzzle Game built in Godot, Made by a Group of Devs** *[Repo](https://github.com/sun-jar/anemoia) | [itch.io Page](https://sunjar.itch.io/anemoia)* [full | software]
-
-- Develops the game with a group of **5 developers**, utilizing with project management tools like **Trello**. [full | software]
-- **Collaborated** to design and develop the game from scratch, including the **game mechanics**, **level design**. [full | software]
-- Written in **GDScript** using the **Godot Engine**. [full | software ]
-
 #### **Fineksi Dashboard** 2025 [full | software | design]
 ##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh)* [full | software | design]
 
 - Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
 - Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
 - Backend is built using **Node.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
-
-#### **YouTrend** 2024 [full | software]
-##### **Graph-Database-Based YouTube Trend Viewer, Powered by Ontotext** *[Repo](https://github.com/pesolosep/Adila-Fans-Club)* [full | software]
-
-- Powered by **Ontotext GraphDB** as the **graph database**. [full | software]
-- More than **200,000 rows** YouTube videos and channels are processed. [full | software]
-- Tracks Trends of the top 1000 YouTube channels in the world. [full | software]
 
 ## Awards [full | cybersecurity]
 

@@ -186,11 +186,6 @@ const CV: React.FC<CVProps> = ({
         for (const line of documentLines) {
             const tagMatch = line.match(/\[([^\]]+)\]\s*$/);
 
-            if (line.includes('\\includegraphics')) {
-                filteredDocumentLines.push(line.replace(/\s*\[[^\]]+\]$/g, ''));
-                continue;
-            }
-
             if (line.includes('\\daftar{')) {
                 if (tagMatch && currentType !== "full") {
                     const tags = tagMatch[1].split('|').map(tag => tag.trim());
