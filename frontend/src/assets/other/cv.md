@@ -16,10 +16,10 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Skills
 
- |                 |   |                                                                                                                                                                                                                                                      | 
- | ---------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | 
- |  **Languages**  | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                                         | 
- |  **Technology** | : | Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite  | 
+ |                  |   |                                                                                                                                                                                                                                                     |
+ |------------------|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | **Languages**    | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                                        |
+ | **Technologies** | : | Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite |
 
 ## Education
 

@@ -424,9 +424,9 @@ const CV: React.FC<CVProps> = ({
                 return { success: true, fact };
             })(),
             {
-                loading: "Generating Tailored Resume...",
+                loading: `Generating ${type === 'full' ? "Full" : "Tailored"} Resume...`,
                 success: (data) => ({
-                    message: "Tailored Resume Generated Successfully!",
+                    message: `${type === 'full' ? "Full" : "Tailored"} Resume Generated Successfully!`,
                     description: data.fact ? (
                         <div className="flex flex-col space-y-2 pt-2">
                             <div className="!text-sm !text-muted-foreground">
@@ -443,7 +443,7 @@ const CV: React.FC<CVProps> = ({
                     icon: null
                 }),
                 error: (error) => ({
-                    message: "Failed to Generate CV",
+                    message: "Failed to Generate Resume",
                     description: (
                         <div className="!text-sm !text-muted-foreground">
                             {error instanceof Error ? error.message : "Please try again."}
