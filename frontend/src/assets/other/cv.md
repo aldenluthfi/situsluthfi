@@ -155,7 +155,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 - Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
 - Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
-- Backend is built using **Node.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
+- Backend is built using **Node.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and static analysis tools like **SonarQube**. [full | software | design]
 
 ## Awards [full | cybersecurity]
 

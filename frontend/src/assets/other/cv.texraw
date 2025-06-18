@@ -360,7 +360,7 @@
 \daftar{ [full|software|design]
     \butir{$\epsilon$}{Built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
     \butir{$\epsilon$}{Features a \tekan{dashboard} with \tekan{charts} and \tekan{tables} to display financial data, with components based on \tekan{shadcn/ui}.}
-    \butir{$\epsilon$}{Backend is built using \tekan{Node.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and \tekan{Docker}.}
+    \butir{$\epsilon$}{Backend is built using \tekan{Node.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and static analysis tools like \tekan{SonarQube}.}
 }
 \vspace{-7.5pt} [full|software|design]
 
