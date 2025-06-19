@@ -53,14 +53,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                                 className="h-full bg-primary rounded-full"
                                 initial={{ width: "0%" }}
                                 animate={{ width: `${Math.min(progress, 100)}%` }}
-                                transition={{ duration: 0.2, ease: "easeOut" }}
+                                transition={{ duration: 0.1, ease: "easeOut" }}
                             />
                         </div>
 
                         <motion.p
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.5 }}
+                            transition={{ delay: 0.2, duration: 0.2 }}
                             className="text-sm tablet:text-base text-muted-foreground"
                         >
                             {showComplete ? "Ready!" : "Loading..."}
