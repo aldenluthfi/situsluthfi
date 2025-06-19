@@ -50,15 +50,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                     className="fixed inset-0 bg-background z-[9999] flex flex-col items-center justify-center"
                 >
                     <div className="flex flex-col items-center space-y-8">
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="text-4xl tablet:text-6xl font-heading"
-                        >
-                            aldenluth.fi
-                        </motion.div>
-
                         <div className="w-64 tablet:w-80 h-2 bg-muted rounded-full overflow-hidden">
                             <motion.div
                                 className="h-full bg-primary rounded-full"
