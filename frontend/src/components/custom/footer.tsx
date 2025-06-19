@@ -5,6 +5,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { toast } from "sonner";
 import { useState } from 'react';
 import { isMobile } from "@/lib/utils";
+import { motion, AnimatePresence } from "motion/react";
 
 import {
     IconMail,
@@ -143,16 +144,102 @@ const Footer = () => {
                             <li className="flex max-tablet:flex-row-reverse gap-3">
                                 {(() => {
                                     if (!isMobile) {
-                                        if (showLinks) {
-                                            return (
-                                                <>
-                                                    {links.map(link => (
-                                                        <Tooltip key={link.name}>
-                                                            <TooltipTrigger>
+                                        return (
+                                            <>
+                                                <AnimatePresence>
+                                                    {showLinks && (
+                                                        <motion.div
+                                                            initial={{ width: 0, opacity: 0 }}
+                                                            animate={{ width: "auto", opacity: 1 }}
+                                                            exit={{ width: 0, opacity: 0 }}
+                                                            transition={{
+                                                                width: {
+                                                                    duration: 0.25,
+                                                                    type: "tween",
+                                                                },
+                                                                opacity: { duration: 0.3 }
+                                                            }}
+                                                            className="flex gap-3 overflow-hidden"
+                                                        >
+                                                            {links.map(link => (
+                                                                <Tooltip key={link.name}>
+                                                                    <TooltipTrigger>
+                                                                        <Button
+                                                                            asChild
+                                                                            variant="ghost"
+                                                                            size="icon"
+                                                                            aria-label={link.name}
+                                                                            title={link.name}
+                                                                        >
+                                                                            <a
+                                                                                href={link.url}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                aria-label={link.name}
+                                                                                title={link.name}
+                                                                            >
+                                                                                {iconMap[link.icon]}
+                                                                            </a>
+                                                                        </Button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>{link.name}</TooltipContent>
+                                                                </Tooltip>
+                                                            ))}
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                                {showLinks ? (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={handleLinksClose}
+                                                        aria-label="Close"
+                                                        title="Close"
+                                                    >
+                                                        {iconMap["x"]}
+                                                    </Button>
+                                                ) : (
+                                                    <Tooltip>
+                                                        <TooltipTrigger>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size={"icon"}
+                                                                onClick={handleLinksClick}
+                                                                aria-label="Links"
+                                                                title="Links"
+                                                            >
+                                                                {iconMap["link"]}
+                                                            </Button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>Links</TooltipContent>
+                                                    </Tooltip>
+                                                )}
+                                            </>
+                                        );
+                                    } else {
+                                        return (
+                                            <>
+                                                <AnimatePresence>
+                                                    {showLinks && (
+                                                        <motion.div
+                                                            initial={{ width: 0, opacity: 0 }}
+                                                            animate={{ width: "auto", opacity: 1 }}
+                                                            exit={{ width: 0, opacity: 0 }}
+                                                            transition={{
+                                                                width: {
+                                                                    duration: 0.25,
+                                                                    type: "tween",
+                                                                },
+                                                                opacity: { duration: 0.3 }
+                                                            }}
+                                                            className="flex gap-3 overflow-hidden"
+                                                        >
+                                                            {links.map(link => (
                                                                 <Button
                                                                     asChild
                                                                     variant="ghost"
-                                                                    size="icon"
+                                                                    size={"icon"}
+                                                                    key={link.name}
                                                                     aria-label={link.name}
                                                                     title={link.name}
                                                                 >
@@ -166,10 +253,11 @@ const Footer = () => {
                                                                         {iconMap[link.icon]}
                                                                     </a>
                                                                 </Button>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent>{link.name}</TooltipContent>
-                                                        </Tooltip>
-                                                    ))}
+                                                            ))}
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                                {showLinks ? (
                                                     <Button
                                                         variant="ghost"
                                                         size="icon"
@@ -179,71 +267,18 @@ const Footer = () => {
                                                     >
                                                         {iconMap["x"]}
                                                     </Button>
-                                                </>
-                                            );
-                                        } else {
-                                            return (
-                                                <Tooltip>
-                                                    <TooltipTrigger>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size={"icon"}
-                                                            onClick={handleLinksClick}
-                                                            aria-label="Links"
-                                                            title="Links"
-                                                        >
-                                                            {iconMap["link"]}
-                                                        </Button>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>Links</TooltipContent>
-                                                </Tooltip>
-                                            );
-                                        }
-                                    } else if (showLinks) {
-                                        return (
-                                            <>
-                                                {links.map(link => (
+                                                ) : (
                                                     <Button
-                                                        asChild
                                                         variant="ghost"
                                                         size={"icon"}
-                                                        key={link.name}
-                                                        aria-label={link.name}
-                                                        title={link.name}
+                                                        onClick={handleLinksClick}
+                                                        aria-label="Links"
+                                                        title="Links"
                                                     >
-                                                        <a
-                                                            href={link.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            aria-label={link.name}
-                                                            title={link.name}
-                                                        >
-                                                            {iconMap[link.icon]}
-                                                        </a>
+                                                        {iconMap["link"]}
                                                     </Button>
-                                                ))}
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={handleLinksClose}
-                                                    aria-label="Close"
-                                                    title="Close"
-                                                >
-                                                    {iconMap["x"]}
-                                                </Button>
+                                                )}
                                             </>
-                                        );
-                                    } else {
-                                        return (
-                                            <Button
-                                                variant="ghost"
-                                                size={"icon"}
-                                                onClick={handleLinksClick}
-                                                aria-label="Links"
-                                                title="Links"
-                                            >
-                                                {iconMap["link"]}
-                                            </Button>
                                         );
                                     }
                                 })()}

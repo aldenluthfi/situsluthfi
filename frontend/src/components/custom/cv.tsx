@@ -508,7 +508,7 @@ const CV: React.FC<CVProps> = ({
             opacity: 1,
             filter: "blur(0px)",
             transition: {
-                height: { duration: 0.2, ease: "easeInOut", bounce: 0.2 },
+                height: { duration: 0.2, type: "spring", ease: "easeInOut", bounce: 0.2 },
                 x: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
                 opacity: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
                 filter: { duration: 0.4, type: "spring", bounce: 0.2, delay: 0.1, ease: "easeOut" },
@@ -523,7 +523,7 @@ const CV: React.FC<CVProps> = ({
                 x: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
                 opacity: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
                 filter: { duration: 0.4, type: "spring", bounce: 0.2, ease: "easeIn" },
-                height: { duration: 0.2, ease: "easeInOut", delay: 0.3, bounce: 0.2 },
+                height: { duration: 0.2, type: "tween", ease: "easeInOut", delay: 0.3, bounce: 0.2 },
             }
         }),
     };
@@ -541,7 +541,7 @@ const CV: React.FC<CVProps> = ({
             transition: {
                 height: { duration: 0.15, ease: "easeInOut", bounce: 0.2 },
                 y: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05, ease: "easeOut" },
-                opacity: { duration: 0.3, type: "spring", bounce: 0.1, delay: 0.05, ease: "easeOut" },
+                opacity: { duration: 0.3, type: "tween", bounce: 0.2, delay: 0.05, ease: "easeOut" },
             }
         },
         exit: (direction: number) => ({
