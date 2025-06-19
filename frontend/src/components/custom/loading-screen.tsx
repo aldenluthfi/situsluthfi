@@ -14,10 +14,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
         if (!isLoading && !showComplete) {
             setProgress(100);
             setShowComplete(true);
-            console.log("Loading complete, showing completion state");
 
             const timer = setTimeout(() => {
-                console.log("Calling onLoadingComplete after delay");
                 onLoadingComplete();
             }, 600);
 
