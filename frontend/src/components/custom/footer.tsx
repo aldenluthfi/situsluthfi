@@ -5,7 +5,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { toast } from "sonner";
 import { useState } from 'react';
 import { isMobile } from "@/lib/utils";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, delay } from "motion/react";
 
 import {
     IconMail,
@@ -151,13 +151,28 @@ const Footer = () => {
                                                         <motion.div
                                                             initial={{ width: 0, opacity: 0 }}
                                                             animate={{ width: "auto", opacity: 1 }}
-                                                            exit={{ width: 0, opacity: 0 }}
+                                                            exit={{
+                                                                width: 0,
+                                                                opacity: 0,
+                                                                transition: {
+                                                                    width: {
+                                                                        duration: 0.1,
+                                                                        type: "tween",
+                                                                        delay: 0.1
+                                                                    },
+                                                                    opacity: {
+                                                                        duration: 0.1,
+                                                                        delay: 0.1
+
+                                                                    }
+                                                                }
+                                                            }}
                                                             transition={{
                                                                 width: {
-                                                                    duration: 0.25,
-                                                                    type: "tween",
+                                                                    duration: 0.3,
+                                                                    type: "spring",
                                                                 },
-                                                                opacity: { duration: 0.3 }
+                                                                opacity: { duration: 0.1 }
                                                             }}
                                                             className="flex gap-3 overflow-hidden"
                                                         >
@@ -224,13 +239,28 @@ const Footer = () => {
                                                         <motion.div
                                                             initial={{ width: 0, opacity: 0 }}
                                                             animate={{ width: "auto", opacity: 1 }}
-                                                            exit={{ width: 0, opacity: 0 }}
+                                                            exit={{
+                                                                width: 0,
+                                                                opacity: 0,
+                                                               transition: {
+                                                                    width: {
+                                                                        duration: 0.1,
+                                                                        type: "tween",
+                                                                        delay: 0.1
+                                                                    },
+                                                                    opacity: {
+                                                                        duration: 0.1,
+                                                                        delay: 0.1
+
+                                                                    }
+                                                                }
+                                                            }}
                                                             transition={{
                                                                 width: {
-                                                                    duration: 0.25,
-                                                                    type: "tween",
+                                                                    duration: 0.3,
+                                                                    type: "spring"
                                                                 },
-                                                                opacity: { duration: 0.3 }
+                                                                opacity: { duration: 0.1 }
                                                             }}
                                                             className="flex gap-3 overflow-hidden"
                                                         >
