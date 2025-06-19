@@ -11,28 +11,32 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
     const [showComplete, setShowComplete] = useState(false);
 
     useEffect(() => {
-        if (!isLoading && progress < 100) {
+        if (!isLoading && !showComplete) {
             setProgress(100);
             setShowComplete(true);
+            console.log("Loading complete, showing completion state");
 
             const timer = setTimeout(() => {
+                console.log("Calling onLoadingComplete after delay");
                 onLoadingComplete();
-            }, 800);
+            }, 600);
 
             return () => clearTimeout(timer);
         }
-    }, [isLoading, progress, onLoadingComplete]);
+    }, [isLoading, onLoadingComplete]);
 
     useEffect(() => {
         if (isLoading) {
             const interval = setInterval(() => {
                 setProgress(prev => {
-                    if (prev >= 90) return prev;
-                    return prev + Math.random() * 15;
+                    if (prev >= 85) return prev;
+                    return prev + Math.random() * 12;
                 });
-            }, 200);
+            }, 150);
 
             return () => clearInterval(interval);
+        } else {
+            setProgress(100);
         }
     }, [isLoading]);
 
@@ -42,7 +46,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
                     className="fixed inset-0 bg-background z-[9999] flex flex-col items-center justify-center"
                 >
                     <div className="flex flex-col items-center space-y-8">
@@ -50,7 +54,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="text-4xl tablet:text-6xl font-heading text-primary"
+                            className="text-4xl tablet:text-6xl font-heading"
                         >
                             aldenluth.fi
                         </motion.div>
@@ -60,7 +64,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                                 className="h-full bg-primary rounded-full"
                                 initial={{ width: "0%" }}
                                 animate={{ width: `${Math.min(progress, 100)}%` }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                transition={{ duration: 0.2, ease: "easeOut" }}
                             />
                         </div>
 
@@ -73,15 +77,6 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, onLoadingCompl
                             {showComplete ? "Ready!" : "Loading..."}
                         </motion.p>
                     </div>
-
-                    <motion.div
-                        className="absolute bottom-8 text-xs text-muted-foreground"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 0.5 }}
-                    >
-                        Please wait while we prepare everything for you
-                    </motion.div>
                 </motion.div>
             )}
         </AnimatePresence>
