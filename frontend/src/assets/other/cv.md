@@ -8,11 +8,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Personal Information
 
- |               |   |                                                                                       | 
- | -------------- | --- | -------------------------------------------------------------------------------------- | 
- |  **Domicile** | : | Salemba, Central Jakarta                                                              | 
- |  **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/)  | 
- |  **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                      | 
+ |              |   |                                                                                      |
+ |--------------|---|--------------------------------------------------------------------------------------|
+ | **Domicile** | : | Salemba, Central Jakarta                                                             |
+ | **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
+ | **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
 
 ## Skills
 
