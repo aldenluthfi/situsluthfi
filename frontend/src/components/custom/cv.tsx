@@ -293,7 +293,6 @@ const CV: React.FC<CVProps> = ({
     const themedLatexContent = useMemo(() => {
         const effectiveMode = mode === 'timezone' ? (isDarkMode ? 'dark' : 'light') : mode;
         const colorToUse = mode === 'timezone' ? currentColor : theme;
-        console.log(`Effective Mode: ${effectiveMode}, Color: ${colorToUse}`);
 
         const backgroundColor = effectiveMode === 'dark' ? 'RGB}{24, 24, 27' : 'RGB}{250, 250, 250';
         const foregroundColor = effectiveMode === 'dark' ? 'RGB}{250, 250, 250' : 'RGB}{24, 24, 27';
