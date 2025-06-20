@@ -17,10 +17,13 @@ function PopoverTrigger({
 
 function PopoverContent({
     className,
+    arrowClassName,
     align = "center",
     sideOffset = 4,
     ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: React.ComponentProps<typeof PopoverPrimitive.Content> & {
+    arrowClassName?: string;
+}) {
     return (
         <PopoverPrimitive.Portal>
             <PopoverPrimitive.Content
@@ -34,7 +37,12 @@ function PopoverContent({
                 {...props}
             >
                 {props.children}
-                <PopoverPrimitive.Arrow className="bg-primary-300 fill-primary-300 z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+                <PopoverPrimitive.Arrow 
+                    className={cn(
+                        "bg-primary-300 fill-primary-300 z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]",
+                        arrowClassName
+                    )}
+                />
             </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
     )

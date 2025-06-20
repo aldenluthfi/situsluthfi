@@ -291,8 +291,11 @@ const CV: React.FC<CVProps> = ({
     }, [currentType, cvLatexContent]);
 
     const themedLatexContent = useMemo(() => {
+
         const effectiveMode = mode === 'timezone' ? (isDarkMode ? 'dark' : 'light') : mode;
-        const colorToUse = mode === 'timezone' ? currentColor : theme;
+        const colorToUse = mode === 'timezone'
+            ? (localStorage.getItem('vite-ui-theme-color') || currentColor)
+            : theme;
 
         const backgroundColor = effectiveMode === 'dark' ? 'RGB}{24, 24, 27' : 'RGB}{250, 250, 250';
         const foregroundColor = effectiveMode === 'dark' ? 'RGB}{250, 250, 250' : 'RGB}{24, 24, 27';
@@ -329,7 +332,10 @@ const CV: React.FC<CVProps> = ({
 
         toast.promise(
             (async () => {
-                const effectiveTheme = mode === 'timezone' ? currentColor : theme;
+                // Use localStorage value for timezone mode
+                const effectiveTheme = mode === 'timezone' 
+                    ? (localStorage.getItem('vite-ui-theme-color') || currentColor)
+                    : theme;
                 const effectiveMode = mode === 'timezone' ? (isDarkMode ? 'dark' : 'light') : mode;
 
                 const [factData, pdfResponse] = await Promise.allSettled([
@@ -744,7 +750,7 @@ const CV: React.FC<CVProps> = ({
             {
                 !visualMode ? (
                     <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
-                        <CardContent className="overflow-hidden">
+                        <CardContent className="overflow-hidden relative">
                             <div className="space-y-0">
                                 {parsedSections.map((section, index) => {
                                     const shouldShowSection = section.shouldShow && (isExpanded || section.type === 'persistent');
@@ -799,15 +805,15 @@ const CV: React.FC<CVProps> = ({
                                     }
                                 })}
                             </div>
+                            {!isExpanded && <div className="h-70 w-full max-w-desktop absolute bottom-0 bg-gradient-to-b from-transparent to-card" />}
                         </CardContent>
                         <CardFooter className="flex flex-col items-center -mt-8 tablet:-mt-6 desktop:-mb-4">
-
                             {!isExpanded && (
                                 <div className="flex justify-center mt-6">
                                     <Button
                                         onClick={() => setIsExpanded(true)}
-                                        variant="outline"
-                                        className="bg-card hover:bg-muted"
+                                        variant="ghost"
+                                        className="bg-card text-muted-foreground hover:bg-card"
                                     >
                                         See more, experiences et cetera
                                     </Button>
@@ -818,8 +824,8 @@ const CV: React.FC<CVProps> = ({
                                 <div className="flex justify-center mt-6">
                                     <Button
                                         onClick={() => setIsExpanded(false)}
-                                        variant="outline"
-                                        className="bg-card hover:bg-muted"
+                                        variant="ghost"
+                                        className="bg-card text-muted-foreground hover:bg-card"
                                     >
                                         See less boring stuff
                                     </Button>

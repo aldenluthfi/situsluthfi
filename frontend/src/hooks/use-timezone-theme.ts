@@ -29,23 +29,23 @@ function createColorObject(colorName: string): TimeBasedColor {
     };
 }
 
-function getTimezoneBasedColor(): TimeBasedColor {
-    const now = new Date();
-    const gmt7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-    const hour = gmt7Time.getUTCHours();
-
-    let colorIndex: number;
-
-    if (hour >= 6 && hour < 18) {
-        colorIndex = Math.floor(((hour - 6) / 12) * allColors.length);
-    } else {
-        const nightHour = hour >= 18 ? hour - 18 : hour + 6;
-        colorIndex = Math.floor((nightHour / 12) * allColors.length);
-    }
-
-    colorIndex = Math.min(colorIndex, allColors.length - 1);
-
-    return createColorObject(allColors[colorIndex]);
+function createFlippedColorObject(colorName: string): TimeBasedColor {
+    return {
+        name: colorName,
+        colors: {
+            "50": `var(--color-${colorName}-950)`,
+            "100": `var(--color-${colorName}-900)`,
+            "200": `var(--color-${colorName}-800)`,
+            "300": `var(--color-${colorName}-700)`,
+            "400": `var(--color-${colorName}-600)`,
+            "500": `var(--color-${colorName}-500)`,
+            "600": `var(--color-${colorName}-400)`,
+            "700": `var(--color-${colorName}-300)`,
+            "800": `var(--color-${colorName}-200)`,
+            "900": `var(--color-${colorName}-100)`,
+            "950": `var(--color-${colorName}-50)`,
+        }
+    };
 }
 
 function shouldBeDarkMode(): boolean {
@@ -89,9 +89,10 @@ export function useTimezoneTheme() {
     const [currentPeriod, setCurrentPeriod] = useState(getCurrentTimezonePeriod());
 
     const applyTimezoneTheme = useCallback(() => {
-        const colors = getTimezoneBasedColor();
-        const root = document.documentElement;
         const isDark = shouldBeDarkMode();
+        const colorName = getCurrentTimezoneColor();
+        const colors = isDark ? createFlippedColorObject(colorName) : createColorObject(colorName);
+        const root = document.documentElement;
 
         Object.entries(colors.colors).forEach(([shade, value]) => {
             root.style.setProperty(`--primary-${shade}`, value);
@@ -110,6 +111,8 @@ export function useTimezoneTheme() {
         const newColor = getCurrentTimezoneColor();
         const newIsDarkMode = shouldBeDarkMode();
         const newPeriod = getCurrentTimezonePeriod();
+
+        localStorage.setItem('vite-ui-theme-color', newColor);
 
         setCurrentColor(newColor);
         setIsDarkMode(newIsDarkMode);

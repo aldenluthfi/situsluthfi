@@ -79,6 +79,7 @@ export default function ThemeProvider({
     useEffect(() => {
         if (mode === "timezone") {
             localStorage.setItem(modeKey, mode);
+            updateTimezoneTheme();
             return;
         }
 
@@ -92,7 +93,7 @@ export default function ThemeProvider({
         }
         root.classList.add(appliedMode)
         localStorage.setItem(modeKey, mode)
-    }, [mode, modeKey])
+    }, [mode, modeKey, updateTimezoneTheme])
 
     useEffect(() => {
         if (mode !== "timezone") return;
