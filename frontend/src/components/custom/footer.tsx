@@ -5,7 +5,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { toast } from "sonner";
 import { useState } from 'react';
 import { isMobile } from "@/lib/utils";
-import { motion, AnimatePresence, delay } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 import {
     IconMail,
