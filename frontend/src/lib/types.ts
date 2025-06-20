@@ -12,8 +12,8 @@ export type WritingContentObject = {
     id: string;
 }
 
-export type ThemeString = "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose" | "neutral";
-export type ModeString = "light" | "dark" | "system";
+export type ThemeString = "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose";
+export type ModeString = "light" | "dark" | "system" | "timezone";
 
 export type RepositoryObject = {
     id: number;

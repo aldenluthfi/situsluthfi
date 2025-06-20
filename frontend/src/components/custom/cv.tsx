@@ -33,6 +33,7 @@ import {
 
 import cvContent from '@/assets/other/cv.md?raw';
 import cvLatexContent from '@/assets/other/cv.texraw?raw';
+import { useTimezoneTheme } from "@/hooks/use-timezone-theme"
 
 interface CVProps {
     type?: "full" | "software" | "cybersecurity" | "design" | "humanitarian" | "tutor";
@@ -40,12 +41,6 @@ interface CVProps {
     showTabs?: boolean;
     autoPlay?: boolean;
     pauseOnInteract?: boolean;
-}
-
-interface ParsedSection {
-    type: 'persistent' | 'variable';
-    content: string;
-    shouldShow: boolean;
 }
 
 const CV: React.FC<CVProps> = ({
@@ -61,10 +56,10 @@ const CV: React.FC<CVProps> = ({
     const [direction, setDirection] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
     const [ref] = useMeasure();
-    const [prevSections, setPrevSections] = useState<ParsedSection[]>([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [visualMode, setVisualMode] = useState(false);
     const { mode, theme } = useTheme();
+    const { currentColor, isDarkMode } = useTimezoneTheme();
 
     const tabs = [
         { id: "full", label: "honestly, anything!", icon: <IconSparkles className='size-6' stroke={1.5} /> },
@@ -110,15 +105,6 @@ const CV: React.FC<CVProps> = ({
         });
     }, [currentType]);
 
-    const verticalDirection = useMemo(() => {
-        if (prevSections.length === 0) return 0;
-
-        const prevVisibleCount = prevSections.filter(s => s.shouldShow).length;
-        const currentVisibleCount = parsedSections.filter(s => s.shouldShow).length;
-
-        return currentVisibleCount > prevVisibleCount ? 1 : currentVisibleCount < prevVisibleCount ? -1 : 0;
-    }, [parsedSections, prevSections]);
-
     const getTextContent = (children: any): string => {
         if (Array.isArray(children)) {
             return children.map(child =>
@@ -157,7 +143,6 @@ const CV: React.FC<CVProps> = ({
 
     const handleTabClick = (newTabIndex: number) => {
         if (newTabIndex !== activeTab && !isAnimating) {
-            setPrevSections(parsedSections);
             const newDirection = newTabIndex > activeTab ? 1 : -1;
             setDirection(newDirection);
             setActiveTab(newTabIndex);
@@ -305,82 +290,38 @@ const CV: React.FC<CVProps> = ({
         return [...filteredPreamble, ...filteredDocumentLines].join('\n');
     }, [currentType, cvLatexContent]);
 
-    const getThemeColors = useMemo(() => {
-        const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-        const backgroundColor = isDark ? 'RGB}{24, 24, 27' : 'RGB}{250, 250, 250';
-        const foregroundColor = isDark ? 'RGB}{250, 250, 250' : 'RGB}{24, 24, 27';
-
-        let highlightColor: string;
-
-        switch (theme) {
-            case 'yellow':
-                highlightColor = 'RGB}{234, 179, 8';
-                break;
-            case 'red':
-                highlightColor = 'RGB}{239, 68, 68';
-                break;
-            case 'blue':
-                highlightColor = 'RGB}{59, 130, 246';
-                break;
-            case 'green':
-                highlightColor = 'RGB}{34, 197, 94';
-                break;
-            case 'purple':
-                highlightColor = 'RGB}{168, 85, 247';
-                break;
-            case 'pink':
-                highlightColor = 'RGB}{236, 72, 153';
-                break;
-            case 'orange':
-                highlightColor = 'RGB}{249, 115, 22';
-                break;
-            case 'cyan':
-                highlightColor = 'RGB}{6, 182, 212';
-                break;
-            case 'emerald':
-                highlightColor = 'RGB}{16, 185, 129';
-                break;
-            case 'indigo':
-                highlightColor = 'RGB}{99, 102, 241';
-                break;
-            case 'lime':
-                highlightColor = 'RGB}{132, 204, 22';
-                break;
-            case 'teal':
-                highlightColor = 'RGB}{20, 184, 166';
-                break;
-            case 'violet':
-                highlightColor = 'RGB}{139, 92, 246';
-                break;
-            case 'rose':
-                highlightColor = 'RGB}{244, 63, 94';
-                break;
-            case 'neutral':
-                highlightColor = 'RGB}{115, 115, 115';
-                break;
-            default:
-                highlightColor = 'RGB}{234, 179, 8';
-        }
-
-        return {
-            background: backgroundColor,
-            foreground: foregroundColor,
-            highlight: highlightColor
-        };
-    }, [mode, theme]);
-
     const themedLatexContent = useMemo(() => {
-        const colors = getThemeColors;
-        return processLatexContent
-            .replace(/\\definecolor\{background\}\{RGB\}\{[^}]+\}/, `\\definecolor{background}{${colors.background}}`)
-            .replace(/\\definecolor\{foreground\}\{RGB\}\{[^}]+\}/, `\\definecolor{foreground}{${colors.foreground}}`)
-            .replace(/\\definecolor\{highlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{highlight}{${colors.highlight}}`);
-    }, [processLatexContent, getThemeColors]);
+        const effectiveMode = mode === 'timezone' ? (isDarkMode ? 'dark' : 'light') : mode;
+        const colorToUse = mode === 'timezone' ? currentColor : theme;
+        console.log(`Effective Mode: ${effectiveMode}, Color: ${colorToUse}`);
 
-    const handleVisualModeToggle = () => {
-        setVisualMode(!visualMode);
-    }
+        const backgroundColor = effectiveMode === 'dark' ? 'RGB}{24, 24, 27' : 'RGB}{250, 250, 250';
+        const foregroundColor = effectiveMode === 'dark' ? 'RGB}{250, 250, 250' : 'RGB}{24, 24, 27';
+
+        const colorMap: Record<string, string> = {
+            yellow: 'RGB}{234, 179, 8',
+            red: 'RGB}{239, 68, 68',
+            blue: 'RGB}{59, 130, 246',
+            green: 'RGB}{34, 197, 94',
+            purple: 'RGB}{168, 85, 247',
+            pink: 'RGB}{236, 72, 153',
+            orange: 'RGB}{249, 115, 22',
+            cyan: 'RGB}{6, 182, 212',
+            emerald: 'RGB}{16, 185, 129',
+            indigo: 'RGB}{99, 102, 241',
+            lime: 'RGB}{132, 204, 22',
+            teal: 'RGB}{20, 184, 166',
+            violet: 'RGB}{139, 92, 246',
+            rose: 'RGB}{244, 63, 94'
+        };
+
+        const highlightColor = colorMap[colorToUse] || 'RGB}{234, 179, 8';
+
+        return processLatexContent
+            .replace(/\\definecolor\{background\}\{RGB\}\{[^}]+\}/, `\\definecolor{background}{${backgroundColor}}`)
+            .replace(/\\definecolor\{foreground\}\{RGB\}\{[^}]+\}/, `\\definecolor{foreground}{${foregroundColor}}`)
+            .replace(/\\definecolor\{highlight\}\{RGB\}\{[^}]+\}/, `\\definecolor{highlight}{${highlightColor}}`);
+    }, [processLatexContent, mode, theme, currentColor, isDarkMode]);
 
     const handlePDFGeneration = async () => {
         const factPromise = fetch("/api/facts")
@@ -389,6 +330,9 @@ const CV: React.FC<CVProps> = ({
 
         toast.promise(
             (async () => {
+                const effectiveTheme = mode === 'timezone' ? currentColor : theme;
+                const effectiveMode = mode === 'timezone' ? (isDarkMode ? 'dark' : 'light') : mode;
+
                 const [factData, pdfResponse] = await Promise.allSettled([
                     factPromise,
                     fetch('/api/pdf/generate-cv', {
@@ -400,8 +344,8 @@ const CV: React.FC<CVProps> = ({
                             latexContent: themedLatexContent,
                             filename: `alden-luthfi-cv-${currentType}`,
                             type: currentType,
-                            mode: mode,
-                            theme: theme
+                            mode: effectiveMode,
+                            theme: effectiveTheme
                         })
                     })
                 ]);
@@ -424,9 +368,9 @@ const CV: React.FC<CVProps> = ({
                 return { success: true, fact };
             })(),
             {
-                loading: `Generating ${type === 'full' ? "Full" : "Tailored"} Resume...`,
+                loading: `Generating ${currentType === 'full' ? "Full" : "Tailored"} Resume...`,
                 success: (data) => ({
-                    message: `${type === 'full' ? "Full" : "Tailored"} Resume Generated Successfully!`,
+                    message: `${currentType === 'full' ? "Full" : "Tailored"} Resume Generated Successfully!`,
                     description: data.fact ? (
                         <div className="flex flex-col space-y-2 pt-2">
                             <div className="!text-sm !text-muted-foreground">
@@ -529,9 +473,9 @@ const CV: React.FC<CVProps> = ({
     };
 
     const verticalVariants = {
-        initial: (direction: number) => ({
+        initial: () => ({
             height: 0,
-            y: 50 * direction,
+            y: 50,
             opacity: 0,
         }),
         active: {
@@ -544,9 +488,9 @@ const CV: React.FC<CVProps> = ({
                 opacity: { duration: 0.3, type: "tween", bounce: 0.2, delay: 0.05, ease: "easeOut" },
             }
         },
-        exit: (direction: number) => ({
+        exit: () => ({
             height: 0,
-            y: -50 * direction,
+            y: -50,
             opacity: 0,
             transition: {
                 y: { duration: 0.3, type: "spring", bounce: 0.1, ease: "easeIn" },
@@ -573,12 +517,6 @@ const CV: React.FC<CVProps> = ({
             filter: "blur(4px)",
         }),
     };
-
-    const seriousnessIcon = visualMode ? (
-        <IconEye className="size-6" stroke={1.5} />
-    ) : (
-        <IconFileCv className="size-6" stroke={1.5} />
-    );
 
     const getMarkdownComponents = useMemo((): Components => ({
         h1(props) {
@@ -761,9 +699,9 @@ const CV: React.FC<CVProps> = ({
                                 variant="ghost"
                                 className="bg-transparent hover:bg-transparent text-foreground"
                                 title="Toggle Seriousness"
-                                onClick={handleVisualModeToggle}
+                                onClick={() => setVisualMode(!visualMode)}
                             >
-                                {seriousnessIcon}
+                                {visualMode ? <IconEye className="size-6" stroke={1.5} /> : <IconFileCv className="size-6" stroke={1.5} />}
                             </Button>
                         </div>
 
@@ -821,7 +759,6 @@ const CV: React.FC<CVProps> = ({
                                                         initial="initial"
                                                         animate="active"
                                                         exit="exit"
-                                                        custom={verticalDirection}
                                                         className="overflow-hidden"
                                                     >
                                                         <ReactMarkdown

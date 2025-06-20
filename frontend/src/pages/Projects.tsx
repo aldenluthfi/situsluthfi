@@ -142,7 +142,7 @@ const Projects: React.FC = () => {
                             <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0  rotate-180" />
                         </div>
                         <CarouselNext className='hidden desktop:block z-10 -left-12 rotate-180'/>
-                        <CarouselPrevious className='hidden desktop:block z-10 -right-12 rotate-180'/>
+                        <CarouselPrevious className='hidden desktop:block z-10 -right-15 rotate-180'/>
                         <CarouselContent>
                             {loading
                                 ? Array.from({ length: 6 }).map((_, i) => (

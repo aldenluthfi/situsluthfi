@@ -7,7 +7,7 @@ import { isMobile } from "@/lib/utils";
 
 const themes = [
     "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky",
-    "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose", "neutral"
+    "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"
 ];
 
 export function ThemeSelector() {
@@ -23,7 +23,7 @@ export function ThemeSelector() {
                         style={{ background: `var(--color-${t}-500)` }}
                         aria-label={t}
                         variant={theme === t ? "default" : "ghost"}
-                        className="rounded-full size-6"
+                        className="rounded-full size-6 p-0"
                         size="icon"
                     />
                 ))}

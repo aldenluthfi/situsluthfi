@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, useMemo } from "react"
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react"
+import { useTimezoneTheme } from "@/hooks/use-timezone-theme"
 import type { ThemeString, ModeString } from "@/lib/types"
 
 
@@ -18,7 +19,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
     theme: "yellow",
-    mode: "dark",
+    mode: "timezone",
     setTheme: () => null,
     setMode: () => null,
 }
@@ -28,13 +29,15 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 export default function ThemeProvider({
     children,
     defaultTheme = "yellow",
-    defaultMode = "dark",
+    defaultMode = "timezone",
     storageKey = "vite-ui-theme",
     ...props
 }: Readonly<ThemeProviderProps>) {
 
     const themeKey = `${storageKey}-color`
     const modeKey = `${storageKey}-mode`
+
+    const { applyTimezoneTheme, isDarkMode } = useTimezoneTheme();
 
     const [theme, setThemeState] = useState<ThemeString>(
         () => (localStorage.getItem(themeKey) as ThemeString) || defaultTheme
@@ -44,13 +47,41 @@ export default function ThemeProvider({
         () => (localStorage.getItem(modeKey) as ModeString) || defaultMode
     )
 
+    const updateTimezoneTheme = useCallback(() => {
+        if (mode === "timezone") {
+            applyTimezoneTheme();
+
+            const root = window.document.documentElement;
+            root.classList.remove("light", "dark");
+            root.classList.add(isDarkMode ? "dark" : "light");
+        }
+    }, [mode, applyTimezoneTheme, isDarkMode]);
 
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme)
         localStorage.setItem(themeKey, theme)
-    }, [theme, themeKey])
+
+        if (mode !== "timezone") {
+            const root = document.documentElement;
+            ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'].forEach(shade => {
+                root.style.removeProperty(`--primary-${shade}`);
+                root.style.removeProperty(`--color-primary-${shade}`);
+            });
+            root.style.removeProperty(`--primary`);
+            root.style.removeProperty(`--color-primary`);
+            root.style.removeProperty(`--primary-foreground`);
+            root.style.removeProperty(`--color-primary-foreground`);
+        } else {
+            updateTimezoneTheme();
+        }
+    }, [theme, themeKey, mode, updateTimezoneTheme])
 
     useEffect(() => {
+        if (mode === "timezone") {
+            localStorage.setItem(modeKey, mode);
+            return;
+        }
+
         const root = window.document.documentElement
         root.classList.remove("light", "dark")
         let appliedMode = mode
@@ -62,6 +93,16 @@ export default function ThemeProvider({
         root.classList.add(appliedMode)
         localStorage.setItem(modeKey, mode)
     }, [mode, modeKey])
+
+    useEffect(() => {
+        if (mode !== "timezone") return;
+
+        updateTimezoneTheme();
+
+        const interval = setInterval(updateTimezoneTheme, 60000);
+
+        return () => clearInterval(interval);
+    }, [mode, updateTimezoneTheme]);
 
     const value: ThemeProviderState = useMemo(() => ({
         theme,
