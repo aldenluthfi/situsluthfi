@@ -37,7 +37,7 @@ export default function ThemeProvider({
     const themeKey = `${storageKey}-color`
     const modeKey = `${storageKey}-mode`
 
-    const { applyTimezoneTheme, isDarkMode } = useTimezoneTheme();
+    const { applyTimezoneTheme, isDarkMode, updateTimezoneData } = useTimezoneTheme();
 
     const [theme, setThemeState] = useState<ThemeString>(
         () => (localStorage.getItem(themeKey) as ThemeString) || defaultTheme
@@ -49,13 +49,18 @@ export default function ThemeProvider({
 
     const updateTimezoneTheme = useCallback(() => {
         if (mode === "timezone") {
+            const { newColor } = updateTimezoneData();
             applyTimezoneTheme();
+
+            if (newColor !== theme) {
+                setThemeState(newColor as ThemeString);
+            }
 
             const root = window.document.documentElement;
             root.classList.remove("light", "dark");
             root.classList.add(isDarkMode ? "dark" : "light");
         }
-    }, [mode, applyTimezoneTheme, isDarkMode]);
+    }, [mode, applyTimezoneTheme, isDarkMode, updateTimezoneData, theme]);
 
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme)

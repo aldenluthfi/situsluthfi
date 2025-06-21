@@ -116,6 +116,8 @@ export function useTimezoneTheme() {
         setIsDarkMode(newIsDarkMode);
         setCurrentPeriod(newPeriod);
 
+        localStorage.setItem('vite-ui-theme-color', newColor);
+
         return { newColor, newIsDarkMode };
     }, []);
 
