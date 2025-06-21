@@ -112,8 +112,6 @@ export function useTimezoneTheme() {
         const newIsDarkMode = shouldBeDarkMode();
         const newPeriod = getCurrentTimezonePeriod();
 
-        localStorage.setItem('vite-ui-theme-color', newColor);
-
         setCurrentColor(newColor);
         setIsDarkMode(newIsDarkMode);
         setCurrentPeriod(newPeriod);
