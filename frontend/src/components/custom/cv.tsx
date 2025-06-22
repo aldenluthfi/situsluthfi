@@ -421,7 +421,7 @@ const CV: React.FC<CVProps> = ({
     useEffect(() => {
         if (isExpanded && autoPlay) {
             setIsPaused(true);
-        } else if (!isPaused && autoPlay) {
+        } else if (!isExpanded && autoPlay) {
             setIsPaused(false);
         }
     }, [isExpanded, autoPlay]);
