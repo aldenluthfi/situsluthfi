@@ -22,6 +22,7 @@ import {
     CarouselNext,
 } from "@/components/ui/carousel";
 import { useTheme } from "@/components/custom/theme-provider";
+import { useTimezoneTheme } from "@/hooks/use-timezone-theme";
 import type { RepositoryObject } from "@/lib/types";
 import autoplay from "embla-carousel-autoplay";
 import {
@@ -34,9 +35,12 @@ import {
 function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
     const [loaded, setLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
+    const { isDarkMode } = useTimezoneTheme();
 
-    const imageUrl = mode !== 'dark' ? repo.cover_dark_url : repo.cover_light_url;
-    const fallbackUrl = mode !== 'dark' ? repo.cover_light_url : repo.cover_dark_url;
+    const shouldUseDarkImage = mode === 'timezone' ? !isDarkMode : mode !== 'dark';
+
+    const imageUrl = shouldUseDarkImage ? repo.cover_dark_url : repo.cover_light_url;
+    const fallbackUrl = shouldUseDarkImage ? repo.cover_light_url : repo.cover_dark_url;
     const hasImage = imageUrl || fallbackUrl;
 
     if (!hasImage) return null;

@@ -56,7 +56,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
     const result: { lightUrl?: string; darkUrl?: string } = {};
 
     try {
-        const lightResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/light.png`, {
+        const lightResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/light.png`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/vnd.github.v3+json",
@@ -73,7 +73,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
     }
 
     try {
-        const darkResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/dark.png`, {
+        const darkResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/dark.png`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/vnd.github.v3+json",
@@ -94,7 +94,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
 
 export const fetchRepositoryIconMap = async (fullName: string): Promise<Record<string, string>> => {
     try {
-        const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/meta/iconmap.json`, {
+        const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/iconmap.json`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Accept": "application/vnd.github.v3+json",
