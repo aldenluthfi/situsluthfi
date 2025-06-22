@@ -48,18 +48,22 @@ function createFlippedColorObject(colorName: string): TimeBasedColor {
     };
 }
 
-function shouldBeDarkMode(): boolean {
+function getTimezoneTime(): Date {
+    const timezone = import.meta.env.VITE_TIMEZONE || 'Asia/Jakarta';
     const now = new Date();
-    const gmt7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-    const hour = gmt7Time.getUTCHours();
+    return new Date(now.toLocaleString("en-US", { timeZone: timezone }));
+}
+
+function shouldBeDarkMode(): boolean {
+    const timezoneTime = getTimezoneTime();
+    const hour = timezoneTime.getHours();
 
     return hour >= 18 || hour < 6;
 }
 
 function getCurrentTimezoneColor(): string {
-    const now = new Date();
-    const gmt7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-    const hour = gmt7Time.getUTCHours();
+    const timezoneTime = getTimezoneTime();
+    const hour = timezoneTime.getHours();
 
     let colorIndex: number;
     if (hour >= 6 && hour < 18) {
@@ -73,9 +77,8 @@ function getCurrentTimezoneColor(): string {
 }
 
 function getCurrentTimezonePeriod(): string {
-    const now = new Date();
-    const gmt7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-    const hour = gmt7Time.getUTCHours();
+    const timezoneTime = getTimezoneTime();
+    const hour = timezoneTime.getHours();
     const colorIndex = Math.floor(((hour >= 6 && hour < 18 ? hour - 6 : (hour >= 18 ? hour - 18 : hour + 6)) / 12) * allColors.length);
     const currentColor = allColors[Math.min(colorIndex, allColors.length - 1)];
     const mode = shouldBeDarkMode() ? "Dark" : "Light";
