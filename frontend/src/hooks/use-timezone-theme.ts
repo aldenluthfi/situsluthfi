@@ -68,6 +68,7 @@ function getCurrentTimezoneColor(): string {
     const totalMinutes = hour * 60 + minutes;
 
     const colorIndex = Math.floor((totalMinutes / (12 * 60)) * 17);
+    console.log(`Current Timezone Color Index: ${colorIndex} for time ${timezoneTime.toLocaleTimeString()}`);
 
     return allColors[Math.min(colorIndex, allColors.length - 1)];
 }
