@@ -63,12 +63,11 @@ function shouldBeDarkMode(): boolean {
 
 function getCurrentTimezoneColor(): string {
     const timezoneTime = getTimezoneTime();
-    const hour = (timezoneTime.getHours() - 6) % 12;
+    const hour = (((timezoneTime.getHours() - 6) % 12) + 12) % 12;
     const minutes = timezoneTime.getMinutes();
     const totalMinutes = hour * 60 + minutes;
 
     const colorIndex = Math.floor((totalMinutes / (12 * 60)) * 17);
-    console.log(`Current Timezone Color Index: ${colorIndex} for time ${timezoneTime.toLocaleTimeString()}`);
 
     return allColors[Math.min(colorIndex, allColors.length - 1)];
 }
