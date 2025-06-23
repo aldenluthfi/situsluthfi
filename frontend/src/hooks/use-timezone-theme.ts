@@ -63,24 +63,17 @@ function shouldBeDarkMode(): boolean {
 
 function getCurrentTimezoneColor(): string {
     const timezoneTime = getTimezoneTime();
-    const hour = timezoneTime.getHours();
+    const hour = (timezoneTime.getHours() - 6) % 12;
+    const minutes = timezoneTime.getMinutes();
+    const totalMinutes = hour * 60 + minutes;
 
-    let colorIndex: number;
-    if (hour >= 6 && hour < 18) {
-        colorIndex = Math.floor(((hour - 6) / 12) * allColors.length);
-    } else {
-        const nightHour = hour >= 18 ? hour - 18 : hour + 6;
-        colorIndex = Math.floor((nightHour / 12) * allColors.length);
-    }
+    const colorIndex = Math.floor((totalMinutes / (12 * 60)) * 17);
 
     return allColors[Math.min(colorIndex, allColors.length - 1)];
 }
 
 function getCurrentTimezonePeriod(): string {
-    const timezoneTime = getTimezoneTime();
-    const hour = timezoneTime.getHours();
-    const colorIndex = Math.floor(((hour >= 6 && hour < 18 ? hour - 6 : (hour >= 18 ? hour - 18 : hour + 6)) / 12) * allColors.length);
-    const currentColor = allColors[Math.min(colorIndex, allColors.length - 1)];
+    const currentColor = getCurrentTimezoneColor();
     const mode = shouldBeDarkMode() ? "Dark" : "Light";
 
     return `${currentColor.charAt(0).toUpperCase() + currentColor.slice(1)} ${mode}`;

@@ -23,15 +23,14 @@ import rehypeKatex from 'rehype-katex';
 import remarkToc from 'remark-toc';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/animate-ui/radix/accordion"
 import {
-    MediaPlayer,
-    MediaPlayerVideo,
-    MediaPlayerControls,
-    MediaPlayerPlay,
-    MediaPlayerTime,
-    MediaPlayerSeek,
-    MediaPlayerVolume,
-    MediaPlayerFullscreen,
-} from "@/components/ui/media-player";
+    VideoPlayer,
+    VideoPlayerContent,
+    VideoPlayerControlBar,
+    VideoPlayerPlayButton,
+    VideoPlayerTimeDisplay,
+    VideoPlayerTimeRange,
+} from "@/components/ui/kibo-ui/video-player";
+import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
 import {
     Table,
     TableHeader,
@@ -45,59 +44,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IconChevronRight } from "@tabler/icons-react";
 
-function ImageWithSkeleton(props: Readonly<React.ImgHTMLAttributes<HTMLImageElement>>) {
-    const [loaded, setLoaded] = useState(false);
-    return (
-        <div className="flex flex-col w-full items-center">
-            <div className="flex w-full justify-center">
-                {!loaded && (
-                    <Skeleton className="inset-0 rounded-md self-center max-h-[500px] my-4 w-full h-[300px] object-contain" />
-                )}
-                <img
-                    {...props}
-                    onLoad={() => setLoaded(true)}
-                    alt={props.alt ?? ""}
-                    className="rounded-md self-center justify-self-center my-4 max-h-[500px] object-contain"
-                    style={loaded ? {} : { opacity: 0 }}
-                />
-            </div>
-            {props.alt && !/\.(png|jpe?g)$/i.test(props.alt) && (
-                <span className="text-xs text-muted-foreground mt-2 text-center">{props.alt}</span>
-            )}
-        </div>
-    );
-}
-
-function VideoWithSkeleton({ src }: Readonly<{ src: string }>) {
-    const [loaded, setLoaded] = useState(false);
-    return (
-        <div className="my-4 rounded-lg flex w-full justify-center">
-            {!loaded && (
-                <Skeleton className="inset-0 rounded-md w-full h-[300px] object-contain" />
-            )}
-            <MediaPlayer
-                className="rounded-md self-center justify-self-center w-full max-w-desktop"
-            >
-                <MediaPlayerVideo
-                    src={src}
-                    preload="auto"
-                    crossOrigin=""
-                    loop
-                    onLoadedData={() => setLoaded(true)}
-                    style={loaded ? {} : { opacity: 0 }}
-                />
-                <MediaPlayerControls>
-                    <MediaPlayerPlay />
-                    <MediaPlayerSeek />
-                    <MediaPlayerTime />
-                    <MediaPlayerVolume expandable />
-                    <MediaPlayerFullscreen />
-                </MediaPlayerControls>
-            </MediaPlayer>
-        </div>
-    );
-}
-
 const HEADER_OFFSET = 80;
 
 const Writing: React.FC = () => {
@@ -107,29 +53,28 @@ const Writing: React.FC = () => {
     const [showFloatingToc, setShowFloatingToc] = useState(false);
     const tocInlineRef = useRef<HTMLDivElement | null>(null);
 
-
     useEffect(() => {
         if (!data || !('content' in data)) return;
 
         const content = (data as WritingContentObject).content;
         const imageRegex = /!\[.*?\]\((.*?)\)/g;
-        const linkRegex = /\[.*?\]\((.*?\.(?:png|jpe?g|gif|webp|svg))/gi;
+        const linkRegex = /\[.*?\]\((.*?\.(?:png|jpe?g|gif|webp|svg|mp4|webm|ogg))/gi;
         const preloadLinks: HTMLLinkElement[] = [];
         const preconnectLinks: HTMLLinkElement[] = [];
         const addedDomains = new Set<string>();
 
-        const imageUrls = new Set<string>();
+        const mediaUrls = new Set<string>();
         let match;
 
         while ((match = imageRegex.exec(content)) !== null) {
-            imageUrls.add(match[1]);
+            mediaUrls.add(match[1]);
         }
 
         while ((match = linkRegex.exec(content)) !== null) {
-            imageUrls.add(match[1]);
+            mediaUrls.add(match[1]);
         }
 
-        imageUrls.forEach(src => {
+        mediaUrls.forEach(src => {
             try {
                 const url = new URL(src, window.location.origin);
 
@@ -144,14 +89,14 @@ const Writing: React.FC = () => {
 
                 const preloadLink = document.createElement('link');
                 preloadLink.rel = 'preload';
-                preloadLink.as = 'image';
+                preloadLink.as = /\.(mp4|webm|ogg)/i.test(src) ? 'video' : 'image';
                 preloadLink.href = src;
                 document.head.appendChild(preloadLink);
                 preloadLinks.push(preloadLink);
             } catch {
                 const preloadLink = document.createElement('link');
                 preloadLink.rel = 'preload';
-                preloadLink.as = 'image';
+                preloadLink.as = /\.(mp4|webm|ogg)/i.test(src) ? 'video' : 'image';
                 preloadLink.href = src;
                 document.head.appendChild(preloadLink);
                 preloadLinks.push(preloadLink);
@@ -190,7 +135,7 @@ const Writing: React.FC = () => {
             const data = await res.json();
             setData(data);
             setToc(null);
-            document.title = `aldenluth.fi | ${data.title}`;
+            document.title = `aldenluthfi | ${data.title}`;
         } catch (error) {
             console.error("Error fetching writing:", error);
             setData(undefined);
@@ -435,7 +380,24 @@ const Writing: React.FC = () => {
                                     const href = rest.href;
 
                                     if (href && /\.(mp4|webm|ogg)/i.test(href)) {
-                                        return <VideoWithSkeleton src={href} />;
+                                        return (
+                                            <div className="my-4 rounded-lg">
+                                                <VideoPlayer className="w-full h-full rounded-lg">
+                                                    <VideoPlayerContent
+                                                        slot="media"
+                                                        src={href}
+                                                        preload="auto"
+                                                        crossOrigin=""
+                                                        loop
+                                                    />
+                                                    <VideoPlayerControlBar>
+                                                        <VideoPlayerPlayButton />
+                                                        <VideoPlayerTimeRange />
+                                                        <VideoPlayerTimeDisplay showDuration />
+                                                    </VideoPlayerControlBar>
+                                                </VideoPlayer>
+                                            </div>
+                                        );
                                     }
 
                                     return (
@@ -450,7 +412,22 @@ const Writing: React.FC = () => {
                                     );
                                 },
                                 img(props) {
-                                    return <ImageWithSkeleton {...props} />;
+                                    return (
+                                        <div className="flex flex-col w-full items-center">
+                                            <div className="flex w-full justify-center">
+                                                <ImageZoom>
+                                                    <img
+                                                        {...props}
+                                                        alt={props.alt ?? ""}
+                                                        className="rounded-md self-center justify-self-center my-4 max-h-[500px] object-contain cursor-zoom-in"
+                                                    />
+                                                </ImageZoom>
+                                            </div>
+                                            {props.alt && !/\.(png|jpe?g)$/i.test(props.alt) && (
+                                                <span className="text-xs text-muted-foreground mt-2 text-center">{props.alt}</span>
+                                            )}
+                                        </div>
+                                    );
                                 },
                                 strong(props) {
                                     const { ...rest } = props

@@ -2,10 +2,14 @@ import SlidingTitle from '@/components/custom/sliding-title';
 import WorldMap from '@/components/custom/world-map';
 import Squiggle from '@/components/custom/squiggle';
 import { useTheme } from "@/components/custom/theme-provider"
+import { useTimezoneTheme } from "@/hooks/use-timezone-theme"
 import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE, Belgium, France, Germany, Netherlands, Italy, Switzerland, Spain } from '@/components/maps';
 
 const Gallery: React.FC = () => {
     const { mode } = useTheme();
+    const { isDarkMode } = useTimezoneTheme();
+
+    const isEffectivelyDark = mode === 'dark' || (mode === 'timezone' && isDarkMode);
 
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip'>
@@ -67,7 +71,7 @@ const Gallery: React.FC = () => {
                             'Switzerland': ['Obwalden', 'Bern', 'Genève']
                         }
                         }
-                        pathStyles={mode === 'dark' ? {
+                        pathStyles={isEffectivelyDark ? {
                             base: "stroke-muted",
                             hover: "fill-primary",
                             selected: "fill-primary",
@@ -87,7 +91,7 @@ const Gallery: React.FC = () => {
                         maxWidth={window.innerWidth < 1024 ? '83.3333vw' : '90vw'}
                     />
                 </div>
-                <Squiggle className="-scale-y-100 w-full fill-primary-100" />
+                <Squiggle className="w-full fill-primary-100 -scale-y-100" />
             </div>
             <div className='h-screen max-w-desktop'>
             </div>

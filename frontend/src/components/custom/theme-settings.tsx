@@ -90,29 +90,9 @@ export function ThemeSettings() {
         const hourAngle = (hour12 * 30) + (minutes * 0.5) - 90;
         const secondAngle = (seconds * 6) - 90;
 
-        const colors = [
-            '#06b6d4',
-            '#0ea5e9',
-            '#3b82f6',
-            '#6366f1',
-            '#8b5cf6',
-            '#a855f7',
-            '#d946ef',
-            '#ec4899',
-            '#f43f5e',
-            '#ef4444',
-            '#f97316',
-            '#f59e0b',
-            '#eab308',
-            '#84cc16',
-            '#22c55e',
-            '#10b981',
-            '#14b8a6',
-        ];
-
         const colorNames = [
-            "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia",
-            "pink", "rose", "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal"
+            "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal",
+            "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"
         ];
 
         const activeColorIndex = colorNames.indexOf(theme);
@@ -123,9 +103,9 @@ export function ThemeSettings() {
                 className="w-full h-auto max-w-[280px] sm:max-w-[320px] mx-auto"
                 style={{ aspectRatio: '1 / 1' }}
             >
-                {colors.map((color, i) => {
-                    const startAngle = (i * 360 / 17) - 90 + (360 / 34);
-                    const endAngle = ((i + 1) * 360 / 17) - 89.5 + (360 / 34);
+                {colorNames.map((color, i) => {
+                    const startAngle = (i * 360 / 17) + 90;
+                    const endAngle = ((i + 1) * 360 / 17) + 90.5;
                     const isActive = i === activeColorIndex;
 
                     const radius = isActive ? 157 : 145;
@@ -140,7 +120,7 @@ export function ThemeSettings() {
                         <path
                             key={i}
                             d={`M 160 160 L ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY} Z`}
-                            fill={color}
+                            fill={`var(--color-${color}-500)`}
                         />
                     );
                 })}
@@ -165,16 +145,6 @@ export function ThemeSettings() {
                 <line
                     x1="160"
                     y1="160"
-                    x2={160 + 95 * Math.cos(secondAngle * Math.PI / 180)}
-                    y2={160 + 95 * Math.sin(secondAngle * Math.PI / 180)}
-                    stroke="var(--primary)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                />
-
-                <line
-                    x1="160"
-                    y1="160"
                     x2={160 + 65 * Math.cos(hourAngle * Math.PI / 180)}
                     y2={160 + 65 * Math.sin(hourAngle * Math.PI / 180)}
                     stroke="currentColor"
@@ -189,6 +159,16 @@ export function ThemeSettings() {
                     y2={160 + 90 * Math.sin(minuteAngle * Math.PI / 180)}
                     stroke="currentColor"
                     strokeWidth="8"
+                    strokeLinecap="round"
+                />
+
+                <line
+                    x1="160"
+                    y1="160"
+                    x2={160 + 95 * Math.cos(secondAngle * Math.PI / 180)}
+                    y2={160 + 95 * Math.sin(secondAngle * Math.PI / 180)}
+                    stroke="var(--primary)"
+                    strokeWidth="3"
                     strokeLinecap="round"
                 />
 
@@ -238,7 +218,7 @@ export function ThemeSettings() {
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-desktop bg-card  [&>button]:hidden">
                                     <DialogHeader className="text-center text-xl">
-                                        <DialogTitle className="mx-auto">My Current Time</DialogTitle>
+                                        <DialogTitle className="mx-auto font-normal">Currently, it is</DialogTitle>
                                     </DialogHeader>
                                     <div className="flex justify-center py-2 sm:py-4">
                                         <AnalogClock time={currentTime} />
