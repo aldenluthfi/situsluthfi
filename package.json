@@ -1,0 +1,24 @@
+{
+  "name": "situsluthfi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "lint": "npm run lint --prefix frontend && npm run lint --prefix backend",
+    "lint:fix": "npm run lint:fix --prefix frontend && npm run lint:fix --prefix backend"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{ts,tsx}": [
+      "cd frontend && npm run lint:fix",
+      "git add"
+    ],
+    "backend/**/*.ts": [
+      "cd backend && npm run lint:fix",
+      "git add"
+    ]
+  }
+}
