@@ -12,8 +12,8 @@ const Gallery: React.FC = () => {
     const isEffectivelyDark = mode === 'dark' || (mode === 'timezone' && isDarkMode);
 
     return (
-        <div className='flex flex-col min-h-screen items-center overflow-clip'>
-            <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
+        <div className='flex flex-col min-h-screen items-center overflow-clip gap-24'>
+            <div className="flex flex-col w-full justify-center items-center space-y-6 mt-44">
                 <p className="text-lg tablet:text-2xl text-center mb-6">
                     This is my silly excuse of a <span className="text-primary font-bold">gallery</span>, <span />
                     <br />

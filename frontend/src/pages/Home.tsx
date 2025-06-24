@@ -114,8 +114,8 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen items-center overflow-clip">
-            <div className="flex flex-col w-full justify-center items-center space-y-6 my-32 ultrawide:my-48">
+        <div className="flex flex-col min-h-screen items-center overflow-clip gap-24">
+            <div className="flex flex-col w-full justify-center items-center space-y-6 mt-44">
                 <p className="text-lg tablet:text-2xl text-center">
                     Hello! my name is <span className="text-primary font-bold">Luthfi</span>, <span />
                     <br />
@@ -180,8 +180,8 @@ const Home: React.FC = () => {
                 <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
 
-            <div className='max-w-desktop pt-20'>
-                <p className="text-lg tablet:text-2xl text-center mt-8">
+            <div className='max-w-desktop'>
+                <p className="text-lg tablet:text-2xl text-center">
                     As you can probably see, I'm a
                     <br />
                     <span className="text-primary font-bold">Jack of all trades</span>, you can have me as
