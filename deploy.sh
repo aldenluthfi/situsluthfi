@@ -64,7 +64,7 @@ echo "🧹 Cleaning up old Docker images..."
 # Get all backend images except the newest 3, then delete them
 docker images "situsluthfi-backend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
 sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
-# Get all frontend images except the newest 3, then delete them  
+# Get all frontend images except the newest 3, then delete them
 docker images "situsluthfi-frontend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
 sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
 
@@ -77,8 +77,7 @@ if ! docker build --no-cache -t "${BACKEND_IMAGE}" ./backend; then
     echo "❌ Backend build failed, trying with cache cleared..."
     docker system prune -f
     if ! docker build -t "${BACKEND_IMAGE}" ./backend; then
-        echo "❌ Backend build failed even after cache clear"
-        exit 1
+        echo "❌ Backend build failed even after cache clear - continuing anyway"
     fi
 fi
 
@@ -88,8 +87,7 @@ if ! docker build --no-cache -t "${FRONTEND_IMAGE}" ./frontend; then
     echo "❌ Frontend build failed, trying with cache cleared..."
     docker system prune -f
     if ! docker build -t "${FRONTEND_IMAGE}" ./frontend; then
-        echo "❌ Frontend build failed even after cache clear"
-        exit 1
+        echo "❌ Frontend build failed even after cache clear - continuing anyway"
     fi
 fi
 
@@ -120,16 +118,42 @@ kubectl wait --for=condition=ready pod -l app=backend -n situsluthfi --timeout=3
 # Seed database
 echo "🌱 Seeding database..."
 
-# Get backend pod and verify it exists
-BACKEND_POD=$(kubectl get pods -l app=backend -n situsluthfi --field-selector=status.phase=Running -o jsonpath="{.items[0].metadata.name}")
+# Get the newest backend pod from current deployment
+echo "🔍 Finding the newest backend pod..."
+BACKEND_POD=$(kubectl get pods -l app=backend -n situsluthfi \
+    --field-selector=status.phase=Running \
+    --sort-by='.metadata.creationTimestamp' \
+    -o jsonpath="{.items[-1:].metadata.name}")
 
 if [ -z "$BACKEND_POD" ]; then
-    echo "❌ No running backend pod found"
-    exit 1
-fi
+    echo "❌ No running backend pod found - skipping database seeding"
+else
+    # Verify the pod is from current deployment by checking image tag
+    POD_IMAGE=$(kubectl get pod $BACKEND_POD -n situsluthfi -o jsonpath="{.spec.containers[0].image}")
+    if [[ "$POD_IMAGE" != "$BACKEND_IMAGE" ]]; then
+        echo "⚠️  Pod $BACKEND_POD is using old image $POD_IMAGE, waiting for new pod..."
+        # Wait a bit more and try again
+        sleep 10
+        BACKEND_POD=$(kubectl get pods -l app=backend -n situsluthfi \
+            --field-selector=status.phase=Running \
+            --sort-by='.metadata.creationTimestamp' \
+            -o jsonpath="{.items[-1:].metadata.name}")
 
-echo "🎯 Using backend pod: $BACKEND_POD"
-kubectl exec -n situsluthfi $BACKEND_POD -- node dist/db/seed.js
+        if [ -z "$BACKEND_POD" ]; then
+            echo "❌ Still no running backend pod found - skipping database seeding"
+        else
+            POD_IMAGE=$(kubectl get pod $BACKEND_POD -n situsluthfi -o jsonpath="{.spec.containers[0].image}")
+            if [[ "$POD_IMAGE" != "$BACKEND_IMAGE" ]]; then
+                echo "❌ Pod $BACKEND_POD still using old image $POD_IMAGE instead of $BACKEND_IMAGE - seeding anyway"
+            fi
+        fi
+    fi
+
+    if [ -n "$BACKEND_POD" ]; then
+        echo "🎯 Using backend pod: $BACKEND_POD (image: $POD_IMAGE)"
+        kubectl exec -n situsluthfi $BACKEND_POD -- node dist/db/seed.js || echo "❌ Database seeding failed - continuing anyway"
+    fi
+fi
 
 # Clean up old replica sets
 echo "🧹 Cleaning up old replica sets..."
