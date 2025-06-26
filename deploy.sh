@@ -59,15 +59,39 @@ for component in mysql backend frontend; do
         --dry-run=client -o yaml | kubectl apply -f -
 done
 
-# Build and load Docker images
-echo "🏗️ Building and loading Docker images..."
-docker build -t "${BACKEND_IMAGE}" ./backend
-docker build -t "${FRONTEND_IMAGE}" ./frontend
-
 # Clean up old Docker images (keep last 3 versions)
 echo "🧹 Cleaning up old Docker images..."
-docker images "situsluthfi-backend" --format "{{.Repository}}:{{.Tag}}" | sort -V | head -n 3 | xargs -r docker rmi 2>/dev/null || true
-docker images "situsluthfi-frontend" --format "{{.Repository}}:{{.Tag}}" | sort -V | head -n 3 | xargs -r docker rmi 2>/dev/null || true
+# Get all backend images except the newest 3, then delete them
+docker images "situsluthfi-backend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
+sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
+# Get all frontend images except the newest 3, then delete them  
+docker images "situsluthfi-frontend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
+sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
+
+# Build and load Docker images
+echo "🏗️ Building and loading Docker images..."
+
+# Build backend with error handling
+echo "🔨 Building backend image..."
+if ! docker build --no-cache -t "${BACKEND_IMAGE}" ./backend; then
+    echo "❌ Backend build failed, trying with cache cleared..."
+    docker system prune -f
+    if ! docker build -t "${BACKEND_IMAGE}" ./backend; then
+        echo "❌ Backend build failed even after cache clear"
+        exit 1
+    fi
+fi
+
+# Build frontend with error handling and cache clearing
+echo "🔨 Building frontend image..."
+if ! docker build --no-cache -t "${FRONTEND_IMAGE}" ./frontend; then
+    echo "❌ Frontend build failed, trying with cache cleared..."
+    docker system prune -f
+    if ! docker build -t "${FRONTEND_IMAGE}" ./frontend; then
+        echo "❌ Frontend build failed even after cache clear"
+        exit 1
+    fi
+fi
 
 kind load docker-image "${BACKEND_IMAGE}" --name ${CLUSTER_NAME}
 kind load docker-image "${FRONTEND_IMAGE}" --name ${CLUSTER_NAME}
