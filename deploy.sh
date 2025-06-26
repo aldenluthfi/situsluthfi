@@ -171,6 +171,8 @@ docker container prune -f || echo "No unused containers to clean up"
 docker builder prune -f --filter until=24h || echo "No build cache to clean up"
 # Remove any untagged images
 docker images --filter "dangling=true" -q | xargs -r docker rmi || echo "No untagged images to clean up"
+# remove all
+docker system prune -a -f || echo "No unused Docker resources to clean up"
 
 echo "✅ Deployment completed successfully!"
 echo "🌐 Application available at: http://localhost:8080"
