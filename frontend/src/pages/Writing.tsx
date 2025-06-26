@@ -447,7 +447,7 @@ const Writing: React.FC = () => {
                                             <div ref={tocInlineRef}>
                                                 <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50 rounded-md" id="table-of-contents">
                                                     <CardHeader className="-mb-6">
-                                                        <strong className="font-bold">Table of Contents</strong>
+                                                        <strong className="font-bold text-primary">Table of Contents</strong>
                                                     </CardHeader>
                                                     <CardContent className="flex flex-col space-y-2">
                                                         <ul {...rest} className="list-none">{props.children}</ul>
