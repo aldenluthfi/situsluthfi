@@ -87,16 +87,30 @@ fi
 # Build and push Docker images to local registry
 echo "🏗️ Building Docker images..."
 
+# Clean up old images first (keep only latest 3 versions)
+echo "🧹 Cleaning up old images..."
+docker images --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | grep "situsluthfi-backend:" | tail -n +4 | awk '{print $1}' | xargs -r docker rmi -f || echo "No old backend images to clean"
+docker images --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | grep "situsluthfi-frontend:" | tail -n +4 | awk '{print $1}' | xargs -r docker rmi -f || echo "No old frontend images to clean"
+
+# Generate timestamp for unique image tags
+TIMESTAMP=$(date +%s)
+BACKEND_IMAGE="situsluthfi-backend:${TIMESTAMP}"
+FRONTEND_IMAGE="situsluthfi-frontend:${TIMESTAMP}"
+
 echo "Building backend image..."
-docker build -t situsluthfi-backend:latest ./backend
+docker build -t "${BACKEND_IMAGE}" ./backend
 
 echo "Building frontend image..."
-docker build -t situsluthfi-frontend:latest ./frontend
+docker build -t "${FRONTEND_IMAGE}" ./frontend
 
 # Load images directly into Kind cluster
 echo "🔄 Loading images into Kind cluster..."
-kind load docker-image situsluthfi-backend:latest --name ${CLUSTER_NAME}
-kind load docker-image situsluthfi-frontend:latest --name ${CLUSTER_NAME}
+kind load docker-image "${BACKEND_IMAGE}" --name ${CLUSTER_NAME}
+kind load docker-image "${FRONTEND_IMAGE}" --name ${CLUSTER_NAME}
+
+# Clean up old images from Kind cluster
+echo "🧹 Cleaning up old images from Kind cluster..."
+docker exec ${CLUSTER_NAME}-control-plane sh -c "crictl images | grep 'situsluthfi-' | head -n -3 | awk '{print \$3}' | xargs -r crictl rmi" || echo "No old images to clean from cluster"
 
 # Verify images are available in the cluster
 echo "🔍 Verifying images in cluster..."
@@ -130,6 +144,11 @@ kubectl wait --for=condition=ready pod -l app=elasticsearch --timeout=600s -n si
 echo "📦 Deploying application services..."
 kubectl apply -f k8s/backend.yaml
 kubectl apply -f k8s/frontend.yaml
+
+# Update deployments to use timestamped images
+echo "🔄 Updating deployment images..."
+kubectl set image deployment/backend backend=${BACKEND_IMAGE} -n situsluthfi
+kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE} -n situsluthfi
 
 # Wait for deployments to complete with better error handling
 echo "⏳ Waiting for application deployments to complete..."

@@ -21,7 +21,7 @@ spec:
       containers:
       - name: backend
         image: situsluthfi-backend:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         envFrom:
         - secretRef:
             name: backend-secret
