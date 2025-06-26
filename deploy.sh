@@ -19,6 +19,10 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
+  extraPortMappings:
+  - containerPort: 30080
+    hostPort: 8080
+    protocol: TCP
 EOF
 fi
 
@@ -153,25 +157,15 @@ kubectl wait --for=condition=ready pod -l app=backend --timeout=300s -n situslut
 BACKEND_POD=$(kubectl get pods -l app=backend -n situsluthfi -o jsonpath="{.items[0].metadata.name}")
 kubectl exec -n situsluthfi $BACKEND_POD -- node dist/db/seed.js
 
-# Setup port forwarding as backup
-echo "🔗 Setting up port forwarding..."
-# Kill any existing port-forward processes
-pkill -f "kubectl port-forward" || true
-# Start port forwarding in background
-kubectl port-forward -n situsluthfi service/frontend 8080:8080 > /dev/null 2>&1 &
-PORTFORWARD_PID=$!
-echo "Port forwarding started with PID: $PORTFORWARD_PID"
-
 echo "✅ Deployment completed successfully!"
 echo "🌐 Access your application at:"
-echo "   - http://localhost:8080 (Port Forward)"
+echo "   - http://localhost:8080 (NodePort)"
 echo ""
 echo "📊 Useful commands:"
 echo "   - Check status: kubectl get all -n situsluthfi"
 echo "   - View logs: kubectl logs -f deployment/backend -n situsluthfi"
 echo "   - Scale deployment: kubectl scale deployment/frontend --replicas=2 -n situsluthfi"
 echo "   - Check services: kubectl get svc -n situsluthfi"
-echo "   - Stop port forwarding: kill $PORTFORWARD_PID"
 echo "   - Cleanup: ./cleanup.sh"
 echo "   - Kind cluster info: kind get clusters"
 echo "   - Load image to cluster: kind load docker-image <image> --name ${CLUSTER_NAME}"
