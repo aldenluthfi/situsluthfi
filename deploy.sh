@@ -163,15 +163,6 @@ xargs -r kubectl delete replicaset -n situsluthfi || echo "No old replica sets t
 
 # Final Docker cleanup
 echo "🧹 Final Docker cleanup..."
-# Remove dangling images
-docker image prune -f || echo "No dangling images to clean up"
-# Remove unused containers
-docker container prune -f || echo "No unused containers to clean up"
-# Remove unused build cache (keep last 24h)
-docker builder prune -f --filter until=24h || echo "No build cache to clean up"
-# Remove any untagged images
-docker images --filter "dangling=true" -q | xargs -r docker rmi || echo "No untagged images to clean up"
-# remove all
 docker system prune -a -f || echo "No unused Docker resources to clean up"
 
 echo "✅ Deployment completed successfully!"
