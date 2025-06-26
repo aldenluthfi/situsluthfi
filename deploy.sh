@@ -64,11 +64,6 @@ echo "🏗️ Building and loading Docker images..."
 docker build -t "${BACKEND_IMAGE}" ./backend
 docker build -t "${FRONTEND_IMAGE}" ./frontend
 
-# Clean up old Docker images (keep last 3 versions)
-echo "🧹 Cleaning up old Docker images..."
-docker images "situsluthfi-backend" --format "table {{.Repository}}:{{.Tag}}" | tail -n +2 | head -n -3 | xargs -r docker rmi || true
-docker images "situsluthfi-frontend" --format "table {{.Repository}}:{{.Tag}}" | tail -n +2 | head -n -3 | xargs -r docker rmi || true
-
 kind load docker-image "${BACKEND_IMAGE}" --name ${CLUSTER_NAME}
 kind load docker-image "${FRONTEND_IMAGE}" --name ${CLUSTER_NAME}
 
@@ -88,12 +83,6 @@ sed "s|situsluthfi-frontend:latest|${FRONTEND_IMAGE}|g" k8s/frontend.yaml | kube
 # Wait for application deployments
 echo "⏳ Waiting for applications..."
 kubectl wait --for=condition=available deployment/backend deployment/frontend --timeout=600s -n situsluthfi
-
-# Clean up old replica sets
-echo "🧹 Cleaning up old replica sets..."
-kubectl get replicasets -n situsluthfi -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.replicas}{"\n"}{end}' | \
-awk '$2 == "0" {print $1}' | \
-xargs -r kubectl delete replicaset -n situsluthfi || true
 
 # Wait for backend pod to be running and ready
 echo "⏳ Waiting for backend pod to be ready..."
