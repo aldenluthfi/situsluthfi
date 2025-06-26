@@ -4,7 +4,6 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     default-mysql-client \
-    texlive-latex-extra \
     texlive-xetex \
     && rm -rf /var/lib/apt/lists/*
 

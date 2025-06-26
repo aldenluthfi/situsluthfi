@@ -113,12 +113,6 @@ sed "s|situsluthfi-frontend:latest|${FRONTEND_IMAGE}|g" k8s/frontend.yaml | kube
 echo "⏳ Waiting for applications..."
 kubectl wait --for=condition=available deployment/backend deployment/frontend --timeout=600s -n situsluthfi
 
-# Clean up old replica sets
-echo "🧹 Cleaning up old replica sets..."
-kubectl get replicasets -n situsluthfi -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.replicas}{"\n"}{end}' | \
-awk '$2 == "0" {print $1}' | \
-xargs -r kubectl delete replicaset -n situsluthfi || echo "No old replica sets to clean up"
-
 # Wait for backend pod to be running and ready
 echo "⏳ Waiting for backend pod to be ready..."
 kubectl wait --for=condition=ready pod -l app=backend -n situsluthfi --timeout=300s
@@ -136,6 +130,12 @@ fi
 
 echo "🎯 Using backend pod: $BACKEND_POD"
 kubectl exec -n situsluthfi $BACKEND_POD -- node dist/db/seed.js
+
+# Clean up old replica sets
+echo "🧹 Cleaning up old replica sets..."
+kubectl get replicasets -n situsluthfi -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.spec.replicas}{"\n"}{end}' | \
+awk '$2 == "0" {print $1}' | \
+xargs -r kubectl delete replicaset -n situsluthfi || echo "No old replica sets to clean up"
 
 echo "✅ Deployment completed successfully!"
 echo "🌐 Application available at: http://localhost:8080"
