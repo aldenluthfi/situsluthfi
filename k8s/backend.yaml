@@ -43,7 +43,7 @@ spec:
             path: /
             port: 3000
           initialDelaySeconds: 60
-          periodSeconds: 30
+          periodSeconds: 3600
 ---
 apiVersion: v1
 kind: Service

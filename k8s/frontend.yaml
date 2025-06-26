@@ -38,7 +38,7 @@ spec:
             path: /
             port: 8080
           initialDelaySeconds: 30
-          periodSeconds: 10
+          periodSeconds: 3600
 ---
 apiVersion: v1
 kind: Service
@@ -49,6 +49,8 @@ spec:
   selector:
     app: frontend
   ports:
-  - port: 8080
+  - name: http
+    port: 8080
     targetPort: 8080
-  type: NodePort
+    protocol: TCP
+  type: ClusterIP

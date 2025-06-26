@@ -19,50 +19,11 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
-  extraPortMappings:
-  - containerPort: 80
-    hostPort: 80
-    protocol: TCP
-  - containerPort: 443
-    hostPort: 443
-    protocol: TCP
 EOF
 fi
 
 # Set kubectl context
 kubectl config use-context "kind-${CLUSTER_NAME}"
-
-# Install ingress controller
-echo "🌐 Installing NGINX Ingress Controller..."
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-
-# Wait for ingress controller to be ready
-echo "⏳ Waiting for ingress controller to be ready..."
-# First wait for the namespace to be created
-kubectl wait --for=condition=ready --timeout=60s namespace/ingress-nginx || echo "Namespace creation timeout, continuing..."
-
-# Wait for deployment to be available
-echo "⏳ Waiting for ingress controller deployment..."
-kubectl wait --namespace ingress-nginx --for=condition=available deployment/ingress-nginx-controller --timeout=300s || {
-    echo "⚠️  Ingress controller deployment timeout, checking status..."
-    kubectl get all -n ingress-nginx
-    echo "Continuing with deployment..."
-}
-
-# Alternative wait for pods to be ready
-echo "⏳ Ensuring ingress controller pods are ready..."
-kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/name=ingress-nginx --timeout=300s || {
-    echo "⚠️  Pod wait timeout, checking ingress controller status..."
-    kubectl get pods -n ingress-nginx
-    kubectl describe pods -n ingress-nginx
-    echo "Continuing with deployment..."
-}
 
 echo "📥 Pulling latest changes..."
 if [ "$ENV" != "dev" ]; then
@@ -145,7 +106,7 @@ kubectl apply -f k8s/elasticsearch.yaml
 # Wait for infrastructure to be ready with better error handling
 echo "⏳ Waiting for infrastructure to be ready..."
 echo "Checking MySQL deployment status..."
-kubectl wait --for=condition=ready pod -l app=mysql --timeout=300s -n situsluthfi || {
+kubectl wait --for=condition=ready pod -l app=mysql --timeout=600s -n situsluthfi || {
     echo "⚠️  MySQL pod timeout, checking status..."
     kubectl get pods -l app=mysql -n situsluthfi
     kubectl describe pods -l app=mysql -n situsluthfi
@@ -154,7 +115,7 @@ kubectl wait --for=condition=ready pod -l app=mysql --timeout=300s -n situsluthf
 }
 
 echo "Checking Elasticsearch deployment status..."
-kubectl wait --for=condition=ready pod -l app=elasticsearch --timeout=300s -n situsluthfi || {
+kubectl wait --for=condition=ready pod -l app=elasticsearch --timeout=600s -n situsluthfi || {
     echo "⚠️  Elasticsearch pod timeout, checking status..."
     kubectl get pods -l app=elasticsearch -n situsluthfi
     kubectl describe pods -l app=elasticsearch -n situsluthfi
@@ -186,31 +147,31 @@ kubectl rollout status deployment/frontend --timeout=300s -n situsluthfi || {
     echo "Continuing with deployment..."
 }
 
-# Apply ingress
-echo "🌐 Setting up ingress..."
-kubectl apply -f k8s/ingress.yaml
-
 # Run database seeding
 echo "🌱 Seeding database..."
 kubectl wait --for=condition=ready pod -l app=backend --timeout=300s -n situsluthfi
 BACKEND_POD=$(kubectl get pods -l app=backend -n situsluthfi -o jsonpath="{.items[0].metadata.name}")
 kubectl exec -n situsluthfi $BACKEND_POD -- node dist/db/seed.js
 
-# Add entry to /etc/hosts for ingress
-if ! grep -q "situsluthfi.local" /etc/hosts; then
-    echo "📝 Adding situsluthfi.local to /etc/hosts..."
-    echo "127.0.0.1 situsluthfi.local" | sudo tee -a /etc/hosts
-fi
+# Setup port forwarding as backup
+echo "🔗 Setting up port forwarding..."
+# Kill any existing port-forward processes
+pkill -f "kubectl port-forward" || true
+# Start port forwarding in background
+kubectl port-forward -n situsluthfi service/frontend 8080:8080 > /dev/null 2>&1 &
+PORTFORWARD_PID=$!
+echo "Port forwarding started with PID: $PORTFORWARD_PID"
 
 echo "✅ Deployment completed successfully!"
 echo "🌐 Access your application at:"
-echo "   - Frontend: http://situsluthfi.local"
-echo "   - Backend API: http://situsluthfi.local/api"
+echo "   - http://localhost:8080 (Port Forward)"
 echo ""
 echo "📊 Useful commands:"
 echo "   - Check status: kubectl get all -n situsluthfi"
 echo "   - View logs: kubectl logs -f deployment/backend -n situsluthfi"
 echo "   - Scale deployment: kubectl scale deployment/frontend --replicas=2 -n situsluthfi"
+echo "   - Check services: kubectl get svc -n situsluthfi"
+echo "   - Stop port forwarding: kill $PORTFORWARD_PID"
 echo "   - Cleanup: ./cleanup.sh"
 echo "   - Kind cluster info: kind get clusters"
 echo "   - Load image to cluster: kind load docker-image <image> --name ${CLUSTER_NAME}"
