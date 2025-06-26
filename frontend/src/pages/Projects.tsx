@@ -121,7 +121,7 @@ const Projects: React.FC = () => {
                     <span className="text-primary font-bold">stay tuned</span> for updates!
                 </p>
             </div>
-            <div className="w-full max-w-desktop">
+            <div className="w-full max-w-desktop pb-24">
                 <Carousel
                     opts={{
                         align: "start",
