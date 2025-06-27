@@ -18,29 +18,34 @@
 @font-face {
     font-family: 'heading';
     src: url('../src/assets/fonts/GreycliffCF-Heavy.woff2') format('woff2');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'heading';
     src: url('../src/assets/fonts/GreycliffCF-HeavyOblique.woff2') format('woff2');
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'body';
     src: url('../src/assets/fonts/CastledownPro-Regular.woff2') format('woff2');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'body';
     src: url('../src/assets/fonts/CastledownPro-Italic.woff2') format('woff2');
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'body';
     src: url('../src/assets/fonts/CastledownPro-Heavy.woff2') format('woff2');
     font-weight: bold;
+    font-display: swap;
 }
 
 @font-face {
@@ -48,11 +53,13 @@
     src: url('../src/assets/fonts/CastledownPro-HeavyItalic.woff2') format('woff2');
     font-weight: bold;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'code';
     src: url('../src/assets/fonts/FiraCode-Retina.woff2') format('woff2');
+    font-display: swap;
 }
 
 @theme {

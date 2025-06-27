@@ -1,0 +1,63 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+      - elasticsearch
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: elasticsearch:9.0.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    networks:
+      - app-network
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  es-data:

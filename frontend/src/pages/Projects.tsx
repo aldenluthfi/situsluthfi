@@ -1,5 +1,5 @@
 import SlidingTitle from '../components/custom/sliding-title';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     Card,
@@ -33,46 +33,6 @@ import {
     TooltipProvider
 } from "@/components/animate-ui/components/tooltip";
 
-function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: string }) {
-    const [loaded, setLoaded] = useState(false);
-    const [imageError, setImageError] = useState(false);
-    const { isDarkMode } = useTimezoneTheme();
-
-    const shouldUseDarkImage = mode === 'timezone' ? !isDarkMode : mode !== 'dark';
-
-    const imageUrl = shouldUseDarkImage ? repo.cover_dark_url : repo.cover_light_url;
-    const fallbackUrl = shouldUseDarkImage ? repo.cover_light_url : repo.cover_dark_url;
-    const hasImage = imageUrl || fallbackUrl;
-
-    if (!hasImage) return null;
-
-    return (
-        <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4">
-            {!loaded && !imageError && (
-                <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
-            )}
-            <ImageZoom>
-                <img
-                    src={imageUrl || fallbackUrl}
-                    alt={`${repo.name} preview`}
-                    className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${loaded && !imageError ? "opacity-100" : "opacity-0"
-                        }`}
-                    onLoad={() => setLoaded(true)}
-                    onError={() => {
-                        if (imageUrl && fallbackUrl && !imageError) {
-                            setImageError(true);
-                            setLoaded(false);
-                        } else {
-                            setImageError(true);
-                        }
-                    }}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                />
-            </ImageZoom>
-        </div>
-    );
-}
-
 const Projects: React.FC = () => {
     useEffect(() => {
         document.title = "aldenluth.fi | Projects";
@@ -80,7 +40,14 @@ const Projects: React.FC = () => {
 
     const [data, setData] = useState<RepositoryObject[]>([]);
     const [loading, setLoading] = useState(true);
+    const autoplayRef = useRef(autoplay({
+        delay: 7500,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+        playOnInit: true,
+    }));
     const { mode } = useTheme();
+    const { isDarkMode } = useTimezoneTheme();
 
     useEffect(() => {
         const fetchRepositories = async () => {
@@ -110,6 +77,23 @@ const Projects: React.FC = () => {
         handleSync();
     }, []);
 
+    const getImageUrl = (repo: RepositoryObject) => {
+        const shouldUseDarkImage = mode === 'timezone' ? !isDarkMode : mode !== 'dark';
+        const imageUrl = shouldUseDarkImage ? repo.cover_dark_url : repo.cover_light_url;
+        const fallbackUrl = shouldUseDarkImage ? repo.cover_light_url : repo.cover_dark_url;
+        return imageUrl || fallbackUrl;
+    };
+
+    const handleImageZoomChange = (isZoomed: boolean) => {
+        if (autoplayRef.current) {
+            if (isZoomed) {
+                autoplayRef.current.stop();
+            } else {
+                autoplayRef.current.play();
+            }
+        }
+    };
+
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip gap-24'>
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-44">
@@ -132,16 +116,7 @@ const Projects: React.FC = () => {
                         loop: true,
                         direction: "rtl",
                     }}
-                    plugins={[
-                        autoplay(
-                            {
-                                delay: 7500,
-                                stopOnInteraction: false,
-                                stopOnMouseEnter: true,
-                                playOnInit: true,
-                            }
-                        )
-                    ]}
+                    plugins={[autoplayRef.current]}
                     dir="rtl"
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
@@ -198,9 +173,20 @@ const Projects: React.FC = () => {
                                                 rel="noopener noreferrer"
                                                 className="block h-full"
                                             >
-                                                <Card className="h-full flex flex-col hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300">
+                                                <Card className="h-full flex flex-col">
                                                     <CardHeader>
-                                                        <ImageWithSkeleton repo={repo} mode={mode} />
+                                                        {getImageUrl(repo) && (
+                                                            <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4">
+                                                                <ImageZoom onZoomChange={handleImageZoomChange}>
+                                                                    <img
+                                                                        src={getImageUrl(repo)}
+                                                                        alt={`${repo.name} preview`}
+                                                                        className="w-full h-full object-cover rounded-md"
+                                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                                    />
+                                                                </ImageZoom>
+                                                            </div>
+                                                        )}
                                                         <CardDescription>
                                                             {repo.description && (
                                                                 <p className="text-base mb-3" dir='ltr'>{repo.description}</p>

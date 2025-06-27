@@ -185,7 +185,7 @@ const Writings: React.FC = () => {
                         <Link
                             key={item.id}
                             to={`/writings/${item.slug}`}
-                            className="hover:motion-scale-out-105 motion-scale-in-105 motion-ease-spring-snappy motion-duration-300 w-10/12"
+                            className="w-10/12"
                         >
                             <Card key={item.id}>
                                 <CardHeader>

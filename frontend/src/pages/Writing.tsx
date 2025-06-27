@@ -415,7 +415,7 @@ const Writing: React.FC = () => {
                                     return (
                                         <div className="flex flex-col w-full items-center">
                                             <div className="flex w-full justify-center">
-                                                <ImageZoom>
+                                                <ImageZoom data-role="button">
                                                     <img
                                                         {...props}
                                                         alt={props.alt ?? ""}
