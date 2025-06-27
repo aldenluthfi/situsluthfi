@@ -17,42 +17,42 @@
 
 @font-face {
     font-family: 'heading';
-    src: url('../src/assets/fonts/GreycliffCF-Heavy.otf') format('opentype');
+    src: url('../src/assets/fonts/GreycliffCF-Heavy.woff2') format('woff2');
 }
 
 @font-face {
     font-family: 'heading';
-    src: url('../src/assets/fonts/GreycliffCF-HeavyOblique.otf') format('opentype');
+    src: url('../src/assets/fonts/GreycliffCF-HeavyOblique.woff2') format('woff2');
     font-style: italic;
 }
 
 @font-face {
     font-family: 'body';
-    src: url('../src/assets/fonts/CastledownPro-Regular.ttf') format('truetype');
+    src: url('../src/assets/fonts/CastledownPro-Regular.woff2') format('woff2');
 }
 
 @font-face {
     font-family: 'body';
-    src: url('../src/assets/fonts/CastledownPro-Italic.ttf') format('truetype');
+    src: url('../src/assets/fonts/CastledownPro-Italic.woff2') format('woff2');
     font-style: italic;
 }
 
 @font-face {
     font-family: 'body';
-    src: url('../src/assets/fonts/CastledownPro-Heavy.ttf') format('truetype');
+    src: url('../src/assets/fonts/CastledownPro-Heavy.woff2') format('woff2');
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'body';
-    src: url('../src/assets/fonts/CastledownPro-HeavyItalic.ttf') format('truetype');
+    src: url('../src/assets/fonts/CastledownPro-HeavyItalic.woff2') format('woff2');
     font-weight: bold;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'code';
-    src: url('../src/assets/fonts/FiraCode-Retina.ttf') format('truetype');
+    src: url('../src/assets/fonts/FiraCode-Retina.woff2') format('woff2');
 }
 
 @theme {

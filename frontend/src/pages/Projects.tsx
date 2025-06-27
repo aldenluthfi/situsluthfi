@@ -66,6 +66,7 @@ function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: strin
                             setImageError(true);
                         }
                     }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                 />
             </ImageZoom>
         </div>
