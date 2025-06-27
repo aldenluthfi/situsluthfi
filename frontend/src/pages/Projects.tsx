@@ -8,6 +8,7 @@ import {
     CardFooter,
 } from "@/components/ui/card";
 import { Pill, PillIcon } from "@/components/ui/kibo-ui/pill";
+import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
 import {
     IconStar,
     IconGitFork,
@@ -50,21 +51,23 @@ function ImageWithSkeleton({ repo, mode }: { repo: RepositoryObject; mode: strin
             {!loaded && !imageError && (
                 <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
             )}
-            <img
-                src={imageUrl || fallbackUrl}
-                alt={`${repo.name} preview`}
-                className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${loaded && !imageError ? "opacity-100" : "opacity-0"
-                    }`}
-                onLoad={() => setLoaded(true)}
-                onError={() => {
-                    if (imageUrl && fallbackUrl && !imageError) {
-                        setImageError(true);
-                        setLoaded(false);
-                    } else {
-                        setImageError(true);
-                    }
-                }}
-            />
+            <ImageZoom>
+                <img
+                    src={imageUrl || fallbackUrl}
+                    alt={`${repo.name} preview`}
+                    className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${loaded && !imageError ? "opacity-100" : "opacity-0"
+                        }`}
+                    onLoad={() => setLoaded(true)}
+                    onError={() => {
+                        if (imageUrl && fallbackUrl && !imageError) {
+                            setImageError(true);
+                            setLoaded(false);
+                        } else {
+                            setImageError(true);
+                        }
+                    }}
+                />
+            </ImageZoom>
         </div>
     );
 }
