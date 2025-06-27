@@ -118,9 +118,10 @@ const Projects: React.FC = () => {
                     }}
                     plugins={[autoplayRef.current]}
                     dir="rtl"
+                    className='w-10/12 mx-auto'
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
-                        <div className="z-10 relative flex justify-center gap-2 -mb-[8.3333% + 1rem] h-full items-end desktop:hidden">
+                        <div className="z-10 relative flex justify-center gap-2 mb-[8.3333%] -mt-[8.3333%] h-full items-end desktop:hidden">
                             <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0 rotate-180" />
                             <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0  rotate-180" />
                         </div>
@@ -130,7 +131,7 @@ const Projects: React.FC = () => {
                             {loading
                                 ? Array.from({ length: 6 }).map((_, i) => (
                                     <CarouselItem key={i} className="basis-full">
-                                        <div className='h-full w-full p-[8.3333%]'>
+                                        <div className='h-full w-full'>
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
                                                     <div dir='ltr'>
@@ -166,7 +167,7 @@ const Projects: React.FC = () => {
                                 ))
                                 : data.map((repo) => (
                                     <CarouselItem key={repo.id} className="basis-full">
-                                        <div className='p-[8.3333%] h-full w-full'>
+                                        <div className='h-full w-full'>
                                             <a
                                                 href={repo.html_url}
                                                 target="_blank"
