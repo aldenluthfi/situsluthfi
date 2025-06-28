@@ -59,14 +59,9 @@ for component in mysql backend frontend; do
         --dry-run=client -o yaml | kubectl apply -f -
 done
 
-# Clean up old Docker images (keep last 3 versions)
-echo "🧹 Cleaning up old Docker images..."
-# Get all backend images except the newest 3, then delete them
-docker images "situsluthfi-backend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
-sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
-# Get all frontend images except the newest 3, then delete them
-docker images "situsluthfi-frontend" --format "{{.CreatedAt}}\t{{.Repository}}:{{.Tag}}" | \
-sort -k1,1 | head -n 3 | cut -f2 | xargs -r docker rmi 2>/dev/null || true
+# Clean up old images using crictl
+echo "🧹 Cleaning up old images with crictl..."
+docker exec situsluthfi-control-plane crictl rmi --prune || echo "No images to prune with crictl"
 
 # Build and load Docker images
 echo "🏗️ Building and loading Docker images..."
