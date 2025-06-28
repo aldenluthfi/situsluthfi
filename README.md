@@ -155,7 +155,7 @@ A modern, full-stack personal portfolio website featuring a minimalistic design,
 docker-compose up -d
 ```
 
-## 📋 Content Overview
+## 📁 Project Structure
 
 ```
 situsluthfi/
@@ -648,7 +648,19 @@ You can contact me via **Email**, [hi@aldenluth.fi](mailto:hi@aldenluth.fi)
 
 ## ⚖️ License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+This repository is licensed under the [GNU General Public License v3.0](LICENSE).
+
+With this license, you are allowed to:
+- Use, copy, modify, and distribute the software
+- Create derivative works and commercial applications
+- Include the software in larger projects
+- Access and study the source code
+
+However, you must:
+- Keep the same GPL v3.0 license for any derivative works
+- Provide source code for any distributed modifications
+- Include copyright and license notices
+- Document any changes made to the original code
 
 ## 🙏 Acknowledgments
 
