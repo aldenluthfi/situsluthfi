@@ -183,8 +183,11 @@ const syncAllFactsToDB = async () => {
     );
 
     await pool.query(
-        `SET @count = 0;
-        UPDATE facts SET id = @count:= @count + 1;`
+        "SET @count = 0;"
+    );
+
+    await pool.query(
+        "UPDATE facts SET id = @count:= @count + 1;"
     );
 };
 
