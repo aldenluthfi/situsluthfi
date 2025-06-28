@@ -3,6 +3,8 @@ import { fetchAllWritingsFromNotion, fetchWritingContentFromNotionById } from ".
 import { fetchAllFacts } from "../external/facts";
 import { fetchAllRepositories } from "../external/github";
 import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES } from "../external/elasticsearch";
+import { convert } from "html-to-text";
+import removeMd from "remove-markdown";
 
 import slugify from "slugify";
 import pool from "./mysql";
@@ -118,7 +120,7 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
 
     await indexWritingContentToES({
         id: writingRow.id,
-        content: writingRow.content,
+        content: removeMd(convert(writingRow.content, { preserveNewlines: true })),
         title: writingRow.title,
         type: "writing",
     });
@@ -244,7 +246,7 @@ export const indexAllRepositoriesToES = async () => {
                 name: row.name,
                 description: row.description,
                 topics: row.topics,
-                readme: row.readme,
+                readme: removeMd(convert(row.readme, { preserveNewlines: true })),
                 html_url: row.html_url,
                 type: "repository",
             });

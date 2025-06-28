@@ -118,7 +118,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
                 },
                 readme: {
                     fragment_size: 100,
-                    number_of_fragments: 2,
+                    number_of_fragments: 1,
                     pre_tags: ["<mark>"],
                     post_tags: ["</mark>"]
                 }
@@ -181,7 +181,7 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
                 },
                 readme: {
                     fragment_size: 100,
-                    number_of_fragments: 2,
+                    number_of_fragments: 1,
                     pre_tags: ["<mark>"],
                     post_tags: ["</mark>"]
                 }
