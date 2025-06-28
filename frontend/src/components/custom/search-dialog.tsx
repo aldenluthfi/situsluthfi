@@ -336,11 +336,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                     </kbd>
                                                 )}
                                             </div>
-                                            {(item.highlight?.content || item.highlight?.description ) && (
+                                            {(item.highlight?.content || item.highlight?.description || item.highlight?.readme ) && (
                                                 <div className={`ml-10 text-sm search-highlight group-hover:text-primary-600 ${selectedIndex === index ? 'text-primary-600' : 'text-muted-foreground'}`}>
                                                     <span
                                                         dangerouslySetInnerHTML={{
-                                                            __html: (item.highlight?.content || item.highlight?.description || []).join('...')
+                                                            __html: [...(item.highlight?.content || []), ...(item.highlight?.description || []), ...(item.highlight?.readme || [])].join(' [...] ')
                                                         }}
                                                     />
                                                 </div>

@@ -100,7 +100,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
         query: {
             multi_match: {
                 query,
-                fields: ["name^2", "description", "topics"],
+                fields: ["name^2", "description", "topics", "readme"],
                 fuzziness: "AUTO"
             }
         },
@@ -118,7 +118,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
                 },
                 readme: {
                     fragment_size: 100,
-                    number_of_fragments: 1,
+                    number_of_fragments: 2,
                     pre_tags: ["<mark>"],
                     post_tags: ["</mark>"]
                 }
@@ -153,7 +153,7 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
         query: {
             multi_match: {
                 query,
-                fields: ["content", "title^2", "tags", "name^2", "description", "topics"],
+                fields: ["content", "title^2", "tags", "name^2", "description", "topics", "readme"],
                 fuzziness: "AUTO"
             }
         },
@@ -181,7 +181,7 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
                 },
                 readme: {
                     fragment_size: 100,
-                    number_of_fragments: 1,
+                    number_of_fragments: 2,
                     pre_tags: ["<mark>"],
                     post_tags: ["</mark>"]
                 }

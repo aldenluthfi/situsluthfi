@@ -21,7 +21,7 @@ type IndexObject = {
     type: string;
 }
 
-export type WritingContentIndexObject = WritingObject & WritingContentObject & IndexObject;
+export type WritingContentIndexObject = IndexObject & WritingContentObject & { title: string };
 
 export type GitHubRepository = {
     id: number;
@@ -97,4 +97,11 @@ export type RepositoryObject = {
     icon_map?: Record<string, string>;
 };
 
-export type RepositoryIndexObject = RepositoryObject & IndexObject;
+export type RepositoryIndexObject =  IndexObject & {
+    id: number;
+    name: string;
+    description: string | null;
+    topics: string[];
+    readme: string;
+    html_url: string;
+};

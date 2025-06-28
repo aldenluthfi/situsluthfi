@@ -120,10 +120,6 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
         id: writingRow.id,
         content: writingRow.content,
         title: writingRow.title,
-        slug: writingRow.slug,
-        tags: writingRow.tags,
-        last_updated: writingRow.last_updated,
-        created_at: writingRow.created_at,
         type: "writing",
     });
 
@@ -247,15 +243,9 @@ export const indexAllRepositoriesToES = async () => {
                 id: row.id,
                 name: row.name,
                 description: row.description,
-                languages: row.languages,
-                stargazers_count: row.stargazers_count,
-                forks_count: row.forks_count,
                 topics: row.topics,
-                created_at: row.created_at,
-                updated_at: row.updated_at,
-                license: row.license,
-                html_url: row.html_url,
                 readme: row.readme,
+                html_url: row.html_url,
                 type: "repository",
             });
         } catch (error) {

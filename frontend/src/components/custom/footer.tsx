@@ -67,9 +67,6 @@ const Footer = () => {
             {
                 loading: <div>
                     Email Copied!
-                    <div className="!text-sm !text-muted-foreground">
-                        Fun Fact Loading...
-                    </div>
                 </div>,
                 success: ({ data, status }) => ({
                     message: "Email Copied!",
