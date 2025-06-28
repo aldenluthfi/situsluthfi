@@ -6,10 +6,10 @@ import {
     PageObjectResponse,
     RichTextItemResponse
 } from "@notionhq/client/build/src/api-endpoints";
-import { NotionConverter } from "notion-to-md";
+import { NotionToMarkdown } from "notion-to-md";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const notionToMarkdown = new NotionConverter(notion);
+const notionToMarkdown = new NotionToMarkdown({ notionClient: notion });
 
 export const fetchAllWritingsFromNotion = async () => {
     const database = await notion.databases.query({
@@ -61,10 +61,11 @@ export const fetchAllWritingsFromNotion = async () => {
 };
 
 export const fetchWritingContentFromNotionById = async (id: string) => {
-    const markdownString = await notionToMarkdown.convert(id);
+    const mdBlocks = await notionToMarkdown.pageToMarkdown(id);
+    const markdownString = notionToMarkdown.toMarkdownString(mdBlocks);
 
     return {
         id: id,
-        content: markdownString.content,
+        content: markdownString,
     };
 };

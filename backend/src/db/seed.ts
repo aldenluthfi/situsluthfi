@@ -82,7 +82,7 @@ export const syncWritingContentToDB = async (slug: string) => {
         ON DUPLICATE KEY UPDATE
         content = VALUES(content)
         `,
-        [writing.id, writing.content]
+        [writing.id, writing.content.parent]
     );
 
     console.log(`Content synced for writing: ${writing.id}`);
