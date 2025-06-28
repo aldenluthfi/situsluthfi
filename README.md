@@ -212,279 +212,6 @@ ELASTICSEARCH_URL=http://localhost:9200
 GITHUB_TOKEN=your_github_token
 ```
 
-## 📚 API Documentation
-
-The backend API provides comprehensive endpoints for managing content, search functionality, and data synchronization. All endpoints return JSON responses and follow RESTful conventions.
-
-**Base URL:** `https://api.aldenluth.fi/api` (Production) or `http://localhost:3000/api` (Development)
-
-### 🎲 Facts API
-
-#### Get Random Fact
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/facts` | GET | Retrieve a random fact from the database |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| None | - | - | No parameters required |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/facts` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "id": 1,<br>  "text": "Honey never spoils",<br>  "source": "National Geographic"<br>}``` | 200 OK |
-
-| **Error Responses** | **Status Code** | **Description** |
-|---------------------|-----------------|-----------------|
-| ```json<br>{<br>  "error": "Failed to fetch facts"<br>}``` | 500 | Internal server error |
-
----
-
-### ✍️ Writings API
-
-#### Get Paginated Writings
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/writings/get_page` | GET | Retrieve paginated list of writings |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `page` | number | No | Page number (default: 1) |
-| `pagesize` | number | No | Items per page (default: 10) |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/writings/get_page?page=1&pagesize=5` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "results": [<br>    {<br>      "id": "abc123",<br>      "title": "My First Blog Post",<br>      "slug": "my-first-blog-post",<br>      "tags": ["technology", "web"],<br>      "lastUpdated": "2024-01-15T10:30:00Z",<br>      "createdAt": "2024-01-10T08:00:00Z"<br>    }<br>  ],<br>  "total": 25,<br>  "page": 1,<br>  "pageSize": 5,<br>  "totalPages": 5<br>}``` | 200 OK |
-
-#### Get Writing by Slug
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/writings/:slug` | GET | Retrieve full writing content by slug |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `slug` | string | Yes | URL-friendly identifier for the writing |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/writings/my-first-blog-post` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "id": "abc123",<br>  "title": "My First Blog Post",<br>  "slug": "my-first-blog-post",<br>  "tags": ["technology", "web"],<br>  "content": "# My First Blog Post\n\nThis is the content...",<br>  "lastUpdated": "2024-01-15T10:30:00Z",<br>  "createdAt": "2024-01-10T08:00:00Z"<br>}``` | 200 OK |
-
-#### Search Writing Contents
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/writings/search` | GET | Search through writing contents using Elasticsearch |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `q` | string | Yes | Search query |
-| `page` | number | No | Page number (default: 1) |
-| `pagesize` | number | No | Items per page (default: 10) |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/writings/search?q=javascript&page=1&pagesize=5` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "results": [<br>    {<br>      "id": "abc123",<br>      "title": "JavaScript Best Practices",<br>      "content": "...",<br>      "highlight": {<br>        "content": ["Learn <mark>JavaScript</mark> fundamentals"],<br>        "title": ["<mark>JavaScript</mark> Best Practices"]<br>      }<br>    }<br>  ],<br>  "total": 8,<br>  "page": 1,<br>  "pageSize": 5,<br>  "totalPages": 2<br>}``` | 200 OK |
-
-#### Sync All Writings
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/writings/sync` | GET | Synchronize all writings from Notion |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "message": "All writings synced successfully"<br>}``` | 200 OK |
-
-#### Sync Writing by Slug
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/writings/sync/:slug` | GET | Synchronize specific writing content and index to Elasticsearch |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `slug` | string | Yes | URL-friendly identifier for the writing |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "message": "Writing content synced successfully"<br>}``` | 200 OK |
-
----
-
-### 🐙 GitHub API
-
-#### Get User Repositories
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/github/repositories` | GET | Retrieve all user repositories from database |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "count": 15,<br>  "repositories": [<br>    {<br>      "id": 123456,<br>      "name": "awesome-project",<br>      "description": "An awesome project built with React",<br>      "languages": {"JavaScript": 75, "CSS": 25},<br>      "stargazers_count": 42,<br>      "forks_count": 8,<br>      "topics": ["react", "frontend"],<br>      "created_at": "2024-01-01T00:00:00Z",<br>      "updated_at": "2024-01-15T12:00:00Z",<br>      "license": {"key": "mit", "name": "MIT License"},<br>      "html_url": "https://github.com/user/awesome-project",<br>      "readme": "# Awesome Project\n\nThis is awesome...",<br>      "cover_light_url": "https://raw.githubusercontent.com/.../light.png",<br>      "cover_dark_url": "https://raw.githubusercontent.com/.../dark.png",<br>      "icon_map": {"react": "https://cdn.jsdelivr.net/.../react.svg"}<br>    }<br>  ]<br>}``` | 200 OK |
-
-#### Get Repository by Name
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/github/repositories/:name` | GET | Retrieve specific repository by name |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `name` | string | Yes | Repository name |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/github/repositories/awesome-project` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "id": 123456,<br>  "name": "awesome-project",<br>  "description": "An awesome project built with React",<br>  "languages": {"JavaScript": 75, "CSS": 25},<br>  "stargazers_count": 42,<br>  "forks_count": 8,<br>  "topics": ["react", "frontend"],<br>  "html_url": "https://github.com/user/awesome-project",<br>  "readme": "# Awesome Project..."<br>}``` | 200 OK |
-
-| **Error Response** | **Status Code** |
-|--------------------|-----------------|
-| ```json<br>{<br>  "error": "Repository not found"<br>}``` | 404 |
-
-#### Sync Repositories
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/github/repositories/sync` | GET | Synchronize repositories from GitHub API and index to Elasticsearch |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "message": "Repositories synced successfully"<br>}``` | 200 OK |
-
----
-
-### 🔍 Search API
-
-#### Universal Search
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/search` | GET | Search across all content types (writings and repositories) |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `q` | string | Yes | Search query |
-| `page` | number | No | Page number (default: 1) |
-| `pagesize` | number | No | Items per page (default: 10) |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/search?q=react&page=1&pagesize=10` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "results": [<br>    {<br>      "id": "abc123",<br>      "title": "React Best Practices",<br>      "content": "Learn React...",<br>      "_type": "writing",<br>      "highlight": {<br>        "title": ["<mark>React</mark> Best Practices"]<br>      }<br>    },<br>    {<br>      "id": 123456,<br>      "name": "react-components",<br>      "description": "Reusable React components",<br>      "_type": "repository",<br>      "highlight": {<br>        "name": ["<mark>react</mark>-components"]<br>      }<br>    }<br>  ],<br>  "total": 25,<br>  "page": 1,<br>  "pageSize": 10,<br>  "totalPages": 3,<br>  "breakdown": {<br>    "writings": {"count": 15, "total": 25},<br>    "repositories": {"count": 10, "total": 25}<br>  }<br>}``` | 200 OK |
-
-#### Search Writings
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/search/writings` | GET | Search specifically within writings |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `q` | string | Yes | Search query |
-| `page` | number | No | Page number (default: 1) |
-| `pagesize` | number | No | Items per page (default: 10) |
-
-#### Search Repositories
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/search/repositories` | GET | Search specifically within repositories |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `q` | string | Yes | Search query |
-| `page` | number | No | Page number (default: 1) |
-| `pagesize` | number | No | Items per page (default: 10) |
-
----
-
-### 📄 PDF API
-
-#### Generate CV PDF
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/pdf/generate-cv` | POST | Generate PDF from LaTeX content |
-
-| **Request Body** | **Type** | **Required** | **Description** |
-|------------------|----------|--------------|-----------------|
-| `latexContent` | string | Yes | LaTeX source code |
-| `filename` | string | No | Custom filename (default: "cv") |
-| `type` | string | No | CV type filter |
-| `mode` | string | No | Display mode |
-| `theme` | string | No | Color theme |
-
-| **Example Request** |
-|---------------------|
-| ```json<br>POST /api/pdf/generate-cv<br>Content-Type: application/json<br><br>{<br>  "latexContent": "\\documentclass{article}\\begin{document}Hello World\\end{document}",<br>  "filename": "my-cv",<br>  "type": "full",<br>  "mode": "system",<br>  "theme": "blue"<br>}``` |
-
-| **Example Response** | **Status Code** |
-|----------------------|-----------------|
-| ```json<br>{<br>  "pdfUrl": "/api/pdf/view/my-cv-a1b2c3.pdf"<br>}``` | 200 OK |
-
-| **Error Responses** | **Status Code** | **Description** |
-|---------------------|-----------------|-----------------|
-| ```json<br>{<br>  "error": "LaTeX content is required"<br>}``` | 400 | Missing required content |
-| ```json<br>{<br>  "error": "LaTeX compilation failed. Please check your content."<br>}``` | 422 | LaTeX compilation error |
-
-#### Serve PDF
-
-| **Endpoint** | **Method** | **Description** |
-|--------------|------------|-----------------|
-| `/pdf/view/:filename` | GET | Serve generated PDF file |
-
-| **Parameters** | **Type** | **Required** | **Description** |
-|----------------|----------|--------------|-----------------|
-| `filename` | string | Yes | PDF filename with extension |
-
-| **Example Request** |
-|---------------------|
-| `GET /api/pdf/view/my-cv-a1b2c3.pdf` |
-
-| **Response** | **Status Code** | **Content-Type** |
-|--------------|-----------------|------------------|
-| Binary PDF data | 200 OK | application/pdf |
-
-| **Error Response** | **Status Code** |
-|--------------------|-----------------|
-| ```json<br>{<br>  "error": "PDF not found"<br>}``` | 404 |
-
----
-
-### ⚠️ Common Error Responses
-
-| **Status Code** | **Description** | **Example Response** |
-|-----------------|-----------------|----------------------|
-| 400 | Bad Request | ```json<br>{<br>  "error": "Search query is required"<br>}``` |
-| 404 | Not Found | ```json<br>{<br>  "error": "Resource not found"<br>}``` |
-| 422 | Unprocessable Entity | ```json<br>{<br>  "error": "LaTeX compilation failed"<br>}``` |
-| 500 | Internal Server Error | ```json<br>{<br>  "error": "Internal server error"<br>}``` |
-
 **Frontend `.env`:**
 ```bash
 VITE_EMAIL=your@email.com
@@ -494,13 +221,430 @@ VITE_GITHUB=https://github.com/yourprofile
 VITE_LINKEDIN=https://linkedin.com/in/yourprofile
 ```
 
+## 📚 API Documentation
+
+The backend API provides comprehensive endpoints for managing content, search functionality, and data synchronization. All endpoints return JSON responses and follow RESTful conventions.
+
+**Base URL:** `http://host:3000/api`
+
+### 🎲 Facts API
+
+#### Get Random Fact
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/facts</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Retrieve a random fact from the database</td></tr>
+<tr><td><strong>Parameters</strong></td><td>None</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/facts</code></td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "id": 1,
+  "text": "Honey never spoils",
+  "source": "National Geographic"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to fetch facts"
+}</code></pre></td></tr>
+</table>
+
+---
+
+### ✍️ Writings API
+
+#### Get Paginated Writings
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/writings/get_page</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Retrieve paginated list of writings</td></tr>
+<tr><td rowspan="2"><strong>Parameters</strong></td><td><code>page</code> (number, optional): Page number (default: 1)</td></tr>
+<tr><td><code>pagesize</code> (number, optional): Items per page (default: 10)</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/writings/get_page?page=1&pagesize=5</code></td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "results": [
+    {
+      "id": "abc123",
+      "title": "My First Blog Post",
+      "slug": "my-first-blog-post",
+      "tags": ["technology", "web"],
+      "lastUpdated": "2024-01-15T10:30:00Z",
+      "createdAt": "2024-01-10T08:00:00Z"
+    }
+  ],
+  "total": 25,
+  "page": 1,
+  "pageSize": 5,
+  "totalPages": 5
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to retrieve paginated writings"
+}</code></pre></td></tr>
+</table>
+
+#### Get Writing by Slug
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/writings/:slug</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Retrieve full writing content by slug</td></tr>
+<tr><td><strong>Parameters</strong></td><td><code>slug</code> (string, required): URL-friendly identifier for the writing</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/writings/my-first-blog-post</code></td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "id": "abc123",
+  "title": "My First Blog Post",
+  "slug": "my-first-blog-post",
+  "tags": ["technology", "web"],
+  "content": "# My First Blog Post\n\nThis is the content...",
+  "lastUpdated": "2024-01-15T10:30:00Z",
+  "createdAt": "2024-01-10T08:00:00Z"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to retrieve writing"
+}</code></pre></td></tr>
+</table>
+
+#### Search Writing Contents
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/writings/search</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Search through writing contents using Elasticsearch</td></tr>
+<tr><td rowspan="3"><strong>Parameters</strong></td><td><code>q</code> (string, required): Search query</td></tr>
+<tr><td><code>page</code> (number, optional): Page number (default: 1)</td></tr>
+<tr><td><code>pagesize</code> (number, optional): Items per page (default: 10)</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/writings/search?q=javascript&page=1&pagesize=5</code></td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "results": [
+    {
+      "id": "abc123",
+      "title": "JavaScript Best Practices",
+      "content": "...",
+      "highlight": {
+        "content": ["Learn <mark>JavaScript</mark> fundamentals"],
+        "title": ["<mark>JavaScript</mark> Best Practices"]
+      }
+    }
+  ],
+  "total": {
+    "value": 8,
+    "relation": "eq"
+  },
+  "page": 1,
+  "pageSize": 5,
+  "totalPages": 2
+}</code></pre></td></tr>
+<tr><td><strong>Status: 400 Bad Request</strong><br><pre><code>{
+  "error": "Missing search query"
+}</code></pre></td></tr>
+</table>
+
+#### Sync All Writings
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/writings/sync</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Synchronize all writings from Notion</td></tr>
+<tr><td><strong>Parameters</strong></td><td>None</td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "message": "All writings synced successfully"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to sync all writings"
+}</code></pre></td></tr>
+</table>
+
+#### Sync Writing by Slug
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/writings/sync/:slug</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Synchronize specific writing content and index to Elasticsearch</td></tr>
+<tr><td><strong>Parameters</strong></td><td><code>slug</code> (string, required): URL-friendly identifier for the writing</td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "message": "Writing content synced successfully"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to sync writing content"
+}</code></pre></td></tr>
+</table>
+
+---
+
+### 🐙 GitHub API
+
+#### Get User Repositories
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/github/repositories</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Retrieve all user repositories from database</td></tr>
+<tr><td><strong>Parameters</strong></td><td>None</td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "count": 15,
+  "repositories": [
+    {
+      "id": 123456,
+      "name": "awesome-project",
+      "description": "An awesome project built with React",
+      "languages": {"JavaScript": 75, "CSS": 25},
+      "stargazers_count": 42,
+      "forks_count": 8,
+      "topics": ["react", "frontend"],
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-15T12:00:00Z",
+      "license": {"key": "mit", "name": "MIT License", "url": "https://...", "node_id": "...", "spdx_id": "MIT"},
+      "html_url": "https://github.com/user/awesome-project",
+      "readme": "# Awesome Project\n\nThis is awesome...",
+      "cover_light_url": "https://raw.githubusercontent.com/.../light.png",
+      "cover_dark_url": "https://raw.githubusercontent.com/.../dark.png",
+      "icon_map": {"react": "https://cdn.jsdelivr.net/.../react.svg"}
+    }
+  ]
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to fetch repositories"
+}</code></pre></td></tr>
+</table>
+
+#### Get Repository by Name
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/github/repositories/:name</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Retrieve specific repository by name</td></tr>
+<tr><td><strong>Parameters</strong></td><td><code>name</code> (string, required): Repository name</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/github/repositories/awesome-project</code></td></tr>
+<tr><td rowspan="3"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "id": 123456,
+  "name": "awesome-project",
+  "description": "An awesome project built with React",
+  "languages": {"JavaScript": 75, "CSS": 25},
+  "stargazers_count": 42,
+  "forks_count": 8,
+  "topics": ["react", "frontend"],
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-15T12:00:00Z",
+  "license": {"key": "mit", "name": "MIT License", "url": "https://...", "node_id": "...", "spdx_id": "MIT"},
+  "html_url": "https://github.com/user/awesome-project",
+  "readme": "# Awesome Project..."
+}</code></pre></td></tr>
+<tr><td><strong>Status: 404 Not Found</strong><br><pre><code>{
+  "error": "Repository not found"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to fetch repository"
+}</code></pre></td></tr>
+</table>
+
+#### Sync Repositories
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/github/repositories/sync</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Synchronize repositories from GitHub API and index to Elasticsearch</td></tr>
+<tr><td><strong>Parameters</strong></td><td>None</td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "message": "Repositories synced successfully"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to sync repositories"
+}</code></pre></td></tr>
+</table>
+
+---
+
+### 🔍 Search API
+
+#### Universal Search
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/search</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Search across all content types (writings and repositories)</td></tr>
+<tr><td rowspan="3"><strong>Parameters</strong></td><td><code>q</code> (string, required): Search query</td></tr>
+<tr><td><code>page</code> (number, optional): Page number (default: 1)</td></tr>
+<tr><td><code>pagesize</code> (number, optional): Items per page (default: 10)</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/search?q=react&page=1&pagesize=10</code></td></tr>
+<tr><td rowspan="3"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "results": [
+    {
+      "id": "abc123",
+      "title": "React Best Practices",
+      "content": "Learn React...",
+      "_type": "writing",
+      "highlight": {
+        "title": ["<mark>React</mark> Best Practices"]
+      }
+    },
+    {
+      "id": 123456,
+      "name": "react-components",
+      "description": "Reusable React components",
+      "_type": "repository",
+      "highlight": {
+        "name": ["<mark>react</mark>-components"]
+      }
+    }
+  ],
+  "total": {
+    "value": 25,
+    "relation": "eq"
+  },
+  "page": 1,
+  "pageSize": 10,
+  "totalPages": 3,
+  "breakdown": {
+    "writings": {"count": 15, "total": 25},
+    "repositories": {"count": 10, "total": 25}
+  }
+}</code></pre></td></tr>
+<tr><td><strong>Status: 400 Bad Request</strong><br><pre><code>{
+  "error": "Search query is required"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to perform search"
+}</code></pre></td></tr>
+</table>
+
+#### Search Writings
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/search/writings</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Search specifically within writings</td></tr>
+<tr><td rowspan="3"><strong>Parameters</strong></td><td><code>q</code> (string, required): Search query</td></tr>
+<tr><td><code>page</code> (number, optional): Page number (default: 1)</td></tr>
+<tr><td><code>pagesize</code> (number, optional): Items per page (default: 10)</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/search/writings?q=javascript&page=1&pagesize=5</code></td></tr>
+<tr><td rowspan="3"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "results": [
+    {
+      "id": "abc123",
+      "title": "JavaScript Best Practices",
+      "content": "...",
+      "highlight": {
+        "content": ["Learn <mark>JavaScript</mark> fundamentals"]
+      }
+    }
+  ],
+  "total": {
+    "value": 8,
+    "relation": "eq"
+  },
+  "page": 1,
+  "pageSize": 5,
+  "totalPages": 2
+}</code></pre></td></tr>
+<tr><td><strong>Status: 400 Bad Request</strong><br><pre><code>{
+  "error": "Search query is required"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to search writings"
+}</code></pre></td></tr>
+</table>
+
+#### Search Repositories
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/search/repositories</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Search specifically within repositories</td></tr>
+<tr><td rowspan="3"><strong>Parameters</strong></td><td><code>q</code> (string, required): Search query</td></tr>
+<tr><td><code>page</code> (number, optional): Page number (default: 1)</td></tr>
+<tr><td><code>pagesize</code> (number, optional): Items per page (default: 10)</td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/search/repositories?q=react&page=1&pagesize=5</code></td></tr>
+<tr><td rowspan="3"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "results": [
+    {
+      "id": 123456,
+      "name": "react-components",
+      "description": "Reusable React components",
+      "highlight": {
+        "name": ["<mark>react</mark>-components"]
+      }
+    }
+  ],
+  "total": {
+    "value": 5,
+    "relation": "eq"
+  },
+  "page": 1,
+  "pageSize": 5,
+  "totalPages": 1
+}</code></pre></td></tr>
+<tr><td><strong>Status: 400 Bad Request</strong><br><pre><code>{
+  "error": "Search query is required"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 500 Internal Server Error</strong><br><pre><code>{
+  "error": "Failed to search repositories"
+}</code></pre></td></tr>
+</table>
+
+---
+
+### 📄 PDF API
+
+#### Generate CV PDF
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/pdf/generate-cv</code></td></tr>
+<tr><td><strong>Method</strong></td><td>POST</td></tr>
+<tr><td><strong>Description</strong></td><td>Generate PDF from LaTeX content</td></tr>
+<tr><td rowspan="5"><strong>Request Body</strong></td><td><code>latexContent</code> (string, required): LaTeX source code</td></tr>
+<tr><td><code>filename</code> (string, optional): Custom filename (default: "cv")</td></tr>
+<tr><td><code>type</code> (string, optional): CV type filter</td></tr>
+<tr><td><code>mode</code> (string, optional): Display mode</td></tr>
+<tr><td><code>theme</code> (string, optional): Color theme</td></tr>
+<tr><td><strong>Example Request</strong></td><td><pre><code>POST /api/pdf/generate-cv
+Content-Type: application/json
+
+{
+    "latexContent": "\\documentclass{article} [...]",
+    "filename": "my-cv",
+    "type": "full",
+    "mode": "system",
+    "theme": "blue"
+}</code></pre></td></tr>
+<tr><td rowspan="3"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>{
+  "pdfUrl": "/api/pdf/view/my-cv-a1b2c3.pdf"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 400 Bad Request</strong><br><pre><code>{
+  "error": "LaTeX content is required"
+}</code></pre></td></tr>
+<tr><td><strong>Status: 422 Unprocessable Entity</strong><br><pre><code>{
+  "error": "LaTeX compilation failed. Please check your content."
+}</code></pre></td></tr>
+</table>
+
+#### Serve PDF
+
+<table>
+<tr><td><strong>Endpoint</strong></td><td><code>/pdf/view/:filename</code></td></tr>
+<tr><td><strong>Method</strong></td><td>GET</td></tr>
+<tr><td><strong>Description</strong></td><td>Serve generated PDF file</td></tr>
+<tr><td><strong>Parameters</strong></td><td><code>filename</code> (string, required): PDF filename with extension</td></tr>
+<tr><td><strong>Headers</strong></td><td><code>Content-Type: application/pdf</code><br><code>Content-Disposition: inline; filename="original-filename.pdf"</code><br><code>Content-Length: [buffer-length]</code></td></tr>
+<tr><td><strong>Example Request</strong></td><td><code>GET /api/pdf/view/my-cv-a1b2c3.pdf</code></td></tr>
+<tr><td rowspan="2"><strong>Example Responses</strong></td><td><strong>Status: 200 OK</strong><br><pre><code>Content-Type: application/pdf
+Content-Disposition: inline; filename="my-cv.pdf"
+Content-Length: 50432
+
+[Binary PDF data]</code></pre></td></tr>
+<tr><td><strong>Status: 404 Not Found</strong><br><pre><code>{
+  "error": "PDF not found"
+}</code></pre></td></tr>
+</table>
+
 ## 📞 Contact
 
-- **Website**: [aldenluth.fi](https://aldenluth.fi/)
-- **Email**: [hi@aldenluth.fi](mailto:hi@aldenluth.fi)
-- **LinkedIn**: [linkedin.com/in/aldenluthfi](https://linkedin.com/in/aldenluthfi)
-- **GitHub**: [github.com/aldenluthfi](https://github.com/aldenluthfi)
+Feel free to reach out if you:
 
+- Have questions about the project or implementation
+- Want to collaborate on similar web development projects
+- Need help with the technologies used in this portfolio
+- Are interested in discussing potential opportunities
+
+You can contact me via **Email**, [hi@aldenluth.fi](mailto:hi@aldenluth.fi)
 
 ## ⚖️ License
 
