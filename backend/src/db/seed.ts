@@ -122,6 +122,8 @@ export const indexWritingContentToESBySlug = async (slug: string) => {
         id: writingRow.id,
         content: removeMd(convert(writingRow.content, { preserveNewlines: true })),
         title: writingRow.title,
+        slug: writingRow.slug,
+        tags: writingRow.tags ? JSON.parse(writingRow.tags) : [],
         type: "writing",
     });
 

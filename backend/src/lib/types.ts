@@ -21,7 +21,7 @@ type IndexObject = {
     type: string;
 }
 
-export type WritingContentIndexObject = IndexObject & WritingContentObject & { title: string };
+export type WritingContentIndexObject = IndexObject & WritingContentObject & { title: string, slug: string, tags: string[] };
 
 export type GitHubRepository = {
     id: number;
