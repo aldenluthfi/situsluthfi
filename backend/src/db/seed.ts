@@ -164,6 +164,26 @@ const syncAllFactsToDB = async () => {
                 [fact.text, fact.source]
             );
     }
+
+    await pool.query(
+        `
+        WITH ranked_facts AS (
+            SELECT
+                id,
+                ROW_NUMBER() OVER (PARTITION BY text, source ORDER BY id) AS rn
+            FROM facts
+        )
+        DELETE FROM facts
+        WHERE id IN (
+            SELECT id FROM ranked_facts WHERE rn > 1
+        );
+        `
+    );
+
+    await pool.query(
+        `SET @count = 0;
+        UPDATE facts SET id = @count:= @count + 1;`
+    );
 };
 
 export const syncRepositoriesToDB = async () => {
