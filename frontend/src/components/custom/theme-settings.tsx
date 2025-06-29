@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useState, useCallback, useEffect } from "react"
 import { ThemeSelector } from "@/components/custom/theme-selector"
 import { useTheme } from "@/components/custom/theme-provider"
-import { IconSunHigh, IconMoon, IconChevronUp, IconClock, IconQuestionMark } from "@tabler/icons-react"
+import { IconSunHigh, IconMoon, IconChevronUp, IconQuestionMark } from "@tabler/icons-react"
 import { isMobile } from "@/lib/utils";
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../ui/dialog"
@@ -48,7 +48,36 @@ export function ThemeSettings() {
 
     const getIcon = () => {
         if (mode === "timezone") {
-            return <IconClock className="size-6" stroke={1.5} />
+
+            const [h, m] = currentTime.split(':').map(Number);
+            const hour = h % 12;
+            const minute = m;
+
+            const minuteAngle = (minute * 6) - 90;
+            const hourAngle = (hour * 30) + (minute * 0.5) - 90;
+            return (
+                <svg viewBox="0 0 24 24" className="size-6" stroke="currentColor" fill="none" strokeWidth="1.5">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
+                    <line
+                        x1="12"
+                        y1="12"
+                        x2={12 + 3.5 * Math.cos(hourAngle * Math.PI / 180)}
+                        y2={12 + 3.5 * Math.sin(hourAngle * Math.PI / 180)}
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                    />
+                    <line
+                        x1="12"
+                        y1="12"
+                        x2={12 + 6 * Math.cos(minuteAngle * Math.PI / 180)}
+                        y2={12 + 6 * Math.sin(minuteAngle * Math.PI / 180)}
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                    />
+                </svg>
+            );
         }
         return mode === "light"
             ? <IconSunHigh className="size-6" stroke={1.5} />

@@ -78,7 +78,7 @@ const Projects: React.FC = () => {
     }, []);
 
     const getImageUrl = (repo: RepositoryObject) => {
-        const shouldUseDarkImage = mode === 'timezone' ? !isDarkMode : mode !== 'dark';
+        const shouldUseDarkImage = mode === 'timezone' ? isDarkMode : mode === 'dark';
         const imageUrl = shouldUseDarkImage ? repo.cover_dark_url : repo.cover_light_url;
         const fallbackUrl = shouldUseDarkImage ? repo.cover_light_url : repo.cover_dark_url;
         return imageUrl || fallbackUrl;
@@ -121,12 +121,12 @@ const Projects: React.FC = () => {
                     className='w-10/12 mx-auto'
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
-                        <div className="z-10 relative flex justify-center gap-2 mb-[8.3333%] -mt-[8.3333%] h-full items-end desktop:hidden">
+                        <div className="z-10 relative flex justify-center gap-2 mb-6 -mt-6 h-full items-end desktop:hidden">
                             <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0 rotate-180" />
                             <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0  rotate-180" />
                         </div>
-                        <CarouselNext className='hidden desktop:block z-10 -left-12 rotate-180'/>
-                        <CarouselPrevious className='hidden desktop:block z-10 -right-15 rotate-180'/>
+                        <CarouselNext className='hidden desktop:block z-10 -left-12 rotate-180' />
+                        <CarouselPrevious className='hidden desktop:block z-10 -right-15 rotate-180' />
                         <CarouselContent>
                             {loading
                                 ? Array.from({ length: 6 }).map((_, i) => (
@@ -135,12 +135,13 @@ const Projects: React.FC = () => {
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
                                                     <div dir='ltr'>
-                                                        <Skeleton className="w-full aspect-[2/1] rounded-md mb-4 tablet:mb-6" dir='ltr' />
+                                                        <Skeleton className="w-full border aspect-[2/1] rounded-[17px] mb-4 tablet:mb-6" dir='ltr' />
                                                         <CardDescription>
-                                                            <div className='min-h-22'>
+                                                            <div className='min-h-28'>
                                                                 <Skeleton className="h-4 w-full mb-2" dir='ltr' />
                                                                 <Skeleton className="h-4 w-4/5 mb-2" dir='ltr' />
                                                                 <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
+                                                                <Skeleton className="h-4 w-1/5 mb-3" dir='ltr' />
                                                             </div>
                                                             <div className="flex flex-wrap gap-2 min-h-22" dir='ltr'>
                                                                 <Skeleton className="size-10 tablet:h-9 tablet:w-28 rounded-md tablet:rounded-full" dir='ltr' />
@@ -169,98 +170,99 @@ const Projects: React.FC = () => {
                                 ))
                                 : data.map((repo) => (
                                     <CarouselItem key={repo.id} className="basis-full">
-                                        <div className='h-full w-full'>
-                                            <a
-                                                href={repo.html_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="block h-full"
-                                            >
-                                                <Card className="h-full flex flex-col">
-                                                    <CardHeader>
-                                                        {getImageUrl(repo) && (
-                                                            <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4">
-                                                                <ImageZoom onZoomChange={handleImageZoomChange}>
-                                                                    <img
-                                                                        src={getImageUrl(repo)}
-                                                                        alt={`${repo.name} preview`}
-                                                                        className="w-full h-full object-cover rounded-md"
-                                                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                                                    />
-                                                                </ImageZoom>
+                                        <div className='h-full w-full flex flex-col items-stretch'>
+                                            <Card className="h-full flex flex-col">
+                                                <CardHeader>
+                                                    {getImageUrl(repo) && (
+                                                        <div className="relative border rounded-[17px] w-full aspect-[2/1] mb-2 desktop:mb-4">
+                                                            <ImageZoom onZoomChange={handleImageZoomChange} data-slot="button">
+                                                                <img
+                                                                    src={getImageUrl(repo)}
+                                                                    alt={`${repo.name} preview`}
+                                                                    className="w-full h-full object-cover"
+                                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                                                />
+                                                            </ImageZoom>
+                                                        </div>
+                                                    )}
+                                                    <CardDescription>
+                                                        <div className='min-h-28'>
+                                                            {repo.description && (
+                                                                <p className="text-base line-clamp-3 mb-1" dir='ltr'>{repo.description}</p>
+                                                            )}
+                                                            <a
+                                                                href={repo.html_url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="underline w-min text-muted-foreground text-left mb-3"
+                                                            >
+                                                                <p dir='ltr'>View on GitHub</p>
+                                                            </a>
+                                                        </div>
+                                                        {repo.topics && repo.topics.length > 0 && (
+                                                            <div className="flex flex-wrap gap-2 min-h-22" dir='ltr'>
+                                                                {repo.topics.map((topic) => {
+                                                                    const iconName = repo.icon_map?.[topic];
+                                                                    return (
+                                                                        window.innerWidth < 768 ?
+                                                                            <Tooltip key={topic}>
+                                                                                <TooltipTrigger>
+                                                                                    <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='h-min my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
+                                                                                        {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                        <span className='max-tablet:hidden'>{topic}</span>
+                                                                                    </Pill>
+                                                                                </TooltipTrigger>
+                                                                                <TooltipContent>
+                                                                                    <span className='text-center'>{topic}</span>
+                                                                                </TooltipContent>
+                                                                            </Tooltip>
+                                                                            :
+                                                                            <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='h-min my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
+                                                                                {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
+                                                                                <span className='max-tablet:hidden'>{topic}</span>
+                                                                            </Pill>
+                                                                    );
+                                                                })}
                                                             </div>
                                                         )}
-                                                        <CardDescription>
-                                                            <div className='min-h-22'>
-                                                                {repo.description && (
-                                                                    <p className="text-base mb-3 line-clamp-3" dir='ltr'>{repo.description}</p>
-                                                                )}
-                                                            </div>
-                                                            {repo.topics && repo.topics.length > 0 && (
-                                                                <div className="flex flex-wrap gap-2 min-h-22" dir='ltr'>
-                                                                    {repo.topics.map((topic) => {
-                                                                        const iconName = repo.icon_map?.[topic];
-                                                                        return (
-                                                                            window.innerWidth < 768 ?
-                                                                                <Tooltip key={topic}>
-                                                                                    <TooltipTrigger>
-                                                                                        <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='h-min my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
-                                                                                            {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
-                                                                                            <span className='max-tablet:hidden'>{topic}</span>
-                                                                                        </Pill>
-                                                                                    </TooltipTrigger>
-                                                                                    <TooltipContent>
-                                                                                        <span className='text-center'>{topic}</span>
-                                                                                    </TooltipContent>
-                                                                                </Tooltip>
-                                                                                :
-                                                                                <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='h-min my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
-                                                                                    {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
-                                                                                    <span className='max-tablet:hidden'>{topic}</span>
-                                                                                </Pill>
-                                                                        );
-                                                                    })}
+                                                    </CardDescription>
+                                                </CardHeader>
+                                                <CardFooter className='mt-auto'>
+                                                    <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1" dir='ltr'>
+                                                        <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
+                                                            {repo.stargazers_count > 0 && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconStar className="size-4" stroke={1.5} />
+                                                                    {repo.stargazers_count}
                                                                 </div>
                                                             )}
-                                                        </CardDescription>
-                                                    </CardHeader>
-                                                    <CardFooter className='mt-auto'>
-                                                        <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1" dir='ltr'>
-                                                            <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
-                                                                {repo.stargazers_count > 0 && (
-                                                                    <div className="flex items-center gap-1">
-                                                                        <IconStar className="size-4" stroke={1.5} />
-                                                                        {repo.stargazers_count}
-                                                                    </div>
-                                                                )}
-                                                                {repo.forks_count > 0 && (
-                                                                    <div className="flex items-center gap-1">
-                                                                        <IconGitFork className="size-4" stroke={1.5} />
-                                                                        {repo.forks_count}
-                                                                    </div>
-                                                                )}
-                                                                {repo.license && (
-                                                                    <div className="flex items-center gap-1">
-                                                                        <IconScale className="size-4" stroke={1.5} />
-                                                                        {typeof repo.license === 'string' ? repo.license : repo.license.spdx_id || repo.license.key}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            <span className='flex items-center gap-1'>
-                                                                <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
-                                                                {new Date(repo.created_at).toLocaleDateString(
-                                                                    "en-GB",
-                                                                    {
-                                                                        year: "numeric",
-                                                                        month: "short",
-                                                                        day: "numeric",
-                                                                    }
-                                                                )}
-                                                            </span>
+                                                            {repo.forks_count > 0 && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconGitFork className="size-4" stroke={1.5} />
+                                                                    {repo.forks_count}
+                                                                </div>
+                                                            )}
+                                                            {repo.license && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <IconScale className="size-4" stroke={1.5} />
+                                                                    {typeof repo.license === 'string' ? repo.license : repo.license.spdx_id || repo.license.key}
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    </CardFooter>
-                                                </Card>
-                                            </a>
+                                                        <span className='flex items-center gap-1'>
+                                                            <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
+                                                            {new Date(repo.created_at).toLocaleDateString(
+                                                                "en-GB",
+                                                                {
+                                                                    year: "numeric",
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                }
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </CardFooter>
+                                            </Card>
                                         </div>
                                     </CarouselItem>
                                 ))}
