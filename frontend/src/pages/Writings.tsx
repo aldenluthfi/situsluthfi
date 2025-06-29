@@ -201,7 +201,7 @@ const Writings: React.FC = () => {
                                                     {item.tags.map((tag: string) => {
                                                         const Icon = tagIconMap[tag] || IconDots;
                                                         return (
-                                                            <Pill key={tag} className="text-sm tablet:text-base tablet:px-3 tablet:py-1.5">
+                                                            <Pill key={tag} className="text-sm tablet:text-base tablet:px-3 tablet:py-1.5 h-min">
                                                                 <PillIcon icon={Icon} className="size-3 tablet:size-4"/>
                                                                 {tag}
                                                             </Pill>
