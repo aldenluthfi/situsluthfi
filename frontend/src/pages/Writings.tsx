@@ -189,8 +189,10 @@ const Writings: React.FC = () => {
                         >
                             <Card key={item.id}>
                                 <CardHeader>
-                                    <CardTitle className="font-heading text-2xl desktop:text-4xl">
-                                        {item.title}
+                                    <CardTitle className="min-w-0 flex font-heading text-2xl desktop:text-4xl">
+                                        <div className=" min-w-0 w-full truncate">
+                                            {item.title}
+                                        </div>
                                     </CardTitle>
                                     <CardDescription className="mt-2">
                                         {item.tags && item.tags.length > 0

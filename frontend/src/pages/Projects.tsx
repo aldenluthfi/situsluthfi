@@ -137,10 +137,12 @@ const Projects: React.FC = () => {
                                                     <div dir='ltr'>
                                                         <Skeleton className="w-full aspect-[2/1] rounded-md mb-4 tablet:mb-6" dir='ltr' />
                                                         <CardDescription>
-                                                            <Skeleton className="h-4 w-full mb-2" dir='ltr' />
-                                                            <Skeleton className="h-4 w-4/5 mb-2" dir='ltr' />
-                                                            <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
-                                                            <div className="flex flex-wrap gap-2" dir='ltr'>
+                                                            <div className='min-h-22'>
+                                                                <Skeleton className="h-4 w-full mb-2" dir='ltr' />
+                                                                <Skeleton className="h-4 w-4/5 mb-2" dir='ltr' />
+                                                                <Skeleton className="h-4 w-3/5 mb-3" dir='ltr' />
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-2 min-h-22" dir='ltr'>
                                                                 <Skeleton className="size-10 tablet:h-9 tablet:w-28 rounded-md tablet:rounded-full" dir='ltr' />
                                                                 <Skeleton className="size-10 tablet:h-9 tablet:w-32 rounded-md tablet:rounded-full" dir='ltr' />
                                                                 <Skeleton className="size-10 tablet:h-9 tablet:w-22 rounded-md tablet:rounded-full" dir='ltr' />
@@ -189,18 +191,20 @@ const Projects: React.FC = () => {
                                                             </div>
                                                         )}
                                                         <CardDescription>
-                                                            {repo.description && (
-                                                                <p className="text-base mb-3" dir='ltr'>{repo.description}</p>
-                                                            )}
+                                                            <div className='min-h-22'>
+                                                                {repo.description && (
+                                                                    <p className="text-base mb-3" dir='ltr'>{repo.description}</p>
+                                                                )}
+                                                            </div>
                                                             {repo.topics && repo.topics.length > 0 && (
-                                                                <div className="flex flex-wrap gap-2" dir='ltr'>
+                                                                <div className="flex flex-wrap gap-2 min-h-22" dir='ltr'>
                                                                     {repo.topics.map((topic) => {
                                                                         const iconName = repo.icon_map?.[topic];
                                                                         return (
                                                                             window.innerWidth < 768 ?
                                                                                 <Tooltip key={topic}>
                                                                                     <TooltipTrigger>
-                                                                                        <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
+                                                                                        <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='h-min my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
                                                                                             {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
                                                                                             <span className='max-tablet:hidden'>{topic}</span>
                                                                                         </Pill>
@@ -210,7 +214,7 @@ const Projects: React.FC = () => {
                                                                                     </TooltipContent>
                                                                                 </Tooltip>
                                                                                 :
-                                                                                <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
+                                                                                <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} key={topic} className='h-min my-0.5 px-3 py-1.5 text-base max-tablet:rounded-md max-tablet:p-2'>
                                                                                     {iconName ? <PillIcon icon={iconName} className='size-6 tablet:size-4' /> : <></>}
                                                                                     <span className='max-tablet:hidden'>{topic}</span>
                                                                                 </Pill>
