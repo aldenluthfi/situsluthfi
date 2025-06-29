@@ -59,10 +59,6 @@ for component in mysql backend frontend; do
         --dry-run=client -o yaml | kubectl apply -f -
 done
 
-# Clean up old images using crictl
-echo "🧹 Cleaning up old images with crictl..."
-docker exec situsluthfi-control-plane crictl rmi --prune || echo "No images to prune with crictl"
-
 # Build and load Docker images
 echo "🏗️ Building and loading Docker images..."
 
@@ -159,6 +155,10 @@ xargs -r kubectl delete replicaset -n situsluthfi || echo "No old replica sets t
 # Final Docker cleanup
 echo "🧹 Final Docker cleanup..."
 docker system prune -a -f || echo "No unused Docker resources to clean up"
+
+# Clean up old images using crictl
+echo "🧹 Cleaning up old images with crictl..."
+docker exec situsluthfi-control-plane crictl rmi --prune || echo "No images to prune with crictl"
 
 echo "✅ Deployment completed successfully!"
 echo "🌐 Application available at: http://localhost:8080"
