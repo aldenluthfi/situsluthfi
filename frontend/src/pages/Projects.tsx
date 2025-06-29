@@ -193,7 +193,7 @@ const Projects: React.FC = () => {
                                                         <CardDescription>
                                                             <div className='min-h-22'>
                                                                 {repo.description && (
-                                                                    <p className="text-base mb-3" dir='ltr'>{repo.description}</p>
+                                                                    <p className="text-base mb-3 line-clamp-3" dir='ltr'>{repo.description}</p>
                                                                 )}
                                                             </div>
                                                             {repo.topics && repo.topics.length > 0 && (
