@@ -165,7 +165,7 @@ const Writings: React.FC = () => {
                         >
                             <CardHeader>
                                 <CardTitle className="flex flex-col gap-2">
-                                    <Skeleton className="h-8 desktop:h-10 w-full" />
+                                    <Skeleton className="h-8 desktop:h-11 w-full" />
                                     <Skeleton className="h-8 desktop:hidden w-1/2" />
                                 </CardTitle>
                                 <CardDescription className="mt-2">
@@ -190,7 +190,7 @@ const Writings: React.FC = () => {
                             <Card key={item.id}>
                                 <CardHeader>
                                     <CardTitle className="font-heading text-2xl desktop:text-4xl">
-                                        <div className="line-clamp-2 tablet:line-clamp-1">
+                                        <div className="line-clamp-2 tablet:line-clamp-1 min-h-8 desktop:min-h-11">
                                             {item.title}
                                         </div>
                                     </CardTitle>

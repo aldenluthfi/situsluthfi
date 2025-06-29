@@ -135,7 +135,7 @@ const Projects: React.FC = () => {
                                             <Card className="motion-preset-fade h-full flex flex-col" style={{ animationDelay: `${i * 100}ms` }}>
                                                 <CardHeader>
                                                     <div dir='ltr'>
-                                                        <Skeleton className="w-full border aspect-[2/1] rounded-[17px] mb-4 tablet:mb-6" dir='ltr' />
+                                                        <Skeleton className="w-full rounded-md aspect-[2/1] mb-4 tablet:mb-6" dir='ltr' />
                                                         <CardDescription>
                                                             <div className='min-h-28'>
                                                                 <Skeleton className="h-4 w-full mb-2" dir='ltr' />
@@ -174,7 +174,7 @@ const Projects: React.FC = () => {
                                             <Card className="h-full flex flex-col">
                                                 <CardHeader>
                                                     {getImageUrl(repo) && (
-                                                        <div className="relative border rounded-[17px] w-full aspect-[2/1] mb-2 desktop:mb-4">
+                                                        <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4">
                                                             <ImageZoom onZoomChange={handleImageZoomChange} data-slot="button">
                                                                 <img
                                                                     src={getImageUrl(repo)}
