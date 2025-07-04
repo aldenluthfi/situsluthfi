@@ -121,12 +121,10 @@ const Projects: React.FC = () => {
                     className='w-10/12 mx-auto'
                 >
                     <TooltipProvider openDelay={0} closeDelay={500}>
-
                         <div className="z-10 relative flex justify-center gap-2 mb-4 -mt-4 h-full items-end desktop:hidden">
                             <CarouselPrevious className="relative top-10/12 left-0 translate-y-0 translate-x-0 rotate-180" />
                             <CarouselNext className="relative top-10/12 right-0 translate-y-0 translate-x-0  rotate-180" />
                         </div>
-
                         <CarouselNext className='hidden desktop:block z-10 -left-12 rotate-180' />
                         <CarouselPrevious className='hidden desktop:block z-10 -right-15 rotate-180' />
                         <CarouselContent>
