@@ -369,6 +369,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                             <Separator className="my-1 bg-border" />
                         )}
 
+
                         {filteredNavigationItems.length > 0 && (
                             <div className="text-foreground overflow-hidden p-1 gap-2 flex flex-col">
                                 {filteredNavigationItems.map((item, index) => {
