@@ -6,6 +6,7 @@ interface SquiggleProps {
     className?: string;
 }
 
+
 const Squiggle: React.FC<SquiggleProps> = ({
     width: initialWidth = 7,
     className = ''
