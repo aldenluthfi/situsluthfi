@@ -15,7 +15,7 @@ const Squiggle: React.FC<SquiggleProps> = ({
 
     useEffect(() => {
         const calculateWidth = () => {
-            const calculatedWidth = ((document.documentElement.clientWidth / 40) | 1);
+            const calculatedWidth = ((document.documentElement.clientWidth / 100) | 1);
             setDynamicWidth(calculatedWidth);
         };
 

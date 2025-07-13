@@ -26,7 +26,7 @@ const Gallery: React.FC = () => {
                     of my travels around this <span className="text-primary font-bold">blob of dust</span>
                 </p>
             </div>
-            <div className='flex flex-col -space-y-1 justify-center items-center w-full'>
+            <div className='flex flex-col -space-y-0.25 justify-center items-center w-full'>
                 <Squiggle className="w-full fill-primary-100" />
                 <div className='bg-primary-100 w-screen py-[3.6666%] desktop:py-[2vh] flex justify-center items-center z-10'>
                     <WorldMap
@@ -88,7 +88,7 @@ const Gallery: React.FC = () => {
                         }
                         strokeWidth={1}
                         maxHeight='83.3333vh'
-                        maxWidth={window.innerWidth < 1024 ? '83.3333vw' : '90vw'}
+                        maxWidth={window.innerWidth < 1024 ? '83.3333vw' : '95vw'}
                     />
                 </div>
                 <Squiggle className="w-full fill-primary-100 -scale-y-100" />

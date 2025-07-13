@@ -132,7 +132,7 @@ const Home: React.FC = () => {
                 </p>
             </div>
 
-            <div className="flex flex-col -space-y-5 border-0">
+            <div className="flex flex-col -space-y-0.25 border-0">
                 <Squiggle className="w-full fill-primary-100" />
 
                 <Carousel
