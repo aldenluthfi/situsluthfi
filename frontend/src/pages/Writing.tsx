@@ -424,7 +424,7 @@ const Writing: React.FC = () => {
                                                 </ImageZoom>
                                             </div>
                                             {props.alt && !/\.(png|jpe?g)$/i.test(props.alt) && (
-                                                <span className="text-xs text-muted-foreground mt-2 text-center">{props.alt}</span>
+                                                <span className="text-xs text-muted-foreground mb-4 text-center">{props.alt}</span>
                                             )}
                                         </div>
                                     );
@@ -461,11 +461,11 @@ const Writing: React.FC = () => {
                                         );
                                     }
 
-                                    return <ul {...rest} className="list-disc pl-6 mb-4">{props.children}</ul>
+                                    return <ul {...rest} className="list-disc pl-6 mb-4 flex space-y-2 flex-col">{props.children}</ul>
                                 },
                                 ol(props) {
                                     const { ...rest } = props
-                                    return <ol {...rest} className="list-decimal pl-6 flex space-y-2 flex-col" />
+                                    return <ol {...rest} className="list-decimal pl-6 mb-4 flex space-y-2 flex-col" />
                                 },
                                 hr() {
                                     return <Separator className='w-full mb-4 bg-foreground' />
