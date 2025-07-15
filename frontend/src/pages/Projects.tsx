@@ -194,7 +194,7 @@ const Projects: React.FC = () => {
                                                                 href={repo.html_url}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                className="underline w-min text-muted-foreground text-left mb-3"
+                                                                className="underline text-muted-foreground text-left mb-3"
                                                             >
                                                                 <p dir='ltr'>View on GitHub</p>
                                                             </a>
