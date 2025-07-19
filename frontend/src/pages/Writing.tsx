@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import remarkGfm from 'remark-gfm'
-
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import remarkToc from 'remark-toc';
