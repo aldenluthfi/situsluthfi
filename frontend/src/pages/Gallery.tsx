@@ -4,12 +4,17 @@ import Squiggle from '@/components/custom/squiggle';
 import { useTheme } from "@/components/custom/theme-provider"
 import { useTimezoneTheme } from "@/hooks/use-timezone-theme"
 import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE, Belgium, France, Germany, Netherlands, Italy, Switzerland, Spain } from '@/components/maps';
+import { useEffect } from 'react';
 
 const Gallery: React.FC = () => {
     const { mode } = useTheme();
     const { isDarkMode } = useTimezoneTheme();
 
     const isEffectivelyDark = mode === 'dark' || (mode === 'timezone' && isDarkMode);
+
+    useEffect(() => {
+        document.title = 'aldenluth.fi | Gallery';
+    }, []);
 
     return (
         <div className='flex flex-col min-h-screen items-center overflow-clip gap-24'>
