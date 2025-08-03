@@ -180,6 +180,17 @@
 
 \bagian{Work Experience} [full|software|tutor]
 \vspace{-15pt} [full|software|tutor]
+\entri [full|software]
+{Tiket.com} [full|software]
+{} [full|software]
+{Software Developer Engineer in Test (SDET) Intern} [full|software]
+{Jul 2025 - Current} [full|software]
+\daftar{ [full|software]
+    \butir{$\lambda$}{Develops and maintains \tekan{automated testing frameworks} for iOS and Android applications using \tekan{Appium} and \tekan{Java}.}
+    \butir{$\lambda$}{Utilizes \tekan{LambdaTest} cloud platform for cross-device testing and browser compatibility testing.}
+    \butir{$\lambda$}{Collaborates with development teams to ensure \tekan{code quality} and implement \tekan{CI/CD pipelines} for mobile applications.}
+    \butir{$\lambda$}{Performs \tekan{API testing}, \tekan{regression testing}, and \tekan{performance testing} to maintain product reliability across mobile platforms.}
+}
 \entri [full|software|tutor]
 {Faculty of Computer Science UI} [full|software|tutor]
 {} [full|software|tutor]
@@ -252,12 +263,18 @@
 {Faculty of Computer Science UI} [full|design|humanitarian]
 {Deputy Coordinator of Socio-Politics} [full|humanitarian]
 {June 2025 - Current} [full|humanitarian]
+\daftar{ [full|humanitarian]
+    \butir{$\nabla$}{\tekan{Coordinates} and oversees \tekan{socio-political initiatives} within the faculty.}
+    \butir{$\nabla$}{\tekan{Manages} cross-departmental collaboration for community engagement programs.}
+    \butir{$\nabla$}{Develops and implements \tekan{strategic policies} for social responsibility projects.}
+    \butir{$\nabla$}{\tekan{Facilitates} partnerships with external organizations and government agencies.}
+}
 \entriTanpaJudul [full|humanitarian]
 {External Deputy of Social Service Department} [full|humanitarian]
 {Apr 2024 - Dec 2024} [full|humanitarian]
 \daftar{ [full|humanitarian]
     \butir{$\mathbb{N}$}{Responsible for the \tekan{external affairs} of the department.}
-    \butir{$\mathbb{N}$}{Manages a team of 15 staff members.}
+    \butir{$\mathbb{N}$}{\tekan{Manages} a team of \tekan{15 staff members}.}
     \butir{$\mathbb{N}$}{Supervises and ensures all of our \tekan{7 community projects} are running smoothly.}
 }
 \entriTanpaJudul [full]
@@ -392,12 +409,6 @@
 {May 2025} [full|humanitarian]
 \entri [full|humanitarian]
 {Indonesian Sign Language Certification} [full|humanitarian]
-{Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
-{\normalfont{Level 1}} [full|humanitarian]
-{December 2024} [full|humanitarian]
-\vspace{-7.5pt} [full|humanitarian]
-
-\end{document}
 {Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
 {\normalfont{Level 1}} [full|humanitarian]
 {December 2024} [full|humanitarian]

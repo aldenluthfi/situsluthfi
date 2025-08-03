@@ -31,6 +31,14 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Work Experience [full | software | tutor]
 
+#### **Tiket.com** [full | software ]
+##### **Software Developer Engineer in Test Intern** Jul 2025 - Current [full | software]
+
+- Develops and maintains **automated testing frameworks** for iOS and Android applications using **Appium** and **Java**. [full | software]
+- Utilizes **LambdaTest** cloud platform for cross-device testing and browser compatibility testing. [full | software]
+- Collaborates with development teams to ensure **code quality** and implement **CI/CD pipelines** for mobile applications. [full | software]
+- Performs **API testing**, **regression testing**, and **performance testing** to maintain product reliability across mobile platforms. [full | software]
+
 #### **Faculty of Computer Science UI** [full | software | tutor]
 ##### **Coordinator Teaching Assistant of Intro to Computer Organization** Jan 2025 - Current [full | tutor]
 
@@ -80,6 +88,11 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 #### **Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design | humanitarian]
 ##### **Deputy Coordinator of Socio-Politics** June 2025 - Current [full | humanitarian]
+
+- **Coordinates** and oversees **socio-political initiatives** within the faculty. [full | humanitarian]
+- **Manages** cross-departmental collaboration for community engagement programs. [full | humanitarian]
+- Develops and implements **strategic policies** for social responsibility projects. [full | humanitarian]
+- **Facilitates** partnerships with external organizations and government agencies. [full | humanitarian]
 
 ##### **External Deputy of Social Service Department** Apr 2024 - Dec 2024 [full | humanitarian]
 
