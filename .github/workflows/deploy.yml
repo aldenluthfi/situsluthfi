@@ -15,8 +15,8 @@ jobs:
               with:
                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
             - name: Add host to known_hosts
-              run: ssh-keyscan -H ssh.aldenluth.fi >> ~/.ssh/known_hosts
+              run: ssh-keyscan -H 193.180.208.235 >> ~/.ssh/known_hosts
             - name: Connect and deploy
-              run: ssh aldenluthfi@ssh.aldenluth.fi "cd situsluthfi && ./deploy.sh"
+              run: ssh aldenluthfi@193.180.208.235 "cd situsluthfi && ./deploy.sh"
             - name: Cleanup
               run: rm -rf ~/.ssh
