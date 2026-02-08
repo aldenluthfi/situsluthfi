@@ -235,6 +235,17 @@
 
 \bagian{Volunteering Experience} [full|design|humanitarian|tutor]
 \vspace{-15pt} [full|design|humanitarian|tutor]
+\entri [full|humanitarian]
+{SAVANA by Bakti BCA} [full|humanitarian]
+{Universtas Indonesia} [full|humanitarian]
+{Voulenteer} [full|humanitarian]
+{June 2025} [full|humanitarian]
+\daftar{ [full|humanitarian]
+    \butir{$\exists$}{\tekan{One month} of community service \tekan{in Wonokitri, Pasuruan, East Java}.}
+    \butir{$\exists$}{Teaches English elementary school students at SDN 2 Wonokitri.}
+    \butir{$\exists$}{Explored waste management solutions for the village.}
+    \butir{$\exists$}{Implemented natural disaster early warning systems for the village.}
+}
 \entri [full|design|humanitarian|tutor]
 {Gerakan UI Mengajar} [full|design|humanitarian|tutor]
 {Universtas Indonesia} [full|design|humanitarian|tutor]
@@ -402,6 +413,11 @@
 
 \bagian{Certifications} [full|humanitarian]
 \vspace{-15pt} [full|humanitarian]
+\entri [full|humanitarian]
+{Indonesian Sign Language Certification} [full|humanitarian]
+{Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
+{\normalfont{Level 3}} [full|humanitarian]
+{December 2025} [full|humanitarian]
 \entri [full|humanitarian]
 {Indonesian Sign Language Certification} [full|humanitarian]
 {Pusat Bahasa Isyarat Indonesia} [full|humanitarian]
