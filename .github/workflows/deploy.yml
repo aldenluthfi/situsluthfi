@@ -17,6 +17,6 @@ jobs:
             - name: Add host to known_hosts
               run: ssh-keyscan -H 193.180.208.235 >> ~/.ssh/known_hosts
             - name: Connect and deploy
-              run: ssh aldenluthfi@193.180.208.235 "cd situsluthfi && ./deploy.sh"
+              run: ssh -o ServerAliveInterval=1200 aldenluthfi@193.180.208.235 "cd situsluthfi && ./deploy.sh"
             - name: Cleanup
               run: rm -rf ~/.ssh
