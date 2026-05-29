@@ -148,8 +148,13 @@ export const indexAllWritingContentsToES = async () => {
 };
 
 const syncAllFactsToDB = async () => {
-
-    const allFacts = await fetchAllFacts();
+    let allFacts;
+    try {
+        allFacts = await fetchAllFacts();
+    } catch (error) {
+        console.warn("Facts sync skipped (external API unavailable):", (error as Error).message);
+        return;
+    }
 
     console.log(`Syncing ${allFacts.length} facts...`);
 
