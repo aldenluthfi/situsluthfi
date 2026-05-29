@@ -6,20 +6,21 @@ import { IconSunHigh, IconMoon, IconChevronUp, IconQuestionMark } from "@tabler/
 import { isMobile } from "@/lib/utils";
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../ui/dialog"
+import { TIMEZONE } from "@/hooks/use-timezone-theme"
+import { THEME_COLORS } from "@/lib/types"
 
 export function ThemeSettings() {
     const [isOpen, setIsOpen] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
-    const [currentTime, setCurrentTime] = useState(() => {
-        const timezone = import.meta.env.VITE_TIMEZONE || 'Asia/Jakarta';
-        return new Date().toLocaleTimeString('en-US', {
-            timeZone: timezone,
+    const [currentTime, setCurrentTime] = useState(() =>
+        new Date().toLocaleTimeString('en-US', {
+            timeZone: TIMEZONE,
             hour12: false,
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit'
-        });
-    })
+        })
+    )
     const { mode, setMode, setTheme, theme } = useTheme()
 
     const cycleThemeMode = useCallback(() => {
@@ -93,9 +94,8 @@ export function ThemeSettings() {
 
     useEffect(() => {
         const updateTime = () => {
-            const timezone = import.meta.env.VITE_TIMEZONE || 'Asia/Jakarta';
             setCurrentTime(new Date().toLocaleTimeString('en-US', {
-                timeZone: timezone,
+                timeZone: TIMEZONE,
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
@@ -119,12 +119,7 @@ export function ThemeSettings() {
         const hourAngle = (hour12 * 30) + (minutes * 0.5) - 90;
         const secondAngle = (seconds * 6) - 90;
 
-        const colorNames = [
-            "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal",
-            "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"
-        ];
-
-        const activeColorIndex = colorNames.indexOf(theme);
+        const activeColorIndex = THEME_COLORS.indexOf(theme);
 
         return (
             <svg
@@ -132,7 +127,7 @@ export function ThemeSettings() {
                 className="w-full h-auto max-w-[280px] sm:max-w-[320px] mx-auto"
                 style={{ aspectRatio: '1 / 1' }}
             >
-                {colorNames.map((color, i) => {
+                {THEME_COLORS.map((color, i) => {
                     const startAngle = (i * 360 / 17) + 90;
                     const endAngle = ((i + 1) * 360 / 17) + 90.5;
                     const isActive = i === activeColorIndex;

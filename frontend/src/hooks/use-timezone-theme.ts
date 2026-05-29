@@ -1,14 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { THEME_COLORS } from '@/lib/types';
 
 type TimeBasedColor = {
     name: string;
     colors: Record<string, string>;
 };
 
-const allColors = [
-    "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal",
-    "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"
-];
+export const TIMEZONE = import.meta.env.VITE_TIMEZONE || 'Asia/Jakarta';
 
 function createColorObject(colorName: string): TimeBasedColor {
     return {
@@ -49,9 +47,8 @@ function createFlippedColorObject(colorName: string): TimeBasedColor {
 }
 
 function getTimezoneTime(): Date {
-    const timezone = import.meta.env.VITE_TIMEZONE || 'Asia/Jakarta';
     const now = new Date();
-    return new Date(now.toLocaleString("en-US", { timeZone: timezone }));
+    return new Date(now.toLocaleString("en-US", { timeZone: TIMEZONE }));
 }
 
 function shouldBeDarkMode(): boolean {
@@ -69,7 +66,7 @@ function getCurrentTimezoneColor(): string {
 
     const colorIndex = Math.floor((totalMinutes / (12 * 60)) * 17);
 
-    return allColors[Math.min(colorIndex, allColors.length - 1)];
+    return THEME_COLORS[Math.min(colorIndex, THEME_COLORS.length - 1)];
 }
 
 function getCurrentTimezonePeriod(): string {
@@ -119,10 +116,6 @@ export function useTimezoneTheme() {
 
     useEffect(() => {
         updateTimezoneData();
-
-        const interval = setInterval(updateTimezoneData, 60000);
-
-        return () => clearInterval(interval);
     }, [updateTimezoneData]);
 
     return {

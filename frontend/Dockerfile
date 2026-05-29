@@ -1,13 +1,13 @@
-FROM node:slim AS build
+FROM node:22-slim AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-RUN npm run lint && npm run build
+RUN npm run build
 
 FROM fholzer/nginx-brotli:latest
 

@@ -18,43 +18,63 @@ import {
     IconScale
 } from "@tabler/icons-react";
 
+const iconMap: Record<string, React.JSX.Element> = {
+    mail: <IconMail className="size-6" stroke={1.5} />,
+    instagram: <IconBrandInstagram className="size-6" stroke={1.5} />,
+    twitter: <IconBrandX className="size-6" stroke={1.5} />,
+    github: <IconBrandGithub className="size-6" stroke={1.5} />,
+    linkedin: <IconBrandLinkedin className="size-6" stroke={1.5} />,
+    x: <IconX className="size-6" stroke={1.5} />,
+    link: <IconLink className="size-6" stroke={1.5} />,
+    license: <IconScale className="size-6" stroke={1.5} />,
+};
+
+const links: { name: string; icon: string; url: string }[] = [
+    { name: "Instagram", icon: "instagram", url: import.meta.env.VITE_INSTAGRAM },
+    { name: "Twitter", icon: "twitter", url: import.meta.env.VITE_TWITTER },
+    { name: "GitHub", icon: "github", url: import.meta.env.VITE_GITHUB },
+    { name: "LinkedIn", icon: "linkedin", url: import.meta.env.VITE_LINKEDIN },
+];
+
+const linksMotionProps = {
+    initial: { width: 0, opacity: 0 },
+    animate: { width: "auto", opacity: 1 },
+    exit: {
+        width: 0,
+        opacity: 0,
+        transition: {
+            width: { duration: 0.1, type: "tween", delay: 0.1 },
+            opacity: { duration: 0.1, delay: 0.1 }
+        }
+    },
+    transition: {
+        width: { duration: 0.3, type: "spring" },
+        opacity: { duration: 0.1 }
+    }
+} as const;
+
+const SocialLinkButton = ({ link }: { link: typeof links[number] }) => {
+    const btn = (
+        <Button asChild variant="ghost" size="icon" aria-label={link.name} title={link.name}>
+            <a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.name} title={link.name}>
+                {iconMap[link.icon]}
+            </a>
+        </Button>
+    );
+    if (!isMobile) {
+        return (
+            <Tooltip>
+                <TooltipTrigger>{btn}</TooltipTrigger>
+                <TooltipContent>{link.name}</TooltipContent>
+            </Tooltip>
+        );
+    }
+    return btn;
+};
+
 const Footer = () => {
     const email = import.meta.env.VITE_EMAIL;
     const [showLinks, setShowLinks] = useState(false);
-
-    const links: { name: string; icon: string; url: string }[] = [
-        {
-            name: "Instagram",
-            icon: "instagram",
-            url: import.meta.env.VITE_INSTAGRAM,
-        },
-        {
-            name: "Twitter",
-            icon: "twitter",
-            url: import.meta.env.VITE_TWITTER,
-        },
-        {
-            name: "GitHub",
-            icon: "github",
-            url: import.meta.env.VITE_GITHUB,
-        },
-        {
-            name: "LinkedIn",
-            icon: "linkedin",
-            url: import.meta.env.VITE_LINKEDIN,
-        },
-    ];
-
-    const iconMap: Record<string, React.JSX.Element> = {
-        mail: <IconMail className="size-6" stroke={1.5} />,
-        instagram: <IconBrandInstagram className="size-6" stroke={1.5} />,
-        twitter: <IconBrandX className="size-6" stroke={1.5} />,
-        github: <IconBrandGithub className="size-6" stroke={1.5} />,
-        linkedin: <IconBrandLinkedin className="size-6" stroke={1.5} />,
-        x: <IconX className="size-6" stroke={1.5} />,
-        link: <IconLink className="size-6" stroke={1.5} />,
-        license: <IconScale className="size-6" stroke={1.5} />,
-    };
 
     const copyEmail = async () => {
         navigator.clipboard.writeText(email);
@@ -93,13 +113,19 @@ const Footer = () => {
         );
     };
 
-    const handleLinksClick = () => {
-        setShowLinks(true);
-    };
+    const emailButton = (
+        <Button onClick={copyEmail} variant="ghost" size="icon" aria-label="Email" title="Email">
+            {iconMap["mail"]}
+        </Button>
+    );
 
-    const handleLinksClose = () => {
-        setShowLinks(false);
-    };
+    const licenseButton = (
+        <Button variant="ghost" size="icon" aria-label="License" title="License">
+            <Link to="/license" aria-label="License" title="License">
+                {iconMap["license"]}
+            </Link>
+        </Button>
+    );
 
     return (
         <footer className="bottom-0 z-100 flex w-full justify-center bg-primary-200">
@@ -113,223 +139,51 @@ const Footer = () => {
                             <li>
                                 {!isMobile ? (
                                     <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                onClick={copyEmail}
-                                                variant="ghost"
-                                                size="icon"
-                                                aria-label="Email"
-                                                title="Email"
-                                            >
-                                                {iconMap["mail"]}
-                                            </Button>
-                                        </TooltipTrigger>
+                                        <TooltipTrigger>{emailButton}</TooltipTrigger>
                                         <TooltipContent>Email</TooltipContent>
                                     </Tooltip>
-                                ) : (
-                                    <Button
-                                        onClick={copyEmail}
-                                        variant="ghost"
-                                        size={"icon"}
-                                        aria-label="Email"
-                                        title="Email"
-                                    >
-                                        {iconMap["mail"]}
-                                    </Button>
-                                )}
+                                ) : emailButton}
                             </li>
                             <li className="flex max-tablet:flex-row-reverse gap-3">
-                                {(() => {
-                                    if (!isMobile) {
-                                        return (
-                                            <>
-                                                <AnimatePresence>
-                                                    {showLinks && (
-                                                        <motion.div
-                                                            initial={{ width: 0, opacity: 0 }}
-                                                            animate={{ width: "auto", opacity: 1 }}
-                                                            exit={{
-                                                                width: 0,
-                                                                opacity: 0,
-                                                                transition: {
-                                                                    width: {
-                                                                        duration: 0.1,
-                                                                        type: "tween",
-                                                                        delay: 0.1
-                                                                    },
-                                                                    opacity: {
-                                                                        duration: 0.1,
-                                                                        delay: 0.1
-
-                                                                    }
-                                                                }
-                                                            }}
-                                                            transition={{
-                                                                width: {
-                                                                    duration: 0.3,
-                                                                    type: "spring",
-                                                                },
-                                                                opacity: { duration: 0.1 }
-                                                            }}
-                                                            className="flex gap-3 overflow-hidden"
-                                                        >
-                                                            {links.map(link => (
-                                                                <Tooltip key={link.name}>
-                                                                    <TooltipTrigger>
-                                                                        <Button
-                                                                            asChild
-                                                                            variant="ghost"
-                                                                            size="icon"
-                                                                            aria-label={link.name}
-                                                                            title={link.name}
-                                                                        >
-                                                                            <a
-                                                                                href={link.url}
-                                                                                target="_blank"
-                                                                                rel="noopener noreferrer"
-                                                                                aria-label={link.name}
-                                                                                title={link.name}
-                                                                            >
-                                                                                {iconMap[link.icon]}
-                                                                            </a>
-                                                                        </Button>
-                                                                    </TooltipTrigger>
-                                                                    <TooltipContent>{link.name}</TooltipContent>
-                                                                </Tooltip>
-                                                            ))}
-                                                        </motion.div>
-                                                    )}
-                                                </AnimatePresence>
-                                                {showLinks ? (
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleLinksClose}
-                                                        aria-label="Close"
-                                                        title="Close"
-                                                    >
-                                                        {iconMap["x"]}
-                                                    </Button>
-                                                ) : (
-                                                    <Tooltip>
-                                                        <TooltipTrigger>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size={"icon"}
-                                                                onClick={handleLinksClick}
-                                                                aria-label="Links"
-                                                                title="Links"
-                                                            >
-                                                                {iconMap["link"]}
-                                                            </Button>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>Links</TooltipContent>
-                                                    </Tooltip>
-                                                )}
-                                            </>
-                                        );
-                                    } else {
-                                        return (
-                                            <>
-                                                <AnimatePresence>
-                                                    {showLinks && (
-                                                        <motion.div
-                                                            initial={{ width: 0, opacity: 0 }}
-                                                            animate={{ width: "auto", opacity: 1 }}
-                                                            exit={{
-                                                                width: 0,
-                                                                opacity: 0,
-                                                               transition: {
-                                                                    width: {
-                                                                        duration: 0.1,
-                                                                        type: "tween",
-                                                                        delay: 0.1
-                                                                    },
-                                                                    opacity: {
-                                                                        duration: 0.1,
-                                                                        delay: 0.1
-
-                                                                    }
-                                                                }
-                                                            }}
-                                                            transition={{
-                                                                width: {
-                                                                    duration: 0.3,
-                                                                    type: "spring"
-                                                                },
-                                                                opacity: { duration: 0.1 }
-                                                            }}
-                                                            className="flex gap-3 overflow-hidden"
-                                                        >
-                                                            {links.map(link => (
-                                                                <Button
-                                                                    asChild
-                                                                    variant="ghost"
-                                                                    size={"icon"}
-                                                                    key={link.name}
-                                                                    aria-label={link.name}
-                                                                    title={link.name}
-                                                                >
-                                                                    <a
-                                                                        href={link.url}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        aria-label={link.name}
-                                                                        title={link.name}
-                                                                    >
-                                                                        {iconMap[link.icon]}
-                                                                    </a>
-                                                                </Button>
-                                                            ))}
-                                                        </motion.div>
-                                                    )}
-                                                </AnimatePresence>
-                                                {showLinks ? (
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={handleLinksClose}
-                                                        aria-label="Close"
-                                                        title="Close"
-                                                    >
-                                                        {iconMap["x"]}
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        variant="ghost"
-                                                        size={"icon"}
-                                                        onClick={handleLinksClick}
-                                                        aria-label="Links"
-                                                        title="Links"
-                                                    >
-                                                        {iconMap["link"]}
-                                                    </Button>
-                                                )}
-                                            </>
-                                        );
-                                    }
-                                })()}
+                                <AnimatePresence>
+                                    {showLinks && (
+                                        <motion.div {...linksMotionProps} className="flex gap-3 overflow-hidden">
+                                            {links.map(link => (
+                                                <SocialLinkButton key={link.name} link={link} />
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                                {showLinks ? (
+                                    <Button variant="ghost" size="icon" onClick={() => setShowLinks(false)} aria-label="Close" title="Close">
+                                        {iconMap["x"]}
+                                    </Button>
+                                ) : (
+                                    !isMobile ? (
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Button variant="ghost" size="icon" onClick={() => setShowLinks(true)} aria-label="Links" title="Links">
+                                                    {iconMap["link"]}
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>Links</TooltipContent>
+                                        </Tooltip>
+                                    ) : (
+                                        <Button variant="ghost" size="icon" onClick={() => setShowLinks(true)} aria-label="Links" title="Links">
+                                            {iconMap["link"]}
+                                        </Button>
+                                    )
+                                )}
                             </li>
                             <li>
                                 {!isMobile ? (
                                     <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                aria-label="License"
-                                                title="License"
-                                            >
-                                                <Link to="/license" aria-label="License" title="License">
-                                                    {iconMap["license"]}
-                                                </Link>
-                                            </Button>
-                                        </TooltipTrigger>
+                                        <TooltipTrigger>{licenseButton}</TooltipTrigger>
                                         <TooltipContent>License</TooltipContent>
                                     </Tooltip>
                                 ) : (
                                     <Link to="/license" aria-label="License" title="License">
-                                        <Button variant="ghost" size={"icon"} aria-label="License" title="License">
+                                        <Button variant="ghost" size="icon" aria-label="License" title="License">
                                             {iconMap["license"]}
                                         </Button>
                                     </Link>

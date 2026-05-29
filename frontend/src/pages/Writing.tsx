@@ -228,15 +228,6 @@ const Writing: React.FC = () => {
                                                 </ScrollArea>
                                             </CardContent>
                                         </Card>
-                                        <style>
-                                            {`
-                                            .floating-toc-ul ul {
-                                                padding-left: 1.5rem !important;
-                                                list-style-type: none !important;
-                                                margin-bottom: 0 !important;
-                                            }
-                                            `}
-                                        </style>
                                     </AccordionContent>
                                 </div>
                             </AccordionItem>

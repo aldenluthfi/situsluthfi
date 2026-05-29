@@ -1,15 +1,16 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { IconHome, IconBook, IconFolder, IconPhoto, IconScale, IconRefresh, IconSearch } from '@tabler/icons-react'
 
 import Cursor from './components/custom/cursor'
-import Home from './pages/Home'
-import License from './pages/License'
-import Writings from './pages/Writings'
-import Writing from './pages/Writing'
-import Projects from './pages/Projects'
-import Gallery from './pages/Gallery'
-import NotFound from './pages/NotFound'
+
+const Home     = lazy(() => import('./pages/Home'))
+const License  = lazy(() => import('./pages/License'))
+const Writings = lazy(() => import('./pages/Writings'))
+const Writing  = lazy(() => import('./pages/Writing'))
+const Projects = lazy(() => import('./pages/Projects'))
+const Gallery  = lazy(() => import('./pages/Gallery'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 import ThemeProvider from "@/components/custom/theme-provider"
 import { TooltipProvider } from "@/components/animate-ui/components/tooltip"
@@ -90,15 +91,17 @@ export default function App() {
               <div className="min-h-screen">
                 <Wrapper>
                   <Header onSearchClick={openSearch} />
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/license" element={<License />} />
-                    <Route path="/writings" element={<Writings />} />
-                    <Route path="/writings/:slug" element={<Writing />} />
-                    <Route path="/gallery" element={<Gallery />} />
-                    <Route path="/projects" element={<Projects />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <Suspense fallback={<div className="min-h-screen" />}>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/license" element={<License />} />
+                      <Route path="/writings" element={<Writings />} />
+                      <Route path="/writings/:slug" element={<Writing />} />
+                      <Route path="/gallery" element={<Gallery />} />
+                      <Route path="/projects" element={<Projects />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
                   <Footer />
                 </Wrapper>
               </div>

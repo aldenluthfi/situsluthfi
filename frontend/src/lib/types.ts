@@ -13,6 +13,10 @@ export type WritingContentObject = {
 }
 
 export type ThemeString = "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose";
+export const THEME_COLORS: readonly ThemeString[] = [
+    "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal",
+    "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"
+] as const;
 export type ModeString = "light" | "dark" | "system" | "timezone";
 
 export type RepositoryObject = {

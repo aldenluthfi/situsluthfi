@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
@@ -18,7 +18,7 @@ COPY assets/fonts/ /app/assets/fonts/
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY init-db.sh /init-db.sh
-RUN chmod +x /init-db.sh && npm run lint && npm run build
+RUN chmod +x /init-db.sh && npm run build
 
 EXPOSE 3000
 

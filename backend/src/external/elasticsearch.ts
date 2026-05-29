@@ -15,6 +15,10 @@ if (!REPOSITORIES_INDEX) {
     throw new Error("ELASTICSEARCH_REPOSITORIES_INDEX is not set");
 }
 
+function getTotalHits(total: number | { value: number; relation: string } | undefined): number {
+    return typeof total === "number" ? total : total?.value ?? 0;
+}
+
 export const indexWritingContentToES = async (writing: WritingContentIndexObject) => {
     await client.index({
         index: WRITINGS_INDEX,
@@ -66,13 +70,7 @@ export const searchWritingContentsFromES = async (query: string, page: number = 
         total: result.hits.total,
         page,
         pageSize,
-        totalPages: Math.ceil(
-            (
-                typeof result.hits.total === "number"
-                    ? result.hits.total
-                    : result.hits.total?.value ?? 0
-            ) / pageSize
-        )
+        totalPages: Math.ceil(getTotalHits(result.hits.total) / pageSize)
     };
 };
 
@@ -133,13 +131,7 @@ export const searchRepositoriesFromES = async (query: string, page: number = 1, 
         total: result.hits.total,
         page,
         pageSize,
-        totalPages: Math.ceil(
-            (
-                typeof result.hits.total === "number"
-                    ? result.hits.total
-                    : result.hits.total?.value ?? 0
-            ) / pageSize
-        )
+        totalPages: Math.ceil(getTotalHits(result.hits.total) / pageSize)
     };
 };
 
@@ -195,9 +187,7 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
         _type: hit._index === WRITINGS_INDEX ? "writing" : "repository"
     }));
 
-    const totalCombined = typeof result.hits.total === "number"
-        ? result.hits.total
-        : result.hits.total?.value ?? 0;
+    const totalCombined = getTotalHits(result.hits.total);
 
     const writingsCount = combinedResults.filter(r => r._type === "writing").length;
     const repositoriesCount = combinedResults.filter(r => r._type === "repository").length;

@@ -8,13 +8,15 @@ if (!token) {
     throw new Error("GITHUB_TOKEN is not set in environment variables");
 }
 
+const githubHeaders = {
+    "Authorization": `Bearer ${token}`,
+    "Accept": "application/vnd.github.v3+json",
+    "User-Agent": "SitusLuthfi-Backend/1.0.0"
+} as const;
+
 export const fetchRepositoryLanguages = async (languagesUrl: string): Promise<Record<string, number>> => {
     const response = await fetch(languagesUrl, {
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "SitusLuthfi-Backend/1.0.0"
-        }
+        headers: githubHeaders
     });
 
     if (!response.ok) {
@@ -28,11 +30,7 @@ export const fetchRepositoryLanguages = async (languagesUrl: string): Promise<Re
 export const fetchRepositoryReadme = async (fullName: string): Promise<string> => {
     try {
         const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/readme`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "SitusLuthfi-Backend/1.0.0"
-            }
+            headers: githubHeaders
         });
 
         if (!response.ok) {
@@ -57,11 +55,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
 
     try {
         const lightResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/light.png`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "SitusLuthfi-Backend/1.0.0"
-            }
+            headers: githubHeaders
         });
 
         if (lightResponse.ok) {
@@ -74,11 +68,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
 
     try {
         const darkResponse = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/dark.png`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "SitusLuthfi-Backend/1.0.0"
-            }
+            headers: githubHeaders
         });
 
         if (darkResponse.ok) {
@@ -95,11 +85,7 @@ export const fetchRepositoryCoverImages = async (fullName: string): Promise<{ li
 export const fetchRepositoryIconMap = async (fullName: string): Promise<Record<string, string>> => {
     try {
         const response = await fetch(`${GITHUB_API_BASE}/repos/${fullName}/contents/.github/meta/iconmap.json`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "SitusLuthfi-Backend/1.0.0"
-            }
+            headers: githubHeaders
         });
 
         if (!response.ok) {
@@ -130,11 +116,7 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
     let hasMore = true;
     while (hasMore) {
         const response = await fetch(`${endpoint}?page=${page}&per_page=${perPage}&sort=created&direction=desc&type=owner`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "SitusLuthfi-Backend/1.0.0"
-            }
+            headers: githubHeaders
         });
 
         if (!response.ok) {
