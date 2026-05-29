@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2";
 import { fetchAllWritingsFromNotion, fetchWritingContentFromNotionById } from "../external/notion";
 import { fetchAllFacts } from "../external/facts";
 import { fetchAllRepositories } from "../external/github";
-import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES } from "../external/elasticsearch";
+import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES, clearWritingsIndex, clearRepositoriesIndex } from "../external/elasticsearch";
 import { convert } from "html-to-text";
 import removeMd from "remove-markdown";
 
@@ -136,6 +136,7 @@ export const indexAllWritingContentsToES = async () => {
     ) as Array<RowDataPacket[]>;
 
     console.log(`Indexing content for ${rows.length} writings to Elasticsearch...`);
+    await clearWritingsIndex();
 
     for (const row of rows) {
         try {
@@ -156,44 +157,17 @@ const syncAllFactsToDB = async () => {
         return;
     }
 
-    console.log(`Syncing ${allFacts.length} facts...`);
-
-    for (const fact of allFacts) {
-        allFacts.indexOf(fact) === 0 ?
-            await pool.query(
-                `INSERT INTO facts (id, text, source) VALUES (1,  ?, ?)
-             ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
-                [fact.text, fact.source]
-            ) :
-            await pool.query(
-                `INSERT INTO facts (text, source) VALUES (?, ?)
-             ON DUPLICATE KEY UPDATE text=VALUES(text), source=VALUES(source)`,
-                [fact.text, fact.source]
-            );
+    const [[{ count }]] = await pool.query("SELECT COUNT(*) as count FROM facts") as Array<RowDataPacket[]>;
+    if ((count as number) === allFacts.length) {
+        console.log(`Facts already synced (${count} records), skipping.`);
+        return;
     }
 
-    await pool.query(
-        `
-        WITH ranked_facts AS (
-            SELECT
-                id,
-                ROW_NUMBER() OVER (PARTITION BY text, source ORDER BY id) AS rn
-            FROM facts
-        )
-        DELETE FROM facts
-        WHERE id IN (
-            SELECT id FROM ranked_facts WHERE rn > 1
-        );
-        `
-    );
-
-    await pool.query(
-        "SET @count = 0;"
-    );
-
-    await pool.query(
-        "UPDATE facts SET id = @count:= @count + 1;"
-    );
+    console.log(`Syncing ${allFacts.length} facts...`);
+    await pool.query("TRUNCATE TABLE facts");
+    for (const fact of allFacts) {
+        await pool.query("INSERT INTO facts (text, source) VALUES (?, ?)", [fact.text, fact.source]);
+    }
 };
 
 export const syncRepositoriesToDB = async () => {
@@ -268,6 +242,7 @@ export const indexAllRepositoriesToES = async () => {
     ) as Array<RowDataPacket[]>;
 
     console.log(`Indexing ${rows.length} repositories to Elasticsearch...`);
+    await clearRepositoriesIndex();
 
     for (const row of rows) {
         try {
@@ -313,9 +288,13 @@ const syncDatabase = async () => {
         await syncAllFactsToDB();
         await syncRepositoriesToDB();
         console.log("Data synced to DB successfully.");
-        await indexAllWritingContentsToES();
-        await indexAllRepositoriesToES();
-        console.log("All data indexed to Elasticsearch successfully.");
+        try {
+            await indexAllWritingContentsToES();
+            await indexAllRepositoriesToES();
+            console.log("All data indexed to Elasticsearch successfully.");
+        } catch (error) {
+            console.warn("Elasticsearch indexing skipped:", (error as Error).message);
+        }
     } catch (error) {
         console.error("Error syncing data to DB:", error);
         throw error;

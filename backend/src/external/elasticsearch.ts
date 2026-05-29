@@ -27,6 +27,18 @@ export const indexWritingContentToES = async (writing: WritingContentIndexObject
     });
 };
 
+export const clearESIndex = async (index: string) => {
+    await client.deleteByQuery({
+        index,
+        query: { match_all: {} },
+        refresh: true,
+        ignore_unavailable: true,
+    } as Parameters<typeof client.deleteByQuery>[0]);
+};
+
+export const clearWritingsIndex = () => clearESIndex(WRITINGS_INDEX!);
+export const clearRepositoriesIndex = () => clearESIndex(REPOSITORIES_INDEX!);
+
 export const deleteWritingContentFromES = async (id: string) => {
     await client.delete({
         index: WRITINGS_INDEX,

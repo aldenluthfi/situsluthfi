@@ -68,5 +68,5 @@ jobs:
             - run: ssh-keyscan -H 193.180.208.235 >> ~/.ssh/known_hosts
             - run: >
                   ssh aldenluthfi@193.180.208.235
-                  "cd situsluthfi && git pull && IMAGE_TAG=${{ github.sha }} ./deploy.sh"
+                  "cd situsluthfi && git pull && IMAGE_TAG=${{ github.sha }} ./deploy.sh && docker system prune -af --volumes"
             - run: rm -rf ~/.ssh
