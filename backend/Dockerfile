@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY . .
 
-RUN mkdir -p /app/assets/fonts /app/assets/images
+RUN mkdir -p /app/assets/fonts /app/assets/images /app/assets/cached-images
 
 COPY assets/fonts/ /app/assets/fonts/
 

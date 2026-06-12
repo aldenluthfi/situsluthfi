@@ -5,6 +5,7 @@ import { fetchAllRepositories } from "../external/github";
 import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES, clearWritingsIndex, clearRepositoriesIndex } from "../external/elasticsearch";
 import { convert } from "html-to-text";
 import removeMd from "remove-markdown";
+import { processMarkdownImages } from "../services/image_cache_service";
 
 import slugify from "slugify";
 import pool from "./mysql";
@@ -75,6 +76,15 @@ export const syncWritingContentToDB = async (slug: string) => {
 
     const writing = await fetchWritingContentFromNotionById(row.id);
 
+    const { processedContent, cachedCount, failedCount } = await processMarkdownImages(
+        writing.content.parent,
+        slug
+    );
+
+    if (cachedCount > 0 || failedCount > 0) {
+        console.log(`Image cache for ${slug}: ${cachedCount} cached, ${failedCount} failed`);
+    }
+
     await pool.query(
         `
         INSERT INTO writing_content (id, content)
@@ -82,7 +92,7 @@ export const syncWritingContentToDB = async (slug: string) => {
         ON DUPLICATE KEY UPDATE
         content = VALUES(content)
         `,
-        [writing.id, writing.content.parent]
+        [writing.id, processedContent]
     );
 
     console.log(`Content synced for writing: ${writing.id}`);

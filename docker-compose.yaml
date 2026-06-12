@@ -12,6 +12,8 @@ services:
     depends_on:
       - mysql
       - elasticsearch
+    volumes:
+      - cached-images:/app/assets/cached-images
 
   frontend:
     build:
@@ -61,3 +63,4 @@ networks:
 volumes:
   mysql-data:
   es-data:
+  cached-images:

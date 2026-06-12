@@ -42,6 +42,9 @@ dist-ssr/
 .cache/
 *.local
 
+# Cached images (runtime data)
+assets/cached-images/
+
 # Logs
 logs/
 *.log

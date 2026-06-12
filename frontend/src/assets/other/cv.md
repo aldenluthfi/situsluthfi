@@ -32,7 +32,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Work Experience [full | software | tutor]
 
 #### **Tiket.com** [full | software ]
-##### **Software Developer Engineer in Test Intern** Jul 2025 - Current [full | software]
+##### **Software Developer Engineer in Test (SDET) Intern** Jul 2025 - Current [full | software]
 
 - Develops and maintains **automated testing frameworks** for iOS and Android applications using **Appium** and **Java**. [full | software]
 - Utilizes **LambdaTest** cloud platform for cross-device testing and browser compatibility testing. [full | software]
@@ -69,6 +69,14 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - The course focuses on introducing the **concepts of logic** and digital systems concepts crucial to computer science and uses Logisim as a tool. [full | tutor]
 
 ## Volunteering Experience [full | design | humanitarian | tutor]
+
+#### **SAVANA by Bakti BCA** Universitas Indonesia [full | humanitarian]
+##### **Volunteer** June 2025 [full | humanitarian]
+
+- **One month** of community service **in Wonokitri, Pasuruan, East Java**. [full | humanitarian]
+- Teaches English elementary school students at SDN 2 Wonokitri. [full | humanitarian]
+- Explored waste management solutions for the village. [full | humanitarian]
+- Implemented natural disaster early warning systems for the village. [full | humanitarian]
 
 #### **Gerakan UI Mengajar** Universitas Indonesia [full | design | humanitarian | tutor]
 ##### **Staff of Social Community Department** Jan 2024 - Mar 2024 [full | humanitarian | tutor]
@@ -182,6 +190,9 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ##### **Technofair CTF 11** September 2024 [full | cybersecurity]
 
 ## Certifications [full | humanitarian]
+
+#### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
+##### **Level 3** December 2025 [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
 ##### **Level 2** May 2025 [full | humanitarian]
