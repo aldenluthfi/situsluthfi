@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 const CACHE_DIR = path.join(__dirname, "../../assets/cached-images");
 
-const NOTION_URL_REGEX = /https?:\/\/www\.notion\.so\/image\/[^\?)]+/g;
+const NOTION_URL_REGEX = /https?:\/\/www\.notion\.so\/image\/[^?)]+/g;
 
 export type ImageCacheResult = {
     processedContent: string;

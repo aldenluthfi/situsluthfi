@@ -1,4 +1,3 @@
-import { RowDataPacket } from "mysql2";
 import pool from "./mysql";
 import { clearWritingsIndex, clearRepositoriesIndex } from "../external/elasticsearch";
 import { indexAllWritingContentsToES, indexAllRepositoriesToES } from "./seed";
