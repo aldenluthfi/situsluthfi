@@ -1,6 +1,5 @@
 import { RowDataPacket } from "mysql2";
 import { fetchAllWritingsFromNotion, fetchWritingContentFromNotionById } from "../external/notion";
-import { fetchAllFacts } from "../external/facts";
 import { fetchAllRepositories } from "../external/github";
 import { indexWritingContentToES, deleteWritingContentFromES, indexRepositoryToES, deleteRepositoryFromES, clearWritingsIndex, clearRepositoriesIndex } from "../external/elasticsearch";
 import { convert } from "html-to-text";
@@ -158,28 +157,6 @@ export const indexAllWritingContentsToES = async () => {
     }
 };
 
-const syncAllFactsToDB = async () => {
-    let allFacts;
-    try {
-        allFacts = await fetchAllFacts();
-    } catch (error) {
-        console.warn("Facts sync skipped (external API unavailable):", (error as Error).message);
-        return;
-    }
-
-    const [[{ count }]] = await pool.query("SELECT COUNT(*) as count FROM facts") as Array<RowDataPacket[]>;
-    if ((count as number) === allFacts.length) {
-        console.log(`Facts already synced (${count} records), skipping.`);
-        return;
-    }
-
-    console.log(`Syncing ${allFacts.length} facts...`);
-    await pool.query("TRUNCATE TABLE facts");
-    for (const fact of allFacts) {
-        await pool.query("INSERT INTO facts (text, source) VALUES (?, ?)", [fact.text, fact.source]);
-    }
-};
-
 export const syncRepositoriesToDB = async () => {
     const repositories = await fetchAllRepositories();
 
@@ -277,7 +254,6 @@ const waitForConnection = async (maxRetries = 30, retryDelay = 2000) => {
         try {
             await pool.query("SELECT 1 FROM writings LIMIT 1");
             await pool.query("SELECT 1 FROM repositories LIMIT 1");
-            await pool.query("SELECT 1 FROM facts LIMIT 1");
             await pool.query("SELECT 1 FROM writing_content LIMIT 1");
 
             console.log("Database connection established.");
@@ -295,7 +271,6 @@ const syncDatabase = async () => {
         await waitForConnection();
         await syncWritingsToDB();
         await syncAllWritingsContentToDB();
-        await syncAllFactsToDB();
         await syncRepositoriesToDB();
         console.log("Data synced to DB successfully.");
         try {

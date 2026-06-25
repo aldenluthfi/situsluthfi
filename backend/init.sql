@@ -7,12 +7,6 @@ CREATE TABLE IF NOT EXISTS writings (
   last_updated DATETIME
 );
 
-CREATE TABLE IF NOT EXISTS facts (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    text TEXT NOT NULL,
-    source TEXT
-);
-
 CREATE TABLE IF NOT EXISTS writing_content (
     id VARCHAR(255) PRIMARY KEY,
     content MEDIUMTEXT NOT NULL
