@@ -6,7 +6,7 @@ import useMeasure from "react-use-measure";
 
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/components/custom/theme-provider';
 import { toast } from "sonner";
 
@@ -29,9 +29,7 @@ import {
     IconDownload,
     IconEye,
     IconFileCv,
-    IconBarrierBlock,
-    IconChevronDown,
-    IconChevronUp
+    IconBarrierBlock
 } from '@tabler/icons-react';
 
 import cvContent from '@/assets/other/cv.md?raw';
@@ -59,7 +57,10 @@ const CV: React.FC<CVProps> = ({
     const [direction, setDirection] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
     const [ref] = useMeasure();
-    const [isExpanded, setIsExpanded] = useState(false);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [showScrollFade, setShowScrollFade] = useState(false);
+    const [showTopFade, setShowTopFade] = useState(false);
     const [visualMode, setVisualMode] = useState(false);
     const { mode, theme } = useTheme();
     const { currentColor, isDarkMode } = useTimezoneTheme();
@@ -407,7 +408,7 @@ const CV: React.FC<CVProps> = ({
     };
 
     useEffect(() => {
-        if (!autoPlay || isAnimating || isPaused || !showTabs || isExpanded) return;
+        if (!autoPlay || isAnimating || isPaused || !showTabs) return;
 
         const interval = setInterval(() => {
             const nextTab = activeTab === 0 ? tabs.length - 1 : activeTab - 1;
@@ -417,15 +418,7 @@ const CV: React.FC<CVProps> = ({
         }, 3000);
 
         return () => clearInterval(interval);
-    }, [autoPlay, isAnimating, isPaused, activeTab, tabs.length, showTabs, isExpanded]);
-
-    useEffect(() => {
-        if (isExpanded && autoPlay) {
-            setIsPaused(true);
-        } else if (!isExpanded && autoPlay) {
-            setIsPaused(false);
-        }
-    }, [isExpanded, autoPlay]);
+    }, [autoPlay, isAnimating, isPaused, activeTab, tabs.length, showTabs]);
 
     useEffect(() => {
         if (!pauseOnInteract || !autoPlay || !showTabs) return;
@@ -444,6 +437,34 @@ const CV: React.FC<CVProps> = ({
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, [pauseOnInteract, autoPlay, isPaused, showTabs]);
+
+    // show the bottom fade only while the CV overflows and isn't scrolled to the end.
+    useEffect(() => {
+        if (visualMode) return;
+        const el = scrollRef.current;
+        if (!el) return;
+
+        const update = () => {
+            const atTop = el.scrollTop <= 4;
+            const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 4;
+            const hasOverflow = el.scrollHeight > el.clientHeight + 4;
+            setShowScrollFade(hasOverflow && !atBottom);
+            setShowTopFade(hasOverflow && !atTop);
+        };
+
+        update();
+        el.addEventListener("scroll", update, { passive: true });
+        const ro = new ResizeObserver(update);
+        ro.observe(el);
+        if (contentRef.current) ro.observe(contentRef.current);
+        window.addEventListener("resize", update);
+
+        return () => {
+            el.removeEventListener("scroll", update);
+            ro.disconnect();
+            window.removeEventListener("resize", update);
+        };
+    }, [visualMode]);
 
     const horizontalVariants = {
         initial: (direction: number) => ({
@@ -750,34 +771,39 @@ const CV: React.FC<CVProps> = ({
             )}
             {
                 !visualMode ? (
-                    <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">
-                        <CardContent className="overflow-hidden relative">
-                            <div className="space-y-0">
-                                {parsedSections.map((section, index) => {
-                                    const shouldShowSection = section.shouldShow && (isExpanded || section.type === 'persistent');
+                    <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10 aspect-[210/297]">
+                        <CardContent className="relative flex-1 min-h-0">
+                            {showTopFade && (
+                                <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-gradient-to-t from-transparent to-card" />
+                            )}
+                            <div ref={scrollRef} className="h-full overflow-y-auto pr-3">
+                                <div ref={contentRef} className="space-y-0">
+                                    {parsedSections.map((section, index) => {
+                                        const shouldShowSection = section.shouldShow;
 
-                                    if (section.type === 'persistent') {
-                                        return (
-                                            <AnimatePresence key={`persistent-${index}-${type}`} mode="wait">
-                                                {shouldShowSection && (
-                                                    <motion.div
-                                                        variants={verticalVariants}
-                                                        initial="initial"
-                                                        animate="active"
-                                                        exit="exit"
-                                                        className="overflow-hidden"
-                                                    >
-                                                        <ReactMarkdown
-                                                            remarkPlugins={[remarkGfm]}
-                                                            components={getMarkdownComponents}
+                                        if (section.type === 'persistent') {
+                                            return (
+                                                <AnimatePresence key={`persistent-${index}-${type}`} mode="wait">
+                                                    {shouldShowSection && (
+                                                        <motion.div
+                                                            variants={verticalVariants}
+                                                            initial="initial"
+                                                            animate="active"
+                                                            exit="exit"
+                                                            className="overflow-hidden"
                                                         >
-                                                            {section.content}
-                                                        </ReactMarkdown>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        );
-                                    } else {
+                                                            <ReactMarkdown
+                                                                remarkPlugins={[remarkGfm]}
+                                                                components={getMarkdownComponents}
+                                                            >
+                                                                {section.content}
+                                                            </ReactMarkdown>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            );
+                                        }
+
                                         return (
                                             <AnimatePresence
                                                 key={`variable-${index}-${type}`}
@@ -803,26 +829,13 @@ const CV: React.FC<CVProps> = ({
                                                 )}
                                             </AnimatePresence>
                                         );
-                                    }
-                                })}
+                                    })}
+                                </div>
                             </div>
-                            {!isExpanded && <div className="h-70 w-full max-w-desktop absolute bottom-0 bg-gradient-to-b from-transparent to-card" />}
+                            {showScrollFade && (
+                                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-card" />
+                            )}
                         </CardContent>
-                        <CardFooter className="flex flex-col items-center -mt-8 tablet:-mt-6 desktop:-mb-4">
-                            <div className="flex justify-center mt-6">
-                                <Button
-                                    onClick={() => setIsExpanded(!isExpanded)}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="bg-card text-muted-foreground hover:bg-card"
-                                    aria-label={isExpanded ? "Show less" : "Show more"}
-                                >
-                                    {isExpanded
-                                        ? <IconChevronUp className="size-6" stroke={1.5} />
-                                        : <IconChevronDown className="size-6" stroke={1.5} />}
-                                </Button>
-                            </div>
-                        </CardFooter>
                     </Card>
                 ) : (
                     <Card className="w-10/12 mt-24 tablet:mt-26 desktop:mt-28 px-0 py-6 tablet:px-2 tablet:py-8 desktop:px-4 desktop:py-10">

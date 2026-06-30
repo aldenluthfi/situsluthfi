@@ -17,12 +17,12 @@ import type { RepositoryObject } from "@/lib/types";
 const FLING_DISTANCE = 120;
 const FLING_VELOCITY = 500;
 
-// depth 0 = front card, deeper cards peek out below and behind.
+// depth 0 = front card, deeper cards peek out below it (vertical stack).
 // positions beyond the last entry reuse the last (back) slot.
 const DEPTH_STYLES = [
-    { scale: 1, y: 0, rotate: 0 },
-    { scale: 0.95, y: 22, rotate: -2.5 },
-    { scale: 0.9, y: 44, rotate: 2.5 },
+    { scale: 1, x: 0, y: 0, rotate: 0 },
+    { scale: 0.96, x: 0, y: 30, rotate: 0 },
+    { scale: 0.92, x: 0, y: 60, rotate: 0 },
 ];
 const BACK = DEPTH_STYLES[DEPTH_STYLES.length - 1];
 
@@ -67,7 +67,7 @@ const StackCard: React.FC<{
         <motion.div
             className="absolute inset-0"
             style={{ zIndex: DEPTH_STYLES.length - pos }}
-            animate={{ scale: depth.scale, y: depth.y, rotate: depth.rotate }}
+            animate={{ scale: depth.scale, x: depth.x, y: depth.y, rotate: depth.rotate }}
             transition={
                 reduceMotion
                     ? { duration: 0.2 }
@@ -108,6 +108,8 @@ const ProjectStack: React.FC<{
         arrowDir.current = -dir;
         return dir;
     };
+    // remember which side each card left from, so moving back returns it on the same side.
+    const exitDir = useRef<Map<number, number>>(new Map());
 
     if (loading) {
         return (
@@ -116,7 +118,7 @@ const ProjectStack: React.FC<{
                     <div
                         key={i}
                         className={cn("inset-0", i === DEPTH_STYLES.length - 1 ? "relative" : "absolute")}
-                        style={{ transform: `translateY(${style.y}px) scale(${style.scale}) rotate(${style.rotate}deg)`, zIndex: i }}
+                        style={{ transform: `translateX(${style.x}px) translateY(${style.y}px) scale(${style.scale}) rotate(${style.rotate}deg)`, zIndex: i }}
                         aria-hidden={i !== DEPTH_STYLES.length - 1}
                     >
                         <ProjectCardSkeleton />
@@ -135,20 +137,24 @@ const ProjectStack: React.FC<{
     const dismiss = (dir: number, fromX: number) => {
         if (count < 2) return;
         if (!reduceMotion && busy) return; // one card in flight at a time
+        exitDir.current.set(repos[index].id, dir);
         setIndex((prev) => (prev + 1) % count);
         if (!reduceMotion) {
             setExiting({ repo: repos[index], dir, fromX, phase: "out" });
         }
     };
 
-    const retreat = (dir: number) => {
+    const retreat = () => {
         if (count < 2) return;
         if (!reduceMotion && busy) return;
         const prevIndex = (index - 1 + count) % count;
+        const back = repos[prevIndex];
+        // come back on the same side the card left from (falls back to alternating).
+        const dir = exitDir.current.get(back.id) ?? nextArrowDir();
         setIndex(prevIndex);
         if (!reduceMotion) {
             // mirror of dismiss: the back card rises out and settles onto the front.
-            setEntering({ repo: repos[prevIndex], dir, phase: "rise" });
+            setEntering({ repo: back, dir, phase: "rise" });
         }
     };
 
@@ -207,7 +213,7 @@ const ProjectStack: React.FC<{
                                     rotate: exiting.dir * 8,
                                 }
                                 : {
-                                    x: 0,
+                                    x: BACK.x,
                                     y: BACK.y,
                                     scale: BACK.scale,
                                     rotate: BACK.rotate,
@@ -239,7 +245,7 @@ const ProjectStack: React.FC<{
                         className="absolute inset-0 pointer-events-none"
                         style={{ zIndex: entering.phase === "rise" ? 0 : 50 }}
                         initial={{
-                            x: 0,
+                            x: BACK.x,
                             y: BACK.y,
                             scale: BACK.scale,
                             rotate: BACK.rotate,
@@ -275,12 +281,12 @@ const ProjectStack: React.FC<{
                 )}
             </div>
 
-            <div className="flex items-center justify-center gap-2 mt-8">
+            <div className="flex items-center justify-center gap-2 mt-12 mx-auto w-fit rounded-lg border bg-card px-2 py-1 shadow-sm">
                 <Button
                     variant="ghost"
                     size="icon"
                     className="text-primary hover:bg-transparent"
-                    onClick={() => { if (count >= 2 && !busy) retreat(nextArrowDir()); }}
+                    onClick={() => { if (count >= 2 && !busy) retreat(); }}
                 >
                     <IconChevronLeft className="size-6" stroke={1.5} />
                     <span className="sr-only">Previous project</span>

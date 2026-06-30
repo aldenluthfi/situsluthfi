@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/popover"
 
 import { useState, useEffect } from 'react';
-import { cn, isMobile, BREAKPOINTS } from "@/lib/utils";
+import { cn, isMobile } from "@/lib/utils";
 import { api, isAbortError } from "@/lib/api";
 
 import soloImg from "@/assets/images/solo.webp";
@@ -23,19 +23,11 @@ import medpropImg from "@/assets/images/medprop.webp";
 import weirdosImg from "@/assets/images/weirdos.webp";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Autoplay from 'embla-carousel-autoplay';
-import { toast } from "sonner";
 
 import CV from "@/components/custom/cv";
 import ProjectStack from "@/components/custom/project-stack";
 
-import WorldMap from '@/components/custom/world-map';
-import { Continents, Asia, Europe, Indonesia, Malaysia, Singapore, SouthKorea, Thailand, SaudiArabia, UAE, Belgium, France, Germany, Netherlands, Italy, Switzerland, Spain } from '@/components/maps';
-
-import { useTheme } from "@/components/custom/theme-provider";
-import { useTimezoneTheme } from "@/hooks/use-timezone-theme";
 import type { RepositoryObject } from "@/lib/types";
 
 const ResponsiveTooltip = ({
@@ -102,23 +94,6 @@ const ImageWithSkeleton: React.FC<{ src: string; alt: string; className?: string
 const Home: React.FC = () => {
     const [data, setData] = useState<RepositoryObject[]>([]);
     const [loading, setLoading] = useState(true);
-    const [contactEmail, setContactEmail] = useState("");
-    const [contactMessage, setContactMessage] = useState("");
-    const { mode } = useTheme();
-    const { isDarkMode } = useTimezoneTheme();
-
-    const isEffectivelyDark = mode === 'dark' || (mode === 'timezone' && isDarkMode);
-
-    const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!contactEmail.trim() || !contactMessage.trim()) {
-            toast.error("Please fill in both your email and a message.");
-            return;
-        }
-        toast.success("Thanks for reaching out! This form is just for show right now, so nothing actually got sent.");
-        setContactEmail("");
-        setContactMessage("");
-    };
 
     useEffect(() => {
         document.title = "aldenluth.fi | Home";
@@ -242,15 +217,6 @@ const Home: React.FC = () => {
                 <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
 
-            <div className='w-full max-w-desktop px-6 flex flex-col items-center'>
-                <p className="text-lg tablet:text-2xl text-center">
-                    As you can probably see, I'm a
-                    <br />
-                    <span className="text-primary font-bold">Jack of all trades</span>, you can have me as
-                </p>
-                <CV showTabs autoPlay className='w-full' />
-            </div>
-
             <div className="flex flex-col w-full justify-center items-center space-y-6">
                 <p className="text-lg tablet:text-2xl text-center mb-6">
                     These are my <span className="text-primary font-bold">projects</span>
@@ -264,140 +230,23 @@ const Home: React.FC = () => {
                     <span className="text-primary font-bold">stay tuned</span> for updates!
                 </p>
             </div>
-            <div className="w-full max-w-desktop px-6">
-                <ProjectStack repos={data} loading={loading} />
-            </div>
-
-            <div className="flex flex-col w-full justify-center items-center space-y-6">
-                <p className="text-lg tablet:text-2xl text-center mb-6">
-                    This is my silly excuse of a <span className="text-primary font-bold">gallery</span>, <span />
-                    <br />
-                    here you will find
-                </p>
-                <SlidingTitle text="People · Panoramas · Cultures · Oddities" direction={1} />
-                <p className="text-lg tablet:text-2xl text-center mt-6">
-                    I have <span className="text-primary font-bold">seen</span> in all
-                    <br />
-                    of my travels around this <span className="text-primary font-bold">blob of dust</span>
-                </p>
-            </div>
-            <div className='flex flex-col -space-y-0.25 justify-center items-center w-full'>
+            <div className="flex flex-col -space-y-0.25 border-0 w-full">
                 <Squiggle className="w-full fill-primary-100" />
-                <div className='bg-primary-100 w-screen py-[3.6666%] desktop:py-[2vh] flex justify-center items-center z-10'>
-                    <WorldMap
-                        components={
-                            {
-                                'World': Continents,
-                                'Asia': Asia,
-                                'Europe': Europe,
-                                'Indonesia': Indonesia,
-                                'Malaysia': Malaysia,
-                                'Singapore': Singapore,
-                                'South Korea': SouthKorea,
-                                'Thailand': Thailand,
-                                'Saudi Arabia': SaudiArabia,
-                                'United Arab Emirates': UAE,
-                                'Belgium': Belgium,
-                                'France': France,
-                                'Germany': Germany,
-                                'Italy': Italy,
-                                'Netherlands': Netherlands,
-                                'Spain': Spain,
-                                'Switzerland': Switzerland
-                            }
-                        }
-                        selectables={{
-                            'World': ['Asia', 'Europe'],
-                            'Asia': ['Saudi Arabia', 'United Arab Emirates', 'Thailand', 'Indonesia', 'Malaysia', 'Singapore', 'South Korea', 'Qatar'],
-                            'Europe': ['France', 'Germany', 'Belgium', 'Italy', 'Spain', 'Netherlands', 'Switzerland'],
-                            'Indonesia': ['Banten', 'Jakarta Raya', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur', 'Bali', 'Nusa Tenggara Timur', 'Lampung', 'Yogyakarta'],
-                            'Malaysia': ['Johor', 'Penang', 'Kuala Lumpur', 'Pahang'],
-                            'Singapore': ['Central Singapore', 'North East Singapore', 'North West Singapore', 'South East Singapore', 'South West Singapore'],
-                            'South Korea': ['Seoul', 'Incheon', 'Jeju'],
-                            'Thailand': ['Bangkok', 'Chon Buri'],
-                            'Saudi Arabia': ['Ar Riyāḑ', 'Makkah', 'Al Madīnah'],
-                            'United Arab Emirates': ['Dubayy'],
-                            'Belgium': ['Brussels Capital Region'],
-                            'France': ['Île-de-France', 'Alsace'],
-                            'Germany': ['Hesse'],
-                            'Italy': ['Toscana', 'Veneto', 'Lazio', 'Vatican City Italy'],
-                            'Netherlands': ['Noord-Holland'],
-                            'Spain': ['Catalonia', 'Andalusia'],
-                            'Switzerland': ['Obwalden', 'Bern', 'Genève']
-                        }
-                        }
-                        pathStyles={isEffectivelyDark ? {
-                            base: "stroke-muted",
-                            hover: "fill-primary",
-                            selected: "fill-primary",
-                            selectable: "fill-primary-400 stroke-primary-300 pointer-events-auto",
-                            nonSelectable: "fill-card"
-                        } :
-                            {
-                                base: "stroke-muted-foreground/50",
-                                hover: "fill-primary",
-                                selected: "fill-primary",
-                                selectable: "fill-primary-400 stroke-primary-600 pointer-events-auto",
-                                nonSelectable: "fill-muted"
-                            }
-                        }
-                        strokeWidth={1}
-                        maxHeight='83.3333vh'
-                        maxWidth={window.innerWidth < BREAKPOINTS.desktop ? '83.3333vw' : '95vw'}
-                    />
+                <div className="bg-primary-100 w-screen z-10 flex justify-center py-8">
+                    <div className="w-full max-w-desktop px-6">
+                        <ProjectStack repos={data} loading={loading} />
+                    </div>
                 </div>
-                <Squiggle className="w-full fill-primary-100 -scale-y-100" />
+                <Squiggle className="-scale-y-100 w-full fill-primary-100" />
             </div>
 
-            <div className="flex flex-col w-full justify-center items-center space-y-6">
-                <p className="text-lg tablet:text-2xl text-center mb-6">
-                    Got something in mind?
+            <div className='w-full max-w-desktop px-6 flex flex-col items-center pb-12'>
+                <p className="text-lg tablet:text-2xl text-center">
+                    As you can probably see, I'm a
                     <br />
-                    I'd love to <span className="text-primary font-bold">hear from you</span>
+                    <span className="text-primary font-bold">Jack of all trades</span>, you can have me as
                 </p>
-                <SlidingTitle text="Say Hello · Reach Out · Collaborate · Get in Touch" direction={-1} />
-                <p className="text-lg tablet:text-2xl text-center mt-6">
-                    drop a line below and let's
-                    <br />
-                    <span className="text-primary font-bold">make something</span> together
-                </p>
-            </div>
-            <div className="w-full max-w-tablet px-6 pb-12">
-                <Card>
-                    <CardContent>
-                        <form onSubmit={handleContactSubmit} className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-2">
-                                <label htmlFor="contact-email" className="text-base font-medium">
-                                    Email
-                                </label>
-                                <input
-                                    id="contact-email"
-                                    type="email"
-                                    value={contactEmail}
-                                    onChange={(e) => setContactEmail(e.target.value)}
-                                    placeholder="you@example.com"
-                                    className="placeholder:text-muted-foreground flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label htmlFor="contact-message" className="text-base font-medium">
-                                    Message
-                                </label>
-                                <textarea
-                                    id="contact-message"
-                                    value={contactMessage}
-                                    onChange={(e) => setContactMessage(e.target.value)}
-                                    placeholder="What's on your mind?"
-                                    rows={10}
-                                    className="placeholder:text-muted-foreground flex w-full min-h-60 resize-none rounded-md border border-input bg-transparent px-3 py-2 text-base outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
-                                />
-                            </div>
-                            <Button type="submit" className="w-full tablet:w-auto tablet:self-end">
-                                Send message
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
+                <CV showTabs autoPlay className='w-full' />
             </div>
         </div>
     );
