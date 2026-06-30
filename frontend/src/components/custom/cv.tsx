@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, isValidElement } from "react";
+import { api } from "@/lib/api";
 import ReactMarkdown, { type Components } from "react-markdown";
 import { motion, AnimatePresence, MotionConfig } from "motion/react";
 import useMeasure from "react-use-measure";
@@ -105,17 +106,17 @@ const CV: React.FC<CVProps> = ({
         });
     }, [currentType]);
 
-    const getTextContent = (children: any): string => {
+    const getTextContent = (children: React.ReactNode): string => {
         if (Array.isArray(children)) {
             return children.map(child =>
                 typeof child === 'string' ? child :
-                    typeof child === 'object' && child?.props?.children ? getTextContent(child.props.children) : ''
+                    isValidElement(child) ? getTextContent((child.props as { children?: React.ReactNode }).children) : ''
             ).join('');
         }
         return typeof children === 'string' ? children : '';
     };
 
-    const shouldShowElement = (children: any, targetType: string): boolean => {
+    const shouldShowElement = (children: React.ReactNode, targetType: string): boolean => {
         if (targetType === "full") return true;
 
         const content = getTextContent(children);
@@ -126,7 +127,7 @@ const CV: React.FC<CVProps> = ({
         return tags.includes(targetType);
     };
 
-    const stripTagsFromChildren = (children: any): any => {
+    const stripTagsFromChildren = (children: React.ReactNode): React.ReactNode => {
         if (Array.isArray(children)) {
             return children.map((child, index) => {
                 if (typeof child === 'string') {
@@ -326,9 +327,7 @@ const CV: React.FC<CVProps> = ({
     }, [processLatexContent, mode, theme, currentColor, isDarkMode]);
 
     const handlePDFGeneration = async () => {
-        const factPromise = fetch("/api/facts")
-            .then(response => response.ok ? response.json() : Promise.reject("Failed to load fun fact"))
-            .catch(() => null);
+        const factPromise = api.getRandomFact().catch(() => null);
 
         toast.promise(
             (async () => {

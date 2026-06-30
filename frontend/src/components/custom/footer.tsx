@@ -5,6 +5,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { toast } from "sonner";
 import { useState } from 'react';
 import { isMobile } from "@/lib/utils";
+import { api } from "@/lib/api";
 import { motion, AnimatePresence } from "motion/react";
 
 import {
@@ -80,28 +81,25 @@ const Footer = () => {
         navigator.clipboard.writeText(email);
 
         toast.promise(
-            fetch("/api/facts")
-                .then(response => response.json()
-                    .then(data => ({ data, status: response.status }))
-                ),
+            api.getRandomFact(),
             {
                 loading: <div>
                     Email Copied!
                 </div>,
-                success: ({ data, status }) => ({
+                success: (fact) => ({
                     message: "Email Copied!",
-                    description: status === 200 ?
+                    description:
                         <div className="flex flex-col space-y-2 pt-2">
                             <div className="!text-sm !text-muted-foreground">
-                                Fun Fact #{data.id}
+                                Fun Fact #{fact.id}
                             </div>
                             <div className="!text-sm !text-muted-foreground">
-                                {data.text}
+                                {fact.text}
                             </div>
                             <div className=" !text-muted-foreground">
-                                <a className="underline" href={data.source} target="_blank" rel="noopener noreferrer" aria-label={data.source}>Source</a>
+                                <a className="underline" href={fact.source} target="_blank" rel="noopener noreferrer" aria-label={fact.source}>Source</a>
                             </div>
-                        </div> : "",
+                        </div>,
                     icon: null
                 }),
                 error: () => ({

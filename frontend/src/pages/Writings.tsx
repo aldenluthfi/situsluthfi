@@ -31,6 +31,8 @@ import {
     PaginationEllipsis,
 } from "@/components/ui/pagination";
 import type { WritingObject } from "@/lib/types";
+import { api, isAbortError } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
 
 const tagIconMap: Record<string, React.ElementType> = {
     Education: (props) => <IconSchool className="size-6" stroke={1.5} {...props} />,
@@ -64,28 +66,33 @@ const Writings: React.FC = () => {
 
     useEffect(() => {
         const fetchPage = (pageNum: number) => {
-            fetch(`/api/writings/get_page?pagesize=${PAGE_SIZE}&page=${pageNum}`)
-                .then((res) => res.json())
+            api.getWritingsPage(pageNum, PAGE_SIZE)
                 .then((resData) => {
                     setData(resData.results ?? []);
                     setTotalPages(resData.totalPages ?? 1);
                     setLoading(false);
                 })
+                .catch((error) => {
+                    if (!isAbortError(error)) {
+                        console.error("Error fetching writings, ", error);
+                        setLoading(false);
+                    }
+                });
         };
 
         const handleSync = async () => {
             if (syncAbortController.current) {
-                syncAbortController.current.abort("page changed");
+                syncAbortController.current.abort();
             }
 
             const controller = new AbortController();
             syncAbortController.current = controller;
 
             try {
-                await fetch(`/api/writings/sync/`, { signal: controller.signal });
+                await api.syncWritings(controller.signal);
                 fetchPage(page);
-            } catch (error: unknown) {
-                if ((error instanceof Error && error.name !== "AbortError") || (typeof error === "string" && error !== "page changed")) {
+            } catch (error) {
+                if (!isAbortError(error)) {
                     console.error("Error syncing writing, ", error);
                 }
             }
@@ -214,14 +221,7 @@ const Writings: React.FC = () => {
                                 </CardHeader>
                                 <CardContent>
                                     <span className="text-muted-foreground text-sm tablet:text-base">
-                                        {(new Date(item.createdAt).toLocaleDateString(
-                                            "en-GB",
-                                            {
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric",
-                                            }
-                                        ))}
+                                        {formatDate(item.createdAt)}
                                     </span>
                                 </CardContent>
                             </Card>

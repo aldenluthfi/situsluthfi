@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/popover"
 
 import { useState, useEffect, useRef } from 'react';
-import { cn, isMobile } from "@/lib/utils";
+import { cn, isMobile, formatDate, BREAKPOINTS } from "@/lib/utils";
+import { api, isAbortError } from "@/lib/api";
 
 import soloImg from "@/assets/images/solo.webp";
 import holeboysImg from "@/assets/images/holeboys.webp";
@@ -159,23 +160,24 @@ const Home: React.FC = () => {
     useEffect(() => {
         const fetchRepositories = async () => {
             try {
-                const response = await fetch('/api/github/repositories');
-                const resData = await response.json();
-                const repositories = resData.repositories || [];
-
-                setData(repositories);
+                const { repositories } = await api.getRepositories();
+                setData(repositories ?? []);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching repositories:", error);
+                if (!isAbortError(error)) {
+                    console.error("Error fetching repositories:", error);
+                }
             }
         };
 
         const handleSync = async () => {
             try {
-                await fetch(`/api/github/repositories/sync`);
+                await api.syncRepositories();
                 fetchRepositories();
             } catch (error) {
-                console.error("Error syncing repositories:", error);
+                if (!isAbortError(error)) {
+                    console.error("Error syncing repositories:", error);
+                }
             }
         };
 
@@ -385,7 +387,7 @@ const Home: React.FC = () => {
                                                                 {repo.topics.map((topic) => {
                                                                     const iconName = repo.icon_map?.[topic];
                                                                     return (
-                                                                        window.innerWidth < 768 ?
+                                                                        window.innerWidth < BREAKPOINTS.tablet ?
                                                                             <Tooltip key={topic}>
                                                                                 <TooltipTrigger>
                                                                                     <Pill onClick={(e) => { e.preventDefault(); e.stopPropagation(); }} className='h-min my-0.5 text-base px-3 py-1.5 max-tablet:rounded-md max-tablet:p-2'>
@@ -432,14 +434,7 @@ const Home: React.FC = () => {
                                                         </div>
                                                         <span className='flex items-center gap-1'>
                                                             <IconCalendar className="tablet:hidden size-4" stroke={1.5} />
-                                                            {new Date(repo.created_at).toLocaleDateString(
-                                                                "en-GB",
-                                                                {
-                                                                    year: "numeric",
-                                                                    month: "short",
-                                                                    day: "numeric",
-                                                                }
-                                                            )}
+                                                            {formatDate(repo.created_at, "short")}
                                                         </span>
                                                     </div>
                                                 </CardFooter>
@@ -527,7 +522,7 @@ const Home: React.FC = () => {
                         }
                         strokeWidth={1}
                         maxHeight='83.3333vh'
-                        maxWidth={window.innerWidth < 1024 ? '83.3333vw' : '95vw'}
+                        maxWidth={window.innerWidth < BREAKPOINTS.desktop ? '83.3333vw' : '95vw'}
                     />
                 </div>
                 <Squiggle className="w-full fill-primary-100 -scale-y-100" />

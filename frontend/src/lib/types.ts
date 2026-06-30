@@ -12,6 +12,32 @@ export type WritingContentObject = {
     id: string;
 }
 
+export type WritingDetail = WritingObject & { content: string };
+
+export type Fact = {
+    id: number;
+    text: string;
+    source: string;
+}
+
+export type SearchHighlight = {
+    title?: string[];
+    name?: string[];
+    content?: string[];
+    description?: string[];
+    readme?: string[];
+}
+
+export type SearchResult = {
+    _type: "writing" | "repository";
+    id: string | number;
+    slug?: string;
+    html_url?: string;
+    title?: string;
+    name?: string;
+    highlight?: SearchHighlight;
+}
+
 export type ThemeString = "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose";
 export const THEME_COLORS: readonly ThemeString[] = [
     "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal",

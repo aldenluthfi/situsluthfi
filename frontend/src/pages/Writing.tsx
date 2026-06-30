@@ -1,5 +1,7 @@
 import type { WritingContentObject, WritingObject } from "@/lib/types";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { api, isAbortError } from "@/lib/api";
+import { formatDate, slugify } from "@/lib/utils";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import {
@@ -179,30 +181,29 @@ const Writing: React.FC = () => {
     }, [data, toc]);
 
     const fetchWriting = useCallback(async () => {
+        if (!params.slug) return;
         try {
-            const res = await fetch(`/api/writings/${params.slug}`);
-
-            if (!res.ok) {
-                setData(undefined);
-                return;
-            }
-
-            const data = await res.json();
-            setData(data);
+            const writing = await api.getWriting(params.slug);
+            setData(writing);
             setToc(null);
-            document.title = `aldenluthfi | ${data.title}`;
+            document.title = `aldenluthfi | ${writing.title}`;
         } catch (error) {
-            console.error("Error fetching writing:", error);
-            setData(undefined);
+            if (!isAbortError(error)) {
+                console.error("Error fetching writing:", error);
+                setData(undefined);
+            }
         }
     }, [params.slug]);
 
     const handleSync = useCallback(async () => {
+        if (!params.slug) return;
         try {
-            await fetch(`/api/writings/sync/${params.slug}`);
+            await api.syncWriting(params.slug);
             fetchWriting();
         } catch (error) {
-            console.error("Error syncing writing on frontend:", error);
+            if (!isAbortError(error)) {
+                console.error("Error syncing writing on frontend:", error);
+            }
         }
     }, [params.slug, fetchWriting]);
 
@@ -236,9 +237,20 @@ const Writing: React.FC = () => {
         return () => document.removeEventListener("click", handleAnchorClick);
     }, []);
 
-    let isHeader = false;
-
     tocChildrenRef.current = null;
+
+    // Computed once per mount so the skeleton lines keep stable widths
+    // instead of reshuffling (and reflowing) on every re-render.
+    const skeletonLineGroups = useMemo(
+        () =>
+            Array.from({ length: 5 }, () => {
+                const widths = [
+                    "w-full", "w-11/12", "w-10/12", "w-full", "w-11/12", "w-10/12",
+                ];
+                return [...widths].sort(() => Math.random() - 0.5);
+            }),
+        [],
+    );
 
     return (
         <div className="w-full max-w-desktop mx-auto overflow-x-hidden">
@@ -296,127 +308,42 @@ const Writing: React.FC = () => {
                     <div className="space-y-4 mb-8">
                         <Skeleton className="w-3/4 h-10" />
                         <Skeleton className="w-1/2 h-4 mb-16" />
-                        {
-                            Array.from({ length: 5 }, (_, i) => {
-                                const widths = [
-                                    "w-full", "w-11/12", "w-10/12", "w-full", "w-11/12", "w-10/12"
-                                ];
-
-                                const shuffled = [...widths].sort(() => Math.random() - 0.5);
-                                return (
-                                    <div className="space-y-4 mb-8" key={i}>
-                                        {shuffled.map((w, j) => (
-                                            <Skeleton key={j + 1} className={`${w} h-6`} />
-                                        ))}
-                                    </div>
-                                );
-                            })
-                        }
+                        {skeletonLineGroups.map((widths, i) => (
+                            <div className="space-y-4 mb-8" key={i}>
+                                {widths.map((w, j) => (
+                                    <Skeleton key={j + 1} className={`${w} h-6`} />
+                                ))}
+                            </div>
+                        ))}
                     </div>
                 ) : (
                     <>
                         <div className="flex flex-col space-y-4 mb-8">
                             <h1 className="text-4xl font-heading">{(data as WritingObject)?.title}</h1>
                             <p className="text-sm text-muted-foreground">
-                                {new Date((data as WritingObject)?.createdAt)
-                                    .toLocaleDateString(
-                                        "en-GB",
-                                        {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        }
-                                    )}
+                                {formatDate((data as WritingObject)?.createdAt)}
                             </p>
                         </div>
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents' }]]}
                             rehypePlugins={[[rehypeKatex, { output: "mathml" }], rehypeTagToc]}
                             components={{
-                                h1(props) {
-                                    const { ...rest } = props;
-                                    let text = '';
-                                    if (typeof rest.children === 'string') {
-                                        text = rest.children;
-                                    } else if (Array.isArray(rest.children)) {
-                                        text = rest.children
-                                            .map((child) => {
-                                                if (typeof child === 'string') {
-                                                    return child;
-                                                }
-                                                return child.props.children;
-                                            })
-                                            .join('');
-                                    }
-                                    const id = text
-                                        .toLowerCase()
-                                        .replace(/\s+/g, '-')
-                                        .replace(/[^\w-]+/g, '');
-
-                                    if (id === "table-of-contents") {
-                                        return null;
-                                    }
-
-                                    isHeader = true;
-
-                                    return <h1 {...rest} id={id} className="text-2xl font-heading my-2">{rest.children}</h1>;
+                                h1({ node, children, ...rest }) {
+                                    const id = node ? slugify(hastText(node as unknown as HastNode)) : "";
+                                    if (id === "table-of-contents") return null;
+                                    return <h1 {...rest} id={id} className="text-2xl font-heading my-2 [&_code]:text-[length:1em]">{children}</h1>;
                                 },
-                                h2(props) {
-                                    const { ...rest } = props;
-                                    let text = '';
-                                    if (typeof rest.children === 'string') {
-                                        text = rest.children;
-                                    } else if (Array.isArray(rest.children)) {
-                                        text = rest.children
-                                            .map((child) => {
-                                                if (typeof child === 'string') {
-                                                    return child;
-                                                }
-                                                return child.props.children;
-                                            })
-                                            .join('');
-                                    }
-
-                                    isHeader = true;
-
-                                    const id = text
-                                        .toLowerCase()
-                                        .replace(/\s+/g, '-')
-                                        .replace(/[^\w-]+/g, '');
-                                    return <h2 {...rest} id={id} className="text-xl font-heading my-4">{rest.children}</h2>;
+                                h2({ node, children, ...rest }) {
+                                    const id = node ? slugify(hastText(node as unknown as HastNode)) : "";
+                                    return <h2 {...rest} id={id} className="text-xl font-heading my-4 [&_code]:text-[length:1em]">{children}</h2>;
                                 },
-                                h3(props) {
-                                    const { ...rest } = props;
-                                    let text = '';
-                                    if (typeof rest.children === 'string') {
-                                        text = rest.children;
-                                    } else if (Array.isArray(rest.children)) {
-                                        text = rest.children
-                                            .map((child) => {
-                                                if (typeof child === 'string') {
-                                                    return child;
-                                                }
-                                                return child.props.children;
-                                            })
-                                            .join('');
-                                    }
-
-                                    isHeader = true;
-
-                                    const id = text
-                                        .toLowerCase()
-                                        .replace(/\s+/g, '-')
-                                        .replace(/[^\w-]+/g, '');
-                                    return <h3 {...rest} id={id} className="text-lg font-heading my-4">{rest.children}</h3>;
+                                h3({ node, children, ...rest }) {
+                                    const id = node ? slugify(hastText(node as unknown as HastNode)) : "";
+                                    return <h3 {...rest} id={id} className="text-lg font-heading my-4 [&_code]:text-[length:1em]">{children}</h3>;
                                 },
                                 p(props) {
                                     const { ...rest } = props
-
-                                    if (isHeader) {
-                                        isHeader = false;
-                                    }
-
-                                    return <div {...rest} className="mb-2.5" />
+                                    return <p {...rest} className="mb-2.5" />
                                 },
                                 a(props) {
                                     const { ...rest } = props
@@ -517,10 +444,6 @@ const Writing: React.FC = () => {
                                 },
                                 code(props) {
                                     const { ...rest } = props;
-                                    if (isHeader) {
-                                        isHeader = false;
-                                        return <code {...rest} className="text-primary" />;
-                                    }
                                     return <code {...rest} className="text-sm text-primary" />;
                                 },
                                 pre(props) {

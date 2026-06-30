@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { isMobile } from "@/lib/utils";
+import { api, isAbortError } from "@/lib/api";
+import type { SearchResult } from "@/lib/types";
 import {
     IconSearch,
     IconBook,
@@ -24,7 +26,7 @@ const PAGE_SIZE = 3;
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const [search, setSearch] = useState("");
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchError, setSearchError] = useState<string | null>(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -57,7 +59,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
         if (searchTimeout.current) clearTimeout(searchTimeout.current);
 
         if (searchAbortController.current) {
-            searchAbortController.current.abort("new search input");
+            searchAbortController.current.abort();
         }
 
         if (!value) {
@@ -71,20 +73,14 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 const controller = new AbortController();
                 searchAbortController.current = controller;
 
-                const res = await fetch(`/api/search?q=${encodeURIComponent(value)}&pagesize=${PAGE_SIZE}&page=1`, {
-                    signal: controller.signal
-                });
-
-                if (!res.ok) throw new Error("Failed to fetch");
-
-                const data = await res.json();
+                const data = await api.search(value, 1, PAGE_SIZE, controller.signal);
 
                 setSearchResults(data.results ?? []);
                 setHasMore(data.totalPages > 1);
                 setSearchLoading(false);
                 setSearchError(null);
-            } catch (error: any) {
-                if (error.name !== "AbortError" && error !== "new search input") {
+            } catch (error) {
+                if (!isAbortError(error)) {
                     setSearchError(`Failed to search, ${error}`);
                     setSearchLoading(false);
                 }
@@ -101,23 +97,17 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             searchAbortController.current = controller;
 
             const nextPage = currentPage + 1;
-            const res = await fetch(`/api/search?q=${encodeURIComponent(search)}&pagesize=${PAGE_SIZE}&page=${nextPage}`, {
-                signal: controller.signal
-            });
+            const data = await api.search(search, nextPage, PAGE_SIZE, controller.signal);
 
-            if (!res.ok) throw new Error("Failed to fetch");
-
-            const data = await res.json();
-
-            const newResults = data.results || [];
+            const newResults = data.results ?? [];
             const combinedResults = [...searchResults, ...newResults];
 
             setSearchResults(combinedResults);
             setCurrentPage(nextPage);
             setHasMore(nextPage < data.totalPages);
             setLoadingMore(false);
-        } catch (error: any) {
-            if (error.name !== "AbortError") {
+        } catch (error) {
+            if (!isAbortError(error)) {
                 setLoadingMore(false);
             }
         }
@@ -135,7 +125,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             setLoadingMore(false);
 
             if (searchAbortController.current) {
-                searchAbortController.current.abort("dialog closed");
+                searchAbortController.current.abort();
             }
         };
 
@@ -270,8 +260,20 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                         />
                     </div>
 
+                    <div aria-live="polite" className="sr-only">
+                        {searchLoading
+                            ? "Searching"
+                            : searchError
+                                ? searchError
+                                : search
+                                    ? `${searchResults.length} results found`
+                                    : ""}
+                    </div>
+
                     <div
                         ref={scrollContainerRef}
+                        role="listbox"
+                        aria-label="Search results"
                         className="max-h-[30vh] scroll-py-1 overflow-x-hidden overflow-y-auto py-1"
                     >
                         {searchLoading && (
@@ -299,6 +301,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={`${item._type}-${item.id}`}
                                             ref={selectedIndex === index ? selectedItemRef : null}
+                                            role="option"
+                                            aria-selected={selectedIndex === index}
                                             className={`group relative flex flex-col gap-1 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === index
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
@@ -320,7 +324,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                                     <span
                                                         className="search-highlight"
                                                         dangerouslySetInnerHTML={{
-                                                            __html: item.highlight?.title?.[0] || item.highlight?.name?.[0] || item.title || item.name
+                                                            __html: item.highlight?.title?.[0] || item.highlight?.name?.[0] || item.title || item.name || ""
                                                         }}
                                                     />
                                                 </div>
@@ -347,6 +351,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                 {hasMore && (
                                     <div
                                         ref={selectedIndex === searchResults.length ? selectedItemRef : null}
+                                        role="option"
+                                        aria-selected={selectedIndex === searchResults.length}
                                         className={`relative flex items-center text-sm gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === searchResults.length
                                                 ? 'bg-primary-200 text-primary-700'
                                                 : 'text-muted-foreground'
@@ -375,6 +381,8 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                         <div
                                             key={item.name}
                                             ref={selectedIndex === actualIndex ? selectedItemRef : null}
+                                            role="option"
+                                            aria-selected={selectedIndex === actualIndex}
                                             className={`group relative flex items-center gap-4 rounded-sm px-3 py-3 outline-hidden select-none hover:bg-primary-200 hover:text-primary-700 hover:[&_svg]:!text-primary-700 hover:[&_svg]:!stroke-primary-700 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 ${selectedIndex === actualIndex
                                                     ? 'bg-primary-200 text-primary-700 [&_svg]:!text-primary-700 [&_svg]:!stroke-primary-700'
                                                     : ''
