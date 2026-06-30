@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
     motion,
-    AnimatePresence,
     useReducedMotion,
     useMotionValue,
     useTransform,
@@ -18,49 +17,77 @@ import type { RepositoryObject } from "@/lib/types";
 const FLING_DISTANCE = 120;
 const FLING_VELOCITY = 500;
 
-// depth 0 = front card, deeper cards peek out below and behind
+// depth 0 = front card, deeper cards peek out below and behind.
+// positions beyond the last entry reuse the last (back) slot.
 const DEPTH_STYLES = [
-    { scale: 1, y: 0, rotate: 0, zIndex: 30 },
-    { scale: 0.95, y: 22, rotate: -2.5, zIndex: 20 },
-    { scale: 0.9, y: 44, rotate: 2.5, zIndex: 10 },
+    { scale: 1, y: 0, rotate: 0 },
+    { scale: 0.95, y: 22, rotate: -2.5 },
+    { scale: 0.9, y: 44, rotate: 2.5 },
 ];
+const BACK = DEPTH_STYLES[DEPTH_STYLES.length - 1];
 
-const FrontCard: React.FC<{
+const depthFor = (pos: number) =>
+    DEPTH_STYLES[Math.min(pos, DEPTH_STYLES.length - 1)];
+
+const clamp = (v: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, v));
+
+type Exiting = {
     repo: RepositoryObject;
-    onDismiss: (dir: number) => void;
-}> = ({ repo, onDismiss }) => {
+    dir: number;
+    fromX: number;
+    phase: "out" | "back";
+};
+
+type Entering = {
+    repo: RepositoryObject;
+    dir: number;
+    phase: "rise" | "settle";
+};
+
+const StackCard: React.FC<{
+    repo: RepositoryObject;
+    pos: number;
+    isFront: boolean;
+    onDismiss: (dir: number, fromX: number) => void;
+}> = ({ repo, pos, isFront, onDismiss }) => {
     const reduceMotion = useReducedMotion();
     const x = useMotionValue(0);
-    const rotate = useTransform(x, [-200, 200], [-12, 12]);
+    const dragRotate = useTransform(x, [-200, 200], [-12, 12]);
+    const depth = depthFor(pos);
 
     const handleDragEnd = (_: unknown, info: PanInfo) => {
         const flung =
             Math.abs(info.offset.x) > FLING_DISTANCE ||
             Math.abs(info.velocity.x) > FLING_VELOCITY;
-        if (flung) {
-            onDismiss(info.offset.x < 0 ? -1 : 1);
-        }
+        if (flung) onDismiss(Math.sign(info.offset.x) || 1, info.offset.x);
     };
 
     return (
         <motion.div
-            className={cn("absolute inset-0 cursor-grab active:cursor-grabbing")}
-            style={{ x, rotate, zIndex: DEPTH_STYLES[0].zIndex }}
-            drag="x"
-            dragSnapToOrigin
-            dragElastic={0.6}
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={handleDragEnd}
-            variants={{
-                exit: (dir: number) => reduceMotion
-                    ? { opacity: 0, transition: { duration: 0.2 } }
-                    : { x: dir * 600, rotate: dir * 18, opacity: 0, transition: { duration: 0.35 } },
-            }}
-            initial={reduceMotion ? false : { scale: 0.95, y: 22, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1, transition: { type: "spring", stiffness: 300, damping: 30 } }}
-            exit="exit"
+            className="absolute inset-0"
+            style={{ zIndex: DEPTH_STYLES.length - pos }}
+            animate={{ scale: depth.scale, y: depth.y, rotate: depth.rotate }}
+            transition={
+                reduceMotion
+                    ? { duration: 0.2 }
+                    : { type: "spring", stiffness: 300, damping: 30 }
+            }
         >
-            <ProjectCard repo={repo} />
+            <motion.div
+                className={cn(
+                    "h-full",
+                    isFront && "cursor-grab active:cursor-grabbing",
+                )}
+                style={{ x, rotate: isFront ? dragRotate : 0 }}
+                drag={isFront ? "x" : false}
+                dragSnapToOrigin
+                dragElastic={0.6}
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={isFront ? handleDragEnd : undefined}
+            >
+                <ProjectCard repo={repo} />
+            </motion.div>
         </motion.div>
     );
 };
@@ -69,8 +96,18 @@ const ProjectStack: React.FC<{
     repos: RepositoryObject[];
     loading: boolean;
 }> = ({ repos, loading }) => {
+    const reduceMotion = useReducedMotion();
+    const containerRef = useRef<HTMLDivElement>(null);
     const [index, setIndex] = useState(0);
-    const [direction, setDirection] = useState(1);
+    const [exiting, setExiting] = useState<Exiting | null>(null);
+    const [entering, setEntering] = useState<Entering | null>(null);
+    // arrow presses alternate the swing direction; swipes follow the actual drag.
+    const arrowDir = useRef(1);
+    const nextArrowDir = () => {
+        const dir = arrowDir.current;
+        arrowDir.current = -dir;
+        return dir;
+    };
 
     if (loading) {
         return (
@@ -79,7 +116,7 @@ const ProjectStack: React.FC<{
                     <div
                         key={i}
                         className={cn("inset-0", i === DEPTH_STYLES.length - 1 ? "relative" : "absolute")}
-                        style={{ transform: `translateY(${style.y}px) scale(${style.scale}) rotate(${style.rotate}deg)`, zIndex: style.zIndex }}
+                        style={{ transform: `translateY(${style.y}px) scale(${style.scale}) rotate(${style.rotate}deg)`, zIndex: i }}
                         aria-hidden={i !== DEPTH_STYLES.length - 1}
                     >
                         <ProjectCardSkeleton />
@@ -92,43 +129,150 @@ const ProjectStack: React.FC<{
     if (repos.length === 0) return null;
 
     const count = repos.length;
-    // `step` moves the deck (+1 next, -1 prev); `exitDir` is the fly-off direction.
-    const paginate = (step: number, exitDir: number = step) => {
-        setDirection(exitDir);
-        setIndex((prev) => (prev + step + count) % count);
+
+    const busy = exiting !== null || entering !== null;
+
+    const dismiss = (dir: number, fromX: number) => {
+        if (count < 2) return;
+        if (!reduceMotion && busy) return; // one card in flight at a time
+        setIndex((prev) => (prev + 1) % count);
+        if (!reduceMotion) {
+            setExiting({ repo: repos[index], dir, fromX, phase: "out" });
+        }
     };
 
-    // back cards (depths 1..2) peeking behind the front
-    const backCards = DEPTH_STYLES.slice(1)
-        .map((style, i) => ({ style, repo: repos[(index + i + 1) % count] }))
-        .filter((_, i) => i + 1 < count); // don't duplicate the front card when few repos
+    const retreat = (dir: number) => {
+        if (count < 2) return;
+        if (!reduceMotion && busy) return;
+        const prevIndex = (index - 1 + count) % count;
+        setIndex(prevIndex);
+        if (!reduceMotion) {
+            // mirror of dismiss: the back card rises out and settles onto the front.
+            setEntering({ repo: repos[prevIndex], dir, phase: "rise" });
+        }
+    };
+
+    const containerWidth = containerRef.current?.offsetWidth ?? 320;
+    // how far a card swings aside before it changes layers — far enough to fully clear
+    // the stack (no clip); the animation is quick to compensate for the longer travel.
+    const swingX = containerWidth * 1.1;
 
     return (
         <div className="mx-auto w-10/12 desktop:w-full select-none">
-            <div className="relative">
-                {/* invisible sizer gives the absolute stack its height per card */}
+            <div className="relative" ref={containerRef}>
+                {/* invisible sizer gives the absolute stack its height */}
                 <div className="invisible" aria-hidden>
                     <ProjectCard repo={repos[index]} />
                 </div>
 
-                {backCards.map(({ style, repo }) => (
-                    <div
-                        key={repo.id}
-                        className="absolute inset-0 pointer-events-none"
-                        style={{ transform: `translateY(${style.y}px) scale(${style.scale}) rotate(${style.rotate}deg)`, zIndex: style.zIndex }}
-                        aria-hidden
-                    >
-                        <ProjectCard repo={repo} />
-                    </div>
-                ))}
+                {repos.map((repo, i) => {
+                    if (exiting && repo.id === exiting.repo.id) return null;
+                    if (entering && repo.id === entering.repo.id) return null;
+                    const pos = (i - index + count) % count;
+                    return (
+                        <StackCard
+                            key={repo.id}
+                            repo={repo}
+                            pos={pos}
+                            isFront={pos === 0}
+                            onDismiss={dismiss}
+                        />
+                    );
+                })}
 
-                <AnimatePresence initial={false} custom={direction}>
-                    <FrontCard
-                        key={repos[index].id}
-                        repo={repos[index]}
-                        onDismiss={(swipeDir) => paginate(1, swipeDir)}
-                    />
-                </AnimatePresence>
+                {/*
+                  Dismissed card animates in two phases so it reads like a real hand:
+                  "out"  — on top of the pile, lifts up and swings aside.
+                  "back" — drops behind the front card and tucks down to the back slot.
+                  The zIndex flips between phases so it sits above while swinging out,
+                  then under while it returns.
+                */}
+                {exiting && (
+                    <motion.div
+                        key={`exiting-${exiting.repo.id}`}
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ zIndex: exiting.phase === "out" ? 50 : 0 }}
+                        initial={{
+                            x: exiting.fromX,
+                            y: 0,
+                            scale: 1,
+                            rotate: clamp((exiting.fromX / 200) * 12, -12, 12),
+                        }}
+                        animate={
+                            exiting.phase === "out"
+                                ? {
+                                    x: exiting.dir * swingX,
+                                    y: -12,
+                                    scale: 1,
+                                    rotate: exiting.dir * 8,
+                                }
+                                : {
+                                    x: 0,
+                                    y: BACK.y,
+                                    scale: BACK.scale,
+                                    rotate: BACK.rotate,
+                                }
+                        }
+                        transition={
+                            exiting.phase === "out"
+                                ? { duration: 0.22, ease: "easeOut" }
+                                : { duration: 0.26, ease: "easeIn" }
+                        }
+                        onAnimationComplete={() =>
+                            setExiting((e) =>
+                                e && e.phase === "out" ? { ...e, phase: "back" } : null,
+                            )
+                        }
+                    >
+                        <ProjectCard repo={exiting.repo} />
+                    </motion.div>
+                )}
+
+                {/*
+                  Going back (left arrow): the mirror of a dismiss.
+                  "rise"   — behind the pile, the back card lifts up and swings aside.
+                  "settle" — on top, it swings in and lands on the front.
+                */}
+                {entering && (
+                    <motion.div
+                        key={`entering-${entering.repo.id}`}
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ zIndex: entering.phase === "rise" ? 0 : 50 }}
+                        initial={{
+                            x: 0,
+                            y: BACK.y,
+                            scale: BACK.scale,
+                            rotate: BACK.rotate,
+                        }}
+                        animate={
+                            entering.phase === "rise"
+                                ? {
+                                    x: entering.dir * swingX,
+                                    y: -12,
+                                    scale: 1,
+                                    rotate: entering.dir * 8,
+                                }
+                                : {
+                                    x: 0,
+                                    y: 0,
+                                    scale: 1,
+                                    rotate: 0,
+                                }
+                        }
+                        transition={
+                            entering.phase === "rise"
+                                ? { duration: 0.26, ease: "easeOut" }
+                                : { duration: 0.22, ease: "easeOut" }
+                        }
+                        onAnimationComplete={() =>
+                            setEntering((e) =>
+                                e && e.phase === "rise" ? { ...e, phase: "settle" } : null,
+                            )
+                        }
+                    >
+                        <ProjectCard repo={entering.repo} />
+                    </motion.div>
+                )}
             </div>
 
             <div className="flex items-center justify-center gap-2 mt-8">
@@ -136,7 +280,7 @@ const ProjectStack: React.FC<{
                     variant="ghost"
                     size="icon"
                     className="text-primary hover:bg-transparent"
-                    onClick={() => paginate(-1)}
+                    onClick={() => { if (count >= 2 && !busy) retreat(nextArrowDir()); }}
                 >
                     <IconChevronLeft className="size-6" stroke={1.5} />
                     <span className="sr-only">Previous project</span>
@@ -149,10 +293,7 @@ const ProjectStack: React.FC<{
                             type="button"
                             aria-label={`Go to project ${i + 1}`}
                             aria-current={i === index}
-                            onClick={() => {
-                                setDirection(i > index ? 1 : -1);
-                                setIndex(i);
-                            }}
+                            onClick={() => { if (!busy) setIndex(i); }}
                             className={cn(
                                 "size-2 rounded-full transition-colors",
                                 i === index ? "bg-primary" : "bg-muted-foreground/30 hover:bg-muted-foreground/60",
@@ -165,7 +306,7 @@ const ProjectStack: React.FC<{
                     variant="ghost"
                     size="icon"
                     className="text-primary hover:bg-transparent"
-                    onClick={() => paginate(1)}
+                    onClick={() => { if (count >= 2 && !busy) dismiss(nextArrowDir(), 0); }}
                 >
                     <IconChevronRight className="size-6" stroke={1.5} />
                     <span className="sr-only">Next project</span>

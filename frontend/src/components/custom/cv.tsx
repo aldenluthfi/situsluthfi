@@ -29,7 +29,9 @@ import {
     IconDownload,
     IconEye,
     IconFileCv,
-    IconBarrierBlock
+    IconBarrierBlock,
+    IconChevronDown,
+    IconChevronUp
 } from '@tabler/icons-react';
 
 import cvContent from '@/assets/other/cv.md?raw';
@@ -807,29 +809,19 @@ const CV: React.FC<CVProps> = ({
                             {!isExpanded && <div className="h-70 w-full max-w-desktop absolute bottom-0 bg-gradient-to-b from-transparent to-card" />}
                         </CardContent>
                         <CardFooter className="flex flex-col items-center -mt-8 tablet:-mt-6 desktop:-mb-4">
-                            {!isExpanded && (
-                                <div className="flex justify-center mt-6">
-                                    <Button
-                                        onClick={() => setIsExpanded(true)}
-                                        variant="ghost"
-                                        className="bg-card text-muted-foreground hover:bg-card"
-                                    >
-                                        See more, experiences et cetera
-                                    </Button>
-                                </div>
-                            )}
-
-                            {isExpanded && (
-                                <div className="flex justify-center mt-6">
-                                    <Button
-                                        onClick={() => setIsExpanded(false)}
-                                        variant="ghost"
-                                        className="bg-card text-muted-foreground hover:bg-card"
-                                    >
-                                        See less boring stuff
-                                    </Button>
-                                </div>
-                            )}
+                            <div className="flex justify-center mt-6">
+                                <Button
+                                    onClick={() => setIsExpanded(!isExpanded)}
+                                    variant="ghost"
+                                    size="icon"
+                                    className="bg-card text-muted-foreground hover:bg-card"
+                                    aria-label={isExpanded ? "Show less" : "Show more"}
+                                >
+                                    {isExpanded
+                                        ? <IconChevronUp className="size-6" stroke={1.5} />
+                                        : <IconChevronDown className="size-6" stroke={1.5} />}
+                                </Button>
+                            </div>
                         </CardFooter>
                     </Card>
                 ) : (

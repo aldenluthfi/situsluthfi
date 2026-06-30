@@ -115,7 +115,7 @@ const Home: React.FC = () => {
             toast.error("Please fill in both your email and a message.");
             return;
         }
-        toast.success("Thanks! This form is a placeholder — your message wasn't actually sent.");
+        toast.success("Thanks for reaching out! This form is just for show right now, so nothing actually got sent.");
         setContactEmail("");
         setContactMessage("");
     };
@@ -178,9 +178,9 @@ const Home: React.FC = () => {
         <div className="flex flex-col min-h-screen items-center overflow-clip gap-24">
             <div className="flex flex-col w-full justify-center items-center space-y-6 mt-44">
                 <p className="text-lg tablet:text-2xl text-center">
-                    Hi, I'm <span className="text-primary font-bold">Luthfi</span> — <span />
+                    Hello! my name is <span className="text-primary font-bold">Luthfi</span>, <span />
                     <br />
-                    most people call me <span className="text-primary font-bold">Upi</span>.
+                    but most people call me <span className="text-primary font-bold">Upi</span>, I'm a
                 </p>
                 <SlidingTitle
                     text="Humanitarian Activist · Software Developer · Teaching Assistant · Graphic Designer · Cinephile"
@@ -188,7 +188,7 @@ const Home: React.FC = () => {
                 />
                 <p
                     className="text-lg tablet:text-2xl text-center">
-                    <span className="text-primary font-bold">Computer Science</span> student
+                    and a <span className="text-primary font-bold">computer science</span> student
                     <br />
                     at Universitas Indonesia
                 </p>
@@ -219,10 +219,10 @@ const Home: React.FC = () => {
                     <CarouselContent className="py-8">
                         {
                             Array(2).fill(0).flatMap(() => ([
-                                { src: soloImg, alt: "Solo", tooltip: "That's me." },
-                                { src: medpropImg, alt: "Media and Propaganda", tooltip: "With the Media & Propaganda team." },
-                                { src: weirdosImg, alt: "Just Weirdos", tooltip: "Good company." },
-                                { src: holeboysImg, alt: "Hole Boys", tooltip: "The hole boys." },
+                                { src: soloImg, alt: "Solo", tooltip: "This is me, Hi!" },
+                                { src: medpropImg, alt: "Media and Propaganda", tooltip: "Media and Propaganda team, loud and clear!" },
+                                { src: weirdosImg, alt: "Just Weirdos", tooltip: "Weirdos being weirdos" },
+                                { src: holeboysImg, alt: "Hole Boys", tooltip: "Just some boys coming out from a hole on the wall" },
                             ])).map((image, index) => (
                                 <CarouselItem key={index + 1} className="ml-8 mr-4 max-w-10/12 tablet:basis-1/2 desktop:basis-5/12">
                                     <ResponsiveTooltip content={<p>{image.tooltip}</p>}>
@@ -244,24 +244,24 @@ const Home: React.FC = () => {
 
             <div className='w-full max-w-desktop px-6 flex flex-col items-center'>
                 <p className="text-lg tablet:text-2xl text-center">
-                    I work across a few <span className="text-primary font-bold">disciplines</span>.
+                    As you can probably see, I'm a
                     <br />
-                    Depending on what you need, I can be
+                    <span className="text-primary font-bold">Jack of all trades</span>, you can have me as
                 </p>
                 <CV showTabs autoPlay className='w-full' />
             </div>
 
             <div className="flex flex-col w-full justify-center items-center space-y-6">
                 <p className="text-lg tablet:text-2xl text-center mb-6">
-                    My <span className="text-primary font-bold">projects</span>
+                    These are my <span className="text-primary font-bold">projects</span>
                     <br />
-                    A growing collection of the
+                    here you can find a growing collection of
                 </p>
                 <SlidingTitle text="Algorithms · Frameworks · Languages · Experiments · Tech Stacks" direction={-1} />
                 <p className="text-lg tablet:text-2xl text-center">
-                    I've <span className="text-primary font-bold">built and explored</span>
+                    I explored in my journey as a developer,
                     <br />
-                    as a developer.
+                    <span className="text-primary font-bold">stay tuned</span> for updates!
                 </p>
             </div>
             <div className="w-full max-w-desktop px-6">
@@ -270,15 +270,15 @@ const Home: React.FC = () => {
 
             <div className="flex flex-col w-full justify-center items-center space-y-6">
                 <p className="text-lg tablet:text-2xl text-center mb-6">
-                    <span className="text-primary font-bold">Places I've been</span>.
+                    This is my silly excuse of a <span className="text-primary font-bold">gallery</span>, <span />
                     <br />
-                    Scenes I've collected of the
+                    here you will find
                 </p>
                 <SlidingTitle text="People · Panoramas · Cultures · Oddities" direction={1} />
                 <p className="text-lg tablet:text-2xl text-center mt-6">
-                    from traveling
+                    I have <span className="text-primary font-bold">seen</span> in all
                     <br />
-                    around the <span className="text-primary font-bold">world</span>.
+                    of my travels around this <span className="text-primary font-bold">blob of dust</span>
                 </p>
             </div>
             <div className='flex flex-col -space-y-0.25 justify-center items-center w-full'>
@@ -353,13 +353,13 @@ const Home: React.FC = () => {
                 <p className="text-lg tablet:text-2xl text-center mb-6">
                     Got something in mind?
                     <br />
-                    I'd love to <span className="text-primary font-bold">hear from you</span> —
+                    I'd love to <span className="text-primary font-bold">hear from you</span>
                 </p>
                 <SlidingTitle text="Say Hello · Reach Out · Collaborate · Get in Touch" direction={-1} />
                 <p className="text-lg tablet:text-2xl text-center mt-6">
                     drop a line below and let's
                     <br />
-                    <span className="text-primary font-bold">make something</span> together.
+                    <span className="text-primary font-bold">make something</span> together
                 </p>
             </div>
             <div className="w-full max-w-tablet px-6 pb-12">

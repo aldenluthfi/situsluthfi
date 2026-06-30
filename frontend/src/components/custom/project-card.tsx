@@ -78,7 +78,7 @@ const ProjectCard: React.FC<{
     const imageUrl = getRepoImageUrl(repo, shouldUseDarkImage);
 
     return (
-        <Card className="h-full flex flex-col">
+        <Card className="h-full flex flex-col overflow-hidden">
             <CardHeader>
                 {imageUrl && (
                     <div className="relative w-full aspect-[2/1] mb-2 desktop:mb-4 overflow-hidden rounded-md">
@@ -93,7 +93,7 @@ const ProjectCard: React.FC<{
                 <CardDescription>
                     <div className="min-h-28">
                         {repo.description && (
-                            <p className="text-base line-clamp-3 mb-1" dir="ltr">{repo.description}</p>
+                            <p className="text-base line-clamp-3 mb-1 break-words" dir="ltr">{repo.description}</p>
                         )}
                         <a
                             href={repo.html_url}
