@@ -55,7 +55,7 @@ export const ProjectCardSkeleton: React.FC = () => (
         </CardHeader>
         <CardFooter className="mt-auto">
             <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end w-full gap-1" dir="ltr">
-                <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
+                <div className="flex desktop:flex-row flex-col-reverse justify-end gap-1 desktop:gap-4 min-h-20 desktop:min-h-0">
                     <div className="flex gap-4">
                         <Skeleton className="h-4 w-8" />
                         <Skeleton className="h-4 w-8" />
@@ -135,7 +135,7 @@ const ProjectCard: React.FC<{
             </CardHeader>
             <CardFooter className="mt-auto">
                 <div className="flex justify-between flex-col tablet:flex-row items-start tablet:items-end text-base text-muted-foreground w-full gap-1" dir="ltr">
-                    <div className="flex desktop:flex-row flex-col-reverse gap-1 desktop:gap-4">
+                    <div className="flex desktop:flex-row flex-col-reverse justify-end gap-1 desktop:gap-4 min-h-20 desktop:min-h-0">
                         {repo.stargazers_count > 0 && (
                             <div className="flex items-center gap-1">
                                 <IconStar className="size-4" stroke={1.5} />
