@@ -101,15 +101,10 @@ const ProjectStack: React.FC<{
     const [index, setIndex] = useState(0);
     const [exiting, setExiting] = useState<Exiting | null>(null);
     const [entering, setEntering] = useState<Entering | null>(null);
-    // arrow presses alternate the swing direction; swipes follow the actual drag.
-    const arrowDir = useRef(1);
-    const nextArrowDir = () => {
-        const dir = arrowDir.current;
-        arrowDir.current = -dir;
-        return dir;
-    };
-    // remember which side each card left from, so moving back returns it on the same side.
-    const exitDir = useRef<Map<number, number>>(new Map());
+    // which way the next card swings aside. each dismiss flips it so cards fan
+    // out left and right; retreating reverses the flip, returning a card on the
+    // side it left from. swipes set it to the side they were flung.
+    const dir = useRef(1);
 
     if (loading) {
         return (
@@ -134,13 +129,13 @@ const ProjectStack: React.FC<{
 
     const busy = exiting !== null || entering !== null;
 
-    const dismiss = (dir: number, fromX: number) => {
+    const dismiss = (swingDir: number, fromX: number) => {
         if (count < 2) return;
         if (!reduceMotion && busy) return; // one card in flight at a time
-        exitDir.current.set(repos[index].id, dir);
+        dir.current = -swingDir; // the next card swings the other way
         setIndex((prev) => (prev + 1) % count);
         if (!reduceMotion) {
-            setExiting({ repo: repos[index], dir, fromX, phase: "out" });
+            setExiting({ repo: repos[index], dir: swingDir, fromX, phase: "out" });
         }
     };
 
@@ -148,13 +143,14 @@ const ProjectStack: React.FC<{
         if (count < 2) return;
         if (!reduceMotion && busy) return;
         const prevIndex = (index - 1 + count) % count;
-        const back = repos[prevIndex];
-        // come back on the same side the card left from (falls back to alternating).
-        const dir = exitDir.current.get(back.id) ?? nextArrowDir();
+        // mirror of dismiss: undo the last flip so the card returns on the
+        // side it left from.
+        dir.current = -dir.current;
+        const swingDir = dir.current;
         setIndex(prevIndex);
         if (!reduceMotion) {
-            // mirror of dismiss: the back card rises out and settles onto the front.
-            setEntering({ repo: back, dir, phase: "rise" });
+            // the back card rises out and settles onto the front.
+            setEntering({ repo: repos[prevIndex], dir: swingDir, phase: "rise" });
         }
     };
 
@@ -312,7 +308,7 @@ const ProjectStack: React.FC<{
                     variant="ghost"
                     size="icon"
                     className="text-primary hover:bg-transparent"
-                    onClick={() => { if (count >= 2 && !busy) dismiss(nextArrowDir(), 0); }}
+                    onClick={() => { if (count >= 2 && !busy) dismiss(dir.current, 0); }}
                 >
                     <IconChevronRight className="size-6" stroke={1.5} />
                     <span className="sr-only">Next project</span>
