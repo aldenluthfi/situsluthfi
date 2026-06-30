@@ -226,446 +226,483 @@ Base URL  --> http://host:3000/api
  FACTS API
 ══════════════════════════════════════════════════════════════════════
 
-  ▸ Get Random Fact
-
-    Endpoint     --> GET /facts
-    Description  --> Retrieve a random fact from the database
-    Parameters   --> None
-    Example      --> GET /api/facts
-
-    Response (200 OK):
-        {
-          "id": 1,
-          "text": "Honey never spoils",
-          "source": "National Geographic"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to fetch facts"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Get Random Fact                                                                                 │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /facts                                                                       │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Retrieve a random fact from the database                                     │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ None                                                                         │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/facts                                                               │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "id": 1,                                                                   │
+│                  │   "text": "Honey never spoils",                                              │
+│                  │   "source": "National Geographic"                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to fetch facts"                                           │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 ══════════════════════════════════════════════════════════════════════
  WRITINGS API
 ══════════════════════════════════════════════════════════════════════
 
-  ▸ Get Paginated Writings
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Get Paginated Writings                                                                          │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /writings/get_page                                                           │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Retrieve paginated list of writings                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ page     (number, optional): Page number (default: 1)                        │
+│                  │ pagesize (number, optional): Items per page (default: 10)                    │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/writings/get_page?page=1&amp;pagesize=5                                 │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "results": [                                                               │
+│                  │     {                                                                        │
+│                  │       "id": "abc123",                                                        │
+│                  │       "title": "My First Blog Post",                                         │
+│                  │       "slug": "my-first-blog-post",                                          │
+│                  │       "tags": ["technology", "web"],                                         │
+│                  │       "lastUpdated": "2024-01-15T10:30:00Z",                                 │
+│                  │       "createdAt": "2024-01-10T08:00:00Z"                                    │
+│                  │     }                                                                        │
+│                  │   ],                                                                         │
+│                  │   "total": 25,                                                               │
+│                  │   "page": 1,                                                                 │
+│                  │   "pageSize": 5,                                                             │
+│                  │   "totalPages": 5                                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to retrieve paginated writings"                           │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Endpoint     --> GET /writings/get_page
-    Description  --> Retrieve paginated list of writings
-    Parameters   --> page     (number, optional): Page number (default: 1)
-                     pagesize (number, optional): Items per page (default: 10)
-    Example      --> GET /api/writings/get_page?page=1&amp;pagesize=5
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Get Writing by Slug                                                                             │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /writings/:slug                                                              │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Retrieve full writing content by slug                                        │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ slug (string, required): URL-friendly identifier for the writing             │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/writings/my-first-blog-post                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "id": "abc123",                                                            │
+│                  │   "title": "My First Blog Post",                                             │
+│                  │   "slug": "my-first-blog-post",                                              │
+│                  │   "tags": ["technology", "web"],                                             │
+│                  │   "content": "# My First Blog Post\n\nThis is the content...",               │
+│                  │   "lastUpdated": "2024-01-15T10:30:00Z",                                     │
+│                  │   "createdAt": "2024-01-10T08:00:00Z"                                        │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to retrieve writing"                                      │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Response (200 OK):
-        {
-          "results": [
-            {
-              "id": "abc123",
-              "title": "My First Blog Post",
-              "slug": "my-first-blog-post",
-              "tags": ["technology", "web"],
-              "lastUpdated": "2024-01-15T10:30:00Z",
-              "createdAt": "2024-01-10T08:00:00Z"
-            }
-          ],
-          "total": 25,
-          "page": 1,
-          "pageSize": 5,
-          "totalPages": 5
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Search Writing Contents                                                                         │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /writings/search                                                             │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Search through writing contents using Elasticsearch                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ q        (string, required): Search query                                    │
+│                  │ page     (number, optional): Page number (default: 1)                        │
+│                  │ pagesize (number, optional): Items per page (default: 10)                    │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/writings/search?q=javascript&amp;page=1&amp;pagesize=5                      │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "results": [                                                               │
+│                  │     {                                                                        │
+│                  │       "id": "abc123",                                                        │
+│                  │       "title": "JavaScript Best Practices",                                  │
+│                  │       "content": "...",                                                      │
+│                  │       "highlight": {                                                         │
+│                  │         "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"],           │
+│                  │         "title": ["&lt;mark&gt;JavaScript&lt;/mark&gt; Best Practices"]                  │
+│                  │       }                                                                      │
+│                  │     }                                                                        │
+│                  │   ],                                                                         │
+│                  │   "total": { "value": 8, "relation": "eq" },                                 │
+│                  │   "page": 1,                                                                 │
+│                  │   "pageSize": 5,                                                             │
+│                  │   "totalPages": 2                                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "Missing search query"                                            │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to retrieve paginated writings"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Sync All Writings                                                                               │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /writings/sync                                                               │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Synchronize all writings from Notion                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ None                                                                         │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ 200 OK           │ {                                                                            │
+│                  │   "message": "All writings synced successfully"                              │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to sync all writings"                                     │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-  ▸ Get Writing by Slug
-
-    Endpoint     --> GET /writings/:slug
-    Description  --> Retrieve full writing content by slug
-    Parameters   --> slug (string, required): URL-friendly identifier
-                     for the writing
-    Example      --> GET /api/writings/my-first-blog-post
-
-    Response (200 OK):
-        {
-          "id": "abc123",
-          "title": "My First Blog Post",
-          "slug": "my-first-blog-post",
-          "tags": ["technology", "web"],
-          "content": "# My First Blog Post\n\nThis is the content...",
-          "lastUpdated": "2024-01-15T10:30:00Z",
-          "createdAt": "2024-01-10T08:00:00Z"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to retrieve writing"
-        }
-
-  ▸ Search Writing Contents
-
-    Endpoint     --> GET /writings/search
-    Description  --> Search through writing contents using Elasticsearch
-    Parameters   --> q        (string, required): Search query
-                     page     (number, optional): Page number (default: 1)
-                     pagesize (number, optional): Items per page (default: 10)
-    Example      --> GET /api/writings/search?q=javascript&amp;page=1&amp;pagesize=5
-
-    Response (200 OK):
-        {
-          "results": [
-            {
-              "id": "abc123",
-              "title": "JavaScript Best Practices",
-              "content": "...",
-              "highlight": {
-                "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"],
-                "title": ["&lt;mark&gt;JavaScript&lt;/mark&gt; Best Practices"]
-              }
-            }
-          ],
-          "total": {
-            "value": 8,
-            "relation": "eq"
-          },
-          "page": 1,
-          "pageSize": 5,
-          "totalPages": 2
-        }
-
-    Response (400 Bad Request):
-        {
-          "error": "Missing search query"
-        }
-
-  ▸ Sync All Writings
-
-    Endpoint     --> GET /writings/sync
-    Description  --> Synchronize all writings from Notion
-    Parameters   --> None
-
-    Response (200 OK):
-        {
-          "message": "All writings synced successfully"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to sync all writings"
-        }
-
-  ▸ Sync Writing by Slug
-
-    Endpoint     --> GET /writings/sync/:slug
-    Description  --> Synchronize specific writing content and index to
-                     Elasticsearch
-    Parameters   --> slug (string, required): URL-friendly identifier
-                     for the writing
-
-    Response (200 OK):
-        {
-          "message": "Writing content synced successfully"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to sync writing content"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Sync Writing by Slug                                                                            │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /writings/sync/:slug                                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Synchronize specific writing content and index to Elasticsearch              │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ slug (string, required): URL-friendly identifier for the writing             │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ 200 OK           │ {                                                                            │
+│                  │   "message": "Writing content synced successfully"                           │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to sync writing content"                                  │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 ══════════════════════════════════════════════════════════════════════
  GITHUB API
 ══════════════════════════════════════════════════════════════════════
 
-  ▸ Get User Repositories
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Get User Repositories                                                                           │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /github/repositories                                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Retrieve all user repositories from database                                 │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ None                                                                         │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ 200 OK           │ {                                                                            │
+│                  │   "count": 15,                                                               │
+│                  │   "repositories": [                                                          │
+│                  │     {                                                                        │
+│                  │       "id": 123456,                                                          │
+│                  │       "name": "awesome-project",                                             │
+│                  │       "description": "An awesome project built with React",                  │
+│                  │       "languages": {"JavaScript": 75, "CSS": 25},                            │
+│                  │       "stargazers_count": 42,                                                │
+│                  │       "forks_count": 8,                                                      │
+│                  │       "topics": ["react", "frontend"],                                       │
+│                  │       "created_at": "2024-01-01T00:00:00Z",                                  │
+│                  │       "updated_at": "2024-01-15T12:00:00Z",                                  │
+│                  │       "license": {"key": "mit", "name": "MIT License", ...},                 │
+│                  │       "html_url": "https://github.com/user/awesome-project",                 │
+│                  │       "readme": "# Awesome Project\n\nThis is awesome...",                   │
+│                  │       "cover_light_url": "https://.../light.png",                            │
+│                  │       "cover_dark_url": "https://.../dark.png",                              │
+│                  │       "icon_map": {"react": "https://.../react.svg"}                         │
+│                  │     }                                                                        │
+│                  │   ]                                                                          │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to fetch repositories"                                    │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Endpoint     --> GET /github/repositories
-    Description  --> Retrieve all user repositories from database
-    Parameters   --> None
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Get Repository by Name                                                                          │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /github/repositories/:name                                                   │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Retrieve specific repository by name                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ name (string, required): Repository name                                     │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/github/repositories/awesome-project                                 │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "id": 123456,                                                              │
+│                  │   "name": "awesome-project",                                                 │
+│                  │   "description": "An awesome project built with React",                      │
+│                  │   "languages": {"JavaScript": 75, "CSS": 25},                                │
+│                  │   "stargazers_count": 42,                                                    │
+│                  │   "forks_count": 8,                                                          │
+│                  │   "topics": ["react", "frontend"],                                           │
+│                  │   "created_at": "2024-01-01T00:00:00Z",                                      │
+│                  │   "updated_at": "2024-01-15T12:00:00Z",                                      │
+│                  │   "license": {"key": "mit", "name": "MIT License", ...},                     │
+│                  │   "html_url": "https://github.com/user/awesome-project",                     │
+│                  │   "readme": "# Awesome Project..."                                           │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 404 Not Found    │ {                                                                            │
+│                  │   "error": "Repository not found"                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to fetch repository"                                      │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Response (200 OK):
-        {
-          "count": 15,
-          "repositories": [
-            {
-              "id": 123456,
-              "name": "awesome-project",
-              "description": "An awesome project built with React",
-              "languages": {"JavaScript": 75, "CSS": 25},
-              "stargazers_count": 42,
-              "forks_count": 8,
-              "topics": ["react", "frontend"],
-              "created_at": "2024-01-01T00:00:00Z",
-              "updated_at": "2024-01-15T12:00:00Z",
-              "license": {"key": "mit", "name": "MIT License", "url": "https://...", "node_id": "...", "spdx_id": "MIT"},
-              "html_url": "https://github.com/user/awesome-project",
-              "readme": "# Awesome Project\n\nThis is awesome...",
-              "cover_light_url": "https://raw.githubusercontent.com/.../light.png",
-              "cover_dark_url": "https://raw.githubusercontent.com/.../dark.png",
-              "icon_map": {"react": "https://cdn.jsdelivr.net/.../react.svg"}
-            }
-          ]
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to fetch repositories"
-        }
-
-  ▸ Get Repository by Name
-
-    Endpoint     --> GET /github/repositories/:name
-    Description  --> Retrieve specific repository by name
-    Parameters   --> name (string, required): Repository name
-    Example      --> GET /api/github/repositories/awesome-project
-
-    Response (200 OK):
-        {
-          "id": 123456,
-          "name": "awesome-project",
-          "description": "An awesome project built with React",
-          "languages": {"JavaScript": 75, "CSS": 25},
-          "stargazers_count": 42,
-          "forks_count": 8,
-          "topics": ["react", "frontend"],
-          "created_at": "2024-01-01T00:00:00Z",
-          "updated_at": "2024-01-15T12:00:00Z",
-          "license": {"key": "mit", "name": "MIT License", "url": "https://...", "node_id": "...", "spdx_id": "MIT"},
-          "html_url": "https://github.com/user/awesome-project",
-          "readme": "# Awesome Project..."
-        }
-
-    Response (404 Not Found):
-        {
-          "error": "Repository not found"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to fetch repository"
-        }
-
-  ▸ Sync Repositories
-
-    Endpoint     --> GET /github/repositories/sync
-    Description  --> Synchronize repositories from GitHub API and index
-                     to Elasticsearch
-    Parameters   --> None
-
-    Response (200 OK):
-        {
-          "message": "Repositories synced successfully"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to sync repositories"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Sync Repositories                                                                               │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /github/repositories/sync                                                    │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Synchronize repositories from GitHub API and index to Elasticsearch          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ None                                                                         │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ 200 OK           │ {                                                                            │
+│                  │   "message": "Repositories synced successfully"                              │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to sync repositories"                                     │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 ══════════════════════════════════════════════════════════════════════
  SEARCH API
 ══════════════════════════════════════════════════════════════════════
 
-  ▸ Universal Search
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Universal Search                                                                                │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /search                                                                      │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Search across all content types (writings and repositories)                  │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ q        (string, required): Search query                                    │
+│                  │ page     (number, optional): Page number (default: 1)                        │
+│                  │ pagesize (number, optional): Items per page (default: 10)                    │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/search?q=react&amp;page=1&amp;pagesize=10                                   │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "results": [                                                               │
+│                  │     {                                                                        │
+│                  │       "id": "abc123",                                                        │
+│                  │       "title": "React Best Practices",                                       │
+│                  │       "content": "Learn React...",                                           │
+│                  │       "_type": "writing",                                                    │
+│                  │       "highlight": { "title": ["&lt;mark&gt;React&lt;/mark&gt; Best Practices"] }        │
+│                  │     },                                                                       │
+│                  │     {                                                                        │
+│                  │       "id": 123456,                                                          │
+│                  │       "name": "react-components",                                            │
+│                  │       "description": "Reusable React components",                            │
+│                  │       "_type": "repository",                                                 │
+│                  │       "highlight": { "name": ["&lt;mark&gt;react&lt;/mark&gt;-components"] }             │
+│                  │     }                                                                        │
+│                  │   ],                                                                         │
+│                  │   "total": { "value": 25, "relation": "eq" },                                │
+│                  │   "page": 1,                                                                 │
+│                  │   "pageSize": 10,                                                            │
+│                  │   "totalPages": 3,                                                           │
+│                  │   "breakdown": {                                                             │
+│                  │     "writings": {"count": 15, "total": 25},                                  │
+│                  │     "repositories": {"count": 10, "total": 25}                               │
+│                  │   }                                                                          │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "Search query is required"                                        │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to perform search"                                        │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Endpoint     --> GET /search
-    Description  --> Search across all content types (writings and
-                     repositories)
-    Parameters   --> q        (string, required): Search query
-                     page     (number, optional): Page number (default: 1)
-                     pagesize (number, optional): Items per page (default: 10)
-    Example      --> GET /api/search?q=react&amp;page=1&amp;pagesize=10
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Search Writings                                                                                 │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /search/writings                                                             │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Search specifically within writings                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ q        (string, required): Search query                                    │
+│                  │ page     (number, optional): Page number (default: 1)                        │
+│                  │ pagesize (number, optional): Items per page (default: 10)                    │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/search/writings?q=javascript&amp;page=1&amp;pagesize=5                      │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "results": [                                                               │
+│                  │     {                                                                        │
+│                  │       "id": "abc123",                                                        │
+│                  │       "title": "JavaScript Best Practices",                                  │
+│                  │       "content": "...",                                                      │
+│                  │       "highlight": {                                                         │
+│                  │         "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"]            │
+│                  │       }                                                                      │
+│                  │     }                                                                        │
+│                  │   ],                                                                         │
+│                  │   "total": { "value": 8, "relation": "eq" },                                 │
+│                  │   "page": 1,                                                                 │
+│                  │   "pageSize": 5,                                                             │
+│                  │   "totalPages": 2                                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "Search query is required"                                        │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to search writings"                                       │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Response (200 OK):
-        {
-          "results": [
-            {
-              "id": "abc123",
-              "title": "React Best Practices",
-              "content": "Learn React...",
-              "_type": "writing",
-              "highlight": {
-                "title": ["&lt;mark&gt;React&lt;/mark&gt; Best Practices"]
-              }
-            },
-            {
-              "id": 123456,
-              "name": "react-components",
-              "description": "Reusable React components",
-              "_type": "repository",
-              "highlight": {
-                "name": ["&lt;mark&gt;react&lt;/mark&gt;-components"]
-              }
-            }
-          ],
-          "total": {
-            "value": 25,
-            "relation": "eq"
-          },
-          "page": 1,
-          "pageSize": 10,
-          "totalPages": 3,
-          "breakdown": {
-            "writings": {"count": 15, "total": 25},
-            "repositories": {"count": 10, "total": 25}
-          }
-        }
-
-    Response (400 Bad Request):
-        {
-          "error": "Search query is required"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to perform search"
-        }
-
-  ▸ Search Writings
-
-    Endpoint     --> GET /search/writings
-    Description  --> Search specifically within writings
-    Parameters   --> q        (string, required): Search query
-                     page     (number, optional): Page number (default: 1)
-                     pagesize (number, optional): Items per page (default: 10)
-    Example      --> GET /api/search/writings?q=javascript&amp;page=1&amp;pagesize=5
-
-    Response (200 OK):
-        {
-          "results": [
-            {
-              "id": "abc123",
-              "title": "JavaScript Best Practices",
-              "content": "...",
-              "highlight": {
-                "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"]
-              }
-            }
-          ],
-          "total": {
-            "value": 8,
-            "relation": "eq"
-          },
-          "page": 1,
-          "pageSize": 5,
-          "totalPages": 2
-        }
-
-    Response (400 Bad Request):
-        {
-          "error": "Search query is required"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to search writings"
-        }
-
-  ▸ Search Repositories
-
-    Endpoint     --> GET /search/repositories
-    Description  --> Search specifically within repositories
-    Parameters   --> q        (string, required): Search query
-                     page     (number, optional): Page number (default: 1)
-                     pagesize (number, optional): Items per page (default: 10)
-    Example      --> GET /api/search/repositories?q=react&amp;page=1&amp;pagesize=5
-
-    Response (200 OK):
-        {
-          "results": [
-            {
-              "id": 123456,
-              "name": "react-components",
-              "description": "Reusable React components",
-              "highlight": {
-                "name": ["&lt;mark&gt;react&lt;/mark&gt;-components"]
-              }
-            }
-          ],
-          "total": {
-            "value": 5,
-            "relation": "eq"
-          },
-          "page": 1,
-          "pageSize": 5,
-          "totalPages": 1
-        }
-
-    Response (400 Bad Request):
-        {
-          "error": "Search query is required"
-        }
-
-    Response (500 Internal Server Error):
-        {
-          "error": "Failed to search repositories"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Search Repositories                                                                             │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /search/repositories                                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Search specifically within repositories                                      │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ q        (string, required): Search query                                    │
+│                  │ page     (number, optional): Page number (default: 1)                        │
+│                  │ pagesize (number, optional): Items per page (default: 10)                    │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/search/repositories?q=react&amp;page=1&amp;pagesize=5                       │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "results": [                                                               │
+│                  │     {                                                                        │
+│                  │       "id": 123456,                                                          │
+│                  │       "name": "react-components",                                            │
+│                  │       "description": "Reusable React components",                            │
+│                  │       "highlight": {                                                         │
+│                  │         "name": ["&lt;mark&gt;react&lt;/mark&gt;-components"]                            │
+│                  │       }                                                                      │
+│                  │     }                                                                        │
+│                  │   ],                                                                         │
+│                  │   "total": { "value": 5, "relation": "eq" },                                 │
+│                  │   "page": 1,                                                                 │
+│                  │   "pageSize": 5,                                                             │
+│                  │   "totalPages": 1                                                            │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "Search query is required"                                        │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 500 Internal     │ {                                                                            │
+│ Server Error     │   "error": "Failed to search repositories"                                   │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 ══════════════════════════════════════════════════════════════════════
  PDF API
 ══════════════════════════════════════════════════════════════════════
 
-  ▸ Generate CV PDF
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Generate CV PDF                                                                                 │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /pdf/generate-cv                                                             │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ POST                                                                         │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Generate PDF from LaTeX content                                              │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Request Body     │ latexContent (string, required): LaTeX source code                           │
+│                  │ filename (string, optional): Custom filename (default: "cv")                 │
+│                  │ type  (string, optional): CV type filter                                     │
+│                  │ mode  (string, optional): Display mode                                       │
+│                  │ theme (string, optional): Color theme                                        │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ POST /api/pdf/generate-cv                                                    │
+│                  │ Content-Type: application/json                                               │
+│                  │                                                                              │
+│                  │ {                                                                            │
+│                  │     "latexContent": "\\documentclass{article} [...]",                        │
+│                  │     "filename": "my-cv",                                                     │
+│                  │     "type": "full",                                                          │
+│                  │     "mode": "system",                                                        │
+│                  │     "theme": "blue"                                                          │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ {                                                                            │
+│                  │   "pdfUrl": "/api/pdf/view/my-cv-a1b2c3.pdf"                                 │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "LaTeX content is required"                                       │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 422              │ {                                                                            │
+│ Unprocessable    │   "error": "LaTeX compilation failed. Please check your content."            │
+│ Entity           │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-    Endpoint     --> POST /pdf/generate-cv
-    Description  --> Generate PDF from LaTeX content
-    Request Body --> latexContent (string, required): LaTeX source code
-                     filename (string, optional): Custom filename
-                       (default: "cv")
-                     type  (string, optional): CV type filter
-                     mode  (string, optional): Display mode
-                     theme (string, optional): Color theme
-
-    Example Request:
-        POST /api/pdf/generate-cv
-        Content-Type: application/json
-
-        {
-            "latexContent": "\\documentclass{article} [...]",
-            "filename": "my-cv",
-            "type": "full",
-            "mode": "system",
-            "theme": "blue"
-        }
-
-    Response (200 OK):
-        {
-          "pdfUrl": "/api/pdf/view/my-cv-a1b2c3.pdf"
-        }
-
-    Response (400 Bad Request):
-        {
-          "error": "LaTeX content is required"
-        }
-
-    Response (422 Unprocessable Entity):
-        {
-          "error": "LaTeX compilation failed. Please check your content."
-        }
-
-  ▸ Serve PDF
-
-    Endpoint     --> GET /pdf/view/:filename
-    Description  --> Serve generated PDF file
-    Parameters   --> filename (string, required): PDF filename with
-                     extension
-    Headers      --> Content-Type: application/pdf
-                     Content-Disposition: inline; filename="original-filename.pdf"
-                     Content-Length: [buffer-length]
-    Example      --> GET /api/pdf/view/my-cv-a1b2c3.pdf
-
-    Response (200 OK):
-        Content-Type: application/pdf
-        Content-Disposition: inline; filename="my-cv.pdf"
-        Content-Length: 50432
-
-        [Binary PDF data]
-
-    Response (404 Not Found):
-        {
-          "error": "PDF not found"
-        }
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Serve PDF                                                                                       │
+├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
+│ Endpoint         │ /pdf/view/:filename                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Method           │ GET                                                                          │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Description      │ Serve generated PDF file                                                     │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Parameters       │ filename (string, required): PDF filename with extension                     │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ Headers          │ Content-Type: application/pdf                                                │
+│                  │ Content-Disposition: inline; filename="original-filename.pdf"                │
+│                  │ Content-Length: [buffer-length]                                              │
+╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
+│ Example          │ GET /api/pdf/view/my-cv-a1b2c3.pdf                                           │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 200 OK           │ Content-Type: application/pdf                                                │
+│                  │ Content-Disposition: inline; filename="my-cv.pdf"                            │
+│                  │ Content-Length: 50432                                                        │
+│                  │                                                                              │
+│                  │ [Binary PDF data]                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 404 Not Found    │ {                                                                            │
+│                  │   "error": "PDF not found"                                                   │
+│                  │ }                                                                            │
+└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 [ CONTACT ]
 
