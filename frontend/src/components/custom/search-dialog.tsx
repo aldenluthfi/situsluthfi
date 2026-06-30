@@ -6,12 +6,10 @@ import {
     DialogDescription
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { isMobile, isWindows } from "@/lib/utils";
+import { isMobile } from "@/lib/utils";
 import {
     IconSearch,
-    IconFolder,
     IconBook,
-    IconPhoto,
     IconPencil,
     IconBarrierBlock
 } from "@tabler/icons-react";
@@ -40,9 +38,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const searchAbortController = useRef<AbortController | null>(null);
 
     const navigationItems = [
-        { name: 'Projects', href: '/projects', icon: IconFolder, shortcut: 'U' },
-        { name: 'Writings', href: '/writings', icon: IconBook, shortcut: 'I' },
-        { name: 'Gallery', href: '/gallery', icon: IconPhoto, shortcut: 'O' }
+        { name: 'Writings', href: '/writings', icon: IconBook, shortcut: 'I' }
     ];
 
     const filteredNavigationItems = search
@@ -196,7 +192,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     };
 
     const handleShortcutKey = (e: React.KeyboardEvent) => {
-        const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
+        const modifierKey = e.metaKey || e.ctrlKey;
 
         if (modifierKey && e.key >= '1' && e.key <= '9') {
             e.preventDefault();

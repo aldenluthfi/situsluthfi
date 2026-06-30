@@ -1,6 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { IconHome, IconBook, IconFolder, IconPhoto, IconScale, IconRefresh, IconSearch } from '@tabler/icons-react'
+import { IconHome, IconBook, IconScale, IconRefresh, IconSearch } from '@tabler/icons-react'
 
 import Cursor from './components/custom/cursor'
 
@@ -8,8 +8,6 @@ const Home     = lazy(() => import('./pages/Home'))
 const License  = lazy(() => import('./pages/License'))
 const Writings = lazy(() => import('./pages/Writings'))
 const Writing  = lazy(() => import('./pages/Writing'))
-const Projects = lazy(() => import('./pages/Projects'))
-const Gallery  = lazy(() => import('./pages/Gallery'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 import ThemeProvider from "@/components/custom/theme-provider"
@@ -28,7 +26,7 @@ import {
   ContextMenuShortcut
 } from "@/components/ui/context-menu"
 import { SearchDialog } from '@/components/custom/search-dialog'
-import { isWindows, isMobile } from '@/lib/utils'
+import { isMobile } from '@/lib/utils'
 import { useSearch } from './hooks/use-search'
 
 export default function App() {
@@ -36,7 +34,7 @@ export default function App() {
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      const modifierKey = isWindows ? e.ctrlKey : e.metaKey;
+      const modifierKey = e.metaKey || e.ctrlKey;
 
       if (modifierKey && e.key === 'k') {
         e.preventDefault();
@@ -46,17 +44,11 @@ export default function App() {
 
       if (searchOpen) return;
 
-      if (modifierKey && (e.key.toLowerCase() === 'u' || e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'o' || e.key.toLowerCase() === 'l' || e.key.toLowerCase() === 'h')) {
+      if (modifierKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'l' || e.key.toLowerCase() === 'h')) {
         e.preventDefault();
         switch (e.key.toLowerCase()) {
-          case 'u':
-            window.location.href = '/projects';
-            break;
           case 'i':
             window.location.href = '/writings';
-            break;
-          case 'o':
-            window.location.href = '/gallery';
             break;
           case 'l':
             window.location.href = '/license';
@@ -97,8 +89,6 @@ export default function App() {
                       <Route path="/license" element={<License />} />
                       <Route path="/writings" element={<Writings />} />
                       <Route path="/writings/:slug" element={<Writing />} />
-                      <Route path="/gallery" element={<Gallery />} />
-                      <Route path="/projects" element={<Projects />} />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>
@@ -126,15 +116,6 @@ export default function App() {
                   <div className="!text-sm">⌘</div> H
                 </ContextMenuShortcut>
               </ContextMenuItem>
-              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/projects'} data-slot="button">
-                <div className="flex items-center gap-4 mr-8">
-                  <IconFolder className="size-6" stroke={1.5} />
-                  Projects
-                </div>
-                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5  flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
-                  <div className="!text-sm">⌘</div> U
-                </ContextMenuShortcut>
-              </ContextMenuItem>
               <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/writings'} data-slot="button">
                 <div className="flex items-center gap-4 mr-8">
                   <IconBook className="size-6" stroke={1.5} />
@@ -142,15 +123,6 @@ export default function App() {
                 </div>
                 <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
                   <div className="!text-sm">⌘</div> I
-                </ContextMenuShortcut>
-              </ContextMenuItem>
-              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/gallery'} data-slot="button">
-                <div className="flex items-center gap-4 mr-8">
-                  <IconPhoto className="size-6" stroke={1.5} />
-                  Gallery
-                </div>
-                <ContextMenuShortcut className={`ml-auto rounded-sm py-1 pl-2 pr-1.5 flex gap-1 items-center text-xs whitespace-nowrap bg-muted text-muted-foreground group-hover:bg-primary-300 group-hover:text-primary-700 ${isMobile ? "opacity-0" : ""}`}>
-                  <div className="!text-sm">⌘</div> O
                 </ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator className='my-0.25' />

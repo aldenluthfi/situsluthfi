@@ -4,10 +4,15 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
+    "dev:db": "docker compose up mysql elasticsearch",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev:backend\" \"npm run dev:frontend\"",
     "lint": "npm run lint --prefix frontend && npm run lint --prefix backend",
     "lint:fix": "npm run lint:fix --prefix frontend && npm run lint:fix --prefix backend"
   },
   "devDependencies": {
+    "concurrently": "^9.2.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0"
   },

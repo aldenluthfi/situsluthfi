@@ -45,12 +45,62 @@ import { IconChevronRight } from "@tabler/icons-react";
 
 const HEADER_OFFSET = 80;
 
+// hast helpers: extract plain text and tag the table-of-contents lists.
+// Tagging happens once, on the tree, so each `ul` can decide how to render
+// purely from its own `node.properties` — no cross-component mutable state
+// (which would break under React StrictMode's double render).
+type HastNode = {
+    type: string;
+    tagName?: string;
+    value?: string;
+    properties?: Record<string, unknown>;
+    children?: HastNode[];
+};
+
+const hastText = (node: HastNode): string => {
+    if (node.type === "text") return node.value ?? "";
+    return (node.children ?? []).map(hastText).join("");
+};
+
+const markNestedUls = (node: HastNode) => {
+    for (const child of node.children ?? []) {
+        if (child.type === "element" && child.tagName === "ul") {
+            child.properties = { ...child.properties, dataTocNested: true };
+        }
+        markNestedUls(child);
+    }
+};
+
+const rehypeTagToc = () => (tree: HastNode) => {
+    const children = tree.children ?? [];
+    for (let i = 0; i < children.length; i++) {
+        const node = children[i];
+        const isHeading =
+            node.type === "element" &&
+            /^h[1-6]$/.test(node.tagName ?? "") &&
+            hastText(node).trim().toLowerCase() === "table of contents";
+
+        if (!isHeading) continue;
+
+        for (let j = i + 1; j < children.length; j++) {
+            const sibling = children[j];
+            if (sibling.type !== "element") continue;
+            if (sibling.tagName === "ul") {
+                sibling.properties = { ...sibling.properties, dataTocRoot: true };
+                markNestedUls(sibling);
+            }
+            break;
+        }
+    }
+};
+
 const Writing: React.FC = () => {
     const params = useParams();
     const [data, setData] = useState<WritingContentObject | WritingObject>();
     const [toc, setToc] = useState<React.ReactNode>(null);
     const [showFloatingToc, setShowFloatingToc] = useState(false);
     const tocInlineRef = useRef<HTMLDivElement | null>(null);
+    const tocChildrenRef = useRef<React.ReactNode>(null);
 
     useEffect(() => {
         if (!data || !('content' in data)) return;
@@ -122,6 +172,12 @@ const Writing: React.FC = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [toc]);
 
+    useEffect(() => {
+        if (tocChildrenRef.current && !toc) {
+            setToc(tocChildrenRef.current);
+        }
+    }, [data, toc]);
+
     const fetchWriting = useCallback(async () => {
         try {
             const res = await fetch(`/api/writings/${params.slug}`);
@@ -180,15 +236,15 @@ const Writing: React.FC = () => {
         return () => document.removeEventListener("click", handleAnchorClick);
     }, []);
 
-    let nextUlIsToc = false;
-    let nestedToc = false;
     let isHeader = false;
+
+    tocChildrenRef.current = null;
 
     return (
         <div className="w-full max-w-desktop mx-auto overflow-x-hidden">
             {toc && (
                 <div
-                    className={`fixed right-0 flex items-center h-full z-50 transition-transform duration-300 ease-in-out`}
+                    className={`fixed right-0 flex items-center h-full z-[110] transition-transform duration-300 ease-in-out`}
                     style={{
                         transform: showFloatingToc
                             ? "translateX(0)"
@@ -275,7 +331,7 @@ const Writing: React.FC = () => {
                         </div>
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm, remarkMath, [remarkToc, { heading: 'Table of Contents' }]]}
-                            rehypePlugins={[[rehypeKatex, { output: "mathml" }]]}
+                            rehypePlugins={[[rehypeKatex, { output: "mathml" }], rehypeTagToc]}
                             components={{
                                 h1(props) {
                                     const { ...rest } = props;
@@ -298,10 +354,7 @@ const Writing: React.FC = () => {
                                         .replace(/[^\w-]+/g, '');
 
                                     if (id === "table-of-contents") {
-                                        nextUlIsToc = true;
                                         return null;
-                                    } else if (nextUlIsToc) {
-                                        nextUlIsToc = false;
                                     }
 
                                     isHeader = true;
@@ -424,15 +477,15 @@ const Writing: React.FC = () => {
                                     return <strong {...rest} className="font-bold">{rest.children}</strong>
                                 },
                                 ul(props) {
-                                    const { ...rest } = props
+                                    const { node, ...rest } = props
+                                    const tocFlags = node?.properties ?? {};
 
                                     if (rest.className?.includes("contains-task-list")) {
                                         return <ul {...rest} className="">{props.children}</ul>
                                     }
 
-                                    if (nextUlIsToc && !nestedToc) {
-                                        nestedToc = true;
-                                        if (!toc) setToc(props.children);
+                                    if (tocFlags.dataTocRoot) {
+                                        tocChildrenRef.current = props.children;
                                         return (
                                             <div ref={tocInlineRef}>
                                                 <Card className="w-full py-4 mb-4 border-primary-600 bg-primary-200/50 rounded-md" id="table-of-contents">
@@ -445,7 +498,9 @@ const Writing: React.FC = () => {
                                                 </Card>
                                             </div>
                                         );
-                                    } else if (nextUlIsToc && nestedToc) {
+                                    }
+
+                                    if (tocFlags.dataTocNested) {
                                         return (
                                             <ul {...rest} className="pl-6 list-none">{props.children}</ul>
                                         );

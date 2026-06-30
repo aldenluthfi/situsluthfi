@@ -7,6 +7,9 @@ services:
     restart: unless-stopped
     env_file:
       - ./backend/.env
+    environment:
+      MYSQL_HOST: mysql
+      ELASTICSEARCH_URL: http://elasticsearch:9200
     networks:
       - app-network
     depends_on:
@@ -37,8 +40,11 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - app-network
 
@@ -51,6 +57,8 @@ services:
       - xpack.security.enabled=false
       - xpack.security.transport.ssl.enabled=false
       - xpack.security.http.ssl.enabled=false
+    ports:
+      - "9200:9200"
     networks:
       - app-network
     volumes:
