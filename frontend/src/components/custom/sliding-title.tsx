@@ -3,9 +3,10 @@ import { useEffect, useRef } from 'react';
 interface SlidingTitleProps {
     text: string;
     className?: string;
+    direction?: 1 | -1;
 }
 
-const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => {
+const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "", direction = 1 }) => {
     const textRef = useRef<HTMLHeadingElement>(null);
     const requestRef = useRef<number>(0);
 
@@ -36,7 +37,7 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
                 slideSpeed.current = slideSpeed.current * 0.95;
             }
 
-            textX.current = (getTranslateX(text) - slideSpeed.current - 3);
+            textX.current = (getTranslateX(text) - slideSpeed.current - 3 * direction);
 
             if (textX.current < -text.getBoundingClientRect().width * 0.25) {
                 textX.current += text.getBoundingClientRect().width * 0.5;
@@ -78,7 +79,7 @@ const SlidingTitle: React.FC<SlidingTitleProps> = ({ text, className = "" }) => 
                 textRef.current.removeEventListener('mouseover', handleMouseOver);
             }
         };
-    }, []);
+    }, [direction]);
 
     const marqueeText = `${text} · ${text} · ${text} · ${text} · ${text} · ${text} · ${text} · ${text} · `;
 
