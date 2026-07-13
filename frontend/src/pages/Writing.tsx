@@ -341,6 +341,10 @@ const Writing: React.FC = () => {
                                     const id = node ? slugify(hastText(node as unknown as HastNode)) : "";
                                     return <h3 {...rest} id={id} className="text-lg font-heading my-4 [&_code]:text-[length:1em]">{children}</h3>;
                                 },
+                                h4({ node, children, ...rest }) {
+                                    const id = node ? slugify(hastText(node as unknown as HastNode)) : "";
+                                    return <h4 {...rest} id={id} className="text-base font-heading my-4 [&_code]:text-[length:1em]">{children}</h4>;
+                                },
                                 p(props) {
                                     const { ...rest } = props
                                     return <p {...rest} className="mb-2.5" />
