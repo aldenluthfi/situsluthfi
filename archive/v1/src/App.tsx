@@ -1,5 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { ROUTER_BASE } from '@/lib/utils'
 import { IconHome, IconBook, IconScale, IconRefresh, IconSearch } from '@tabler/icons-react'
 
 import Cursor from './components/custom/cursor'
@@ -48,13 +49,13 @@ export default function App() {
         e.preventDefault();
         switch (e.key.toLowerCase()) {
           case 'i':
-            window.location.href = '/writings';
+            window.location.href = `${ROUTER_BASE}/writings`;
             break;
           case 'l':
-            window.location.href = '/license';
+            window.location.href = `${ROUTER_BASE}/license`;
             break;
           case 'h':
-            window.location.href = '/';
+            window.location.href = `${ROUTER_BASE}/`;
             break;
         }
       }
@@ -77,7 +78,7 @@ export default function App() {
             }
           }}
         />
-        <Router>
+        <Router basename={ROUTER_BASE || '/'}>
           <ContextMenu>
             <ContextMenuTrigger asChild>
               <div className="min-h-screen">
@@ -107,7 +108,7 @@ export default function App() {
                 </ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator className='my-0.25' />
-              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/'} data-slot="button">
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = `${ROUTER_BASE}/`} data-slot="button">
                 <div className="flex items-center gap-4 mr-8">
                   <IconHome className="size-6" stroke={1.5} />
                   Home
@@ -116,7 +117,7 @@ export default function App() {
                   <div className="!text-sm">⌘</div> H
                 </ContextMenuShortcut>
               </ContextMenuItem>
-              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/writings'} data-slot="button">
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = `${ROUTER_BASE}/writings`} data-slot="button">
                 <div className="flex items-center gap-4 mr-8">
                   <IconBook className="size-6" stroke={1.5} />
                   Writings
@@ -126,7 +127,7 @@ export default function App() {
                 </ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator className='my-0.25' />
-              <ContextMenuItem className='text-base group' onClick={() => window.location.href = '/license'} data-slot="button">
+              <ContextMenuItem className='text-base group' onClick={() => window.location.href = `${ROUTER_BASE}/license`} data-slot="button">
                 <div className="flex items-center gap-4 mr-8">
                   <IconScale className="size-6" stroke={1.5} />
                   License

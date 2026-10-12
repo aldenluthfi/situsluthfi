@@ -6,7 +6,7 @@ import {
     DialogDescription
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { isMobile } from "@/lib/utils";
+import { isMobile, ROUTER_BASE } from "@/lib/utils";
 import { api, isAbortError } from "@/lib/api";
 import type { SearchResult } from "@/lib/types";
 import {
@@ -40,7 +40,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     const searchAbortController = useRef<AbortController | null>(null);
 
     const navigationItems = [
-        { name: 'Writings', href: '/writings', icon: IconBook, shortcut: 'I' }
+        { name: 'Writings', href: `${ROUTER_BASE}/writings`, icon: IconBook, shortcut: 'I' }
     ];
 
     const filteredNavigationItems = search
@@ -164,7 +164,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             if (selectedItem) {
                 onOpenChange(false);
                 if (selectedItem._type === 'writing') {
-                    window.location.href = `/writings/${selectedItem.slug}`;
+                    window.location.href = `${ROUTER_BASE}/writings/${selectedItem.slug}`;
                 } else if (selectedItem._type === 'repository') {
                     window.open(selectedItem.html_url, '_blank');
                 }
@@ -192,7 +192,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                 if (selectedItem) {
                     onOpenChange(false);
                     if (selectedItem._type === 'writing') {
-                        window.location.href = `/writings/${selectedItem.slug}`;
+                        window.location.href = `${ROUTER_BASE}/writings/${selectedItem.slug}`;
                     } else if (selectedItem._type === 'repository') {
                         window.open(selectedItem.html_url, '_blank');
                     }
@@ -311,7 +311,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                                             onClick={() => {
                                                 onOpenChange(false);
                                                 if (isWriting) {
-                                                    window.location.href = `/writings/${item.slug}`;
+                                                    window.location.href = `${ROUTER_BASE}/writings/${item.slug}`;
                                                 } else if (isRepository) {
                                                     window.open(item.html_url, '_blank');
                                                 }

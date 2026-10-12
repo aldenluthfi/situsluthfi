@@ -27,3 +27,5 @@ export function slugify(text: string) {
     .replace(/\s+/g, "-")
     .replace(/[^\w-]+/g, "");
 }
+// Archived as vI: the build may be served under a sub-path (vite --base=/archive/vI/).
+export const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
