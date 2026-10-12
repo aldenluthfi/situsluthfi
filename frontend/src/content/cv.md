@@ -8,31 +8,42 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ## Personal Information
 
- |              |   |                                                                                      |
- |--------------|---|--------------------------------------------------------------------------------------|
- | **Domicile** | : | Salemba, Central Jakarta                                                             |
- | **LinkedIn** | : | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
- | **GitHub**   | : | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
+|              |     |                                                                                      |
+| ------------ | --- | ------------------------------------------------------------------------------------ |
+| **Domicile** | :   | Salemba, Central Jakarta                                                             |
+| **LinkedIn** | :   | [https://www.linkedin.com/in/aldenluthfi/](https://www.linkedin.com/in/aldenluthfi/) |
+| **GitHub**   | :   | [https://github.com/aldenluthfi](https://github.com/aldenluthfi)                     |
 
 ## Skills
 
- |                  |   |                                                                                                                                                                                                                                                     |
- |------------------|---|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- | **Languages**    | : | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                                        |
- | **Technologies** | : | Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite |
+|                  |     |                                                                                                                                                                                                                                                     |
+| ---------------- | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Languages**    | :   | Indonesian (Native), English (Full Professional Proficiency)                                                                                                                                                                                        |
+| **Technologies** | :   | Adobe After Effects, Adobe Illustrator, Adobe Photoshop, Adobe Premiere Pro, C, C++, Docker, Elasticsearch, Figma, Flutter, GraphDB, Java, Javascript, Matlab, MySQL, Neovim, PostgreSQL, Python, React, Rust, Typescript, Visual Studio Code, Vite |
 
 ## Education
 
 #### **Universitas Indonesia (UI)** Indonesia
+
 ##### **3.93 GPA. Bachelor of Computer Science** 2022 - Current
 
 #### **SMA Negeri 8 Jakarta** Indonesia
+
 ##### **Science and Mathematics Major** 2019 - 2022
 
 ## Work Experience [full | software | tutor]
 
+#### **Apple Developer Academy @ UC Jakarta** [full | software | design]
+
+##### **Cohort 1 Learner** Feb 2026 - Current [full | software | design]
+
+- Explored Apple frameworks and ecosystem using **CHallenge Based Learning**. [full | software | design]
+- Worked on several projects, mainly using **XCode Apple Development Kit** to deliver App Store-ready apps. [full | software | design]
+- Honed in on all aspects of **creative design**, from user interfaces, user experiences, human computer interaction and iOS app architectures. [full | software | design]
+
 #### **Tiket.com** [full | software ]
-##### **Software Developer Engineer in Test (SDET) Intern** Jul 2025 - Current [full | software]
+
+##### **Software Developer Engineer in Test (SDET) Intern** Jul 2025 - Jan 2026 [full | software]
 
 - Develops and maintains **automated testing frameworks** for iOS and Android applications using **Appium** and **Java**. [full | software]
 - Utilizes **LambdaTest** cloud platform for cross-device testing and browser compatibility testing. [full | software]
@@ -40,6 +51,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Performs **API testing**, **regression testing**, and **performance testing** to maintain product reliability across mobile platforms. [full | software]
 
 #### **Faculty of Computer Science UI** [full | software | tutor]
+
 ##### **Coordinator Teaching Assistant of Intro to Computer Organization** Jan 2025 - Current [full | tutor]
 
 - **Supervises** and manages **15 teaching assistants** of the course. [full | tutor]
@@ -71,6 +83,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Volunteering Experience [full | design | humanitarian | tutor]
 
 #### **SAVANA by Bakti BCA** Universitas Indonesia [full | humanitarian]
+
 ##### **Volunteer** June 2025 [full | humanitarian]
 
 - **One month** of community service **in Wonokitri, Pasuruan, East Java**. [full | humanitarian]
@@ -79,6 +92,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Implemented natural disaster early warning systems for the village. [full | humanitarian]
 
 #### **Gerakan UI Mengajar** Universitas Indonesia [full | design | humanitarian | tutor]
+
 ##### **Staff of Social Community Department** Jan 2024 - Mar 2024 [full | humanitarian | tutor]
 
 - **One month** of community service **in Pesawaran, Lampung**. [full | humanitarian | tutor]
@@ -95,6 +109,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Organizational Experience [full | humanitarian | design | cybersecurity]
 
 #### **Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design | humanitarian]
+
 ##### **Deputy Coordinator of Socio-Politics** June 2025 - Current [full | humanitarian]
 
 - **Coordinates** and oversees **socio-political initiatives** within the faculty. [full | humanitarian]
@@ -114,6 +129,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Is part of the **public relations** branch of the organization. [full | design]
 
 #### **RISTEK Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | cybersecurity]
+
 ##### **Network, Security, and Operating Systems Lead** Mar 2024 - Feb 2025 [full | cybersecurity]
 
 - **Finalist in Gemastik 2024**, the biggest IT competition in Indonesia. [full | cybersecurity]
@@ -126,6 +142,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Developed a passion for **cybersecurity**, especially in **cryptography** [full | cybersecurity]
 
 #### **COMPFEST Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design]
+
 ##### **PIC of Human Resources of Creative** Jan 2024 - Mar 2025 [full]
 
 - **Responsible** for a team of **30 PICs and staff members**. [full]
@@ -136,12 +153,14 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Used **Adobe After Effects** to edit the organization's company profile [full | design]
 
 #### **Open House Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full]
+
 ##### **PIC of Human Resources** Aug 2023 - Sept 2023 [full]
 
 - **Managed** a team of **12 staff members**. [full]
 - Introduced a number of **new additions** to the organization's work environment. [full]
 
 #### **Badan Eksekutif Mahasiswa UI** Universitas Indonesia [full | humanitarian]
+
 ##### **Social and Community Department Staff** Mar 2023 - Dec 2023 [full | humanitarian]
 
 - Held a **workshop and talkshow** to raise awareness for the **use of sign language** [full | humanitarian]
@@ -151,28 +170,32 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Projects [full | software | design]
 
 #### **aldenluth.fi** 2025 [full | software | design]
-##### **Personal Portfolio Website with a Lot of Features** *[Repo](https://github.com/aldenluthfi/situsluthfi) | [Website](https://aldenluth.fi/)* [full | software | design]
+
+##### **Personal Portfolio Website with a Lot of Features** _[Repo](https://github.com/aldenluthfi/situsluthfi) | [Website](https://aldenluth.fi/)_ [full | software | design]
 
 - Fully working **Search Engine** that can search through all projects and blogs, powered by **Elasticsearch** [full | software | design]
 - Featuring **minimalistic UI** and a UX design that is **responsive**, **customizable** and **accessible**. [full | software | design]
 - Backend is built using **Express.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
 
 #### **TemuSearch** 2025 [full | software]
-##### **LLM-Based Movie Search Engine, Powered by Elasticsearh** *[Frontend Repo](https://github.com/aldenluthfi/fe-temu-search-engine) | [Backend Repo](https://github.com/nabilmuafa/be-temu-search-engine)* [full | software]
+
+##### **LLM-Based Movie Search Engine, Powered by Elasticsearh** _[Frontend Repo](https://github.com/aldenluthfi/fe-temu-search-engine) | [Backend Repo](https://github.com/nabilmuafa/be-temu-search-engine)_ [full | software]
 
 - Powered by **Elasticsearch** as the **search engine**. [full | software]
 - Uses **Qwen-7B** as the **LLM** to generate a summary of the top results. [full | software]
 - Frontend is built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software]
 
 #### **Malpolys** 2025 [full | software | design]
-##### **Tower Defense Game built in Godot, Featuring the Dijkstra Algorithm!** *[Repo](https://github.com/aldenluthfi/malpolys) | [itch.io Page](https://kejuwafel.itch.io/malpolys)* [full | software | design]
+
+##### **Tower Defense Game built in Godot, Featuring the Dijkstra Algorithm!** _[Repo](https://github.com/aldenluthfi/malpolys) | [itch.io Page](https://kejuwafel.itch.io/malpolys)_ [full | software | design]
 
 - Featuring **Procedural Level Generation** utilizing **Dijkstra's Algorithm**. [full | software | design]
 - **Designed** and **developed** the game from scratch, including the **game mechanics**, **level design** and **pixel art**. [full | software | design]
 - Written in **GDScript** using the **Godot Engine**. [full | software | design]
 
 #### **Fineksi Dashboard** 2025 [full | software | design]
-##### **A Dashboard for Fineksi, a Financial Management Company** *[Demo Video](https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh)* [full | software | design]
+
+##### **A Dashboard for Fineksi, a Financial Management Company** _[Demo Video](https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh)_ [full | software | design]
 
 - Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
 - Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
@@ -181,21 +204,28 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 ## Awards [full | cybersecurity]
 
 #### **1st Runner Up** PwC Indonesia [full | cybersecurity]
+
 ##### **PwC Hackaday** November 2024 [full | cybersecurity]
 
 #### **Finalist of the Division II (Cyber Security)** Pusat Prestasi Nasional [full | cybersecurity]
+
 ##### **Gemastik 2024** September 2024 [full | cybersecurity]
 
 #### **3rd Place** Universitas Gunadarma [full | cybersecurity]
+
 ##### **Technofair CTF 11** September 2024 [full | cybersecurity]
 
 ## Certifications [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
+
 ##### **Level 3** December 2025 [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
+
 ##### **Level 2** May 2025 [full | humanitarian]
 
 #### **Indonesian Sign Language Certification** Pusat Bahasa Isyarat Indonesia [full | humanitarian]
+
 ##### **Level 1** December 2024 [full | humanitarian]
+
