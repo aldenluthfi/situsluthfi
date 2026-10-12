@@ -1,20 +1,33 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import FilterBar from "@/components/filter-bar"
-import { useApi } from "@/hooks/use-api"
 import { useTitle } from "@/hooks/use-title"
-import { api } from "@/lib/api"
-import { formatDate, hueVars } from "@/lib/utils"
+import { api, isAbortError } from "@/lib/api"
+import type { WritingObject } from "@/lib/types"
+import { formatDate } from "@/lib/utils"
 
-export default function Blog() {
-  useTitle("blog")
-  const state = useApi((signal) => api.getWritings(signal))
+export default function Writings() {
+  useTitle("writings")
+  const [results, setResults] = useState<WritingObject[] | null>(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const load = () => api.getWritings(controller.signal).then((page) => setResults(page.results))
+    // Show what the database has now, then have the backend re-pull from Notion
+    // (adding new writings, dropping ones tagged Unpublished) and refresh the list.
+    load().catch((error) => {
+      if (!isAbortError(error)) setFailed(true)
+    })
+    api.syncWritings(controller.signal).then(load).catch(() => {})
+    return () => controller.abort()
+  }, [])
   const [params, setParams] = useSearchParams()
   const tag = params.get("tag")
 
   const writings = useMemo(
-    () => [...(state.data?.results ?? [])].sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
-    [state.data],
+    () => [...(results ?? [])].sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    [results],
   )
   const tags = useMemo(() => {
     const counts = new Map<string, number>()
@@ -31,11 +44,11 @@ export default function Blog() {
         onChange={(t) => setParams(t ? { tag: t.toLowerCase() } : {}, { replace: true })}
       />
 
-      {state.status === "error" ? (
+      {failed && !results ? (
         <p className="text-sm text-muted-foreground">couldn't load writings.</p>
       ) : (
         <ul className="divide-y">
-          {state.status === "loading"
+          {!results
             ? Array.from({ length: 6 }, (_, i) => (
                 <li key={i} className="py-4">
                   <div className="h-5 w-3/4 animate-pulse bg-muted" />
@@ -43,12 +56,12 @@ export default function Blog() {
               ))
             : shown.map((w) => (
                 <li key={w.id}>
-                  <Link to={`/blog/${w.slug}`} className="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-4">
+                  <Link to={`/writings/${w.slug}`} className="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-4">
                     <span className="shrink-0 text-sm text-muted-foreground tabular-nums">{formatDate(w.createdAt)}</span>
                     <span className="font-medium transition-colors group-hover:text-primary-700">{w.title}</span>
                     <span className="flex gap-2 text-xs sm:ml-auto sm:shrink-0">
                       {w.tags.map((t) => (
-                        <span key={t} className="hue" style={hueVars(t)}>
+                        <span key={t} className="text-muted-foreground">
                           {t.toLowerCase()}
                         </span>
                       ))}

@@ -20,7 +20,7 @@ export default function Section({
 }) {
   return (
     <section className="space-y-6">
-      <div className="flex items-baseline justify-between gap-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <h2 className="text-sm font-normal text-muted-foreground">
           <span className="text-primary-700">$</span> {command}
         </h2>

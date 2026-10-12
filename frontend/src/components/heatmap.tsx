@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react"
 import { api } from "@/lib/api"
-import type { ContributionLevel } from "@/lib/types"
+import type { ContributionDay, ContributionLevel } from "@/lib/types"
 import { useApi } from "@/hooks/use-api"
 import { cn } from "@/lib/utils"
 
@@ -11,6 +11,10 @@ const LEVEL: Record<ContributionLevel, string> = {
   THIRD_QUARTILE: "bg-primary-700/75",
   FOURTH_QUARTILE: "bg-primary-700",
 }
+
+// Single-contribution days are mostly noise (a typo fix, a bump); show them as empty.
+const MIN_COUNT = 2
+const counts = (day: ContributionDay) => day.contributionCount >= MIN_COUNT
 
 const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 
@@ -29,6 +33,10 @@ export default function Heatmap() {
   }
 
   const weeks = state.data?.weeks ?? []
+  const total = weeks.reduce(
+    (sum, week) => sum + week.contributionDays.filter(counts).reduce((s, day) => s + day.contributionCount, 0),
+    0,
+  )
   const months = weeks.map((week, i) => {
     const month = Number(week.contributionDays[0]?.date.slice(5, 7)) - 1
     const prev = i > 0 ? Number(weeks[i - 1].contributionDays[0]?.date.slice(5, 7)) - 1 : -1
@@ -58,8 +66,8 @@ export default function Heatmap() {
                 week.contributionDays.map((day) => (
                   <span
                     key={day.date}
-                    title={`${day.contributionCount} contribution${day.contributionCount === 1 ? "" : "s"} on ${day.date}`}
-                    className={cn("rounded-[2px]", LEVEL[day.contributionLevel])}
+                    title={counts(day) ? `${day.contributionCount} contributions on ${day.date}` : `no contributions on ${day.date}`}
+                    className={cn("rounded-[2px]", LEVEL[counts(day) ? day.contributionLevel : "NONE"])}
                     style={{ gridColumn: w + 1, gridRow: new Date(day.date).getUTCDay() + 2 }}
                   />
                 )),
@@ -69,7 +77,7 @@ export default function Heatmap() {
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
         <span>
           {state.status === "ready"
-            ? `${state.data.totalContributions.toLocaleString("en-US")} contributions in the last year`
+            ? `${total.toLocaleString("en-US")} contributions in the last year`
             : "counting contributions…"}
         </span>
         <span className="flex items-center gap-1">

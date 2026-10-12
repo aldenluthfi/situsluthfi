@@ -6,8 +6,8 @@ import ThemeProvider from "@/components/theme-provider"
 import Home from "@/pages/Home"
 
 const Projects = lazy(() => import("@/pages/Projects"))
-const Blog = lazy(() => import("@/pages/Blog"))
-const Post = lazy(() => import("@/pages/Post"))
+const Writings = lazy(() => import("@/pages/Writings"))
+const Writing = lazy(() => import("@/pages/Writing"))
 const Archive = lazy(() => import("@/pages/Archive"))
 const NotFound = lazy(() => import("@/pages/NotFound"))
 
@@ -31,10 +31,10 @@ function Layout() {
   )
 }
 
-/** vI URLs that search engines and old links still point at. */
-function LegacyWriting() {
+/** Early vII links used /blog. */
+function LegacyBlogPost() {
   const { slug } = useParams()
-  return <Navigate to={`/blog/${slug}`} replace />
+  return <Navigate to={`/writings/${slug}`} replace />
 }
 
 /** Pages that only exist in vI: hand off to the archived build. */
@@ -53,11 +53,11 @@ export default function App() {
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="projects" element={<Projects />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="blog/:slug" element={<Post />} />
+            <Route path="writings" element={<Writings />} />
+            <Route path="writings/:slug" element={<Writing />} />
             <Route path="archive" element={<Archive />} />
-            <Route path="writings" element={<Navigate to="/blog" replace />} />
-            <Route path="writings/:slug" element={<LegacyWriting />} />
+            <Route path="blog" element={<Navigate to="/writings" replace />} />
+            <Route path="blog/:slug" element={<LegacyBlogPost />} />
             <Route path="license" element={<ToArchive path="/license" />} />
             <Route path="*" element={<NotFound />} />
           </Route>

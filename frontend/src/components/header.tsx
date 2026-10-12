@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils"
 
 const NAV = [
   { to: "/projects", label: "projects" },
-  { to: "/blog", label: "blog" },
+  { to: "/writings", label: "writings" },
   { to: "/archive", label: "archive" },
 ]
 
@@ -12,7 +12,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
       <nav className="mx-auto flex h-12 w-full max-w-[53rem] items-center justify-between px-4 sm:px-6">
         <Link to="/" className="font-semibold text-primary-700">
-          alden
+          aldenluthfi
         </Link>
         <div className="flex items-center gap-4 text-sm">
           {NAV.map(({ to, label }) => (

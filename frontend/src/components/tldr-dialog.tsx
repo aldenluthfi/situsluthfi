@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { profile, tldr } from "@/content/profile"
 import type { RepositoryObject } from "@/lib/types"
-import { primaryLanguage } from "@/lib/utils"
+import { IconBrandGithub } from "@tabler/icons-react"
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -22,15 +22,19 @@ export default function TldrDialog({
   repos: RepositoryObject[] | undefined
 }) {
   const ref = useRef<HTMLDialogElement>(null)
+  const close = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const dialog = ref.current
     if (!dialog) return
-    if (open && !dialog.open) dialog.showModal()
+    if (open && !dialog.open) {
+      dialog.showModal()
+      // showModal() focuses the first link; start on close instead.
+      close.current?.focus()
+    }
     if (!open && dialog.open) dialog.close()
   }, [open])
 
-  const latest = repos && [...repos].sort((a, b) => b.updated_at.localeCompare(a.updated_at))[0]
   const notable = repos && [...repos].sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 2)
 
   return (
@@ -46,23 +50,10 @@ export default function TldrDialog({
         </p>
         <p className="text-lg font-semibold">{profile.name}</p>
         <p className="text-sm text-muted-foreground">
-          {profile.study} · {profile.current.label} @ {profile.current.at}
+          {profile.tagline}
         </p>
       </div>
       <div className="space-y-4 p-5 text-sm">
-        {latest && (
-          <Row label="latest push">
-            <p className="line-clamp-2">
-              <span className="text-primary-700">▸</span>{" "}
-              <a href={latest.html_url} target="_blank" rel="noreferrer" className="hover:text-primary-700">
-                {latest.name}
-              </a>{" "}
-              <span className="text-muted-foreground">
-                ({primaryLanguage(latest.languages)?.toLowerCase()}) {latest.description && `— ${latest.description}`}
-              </span>
-            </p>
-          </Row>
-        )}
         {notable && notable.length > 0 && (
           <Row label="notable">
             {notable.map((repo) => (
@@ -71,9 +62,10 @@ export default function TldrDialog({
                 href={repo.html_url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-baseline justify-between gap-4 hover:text-primary-700"
+                className="flex items-center gap-2 hover:text-primary-700"
               >
-                <span className="truncate">
+                <IconBrandGithub className="size-4 shrink-0 text-muted-foreground" stroke={1.5} />
+                <span className="min-w-0 flex-1 truncate">
                   {repo.name} <span className="text-muted-foreground">{repo.description}</span>
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">★ {repo.stargazers_count}</span>
@@ -98,7 +90,7 @@ export default function TldrDialog({
         </a>
         <button
           type="button"
-          autoFocus
+          ref={close}
           onClick={onClose}
           className="ml-auto border px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
         >

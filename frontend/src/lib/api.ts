@@ -52,6 +52,9 @@ export const api = {
       signal,
     }),
 
+  syncWritings: (signal?: AbortSignal) =>
+    request<unknown>("/writings/sync/", { signal }),
+
   getWriting: (slug: string, signal?: AbortSignal) =>
     request<WritingDetail>(`/writings/${slug}`, { signal }),
 

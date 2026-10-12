@@ -968,21 +968,11 @@
 @layer base {
     * {
         @apply border-border outline-ring/50 no-scrollbar;
+        caret-color: transparent;
     }
 
     body {
         @apply bg-background text-foreground;
-    }
-}
-
-/* Per-item hue (tags, languages): set --hue-light / --hue-dark inline, the class picks by mode. */
-@utility hue {
-    color: var(--hue-light);
-    border-color: color-mix(in oklch, var(--hue-light) 35%, transparent);
-
-    &:where(.dark *) {
-        color: var(--hue-dark);
-        border-color: color-mix(in oklch, var(--hue-dark) 30%, transparent);
     }
 }
 

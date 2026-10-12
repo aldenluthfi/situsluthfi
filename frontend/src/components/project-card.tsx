@@ -1,6 +1,6 @@
 import type { RepositoryObject } from "@/lib/types"
 import { useTheme } from "@/lib/theme"
-import { cn, hueVars } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 
 export function ProjectCardSkeleton() {
   return (
@@ -45,7 +45,7 @@ export default function ProjectCard({ repo }: { repo: RepositoryObject }) {
         {languages.map((lang, i) => (
           <span key={lang} className="flex items-center gap-2">
             {i > 0 && <span className="text-border">·</span>}
-            <span className="hue" style={hueVars(lang)}>
+            <span className="text-muted-foreground">
               {lang.toLowerCase()}
             </span>
           </span>

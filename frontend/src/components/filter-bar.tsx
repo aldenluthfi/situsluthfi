@@ -6,12 +6,14 @@ export default function FilterBar({
   options,
   value,
   onChange,
+  allLast = false,
 }: {
   options: string[]
   value: string | null
   onChange: (value: string | null) => void
+  allLast?: boolean
 }) {
-  const items: (string | null)[] = [null, ...options]
+  const items: (string | null)[] = allLast ? [...options, null] : [null, ...options]
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
       {items.map((item, i) => (
