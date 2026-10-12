@@ -169,3 +169,49 @@ export const fetchAllRepositories = async (): Promise<GitHubRepository[]> => {
 
     return allRepos;
 };
+
+export type ContributionLevel = "NONE" | "FIRST_QUARTILE" | "SECOND_QUARTILE" | "THIRD_QUARTILE" | "FOURTH_QUARTILE";
+
+export type ContributionCalendar = {
+    totalContributions: number;
+    weeks: { contributionDays: { date: string; contributionCount: number; contributionLevel: ContributionLevel }[] }[];
+};
+
+export const fetchContributionCalendar = async (): Promise<ContributionCalendar> => {
+    const query = `
+        query {
+            viewer {
+                contributionsCollection {
+                    contributionCalendar {
+                        totalContributions
+                        weeks {
+                            contributionDays { date contributionCount contributionLevel }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    const response = await fetch(`${GITHUB_API_BASE}/graphql`, {
+        method: "POST",
+        headers: { ...githubHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ query })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`GitHub API error: ${response.status} - ${JSON.stringify(errorData)}`);
+    }
+
+    const body = await response.json() as {
+        data?: { viewer: { contributionsCollection: { contributionCalendar: ContributionCalendar } } };
+        errors?: unknown[];
+    };
+
+    if (!body.data) {
+        throw new Error(`GitHub GraphQL error: ${JSON.stringify(body.errors)}`);
+    }
+
+    return body.data.viewer.contributionsCollection.contributionCalendar;
+};

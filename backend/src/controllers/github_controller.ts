@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchUserRepositoriesService, fetchRepositoryByNameService, syncRepositoriesService } from "../services/github_service";
+import { fetchUserRepositoriesService, fetchRepositoryByNameService, syncRepositoriesService, fetchContributionsService } from "../services/github_service";
 
 export const getUserRepositories = async (req: Request, res: Response) => {
     try {
@@ -38,5 +38,15 @@ export const syncRepositories = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("Error syncing repositories:", error);
         res.status(500).json({ error: "Failed to sync repositories" });
+    }
+};
+
+export const getContributions = async (req: Request, res: Response) => {
+    try {
+        const calendar = await fetchContributionsService();
+        res.status(200).json(calendar);
+    } catch (error) {
+        console.error("Error fetching contributions:", error);
+        res.status(500).json({ error: "Failed to fetch contributions" });
     }
 };
