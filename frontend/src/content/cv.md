@@ -31,7 +31,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ##### **Science and Mathematics Major** 2019 - 2022
 
-## Work Experience [full | software | tutor]
+## Work Experience [full | software | tutor | design]
 
 #### **Apple Developer Academy @ UC Jakarta** [full | software | design]
 
