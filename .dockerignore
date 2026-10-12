@@ -8,3 +8,8 @@
 **/coverage
 **/.DS_Store
 **/.idea
+.env
+backend
+k8s
+.github
+.husky

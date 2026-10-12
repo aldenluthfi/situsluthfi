@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="description" content="Alden Luthfi's personal website. Read blogs, explore projects, and more." />
+    <meta name="author" content="Alden Luthfi" />
+    <meta name="robots" content="index, follow" />
+    <link rel="shortcut icon" href="/favicon.svg" />
+
+    <title>aldenluth.fi</title>
+
+    <script>
+      // Paint the right hue and mode before React loads. Mirrors src/lib/theme.ts.
+      (function () {
+        var hues = ["red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose"];
+        var t = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+        var h = t.getHours();
+        var i = Math.floor(((((h - 6) % 12 + 12) % 12) * 60 + t.getMinutes()) / 720 * hues.length);
+        var mode = null;
+        try { mode = localStorage.getItem("vii-mode"); } catch (e) {}
+        var dark = mode === "dark" || (mode !== "light" && (h >= 18 || h < 6));
+        var root = document.documentElement;
+        root.dataset.theme = hues[Math.min(i, hues.length - 1)];
+        root.classList.add(dark ? "dark" : "light");
+        root.style.colorScheme = dark ? "dark" : "light";
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
