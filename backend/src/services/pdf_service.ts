@@ -21,9 +21,12 @@ export const generateCVPDFService = async (
         throw new Error("LaTeX content is required");
     }
 
-    const hashInput = `${type || "full"}-${mode || "system"}-${theme || "yellow"}`;
+    // The content is part of the key: the same type/mode/theme from different
+    // frontends (or after a CV edit) must not be served a stale cached PDF.
+    const hashInput = `${type || "full"}-${mode || "system"}-${theme || "yellow"}-${latexContent}`;
     const contentHash = generateShortHash(hashInput);
-    const cleanFilename = filename || "cv";
+    // The name ends up in a file path and a shell command; keep it to [a-z0-9-].
+    const cleanFilename = (filename || "cv").toLowerCase().replace(/[^a-z0-9-]/g, "") || "cv";
     const urlSafeFilename = `${cleanFilename}-${contentHash}`;
 
     const { pdfFilePath } = await generatePDFFromLatex(latexContent, urlSafeFilename);
@@ -33,7 +36,7 @@ export const generateCVPDFService = async (
 };
 
 export const servePDFService = async (filename: string): Promise<{ pdfBuffer: Buffer; originalFilename: string }> => {
-    const baseFilename = filename.replace(/\.pdf$/, "");
+    const baseFilename = filename.replace(/\.pdf$/, "").replace(/[^a-zA-Z0-9-]/g, "");
     const originalFilename = baseFilename.replace(/-[a-f0-9]{6}$/, "") + ".pdf";
     const { pdfBuffer } = await getPDFFromFile(baseFilename);
     return { pdfBuffer, originalFilename };

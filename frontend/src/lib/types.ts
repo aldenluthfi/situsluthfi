@@ -9,6 +9,25 @@ export type WritingObject = {
 
 export type WritingDetail = WritingObject & { content: string }
 
+export type Fact = {
+  id: number
+  text: string
+  source: string
+}
+
+/** Elasticsearch highlight fragments; matches are wrapped in <mark>. */
+export type SearchHighlight = Partial<Record<"title" | "name" | "content" | "description" | "readme", string[]>>
+
+export type SearchResult = {
+  _type: "writing" | "repository"
+  id: string | number
+  slug?: string
+  html_url?: string
+  title?: string
+  name?: string
+  highlight?: SearchHighlight
+}
+
 export type RepositoryObject = {
   id: number
   name: string

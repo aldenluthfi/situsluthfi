@@ -1,0 +1,138 @@
+% Preamble for the PDF CV. The document body is generated from cv.md by
+% src/lib/cv-latex.ts, which also rewrites the three colors below to match the
+% page's current theme. Fonts resolve against the backend's assets/fonts.
+
+\documentclass[9pt]{extarticle}
+
+\usepackage[a4paper, total={18.5cm, 27cm}]{geometry}
+\usepackage[bf]{titlesec}
+\usepackage{fontspec}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pagecolor}
+\usepackage{xspace}
+
+\definecolor{background}{RGB}{24, 24, 27}
+\definecolor{foreground}{RGB}{250, 250, 250}
+\definecolor{highlight}{RGB}{235, 179, 5}
+
+\pagenumbering{gobble}
+
+\hypersetup{
+    colorlinks = true,
+    urlcolor = highlight,
+}
+
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\pagecolor{background}
+\color{foreground}
+\setmainfont[
+    Path=../fonts/,
+    BoldFont={CastledownPro-Heavy.ttf},
+]{CastledownPro-Regular.ttf}
+
+%================================CUSTOM COMMANDS==============================%
+
+\newcommand{\bagian}[1]{
+    \setmainfont[
+        Path=../fonts/,
+        BoldFont={GreycliffCF-Heavy.otf},
+        BoldItalicFont={GreycliffCF-HeavyOblique.otf},
+        RawFeature=+ss01,
+        RawFeature=+ss03,
+    ]{GreycliffCF-Heavy.otf}
+    \vspace{5pt}
+    \section*{\Large{#1}}
+    \vspace{-15pt}
+    \rule{\textwidth}{0.5pt}
+    \setmainfont[
+        Path=../fonts/,
+        ItalicFont={CastledownPro-Italic.ttf},
+        BoldFont={CastledownPro-Heavy.ttf},
+        BoldItalicFont={CastledownPro-HeavyItalic.ttf},
+    ]{CastledownPro-Regular.ttf}
+}
+
+\newcommand{\rincian}[2]{
+    \vspace{2pt}
+    #1 & #2 \\
+}
+
+\newcommand{\perinci}[1]{
+    \begin{tabularx}{\textwidth}[t]{@{}>{\bfseries}l!{:}X}
+    #1
+    \end{tabularx}
+    \vspace{-10pt}
+}
+
+\newcommand{\entri}[4]{
+    \par
+    \vspace{+5pt}
+    \noindent
+    \normalsize{\textbf{#1}} \hfill \textit{#2} \\
+    {\textbf{\small{#3}} \hfill \small{#4}}
+    \par
+}
+
+\newcommand{\entriTanpaJudul}[2] {
+    \vspace{+5pt}
+    \noindent
+    {\textbf{\small{#1}} \hfill \small{#2}}
+    \par
+}
+
+\newcommand{\daftar}[1]{
+    \begin{enumerate}[topsep=1pt,itemsep=-1.5pt]
+        \small{#1}
+    \end{enumerate}
+}
+
+\newcommand{\butir}[2]{
+    \item[#1]{#2}
+}
+
+\newcommand{\tekan}[1]{
+    \unskip\color{highlight}\textbf{#1}\color{foreground}\xspace
+}
+
+\newcommand{\kepala}[2]{
+    \begin{center}
+        \setmainfont[
+            Path=../fonts/,
+            BoldFont={GreycliffCF-Heavy.otf},
+            BoldItalicFont={GreycliffCF-HeavyOblique.otf},
+            RawFeature=+ss01,
+            RawFeature=+ss03,
+        ]{GreycliffCF-Heavy.otf}
+        \textbf{\Huge #1}
+        \vspace{+5pt}
+        \setmainfont[
+            Path=../fonts/,
+            ItalicFont={CastledownPro-Italic.ttf},
+            BoldFont={CastledownPro-Heavy.ttf},
+            BoldItalicFont={CastledownPro-HeavyItalic.ttf},
+        ]{CastledownPro-Regular.ttf}
+
+        #2
+        \vspace{-15pt}
+    \end{center}
+}
+
+\ExplSyntaxOn
+
+\cs_new_eq:NN \IfFontFeatureExists \fontspec_if_feature:nTF
+\cs_new:Npn \mico_fontfeature_if_active:nTF #1
+  { \tl_if_in:NnTF \l_fontspec_rawfeatures_sclist { #1 } }
+\cs_new_eq:NN \IfFontFeatureActive \mico_fontfeature_if_active:nTF
+
+\ExplSyntaxOff
+
+%===================================DOCUMENT==================================%
+
+\begin{document}
+%BODY%
+\end{document}

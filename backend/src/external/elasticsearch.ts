@@ -46,46 +46,6 @@ export const deleteWritingContentFromES = async (id: string) => {
     }, { ignore: [404] });
 };
 
-export const searchWritingContentsFromES = async (query: string, page: number = 1, pageSize: number = 10) => {
-    const from = (page - 1) * pageSize;
-    const result = await client.search({
-        index: WRITINGS_INDEX,
-        from,
-        size: pageSize,
-        query: {
-            multi_match: {
-                query,
-                fields: ["content", "title", "tags"],
-                fuzziness: "AUTO"
-            }
-        },
-        highlight: {
-            fields: {
-                content: {
-                    fragment_size: 50,
-                    number_of_fragments: 2,
-                    pre_tags: ["<mark>"],
-                    post_tags: ["</mark>"]
-                },
-                title: {
-                    pre_tags: ["<mark>"],
-                    post_tags: ["</mark>"]
-                }
-            }
-        }
-    });
-    return {
-        results: result.hits.hits.map(hit => ({
-            ...(hit._source ?? {}),
-            highlight: hit.highlight
-        })),
-        total: result.hits.total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(getTotalHits(result.hits.total) / pageSize)
-    };
-};
-
 export const indexRepositoryToES = async (repository: RepositoryIndexObject) => {
     await client.index({
         index: REPOSITORIES_INDEX,
@@ -101,57 +61,15 @@ export const deleteRepositoryFromES = async (id: string) => {
     }, { ignore: [404] });
 };
 
-export const searchRepositoriesFromES = async (query: string, page: number = 1, pageSize: number = 10) => {
-    const from = (page - 1) * pageSize;
-    const result = await client.search({
-        index: REPOSITORIES_INDEX,
-        from,
-        size: pageSize,
-        query: {
-            multi_match: {
-                query,
-                fields: ["name^2", "description", "topics", "readme"],
-                fuzziness: "AUTO"
-            }
-        },
-        highlight: {
-            fields: {
-                name: {
-                    pre_tags: ["<mark>"],
-                    post_tags: ["</mark>"]
-                },
-                description: {
-                    fragment_size: 100,
-                    number_of_fragments: 1,
-                    pre_tags: ["<mark>"],
-                    post_tags: ["</mark>"]
-                },
-                readme: {
-                    fragment_size: 100,
-                    number_of_fragments: 1,
-                    pre_tags: ["<mark>"],
-                    post_tags: ["</mark>"]
-                }
-            }
-        }
-    });
-    return {
-        results: result.hits.hits.map(hit => ({
-            ...(hit._source ?? {}),
-            highlight: hit.highlight
-        })),
-        total: result.hits.total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(getTotalHits(result.hits.total) / pageSize)
-    };
-};
+export type SearchKind = "repos" | "writings";
 
-export const searchUniversalFromES = async (query: string, page: number = 1, pageSize: number = 10) => {
+/** Searches the indices named in `kinds`; each hit is tagged with the index it came from. */
+export const searchFromES = async (query: string, kinds: SearchKind[], page: number = 1, pageSize: number = 10) => {
     const from = (page - 1) * pageSize;
+    const index = kinds.map((kind) => (kind === "writings" ? WRITINGS_INDEX : REPOSITORIES_INDEX));
 
     const result = await client.search({
-        index: [WRITINGS_INDEX, REPOSITORIES_INDEX],
+        index,
         from,
         size: pageSize,
         query: {
@@ -193,32 +111,19 @@ export const searchUniversalFromES = async (query: string, page: number = 1, pag
         }
     });
 
-    const combinedResults = result.hits.hits.map(hit => ({
+    const results = result.hits.hits.map(hit => ({
         ...(hit._source ?? {}),
         highlight: hit.highlight,
         _type: hit._index === WRITINGS_INDEX ? "writing" : "repository"
     }));
 
-    const totalCombined = getTotalHits(result.hits.total);
-
-    const writingsCount = combinedResults.filter(r => r._type === "writing").length;
-    const repositoriesCount = combinedResults.filter(r => r._type === "repository").length;
+    const total = getTotalHits(result.hits.total);
 
     return {
-        results: combinedResults,
-        total: totalCombined,
+        results,
+        total,
         page,
         pageSize,
-        totalPages: Math.ceil(totalCombined / pageSize),
-        breakdown: {
-            writings: {
-                count: writingsCount,
-                total: totalCombined
-            },
-            repositories: {
-                count: repositoriesCount,
-                total: totalCombined
-            }
-        }
+        totalPages: Math.ceil(total / pageSize)
     };
 };

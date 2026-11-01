@@ -2,7 +2,6 @@ import { RowDataPacket } from "mysql2";
 import pool from "../db/mysql";
 import { WritingContentObject, WritingObject } from "../lib/types";
 import { syncWritingContentToDB, syncWritingsToDB, indexWritingContentToESBySlug } from "../db/seed";
-import { searchWritingContentsFromES } from "../external/elasticsearch";
 
 export const getPaginatedWritingsFromDB = async (pageSize: number, page: number) => {
     const offset = (page - 1) * pageSize;
@@ -64,8 +63,3 @@ export const syncWritingByIdFromAPI = async (slug: string) => {
 export const syncWritingsFromAPI = async () => {
     await syncWritingsToDB();
 };
-
-export const searchWritingContentsFromAPI = async (query: string, page: number, pageSize: number) => {
-    return searchWritingContentsFromES(query, page, pageSize);
-};
-

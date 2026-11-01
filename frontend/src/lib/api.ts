@@ -1,6 +1,8 @@
 import type {
   ContributionCalendar,
+  Fact,
   RepositoryObject,
+  SearchResult,
   WritingDetail,
   WritingObject,
 } from "@/lib/types"
@@ -33,7 +35,9 @@ async function request<T>(
 ): Promise<T> {
   const res = await fetch(buildUrl(path, query), init)
   if (!res.ok) {
-    throw new ApiError(res.status, `Request to ${path} failed (${res.status})`)
+    // The backend answers errors with { error: "..." }; prefer that message.
+    const body = (await res.json().catch(() => null)) as { error?: string } | null
+    throw new ApiError(res.status, body?.error ?? `Request to ${path} failed (${res.status})`)
   }
   return res.json() as Promise<T>
 }
@@ -44,6 +48,9 @@ export function isAbortError(error: unknown): boolean {
 }
 
 type Paginated<T> = { results: T[]; totalPages: number }
+
+/** What `/search` may be narrowed to; an empty filter searches everything. */
+export type SearchKind = "repos" | "writings"
 
 export const api = {
   getWritings: (signal?: AbortSignal) =>
@@ -66,6 +73,25 @@ export const api = {
       signal,
     }),
 
+  syncRepositories: (signal?: AbortSignal) =>
+    request<unknown>("/github/repositories/sync", { signal }),
+
   getContributions: (signal?: AbortSignal) =>
     request<ContributionCalendar>("/github/contributions", { signal }),
+
+  search: (q: string, filter: SearchKind[], page: number, pageSize: number, signal?: AbortSignal) =>
+    request<Paginated<SearchResult>>("/search", {
+      query: { q, filter: filter.join(",") || undefined, page, pagesize: pageSize },
+      signal,
+    }),
+
+  getRandomFact: (signal?: AbortSignal) => request<Fact>("/facts", { signal }),
+
+  /** Compiles LaTeX on the backend; resolves to the URL the PDF is served at. */
+  generateCv: (body: { latexContent: string; filename: string; type: string; mode: string; theme: string }) =>
+    request<{ pdfUrl: string }>("/pdf/generate-cv", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }),
 }

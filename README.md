@@ -319,44 +319,6 @@ Base URL  --> http://host:3000/api
 └──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Search Writing Contents                                                                         │
-├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
-│ Endpoint         │ /writings/search                                                             │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Method           │ GET                                                                          │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Description      │ Search through writing contents using Elasticsearch                          │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Parameters       │ q        (string, required): Search query                                    │
-│                  │ page     (number, optional): Page number (default: 1)                        │
-│                  │ pagesize (number, optional): Items per page (default: 10)                    │
-╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
-│ Example          │ GET /api/writings/search?q=javascript&amp;page=1&amp;pagesize=5                      │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 200 OK           │ {                                                                            │
-│                  │   "results": [                                                               │
-│                  │     {                                                                        │
-│                  │       "id": "abc123",                                                        │
-│                  │       "title": "JavaScript Best Practices",                                  │
-│                  │       "content": "...",                                                      │
-│                  │       "highlight": {                                                         │
-│                  │         "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"],           │
-│                  │         "title": ["&lt;mark&gt;JavaScript&lt;/mark&gt; Best Practices"]                  │
-│                  │       }                                                                      │
-│                  │     }                                                                        │
-│                  │   ],                                                                         │
-│                  │   "total": { "value": 8, "relation": "eq" },                                 │
-│                  │   "page": 1,                                                                 │
-│                  │   "pageSize": 5,                                                             │
-│                  │   "totalPages": 2                                                            │
-│                  │ }                                                                            │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 400 Bad Request  │ {                                                                            │
-│                  │   "error": "Missing search query"                                            │
-│                  │ }                                                                            │
-└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Sync All Writings                                                                               │
 ├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
 │ Endpoint         │ /writings/sync                                                               │
@@ -507,13 +469,15 @@ Base URL  --> http://host:3000/api
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
 │ Method           │ GET                                                                          │
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Description      │ Search across all content types (writings and repositories)                  │
+│ Description      │ Search writings and/or repositories; every hit is tagged with its _type      │
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
 │ Parameters       │ q        (string, required): Search query                                    │
+│                  │ filter   (string, optional): Comma-separated kinds to search: repos,         │
+│                  │                              writings (default: both)                        │
 │                  │ page     (number, optional): Page number (default: 1)                        │
 │                  │ pagesize (number, optional): Items per page (default: 10)                    │
 ╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
-│ Example          │ GET /api/search?q=react&amp;page=1&amp;pagesize=10                                   │
+│ Example          │ GET /api/search?q=react&amp;filter=repos&amp;page=1&amp;pagesize=10                      │
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
 │ 200 OK           │ {                                                                            │
 │                  │   "results": [                                                               │
@@ -535,101 +499,19 @@ Base URL  --> http://host:3000/api
 │                  │   "total": { "value": 25, "relation": "eq" },                                │
 │                  │   "page": 1,                                                                 │
 │                  │   "pageSize": 10,                                                            │
-│                  │   "totalPages": 3,                                                           │
-│                  │   "breakdown": {                                                             │
-│                  │     "writings": {"count": 15, "total": 25},                                  │
-│                  │     "repositories": {"count": 10, "total": 25}                               │
-│                  │   }                                                                          │
+│                  │   "totalPages": 3                                                            │
 │                  │ }                                                                            │
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
 │ 400 Bad Request  │ {                                                                            │
 │                  │   "error": "Search query is required"                                        │
+│                  │ }                                                                            │
+├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
+│ 400 Bad Request  │ {                                                                            │
+│                  │   "error": "filter must be a comma-separated list of: repos, writings"       │
 │                  │ }                                                                            │
 ├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
 │ 500 Internal     │ {                                                                            │
 │ Server Error     │   "error": "Failed to perform search"                                        │
-│                  │ }                                                                            │
-└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Search Writings                                                                                 │
-├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
-│ Endpoint         │ /search/writings                                                             │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Method           │ GET                                                                          │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Description      │ Search specifically within writings                                          │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Parameters       │ q        (string, required): Search query                                    │
-│                  │ page     (number, optional): Page number (default: 1)                        │
-│                  │ pagesize (number, optional): Items per page (default: 10)                    │
-╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
-│ Example          │ GET /api/search/writings?q=javascript&amp;page=1&amp;pagesize=5                      │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 200 OK           │ {                                                                            │
-│                  │   "results": [                                                               │
-│                  │     {                                                                        │
-│                  │       "id": "abc123",                                                        │
-│                  │       "title": "JavaScript Best Practices",                                  │
-│                  │       "content": "...",                                                      │
-│                  │       "highlight": {                                                         │
-│                  │         "content": ["Learn &lt;mark&gt;JavaScript&lt;/mark&gt; fundamentals"]            │
-│                  │       }                                                                      │
-│                  │     }                                                                        │
-│                  │   ],                                                                         │
-│                  │   "total": { "value": 8, "relation": "eq" },                                 │
-│                  │   "page": 1,                                                                 │
-│                  │   "pageSize": 5,                                                             │
-│                  │   "totalPages": 2                                                            │
-│                  │ }                                                                            │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 400 Bad Request  │ {                                                                            │
-│                  │   "error": "Search query is required"                                        │
-│                  │ }                                                                            │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 500 Internal     │ {                                                                            │
-│ Server Error     │   "error": "Failed to search writings"                                       │
-│                  │ }                                                                            │
-└──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Search Repositories                                                                             │
-├──────────────────┬──────────────────────────────────────────────────────────────────────────────┤
-│ Endpoint         │ /search/repositories                                                         │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Method           │ GET                                                                          │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Description      │ Search specifically within repositories                                      │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ Parameters       │ q        (string, required): Search query                                    │
-│                  │ page     (number, optional): Page number (default: 1)                        │
-│                  │ pagesize (number, optional): Items per page (default: 10)                    │
-╞══════════════════╪══════════════════════════════════════════════════════════════════════════════╡
-│ Example          │ GET /api/search/repositories?q=react&amp;page=1&amp;pagesize=5                       │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 200 OK           │ {                                                                            │
-│                  │   "results": [                                                               │
-│                  │     {                                                                        │
-│                  │       "id": 123456,                                                          │
-│                  │       "name": "react-components",                                            │
-│                  │       "description": "Reusable React components",                            │
-│                  │       "highlight": {                                                         │
-│                  │         "name": ["&lt;mark&gt;react&lt;/mark&gt;-components"]                            │
-│                  │       }                                                                      │
-│                  │     }                                                                        │
-│                  │   ],                                                                         │
-│                  │   "total": { "value": 5, "relation": "eq" },                                 │
-│                  │   "page": 1,                                                                 │
-│                  │   "pageSize": 5,                                                             │
-│                  │   "totalPages": 1                                                            │
-│                  │ }                                                                            │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 400 Bad Request  │ {                                                                            │
-│                  │   "error": "Search query is required"                                        │
-│                  │ }                                                                            │
-├──────────────────┼──────────────────────────────────────────────────────────────────────────────┤
-│ 500 Internal     │ {                                                                            │
-│ Server Error     │   "error": "Failed to search repositories"                                   │
 │                  │ }                                                                            │
 └──────────────────┴──────────────────────────────────────────────────────────────────────────────┘
 

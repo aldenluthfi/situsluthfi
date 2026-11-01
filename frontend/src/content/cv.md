@@ -25,7 +25,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 #### **Universitas Indonesia (UI)** Indonesia
 
-##### **3.93 GPA. Bachelor of Computer Science** 2022 - Current
+##### **3.92 GPA. Bachelor of Computer Science** 2022 - Current
 
 #### **SMA Negeri 8 Jakarta** Indonesia
 
@@ -37,9 +37,10 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ##### **Cohort 1 Learner** Feb 2026 - Current [full | software | design]
 
-- Explored Apple frameworks and ecosystem using **CHallenge Based Learning**. [full | software | design]
+- Explored Apple frameworks and ecosystem using **Challenge Based Learning**. [full | software | design]
 - Worked on several projects, mainly using **XCode Apple Development Kit** to deliver App Store-ready apps. [full | software | design]
 - Honed in on all aspects of **creative design**, from user interfaces, user experiences, human computer interaction and iOS app architectures. [full | software | design]
+- Mastered **Apple Frameworks** within the Apple ecosystem, harnessing every sensor and capabilities of every Apple device.
 
 #### **Tiket.com** [full | software ]
 
@@ -47,7 +48,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 - Develops and maintains **automated testing frameworks** for iOS and Android applications using **Appium** and **Java**. [full | software]
 - Utilizes **LambdaTest** cloud platform for cross-device testing and browser compatibility testing. [full | software]
-- Collaborates with development teams to ensure **code quality** and implement **CI/CD pipelines** for mobile applications. [full | software]
+- Collaborates with development teams to ensure **code quality** with tools such as **Testrail** and **Jira**. [full | software]
 - Performs **API testing**, **regression testing**, and **performance testing** to maintain product reliability across mobile platforms. [full | software]
 
 #### **Faculty of Computer Science UI** [full | software | tutor]
@@ -177,13 +178,13 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Featuring **minimalistic UI** and a UX design that is **responsive**, **customizable** and **accessible**. [full | software | design]
 - Backend is built using **Express.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and **Docker**. [full | software | design]
 
-#### **TemuSearch** 2025 [full | software]
+#### **AnekaMacam** 2025 - Current [full | software]
 
-##### **LLM-Based Movie Search Engine, Powered by Elasticsearh** _[Frontend Repo](https://github.com/aldenluthfi/fe-temu-search-engine) | [Backend Repo](https://github.com/nabilmuafa/be-temu-search-engine)_ [full | software]
+##### **Variant-Agnostic Chess Engine Written in Rust** _[Repo](https://github.com/aldenluthfi/anekamacam) | [Writing](https://aldenluth.fi/writings/a-chess-engine-seriously-again)_ [full | software]
 
-- Powered by **Elasticsearch** as the **search engine**. [full | software]
-- Uses **Qwen-7B** as the **LLM** to generate a summary of the top results. [full | software]
-- Frontend is built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software]
+- Plays **most chess variants** through a fully **data-driven variant configuration** format, with no FIDE-specific assumptions baked in. [full | software]
+- Designed a stack of **custom notations** for board state, Betza-style move patterns, and drop rules, while speaking **UCI** on the surface. [full | software]
+- Search features **parallel alpha-beta**, transposition tables, **SEE** move ordering, null move and late move pruning, with **perft** test suites for correctness. [full | software]
 
 #### **Malpolys** 2025 [full | software | design]
 
@@ -192,14 +193,6 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Featuring **Procedural Level Generation** utilizing **Dijkstra's Algorithm**. [full | software | design]
 - **Designed** and **developed** the game from scratch, including the **game mechanics**, **level design** and **pixel art**. [full | software | design]
 - Written in **GDScript** using the **Godot Engine**. [full | software | design]
-
-#### **Fineksi Dashboard** 2025 [full | software | design]
-
-##### **A Dashboard for Fineksi, a Financial Management Company** _[Demo Video](https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh)_ [full | software | design]
-
-- Built using **React** and **Vite** with **Tailwind CSS** for styling. [full | software | design]
-- Features a **dashboard** with **charts** and **tables** to display financial data, with components based on **shadcn/ui**. [full | software | design]
-- Backend is built using **Node.js** with **MySQL** as the database, with automated CI/CD using **GitHub Actions** and static analysis tools like **SonarQube**. [full | software | design]
 
 ## Awards [full | cybersecurity]
 

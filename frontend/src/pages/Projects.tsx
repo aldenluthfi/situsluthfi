@@ -1,23 +1,36 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import FilterBar from "@/components/filter-bar"
 import ProjectCard, { ProjectCardSkeleton } from "@/components/project-card"
 import { profile } from "@/content/profile"
-import { useApi } from "@/hooks/use-api"
 import { useTitle } from "@/hooks/use-title"
-import { api } from "@/lib/api"
+import { api, isAbortError } from "@/lib/api"
+import type { RepositoryObject } from "@/lib/types"
 import { primaryLanguage } from "@/lib/utils"
 
 export default function Projects() {
   useTitle("projects")
-  const state = useApi((signal) => api.getRepositories(signal))
+  const [results, setResults] = useState<RepositoryObject[] | null>(null)
+  const [failed, setFailed] = useState(false)
   const [language, setLanguage] = useState<string | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const load = () => api.getRepositories(controller.signal).then((data) => setResults(data.repositories))
+    // Same as writings: show what the database has, then have the backend
+    // re-pull from GitHub (and re-index search) and refresh the grid.
+    load().catch((error) => {
+      if (!isAbortError(error)) setFailed(true)
+    })
+    api.syncRepositories(controller.signal).then(load).catch(() => {})
+    return () => controller.abort()
+  }, [])
 
   const repos = useMemo(
     () =>
-      [...(state.data?.repositories ?? [])].sort(
+      [...(results ?? [])].sort(
         (a, b) => b.stargazers_count - a.stargazers_count || b.updated_at.localeCompare(a.updated_at),
       ),
-    [state.data],
+    [results],
   )
   const languages = useMemo(
     () => [...new Set(repos.map((r) => primaryLanguage(r.languages)).filter((l): l is string => !!l))].sort(),
@@ -39,11 +52,11 @@ export default function Projects() {
         </a>
       </div>
 
-      {state.status === "error" ? (
+      {failed && !results ? (
         <p className="text-sm text-muted-foreground">couldn't load projects.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
-          {state.status === "loading"
+          {!results
             ? Array.from({ length: 4 }, (_, i) => <ProjectCardSkeleton key={i} />)
             : shown.map((repo) => <ProjectCard key={repo.id} repo={repo} />)}
         </div>

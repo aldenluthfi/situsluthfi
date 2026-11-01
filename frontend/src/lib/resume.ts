@@ -16,7 +16,7 @@ const SECTIONS = [
   "Certifications",
 ]
 
-type Tags = string[] | null
+export type Tags = string[] | null
 
 export type ResumeEntry = { title: string; org: string; period: string; points: string[] }
 export type ResumeSection = { title: string; entries: ResumeEntry[] }
@@ -28,7 +28,7 @@ type Section = { title: string; tags: Tags; orgs: Org[] }
 
 const TAG = /\s*\[([^\]]*)\]\s*$/
 
-function untag(line: string): { text: string; tags: Tags } {
+export function untag(line: string): { text: string; tags: Tags } {
   const match = TAG.exec(line)
   if (!match) return { text: line.trim(), tags: null }
   return {
@@ -38,7 +38,7 @@ function untag(line: string): { text: string; tags: Tags } {
 }
 
 /** `**Bold** rest` → [bold, rest] */
-function head(text: string) {
+export function head(text: string) {
   const match = /^\*\*(.+?)\*\*\s*(.*)$/.exec(text)
   return match ? [match[1], match[2]] : [text, ""]
 }
@@ -71,7 +71,7 @@ function parse(source: string): Section[] {
 
 const PARSED = parse(cv)
 
-const shows = (tags: Tags, topic: Topic | null) => topic === null || tags === null || tags.includes(topic)
+export const shows = (tags: Tags, topic: Topic | null) => topic === null || tags === null || tags.includes(topic)
 
 export function resume(topic: Topic | null): ResumeSection[] {
   return PARSED.filter((section) => shows(section.tags, topic))
