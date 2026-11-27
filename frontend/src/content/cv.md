@@ -27,6 +27,10 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ##### **3.92 GPA. Bachelor of Computer Science** 2022 - Current
 
+#### **SMA Negeri 8 Jakarta** Indonesia
+
+##### **Science and Mathematics Major** 2019 - 2022
+
 ## Work Experience [full | software | tutor | design]
 
 #### **Apple Developer Academy @ UC Jakarta** [full | software | design]
