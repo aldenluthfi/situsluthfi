@@ -3,7 +3,7 @@ import cv from "@/content/cv.md?raw"
 // cv.md is shared with vI. Lines end in a tag list like `[full | software]`;
 // untagged lines show for every topic, `full` is the unfiltered view.
 
-export const TOPICS = ["software", "cybersecurity", "design", "humanitarian", "tutor"] as const
+export const TOPICS = ["software", "design", "humanitarian", "tutor"] as const
 export type Topic = (typeof TOPICS)[number]
 
 /** Sections that read as a log. Projects have their own page; the rest is profile data. */

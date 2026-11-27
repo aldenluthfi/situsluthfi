@@ -27,10 +27,6 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 ##### **3.92 GPA. Bachelor of Computer Science** 2022 - Current
 
-#### **SMA Negeri 8 Jakarta** Indonesia
-
-##### **Science and Mathematics Major** 2019 - 2022
-
 ## Work Experience [full | software | tutor | design]
 
 #### **Apple Developer Academy @ UC Jakarta** [full | software | design]
@@ -42,7 +38,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Honed in on all aspects of **creative design**, from user interfaces, user experiences, human computer interaction and iOS app architectures. [full | software | design]
 - Mastered **Apple Frameworks** within the Apple ecosystem, harnessing every sensor and capabilities of every Apple device.
 
-#### **Tiket.com** [full | software ]
+#### **Tiket.com** [full | software]
 
 ##### **Software Developer Engineer in Test (SDET) Intern** Jul 2025 - Jan 2026 [full | software]
 
@@ -75,13 +71,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Is responsible for **teaching** and grading **15 students**. [full | software | tutor]
 - The course focuses on teaching the basics of programming using **Java**, including **object oriented concepts** to help students advance in their understanding of industry standards. [full | software | tutor]
 
-##### **Coordinator Teaching Assistant of Intro to Digital Systems** Aug 2023 - Dec 2023 [full | tutor]
-
-- Supervises and **manages** **20 teaching assistants** of the course. [full | tutor]
-- Proof reads and revises all the course materials. [full | tutor]
-- The course focuses on introducing the **concepts of logic** and digital systems concepts crucial to computer science and uses Logisim as a tool. [full | tutor]
-
-## Volunteering Experience [full | design | humanitarian | tutor]
+## Volunteering Experience [full | humanitarian | tutor]
 
 #### **SAVANA by Bakti BCA** Universitas Indonesia [full | humanitarian]
 
@@ -92,7 +82,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Explored waste management solutions for the village. [full | humanitarian]
 - Implemented natural disaster early warning systems for the village. [full | humanitarian]
 
-#### **Gerakan UI Mengajar** Universitas Indonesia [full | design | humanitarian | tutor]
+#### **Gerakan UI Mengajar** Universitas Indonesia [full | humanitarian | tutor]
 
 ##### **Staff of Social Community Department** Jan 2024 - Mar 2024 [full | humanitarian | tutor]
 
@@ -100,14 +90,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Teaches elementary school students at SDN 19 Way Ratay [full | humanitarian | tutor]
 - Ensuring every goal of the project is met. [full | humanitarian | tutor]
 
-##### **Staff of Creative Media** Aug 2022 - Mar 2023 [full | design | humanitarian | tutor]
-
-- **One month** of community service **in Ngluyu, East Java**. [full | design | humanitarian | tutor]
-- Responsible for **creating content** such as **Instagram feeds** and **reels** video editing. [full | design | humanitarian | tutor]
-- Responsible for creating and managing the organization website. [full | design | humanitarian | tutor]
-- Field photographer and videographer at SDN 2 Sugihwaras. [full | design | humanitarian | tutor]
-
-## Organizational Experience [full | humanitarian | design | cybersecurity]
+## Organizational Experience [full | humanitarian | design | software]
 
 #### **Badan Eksekutif Mahasiswa Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design | humanitarian]
 
@@ -129,44 +112,25 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - Responsible for **creating content** such as **Instagram feeds** and **reels** video editing. [full | design]
 - Is part of the **public relations** branch of the organization. [full | design]
 
-#### **RISTEK Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | cybersecurity]
+#### **RISTEK Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | software]
 
-##### **Network, Security, and Operating Systems Lead** Mar 2024 - Feb 2025 [full | cybersecurity]
+##### **Network, Security, and Operating Systems Lead** Mar 2024 - Feb 2025 [full | software]
 
-- **Finalist in Gemastik 2024**, the biggest IT competition in Indonesia. [full | cybersecurity]
-- **Won** a number of local Capture the Flag **competitions** [full | cybersecurity]
-- **Encourages others** to pursue the same passion in cybersecurity [full | cybersecurity]
+- **Finalist in Gemastik 2024**, the biggest IT competition in Indonesia. [full | software]
+- **Won** a number of local Capture the Flag **competitions** [full | software]
+- **Encourages others** to pursue the same passion in cybersecurity [full | software]
 
-##### **Network, Security, and Operating Systems Member** Mar 2023 - Feb 2024 [full | cybersecurity]
+##### **Network, Security, and Operating Systems Member** Mar 2023 - Feb 2024 [full | software]
 
-- Trained in numerous competitions and workshops. [full | cybersecurity]
-- Developed a passion for **cybersecurity**, especially in **cryptography** [full | cybersecurity]
+- Trained in numerous competitions and workshops. [full | software]
+- Developed a passion for **cybersecurity**, especially in **cryptography** [full | software]
 
-#### **COMPFEST Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full | design]
+#### **COMPFEST Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full]
 
 ##### **PIC of Human Resources of Creative** Jan 2024 - Mar 2025 [full]
 
 - **Responsible** for a team of **30 PICs and staff members**. [full]
 - Held a number of internal bonding activities for the field. [full]
-
-##### **Expert Staff of Documentation and Animation** Jan 2023 - Dec 2023 [full | design]
-
-- Used **Adobe After Effects** to edit the organization's company profile [full | design]
-
-#### **Open House Fakultas Ilmu Komputer UI** Faculty of Computer Science UI [full]
-
-##### **PIC of Human Resources** Aug 2023 - Sept 2023 [full]
-
-- **Managed** a team of **12 staff members**. [full]
-- Introduced a number of **new additions** to the organization's work environment. [full]
-
-#### **Badan Eksekutif Mahasiswa UI** Universitas Indonesia [full | humanitarian]
-
-##### **Social and Community Department Staff** Mar 2023 - Dec 2023 [full | humanitarian]
-
-- Held a **workshop and talkshow** to raise awareness for the **use of sign language** [full | humanitarian]
-- Raise **awareness of drug use** in a prison in Jakarta [full | humanitarian]
-- Did **2 week of community service** at the border village of **Mota'ain, Atambua, East Nusa Tenggara** 500m from the border between Indonesia and East Timor [full | humanitarian]
 
 ## Projects [full | software | design]
 
@@ -194,19 +158,19 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 - **Designed** and **developed** the game from scratch, including the **game mechanics**, **level design** and **pixel art**. [full | software | design]
 - Written in **GDScript** using the **Godot Engine**. [full | software | design]
 
-## Awards [full | cybersecurity]
+## Awards [full | software]
 
-#### **1st Runner Up** PwC Indonesia [full | cybersecurity]
+#### **1st Runner Up** PwC Indonesia [full | software]
 
-##### **PwC Hackaday** November 2024 [full | cybersecurity]
+##### **PwC Hackaday** November 2024 [full | software]
 
-#### **Finalist of the Division II (Cyber Security)** Pusat Prestasi Nasional [full | cybersecurity]
+#### **Finalist of the Division II (Cyber Security)** Pusat Prestasi Nasional [full | software]
 
-##### **Gemastik 2024** September 2024 [full | cybersecurity]
+##### **Gemastik 2024** September 2024 [full | software]
 
-#### **3rd Place** Universitas Gunadarma [full | cybersecurity]
+#### **3rd Place** Universitas Gunadarma [full | software]
 
-##### **Technofair CTF 11** September 2024 [full | cybersecurity]
+##### **Technofair CTF 11** September 2024 [full | software]
 
 ## Certifications [full | humanitarian]
 

@@ -47,7 +47,9 @@ docker build -t situsluthfi-vN ./archive/vN && docker run -p 8081:8080 situsluth
 - **Verbatim.** Archived code is not refactored, relinted, or dependency-bumped. It is
   a record of what shipped. The one allowed change is making it work under a
   sub-path: route through `import.meta.env.BASE_URL` (see `ROUTER_BASE` in
-  `v1/src/lib/utils.ts`) so it runs both at `/` and at `/archive/<label>/`.
+  `v1/src/lib/utils.ts`) so it runs both at `/` and at `/archive/<label>/`. The other
+  is CV content: each version serves the CV from its year (vI serves the 2025 CV, in
+  `v1/src/assets/other/cv.md` and `cv.texraw`).
 - **Served, not checked.** `frontend/Dockerfile` builds each archived version in its own
   stage with `vite build --base=/archive/<label>/` and copies it beside the live build;
   `frontend/nginx.conf` routes the sub-path. CI lint and type-check still only cover

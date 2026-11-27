@@ -169,7 +169,7 @@
 \entri
 {Universitas Indonesia (UI)}
 {Indonesia}
-{\normalfont{3.93 GPA. Bachelor of Computer Science}}
+{\normalfont{3.92 GPA. Bachelor of Computer Science}}
 {2022 - Current}
 \entri
 {SMA Negeri 8 Jakarta}
@@ -178,17 +178,28 @@
 {2019 - 2022}
 \vspace{-7.5pt}
 
-\bagian{Work Experience} [full|software|tutor]
-\vspace{-15pt} [full|software|tutor]
+\bagian{Work Experience} [full|software|tutor|design]
+\vspace{-15pt} [full|software|tutor|design]
+\entri [full|software|design]
+{Apple Developer Academy @ UC Jakarta} [full|software|design]
+{} [full|software|design]
+{Cohort 1 Learner} [full|software|design]
+{Feb 2026 - Current} [full|software|design]
+\daftar{ [full|software|design]
+    \butir{$\theta$}{Explored Apple frameworks and ecosystem using \tekan{Challenge Based Learning}.}
+    \butir{$\theta$}{Worked on several projects, mainly using \tekan{XCode Apple Development Kit} to deliver App Store-ready apps.}
+    \butir{$\theta$}{Honed in on all aspects of \tekan{creative design}, from user interfaces, user experiences, human computer interaction and iOS app architectures.}
+    \butir{$\theta$}{Mastered \tekan{Apple Frameworks} within the Apple ecosystem, harnessing every sensor and capabilities of every Apple device.}
+}
 \entri [full|software]
 {Tiket.com} [full|software]
 {} [full|software]
 {Software Developer Engineer in Test (SDET) Intern} [full|software]
-{Jul 2025 - Current} [full|software]
+{Jul 2025 - Jan 2026} [full|software]
 \daftar{ [full|software]
     \butir{$\lambda$}{Develops and maintains \tekan{automated testing frameworks} for iOS and Android applications using \tekan{Appium} and \tekan{Java}.}
     \butir{$\lambda$}{Utilizes \tekan{LambdaTest} cloud platform for cross-device testing and browser compatibility testing.}
-    \butir{$\lambda$}{Collaborates with development teams to ensure \tekan{code quality} and implement \tekan{CI/CD pipelines} for mobile applications.}
+    \butir{$\lambda$}{Collaborates with development teams to ensure \tekan{code quality} with tools such as \tekan{Testrail} and \tekan{Jira}.}
     \butir{$\lambda$}{Performs \tekan{API testing}, \tekan{regression testing}, and \tekan{performance testing} to maintain product reliability across mobile platforms.}
 }
 \entri [full|software|tutor]
@@ -231,7 +242,7 @@
     \butir{$\Delta$}{Proof reads and revises all the course materials.}
     \butir{$\Delta$}{The course focuses on introducing the \tekan{concepts of logic} and digital systems concepts crucial to computer science and uses Logisim as a tool.}
 }
-\vspace{-7.5pt} [full|software|tutor]
+\vspace{-7.5pt} [full|software|tutor|design]
 
 \bagian{Volunteering Experience} [full|design|humanitarian|tutor]
 \vspace{-15pt} [full|design|humanitarian|tutor]
@@ -361,14 +372,14 @@
     \butir{$\alpha$}{Backend is built using \tekan{Express.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and \tekan{Docker}.}
 }
 \entri [full|software]
-{TemuSearch} [full|software]
-{2025} [full|software]
-{LLM-Based Movie Search Engine, Powered by Elasticsearch} [full|software]
-{\href{https://github.com/aldenluthfi/fe-temu-search-engine}{Frontend Repo} | \href{https://github.com/nabilmuafa/be-temu-search-engine}{Backend Repo}} [full|software]
+{AnekaMacam} [full|software]
+{2025 - Current} [full|software]
+{Variant-Agnostic Chess Engine Written in Rust} [full|software]
+{\href{https://github.com/aldenluthfi/anekamacam}{Repo} | \href{https://aldenluth.fi/writings/a-chess-engine-seriously-again}{Writing}} [full|software]
 \daftar{ [full|software]
-    \butir{$\beta$}{Powered by \tekan{Elasticsearch} as the \tekan{search engine}.}
-    \butir{$\beta$}{Uses \tekan{Qwen-7B} as the \tekan{LLM} to generate a summary of the top results.}
-    \butir{$\beta$}{Frontend is built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
+    \butir{$\beta$}{Plays \tekan{most chess variants} through a fully \tekan{data-driven variant configuration} format, with no FIDE-specific assumptions baked in.}
+    \butir{$\beta$}{Designed a stack of \tekan{custom notations} for board state, Betza-style move patterns, and drop rules, while speaking \tekan{UCI} on the surface.}
+    \butir{$\beta$}{Search features \tekan{parallel alpha-beta}, transposition tables, \tekan{SEE} move ordering, null move and late move pruning, with \tekan{perft} test suites for correctness.}
 }
 \entri [full|software|design]
 {Malpolys} [full|software|design]
@@ -379,16 +390,6 @@
     \butir{$\gamma$}{Featuring \tekan{Procedural Level Generation} utilizing \tekan{Dijkstra's Algorithm}.}
     \butir{$\gamma$}{\tekan{Designed} and \tekan{developed} the game from scratch, including the \tekan{game mechanics}, \tekan{level design} and \tekan{pixel art}.}
     \butir{$\gamma$}{Written in \tekan{GDScript} using the \tekan{Godot Engine}.}
-}
-\entri [full|software|design]
-{Fineksi Dashboard} [full|software|design]
-{2025} [full|software|design]
-{A Dashboard for Fineksi, a Financial Management Company} [full|software|design]
-{\href{https://youtu.be/4UxU4dzCnTk?si=5qzn8OaP-bzBtjWh}{Demo Video}} [full|software|design]
-\daftar{ [full|software|design]
-    \butir{$\epsilon$}{Built using \tekan{React} and \tekan{Vite} with \tekan{Tailwind CSS} for styling.}
-    \butir{$\epsilon$}{Features a \tekan{dashboard} with \tekan{charts} and \tekan{tables} to display financial data, with components based on \tekan{shadcn/ui}.}
-    \butir{$\epsilon$}{Backend is built using \tekan{Node.js} with \tekan{MySQL} as the database, with automated CI/CD using \tekan{GitHub Actions} and static analysis tools like \tekan{SonarQube}.}
 }
 \vspace{-7.5pt} [full|software|design]
 
