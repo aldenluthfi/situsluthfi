@@ -25,7 +25,7 @@ A dependable **hard worker** with a passion in education and technology. I'm a *
 
 #### **Universitas Indonesia (UI)** Indonesia
 
-##### **3.92 GPA. Bachelor of Computer Science** 2022 - Current
+##### **3.92 GPA. Bachelor of Computer Science** 2022 - 2026
 
 #### **SMA Negeri 8 Jakarta** Indonesia
 
